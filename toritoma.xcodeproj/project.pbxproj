@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0CCA883D1699580B00EB243F /* AKNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA883C1699580B00EB243F /* AKNavigationController.m */; };
+		0CCA88431699615D00EB243F /* AKPlayingScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA88421699615D00EB243F /* AKPlayingScene.m */; };
+		0CCA88461699665D00EB243F /* AKPlayData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA88451699665D00EB243F /* AKPlayData.m */; };
 		0CD2CAEE169922AE00088557 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAED169922AE00088557 /* QuartzCore.framework */; };
 		0CD2CAF0169922AE00088557 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAEF169922AE00088557 /* OpenGLES.framework */; };
 		0CD2CAF2169922AE00088557 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAF1169922AE00088557 /* OpenAL.framework */; };
@@ -137,13 +139,15 @@
 		0CD2CC80169922B000088557 /* vec4.c in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2CC7F169922B000088557 /* vec4.c */; };
 		0CD2CC85169922B000088557 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2CC84169922B000088557 /* main.m */; };
 		0CD2CC88169922B000088557 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2CC87169922B000088557 /* AppDelegate.m */; };
-		0CD2CC8B169922B000088557 /* HelloWorldLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2CC8A169922B000088557 /* HelloWorldLayer.m */; };
-		0CD2CC8E169922B000088557 /* IntroLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2CC8D169922B000088557 /* IntroLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0CCA883B1699580B00EB243F /* AKNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKNavigationController.h; sourceTree = "<group>"; };
 		0CCA883C1699580B00EB243F /* AKNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKNavigationController.m; sourceTree = "<group>"; };
+		0CCA88411699615D00EB243F /* AKPlayingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayingScene.h; sourceTree = "<group>"; };
+		0CCA88421699615D00EB243F /* AKPlayingScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayingScene.m; sourceTree = "<group>"; };
+		0CCA88441699665D00EB243F /* AKPlayData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayData.h; sourceTree = "<group>"; };
+		0CCA88451699665D00EB243F /* AKPlayData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayData.m; sourceTree = "<group>"; };
 		0CD2CAE9169922AE00088557 /* toritoma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toritoma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CD2CAED169922AE00088557 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0CD2CAEF169922AE00088557 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -412,10 +416,6 @@
 		0CD2CC84169922B000088557 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0CD2CC86169922B000088557 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0CD2CC87169922B000088557 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		0CD2CC89169922B000088557 /* HelloWorldLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorldLayer.h; sourceTree = "<group>"; };
-		0CD2CC8A169922B000088557 /* HelloWorldLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelloWorldLayer.m; sourceTree = "<group>"; };
-		0CD2CC8C169922B000088557 /* IntroLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntroLayer.h; sourceTree = "<group>"; };
-		0CD2CC8D169922B000088557 /* IntroLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntroLayer.m; sourceTree = "<group>"; };
 		0CD2CC9B169934A000088557 /* AKLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLib.h; sourceTree = "<group>"; };
 		0CD2CC9C169934A000088557 /* AKLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLog.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -440,6 +440,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0CCA883F1699603700EB243F /* PlayingScene */ = {
+			isa = PBXGroup;
+			children = (
+				0CCA88411699615D00EB243F /* AKPlayingScene.h */,
+				0CCA88421699615D00EB243F /* AKPlayingScene.m */,
+				0CCA88441699665D00EB243F /* AKPlayData.h */,
+				0CCA88451699665D00EB243F /* AKPlayData.m */,
+			);
+			path = PlayingScene;
+			sourceTree = "<group>";
+		};
+		0CCA88401699606500EB243F /* Common */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		0CD2CADE169922AE00088557 = {
 			isa = PBXGroup;
 			children = (
@@ -477,12 +495,10 @@
 			isa = PBXGroup;
 			children = (
 				0CD2CC9816992E8500088557 /* AKLibrary */,
+				0CCA88401699606500EB243F /* Common */,
+				0CCA883F1699603700EB243F /* PlayingScene */,
 				0CD2CC86169922B000088557 /* AppDelegate.h */,
 				0CD2CC87169922B000088557 /* AppDelegate.m */,
-				0CD2CC89169922B000088557 /* HelloWorldLayer.h */,
-				0CD2CC8A169922B000088557 /* HelloWorldLayer.m */,
-				0CD2CC8C169922B000088557 /* IntroLayer.h */,
-				0CD2CC8D169922B000088557 /* IntroLayer.m */,
 				0CD2CB00169922AE00088557 /* Resources */,
 				0CD2CB1E169922AE00088557 /* libs */,
 				0CD2CC82169922B000088557 /* Supporting Files */,
@@ -1055,9 +1071,9 @@
 				0CD2CC80169922B000088557 /* vec4.c in Sources */,
 				0CD2CC85169922B000088557 /* main.m in Sources */,
 				0CD2CC88169922B000088557 /* AppDelegate.m in Sources */,
-				0CD2CC8B169922B000088557 /* HelloWorldLayer.m in Sources */,
-				0CD2CC8E169922B000088557 /* IntroLayer.m in Sources */,
 				0CCA883D1699580B00EB243F /* AKNavigationController.m in Sources */,
+				0CCA88431699615D00EB243F /* AKPlayingScene.m in Sources */,
+				0CCA88461699665D00EB243F /* AKPlayData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
