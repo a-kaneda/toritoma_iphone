@@ -7,3 +7,6 @@
 
 // デバッグログ出力マクロ定義
 #import "AKLog.h"
+
+// カスタマイズNavigation Controller
+#import "AKNavigationController.h"

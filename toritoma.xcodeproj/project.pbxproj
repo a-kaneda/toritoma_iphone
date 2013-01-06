@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CCA883D1699580B00EB243F /* AKNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA883C1699580B00EB243F /* AKNavigationController.m */; };
 		0CD2CAEE169922AE00088557 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAED169922AE00088557 /* QuartzCore.framework */; };
 		0CD2CAF0169922AE00088557 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAEF169922AE00088557 /* OpenGLES.framework */; };
 		0CD2CAF2169922AE00088557 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAF1169922AE00088557 /* OpenAL.framework */; };
@@ -141,6 +142,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0CCA883B1699580B00EB243F /* AKNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKNavigationController.h; sourceTree = "<group>"; };
+		0CCA883C1699580B00EB243F /* AKNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKNavigationController.m; sourceTree = "<group>"; };
 		0CD2CAE9169922AE00088557 /* toritoma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toritoma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CD2CAED169922AE00088557 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0CD2CAEF169922AE00088557 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -863,6 +866,8 @@
 		0CD2CC9816992E8500088557 /* AKLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				0CCA883B1699580B00EB243F /* AKNavigationController.h */,
+				0CCA883C1699580B00EB243F /* AKNavigationController.m */,
 				0CD2CC9B169934A000088557 /* AKLib.h */,
 				0CD2CC9C169934A000088557 /* AKLog.h */,
 			);
@@ -1052,6 +1057,7 @@
 				0CD2CC88169922B000088557 /* AppDelegate.m in Sources */,
 				0CD2CC8B169922B000088557 /* HelloWorldLayer.m in Sources */,
 				0CD2CC8E169922B000088557 /* IntroLayer.m in Sources */,
+				0CCA883D1699580B00EB243F /* AKNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

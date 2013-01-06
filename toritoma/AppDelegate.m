@@ -86,7 +86,7 @@
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
 
 	// Create a Navigation Controller with the Director
-	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
+	navController_ = [[AKNavigationController alloc] initWithRootViewController:director_];
 	navController_.navigationBarHidden = YES;
 	
 	// set the Navigation Controller as the root view controller

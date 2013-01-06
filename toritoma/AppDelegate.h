@@ -15,7 +15,7 @@
     /// Main window
 	UIWindow *window_;
     /// Navigation controller
-	UINavigationController *navController_;
+	AKNavigationController *navController_;
     /// Director
 	CCDirectorIOS	*director_;							// weak ref
 }
