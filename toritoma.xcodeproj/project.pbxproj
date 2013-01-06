@@ -413,6 +413,8 @@
 		0CD2CC8A169922B000088557 /* HelloWorldLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelloWorldLayer.m; sourceTree = "<group>"; };
 		0CD2CC8C169922B000088557 /* IntroLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntroLayer.h; sourceTree = "<group>"; };
 		0CD2CC8D169922B000088557 /* IntroLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntroLayer.m; sourceTree = "<group>"; };
+		0CD2CC9B169934A000088557 /* AKLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLib.h; sourceTree = "<group>"; };
+		0CD2CC9C169934A000088557 /* AKLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLog.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -471,6 +473,7 @@
 		0CD2CAFF169922AE00088557 /* toritoma */ = {
 			isa = PBXGroup;
 			children = (
+				0CD2CC9816992E8500088557 /* AKLibrary */,
 				0CD2CC86169922B000088557 /* AppDelegate.h */,
 				0CD2CC87169922B000088557 /* AppDelegate.m */,
 				0CD2CC89169922B000088557 /* HelloWorldLayer.h */,
@@ -855,6 +858,15 @@
 				0CD2CC84169922B000088557 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0CD2CC9816992E8500088557 /* AKLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				0CD2CC9B169934A000088557 /* AKLib.h */,
+				0CD2CC9C169934A000088557 /* AKLog.h */,
+			);
+			path = AKLibrary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

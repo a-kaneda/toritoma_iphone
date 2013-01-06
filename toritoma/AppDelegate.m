@@ -1,20 +1,33 @@
-//
-//  AppDelegate.m
-//  toritoma
-//
-//  Created by KANEDA AKIHIRO on 2013/01/06.
-//  Copyright KANEDA AKIHIRO 2013年. All rights reserved.
-//
+/*!
+ @file AppDelegate.m
+ @brief Application controller定義
+ 
+ Application controllerを定義する。
+ */
 
 #import "cocos2d.h"
 
 #import "AppDelegate.h"
 #import "IntroLayer.h"
 
+/*!
+ @brief Application controller
+ 
+ Application controller。
+ */
 @implementation AppController
 
 @synthesize window=window_, navController=navController_, director=director_;
 
+/*!
+ @brief アプリケーション生成処理
+ 
+ Tells the delegate that the launch process is almost done and the app is almost ready to run.
+ @param application The delegating application object.
+ @param launchOptions A dictionary indicating the reason the application was launched.
+ @return NO if the application cannot handle the URL resource, otherwise return YES.
+         The return value is ignored if the application is launched as a result of a remote notification.
+ */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	// Create the main window
@@ -85,9 +98,14 @@
 	return YES;
 }
 
-// This is needed for iOS4 and iOS5 in order to ensure
-// that the 1st scene has the correct dimensions
-// This is not needed on iOS6 and could be added to the application:didFinish...
+/*!
+ @brief シーン初期設定処理
+ 
+ This is needed for iOS4 and iOS5 in order to ensure
+ that the 1st scene has the correct dimensions
+ This is not needed on iOS6 and could be added to the application:didFinish...
+ @param director ディレクター
+ */
 -(void) directorDidReshapeProjection:(CCDirector*)director
 {
 	if(director.runningScene == nil) {
@@ -97,10 +115,23 @@
 	}
 }
 
-// Supported orientations: Landscape. Customize it for your own needs
+/*!
+ @brief 画面回転可否判定
+ 
+ Supported orientations: Landscape. Customize it for your own needs
+ @param interfaceOrientation 回転する向き
+ @return YES:回転可能、NO:回転不可
+ */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+    AKLog(1, @"interfaceOrientation=%d", interfaceOrientation);
+    if (UIInterfaceOrientationLandscapeLeft == interfaceOrientation) {
+        AKLog(1, @"return YES");
+        return YES;
+    } else {
+        AKLog(1, @"return NO");
+        return NO;
+    }
 }
 
 
