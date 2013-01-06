@@ -124,61 +124,99 @@
  */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    AKLog(1, @"interfaceOrientation=%d", interfaceOrientation);
-    if (UIInterfaceOrientationLandscapeLeft == interfaceOrientation) {
-        AKLog(1, @"return YES");
-        return YES;
-    } else {
-        AKLog(1, @"return NO");
-        return NO;
-    }
+    // 画面の向きがLandscapeの場合のみ回転を許可する。    
+    AKLog(1, @"interfaceOrientation=%d retval=%d",
+          interfaceOrientation, UIInterfaceOrientationIsLandscape(interfaceOrientation));
+    return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 
-
-// getting a call, pause the game
+/*!
+ @brief アプリ中断時処理
+ 
+ アプリが中断された時にコールされる。
+ ゲームプレイ中の場合はシーンを一時停止する。
+ @param application アプリケーションクラス
+ */
 -(void) applicationWillResignActive:(UIApplication *)application
 {
 	if( [navController_ visibleViewController] == director_ )
 		[director_ pause];
 }
 
-// call got rejected
+/*!
+ @brief call got rejected
+ 
+ call got rejected
+ @param application アプリケーションクラス
+ */
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
 	if( [navController_ visibleViewController] == director_ )
 		[director_ resume];
 }
 
+/*!
+ @brief バックグラウンドに移行したときの処理
+ 
+ バックグラウンドに移行したときの処理を行う。
+ @param application アプリケーションクラス
+ */
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
 	if( [navController_ visibleViewController] == director_ )
 		[director_ stopAnimation];
 }
 
+/*!
+ @brief フォアグラウンドに移行したときの処理
+ 
+ フォアグラウンドに移行したときの処理を行う。
+ @param application アプリケーションクラス
+ */
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
 	if( [navController_ visibleViewController] == director_ )
 		[director_ startAnimation];
 }
 
-// application will be killed
+/*!
+ @brief application will be killed
+ 
+ application will be killed
+ @param application アプリケーションクラス
+ */
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	CC_DIRECTOR_END();
 }
 
-// purge memory
+/*!
+ @brief purge memory
+ 
+ purge memory
+ @param application アプリケーションクラス
+ */
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
 	[[CCDirector sharedDirector] purgeCachedData];
 }
 
-// next delta time will be zero
+/*!
+ @brief next delta time will be zero
+ 
+ next delta time will be zero
+ @param application アプリケーションクラス
+ */
 -(void) applicationSignificantTimeChange:(UIApplication *)application
 {
 	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
 }
 
+/*!
+ @brief インスタンス解放処理
+ 
+ インスタンス解放時の処理を行う。
+ */
 - (void) dealloc
 {
 	[window_ release];
