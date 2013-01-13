@@ -10,6 +10,11 @@
 		0CCA883D1699580B00EB243F /* AKNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA883C1699580B00EB243F /* AKNavigationController.m */; };
 		0CCA88431699615D00EB243F /* AKPlayingScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA88421699615D00EB243F /* AKPlayingScene.m */; };
 		0CCA88461699665D00EB243F /* AKPlayData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA88451699665D00EB243F /* AKPlayData.m */; };
+		0CCC523916A29BFE00E9A397 /* AKCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC523616A29BFE00E9A397 /* AKCharacter.m */; };
+		0CCC523A16A29BFE00E9A397 /* AKCharacterPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC523816A29BFE00E9A397 /* AKCharacterPool.m */; };
+		0CCC523F16A2A27000E9A397 /* AKScreenSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC523E16A2A27000E9A397 /* AKScreenSize.m */; };
+		0CCC524416A348AC00E9A397 /* AKPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC524316A348AB00E9A397 /* AKPlayer.m */; };
+		0CCC524616A3721600E9A397 /* Player.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC524516A3721600E9A397 /* Player.png */; };
 		0CD2CAEE169922AE00088557 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAED169922AE00088557 /* QuartzCore.framework */; };
 		0CD2CAF0169922AE00088557 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAEF169922AE00088557 /* OpenGLES.framework */; };
 		0CD2CAF2169922AE00088557 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAF1169922AE00088557 /* OpenAL.framework */; };
@@ -148,6 +153,15 @@
 		0CCA88421699615D00EB243F /* AKPlayingScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayingScene.m; sourceTree = "<group>"; };
 		0CCA88441699665D00EB243F /* AKPlayData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayData.h; sourceTree = "<group>"; };
 		0CCA88451699665D00EB243F /* AKPlayData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayData.m; sourceTree = "<group>"; };
+		0CCC523516A29BFE00E9A397 /* AKCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKCharacter.h; sourceTree = "<group>"; };
+		0CCC523616A29BFE00E9A397 /* AKCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCharacter.m; sourceTree = "<group>"; };
+		0CCC523716A29BFE00E9A397 /* AKCharacterPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKCharacterPool.h; sourceTree = "<group>"; };
+		0CCC523816A29BFE00E9A397 /* AKCharacterPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCharacterPool.m; sourceTree = "<group>"; };
+		0CCC523D16A2A27000E9A397 /* AKScreenSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKScreenSize.h; sourceTree = "<group>"; };
+		0CCC523E16A2A27000E9A397 /* AKScreenSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKScreenSize.m; sourceTree = "<group>"; };
+		0CCC524216A348AB00E9A397 /* AKPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayer.h; sourceTree = "<group>"; };
+		0CCC524316A348AB00E9A397 /* AKPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayer.m; sourceTree = "<group>"; };
+		0CCC524516A3721600E9A397 /* Player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Player.png; path = Resources/Player.png; sourceTree = "<group>"; };
 		0CD2CAE9169922AE00088557 /* toritoma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toritoma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CD2CAED169922AE00088557 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0CD2CAEF169922AE00088557 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -443,6 +457,12 @@
 		0CCA883F1699603700EB243F /* PlayingScene */ = {
 			isa = PBXGroup;
 			children = (
+				0CCC524216A348AB00E9A397 /* AKPlayer.h */,
+				0CCC524316A348AB00E9A397 /* AKPlayer.m */,
+				0CCC523516A29BFE00E9A397 /* AKCharacter.h */,
+				0CCC523616A29BFE00E9A397 /* AKCharacter.m */,
+				0CCC523716A29BFE00E9A397 /* AKCharacterPool.h */,
+				0CCC523816A29BFE00E9A397 /* AKCharacterPool.m */,
 				0CCA88411699615D00EB243F /* AKPlayingScene.h */,
 				0CCA88421699615D00EB243F /* AKPlayingScene.m */,
 				0CCA88441699665D00EB243F /* AKPlayData.h */,
@@ -509,6 +529,7 @@
 		0CD2CB00169922AE00088557 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0CCC524516A3721600E9A397 /* Player.png */,
 				0CD2CB01169922AE00088557 /* Default.png */,
 				0CD2CB03169922AE00088557 /* Default@2x.png */,
 				0CD2CB05169922AE00088557 /* Default-568h@2x.png */,
@@ -882,6 +903,8 @@
 		0CD2CC9816992E8500088557 /* AKLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				0CCC523D16A2A27000E9A397 /* AKScreenSize.h */,
+				0CCC523E16A2A27000E9A397 /* AKScreenSize.m */,
 				0CCA883B1699580B00EB243F /* AKNavigationController.h */,
 				0CCA883C1699580B00EB243F /* AKNavigationController.m */,
 				0CD2CC9B169934A000088557 /* AKLib.h */,
@@ -956,6 +979,7 @@
 				0CD2CB1A169922AE00088557 /* Icon@2x.png in Resources */,
 				0CD2CB1D169922AE00088557 /* iTunesArtwork in Resources */,
 				0CD2CC66169922AF00088557 /* ChangeLog in Resources */,
+				0CCC524616A3721600E9A397 /* Player.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1074,6 +1098,10 @@
 				0CCA883D1699580B00EB243F /* AKNavigationController.m in Sources */,
 				0CCA88431699615D00EB243F /* AKPlayingScene.m in Sources */,
 				0CCA88461699665D00EB243F /* AKPlayData.m in Sources */,
+				0CCC523916A29BFE00E9A397 /* AKCharacter.m in Sources */,
+				0CCC523A16A29BFE00E9A397 /* AKCharacterPool.m in Sources */,
+				0CCC523F16A2A27000E9A397 /* AKScreenSize.m in Sources */,
+				0CCC524416A348AC00E9A397 /* AKPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

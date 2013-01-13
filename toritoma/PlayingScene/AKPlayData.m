@@ -7,6 +7,11 @@
 
 #import "AKPlayData.h"
 
+/// 自機初期位置x座標
+static const float kAKPlayerDefaultPosX = 50.0f;
+/// 自機初期位置y座標
+static const float kAKPlayerDefaultPosY = 128.0f;
+
 /*!
  @brief ゲームデータ
  
@@ -15,6 +20,7 @@
 @implementation AKPlayData
 
 @synthesize scene = scene_;
+@synthesize player = player_;
 
 /*!
  @brief オブジェクト初期化処理
@@ -37,8 +43,31 @@
     // シーンをメンバに設定する
     scene_ = scene;
     
+    // 自機を作成する
+    self.player = [[[AKPlayer alloc] init] autorelease];
+    
+    // 初期位置を設定する
+    self.player.positionX = kAKPlayerDefaultPosX;
+    self.player.positionY = kAKPlayerDefaultPosY;
+    
+    // 自機をシーンに追加する
+    [self.scene addCharacterImage:self.player.image];
+    
     AKLog(1, @"end");
     return self;
+}
+
+/*!
+ @brief 状態更新
+ 
+ 各オブジェクトの状態を更新する。
+ キャラクターの移動、衝突判定を行う。
+ @param dt フレーム更新間隔
+ */
+- (void)update:(ccTime)dt
+{
+    // 自機を更新する
+    [self.player move:dt];
 }
 
 @end

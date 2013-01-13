@@ -46,5 +46,7 @@ enum AKGameState {
 - (void)updateStart:(ccTime)dt;
 // プレイ中の更新処理
 - (void)updatePlaying:(ccTime)dt;
+// キャラクターイメージの追加
+- (void)addCharacterImage:(CCSprite *)image;
 
 @end

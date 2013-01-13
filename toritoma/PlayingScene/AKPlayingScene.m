@@ -175,6 +175,18 @@ enum {
  */
 - (void)updatePlaying:(ccTime)dt
 {
+    // ゲームデータの更新を行う
+    [self.data update:dt];
 }
 
+/*!
+ @brief キャラクターイメージの追加
+ 
+ キャラクターイメージのキャラクターレイヤーに追加する。
+ @param image キャラクターイメージ
+ */
+- (void)addCharacterImage:(CCSprite *)image
+{
+    [self.characterLayer addChild:image];
+}
 @end
