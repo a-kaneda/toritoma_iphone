@@ -16,6 +16,11 @@ enum {
     kAKLayerPosZInterface   ///< インターフェースレイヤー
 };
 
+/// プレイ中メニュー項目のタグ
+static const NSUInteger kAKMenuTagPlaying = 0x01;
+
+/// 自機移動をスライド量の何倍にするか
+static const float kAKPlayerMoveVal = 1.8f;
 
 /*!
  @brief プレイシーンクラス
@@ -46,11 +51,24 @@ enum {
     // 状態をシーン読み込み前に設定する
     self.state = kAKGameStatePreLoad;
     
-    // キャラクターを配置するレイヤーを生成する
+    // キャラクターを配置するレイヤーを作成する
     CCLayer *characterLayer = [CCLayer node];
     
     // キャラクターレイヤーを画面に配置する
     [self addChild:characterLayer z:kAKLayerPosZCharacter tag:kAKLayerPosZCharacter];
+    
+    // インターフェースレイヤーを作成する
+    AKInterface *interfaceLayer = [AKInterface node];
+    
+    // インターフェースレイヤーを画面に配置する
+    [self addChild:interfaceLayer z:kAKLayerPosZInterface tag:kAKLayerPosZInterface];
+    
+    // スライド入力を画面全体に配置する
+    [interfaceLayer addSlideMenuWithRect:CGRectMake(0.0f, 0.0f, [AKScreenSize stageSize].width, [AKScreenSize stageSize].height)
+                                  action:@selector(movePlayer:)
+                                     tag:kAKMenuTagPlaying];
+    
+    interfaceLayer.enableTag = 0xFFFFFFFF;
     
     // ゲームデータを生成する
     self.data = [[[AKPlayData alloc] initWithScene:self] autorelease];
@@ -188,5 +206,31 @@ enum {
 - (void)addCharacterImage:(CCSprite *)image
 {
     [self.characterLayer addChild:image];
+}
+
+/*!
+ @brief 自機の移動
+ 
+ スライド入力によって自機を移動する。
+ @param object メニュー項目
+ */
+- (void)movePlayer:(id)object
+{
+    NSAssert([object isKindOfClass:[AKMenuItem class]], @"メニュー項目のクラスが違う");
+    
+    // メニュー項目クラスにキャストする
+    AKMenuItem *item = (AKMenuItem *)object;
+    
+    // 画面上のタッチ位置を取得する
+    CGPoint locationInView = [item.touch locationInView:[item.touch view]];
+    
+    // cocos2dの座標系に変換する
+    CGPoint location = [[CCDirector sharedDirector] convertToGL:locationInView];
+
+    AKLog(0, @"prev=(%f, %f) location=(%f, %f)", item.prevPoint.x, item.prevPoint.y, location.x, location.y);
+    
+    // 自機を移動する
+    [self.data movePlayerByDx:(location.x - item.prevPoint.x) * kAKPlayerMoveVal
+                           dy:(location.y - item.prevPoint.y) * kAKPlayerMoveVal];
 }
 @end

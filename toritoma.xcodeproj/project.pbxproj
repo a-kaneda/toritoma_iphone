@@ -15,6 +15,11 @@
 		0CCC523F16A2A27000E9A397 /* AKScreenSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC523E16A2A27000E9A397 /* AKScreenSize.m */; };
 		0CCC524416A348AC00E9A397 /* AKPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC524316A348AB00E9A397 /* AKPlayer.m */; };
 		0CCC524616A3721600E9A397 /* Player.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC524516A3721600E9A397 /* Player.png */; };
+		0CCC524916A382C600E9A397 /* AKInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC524816A382C600E9A397 /* AKInterface.m */; };
+		0CCC524C16A382ED00E9A397 /* AKMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC524B16A382ED00E9A397 /* AKMenuItem.m */; };
+		0CCC525116A3838300E9A397 /* AKFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC524E16A3838300E9A397 /* AKFont.m */; };
+		0CCC525216A3838300E9A397 /* AKLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC525016A3838300E9A397 /* AKLabel.m */; };
+		0CCC525916A38E8F00E9A397 /* AKCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC525816A38E8F00E9A397 /* AKCommon.m */; };
 		0CD2CAEE169922AE00088557 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAED169922AE00088557 /* QuartzCore.framework */; };
 		0CD2CAF0169922AE00088557 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAEF169922AE00088557 /* OpenGLES.framework */; };
 		0CD2CAF2169922AE00088557 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAF1169922AE00088557 /* OpenAL.framework */; };
@@ -162,6 +167,16 @@
 		0CCC524216A348AB00E9A397 /* AKPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayer.h; sourceTree = "<group>"; };
 		0CCC524316A348AB00E9A397 /* AKPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayer.m; sourceTree = "<group>"; };
 		0CCC524516A3721600E9A397 /* Player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Player.png; path = Resources/Player.png; sourceTree = "<group>"; };
+		0CCC524716A382C600E9A397 /* AKInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKInterface.h; sourceTree = "<group>"; };
+		0CCC524816A382C600E9A397 /* AKInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKInterface.m; sourceTree = "<group>"; };
+		0CCC524A16A382ED00E9A397 /* AKMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKMenuItem.h; sourceTree = "<group>"; };
+		0CCC524B16A382ED00E9A397 /* AKMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKMenuItem.m; sourceTree = "<group>"; };
+		0CCC524D16A3838300E9A397 /* AKFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKFont.h; sourceTree = "<group>"; };
+		0CCC524E16A3838300E9A397 /* AKFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKFont.m; sourceTree = "<group>"; };
+		0CCC524F16A3838300E9A397 /* AKLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLabel.h; sourceTree = "<group>"; };
+		0CCC525016A3838300E9A397 /* AKLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKLabel.m; sourceTree = "<group>"; };
+		0CCC525716A38E8F00E9A397 /* AKCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKCommon.h; sourceTree = "<group>"; };
+		0CCC525816A38E8F00E9A397 /* AKCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCommon.m; sourceTree = "<group>"; };
 		0CD2CAE9169922AE00088557 /* toritoma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toritoma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CD2CAED169922AE00088557 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0CD2CAEF169922AE00088557 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -431,7 +446,6 @@
 		0CD2CC86169922B000088557 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0CD2CC87169922B000088557 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0CD2CC9B169934A000088557 /* AKLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLib.h; sourceTree = "<group>"; };
-		0CD2CC9C169934A000088557 /* AKLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLog.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -903,12 +917,21 @@
 		0CD2CC9816992E8500088557 /* AKLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				0CCC525716A38E8F00E9A397 /* AKCommon.h */,
+				0CCC525816A38E8F00E9A397 /* AKCommon.m */,
+				0CCC524D16A3838300E9A397 /* AKFont.h */,
+				0CCC524E16A3838300E9A397 /* AKFont.m */,
+				0CCC524F16A3838300E9A397 /* AKLabel.h */,
+				0CCC525016A3838300E9A397 /* AKLabel.m */,
+				0CCC524A16A382ED00E9A397 /* AKMenuItem.h */,
+				0CCC524B16A382ED00E9A397 /* AKMenuItem.m */,
+				0CCC524716A382C600E9A397 /* AKInterface.h */,
+				0CCC524816A382C600E9A397 /* AKInterface.m */,
 				0CCC523D16A2A27000E9A397 /* AKScreenSize.h */,
 				0CCC523E16A2A27000E9A397 /* AKScreenSize.m */,
 				0CCA883B1699580B00EB243F /* AKNavigationController.h */,
 				0CCA883C1699580B00EB243F /* AKNavigationController.m */,
 				0CD2CC9B169934A000088557 /* AKLib.h */,
-				0CD2CC9C169934A000088557 /* AKLog.h */,
 			);
 			path = AKLibrary;
 			sourceTree = "<group>";
@@ -1102,6 +1125,11 @@
 				0CCC523A16A29BFE00E9A397 /* AKCharacterPool.m in Sources */,
 				0CCC523F16A2A27000E9A397 /* AKScreenSize.m in Sources */,
 				0CCC524416A348AC00E9A397 /* AKPlayer.m in Sources */,
+				0CCC524916A382C600E9A397 /* AKInterface.m in Sources */,
+				0CCC524C16A382ED00E9A397 /* AKMenuItem.m in Sources */,
+				0CCC525116A3838300E9A397 /* AKFont.m in Sources */,
+				0CCC525216A3838300E9A397 /* AKLabel.m in Sources */,
+				0CCC525916A38E8F00E9A397 /* AKCommon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

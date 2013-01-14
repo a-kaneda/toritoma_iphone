@@ -137,12 +137,13 @@ static const float kAKDefaultAnimationInterval = 0.2f;
     }
     
     AKLog(0, @"pattern=%d time=%f interval=%f", pattern, self.animationTime, self.animationInterval);
+    AKLog(0, @"base=(%f, %f) size=(%f, %f)", self.imageBasePos.x, self.imageBasePos.y, self.imageSize.width, self.imageSize.height);
     
     // アニメーションパターンに応じてテクスチャ位置を設定する
     [self.image setTextureRect:[AKScreenSize deviceRectByX:self.imageBasePos.x + self.imageSize.width * (pattern - 1)
-                                                         Y:self.imageBasePos.y
-                                                     Width:self.imageSize.width
-                                                    Height:self.imageSize.height]];
+                                                         y:self.imageBasePos.y
+                                                     width:self.imageSize.width
+                                                    height:self.imageSize.height]];
     
     // キャラクター固有の動作を行う
     [self action:dt];

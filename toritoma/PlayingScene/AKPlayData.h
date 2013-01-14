@@ -28,5 +28,7 @@
 - (id)initWithScene:(AKPlayingScene *)scene;
 // 状態更新
 - (void)update:(ccTime)dt;
+// 自機の移動
+- (void)movePlayerByDx:(float)dx dy:(float)dy;
 
 @end

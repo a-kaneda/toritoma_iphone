@@ -6,6 +6,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "AKCommon.h"
 
 // 画面サイズ管理クラス
 @interface AKScreenSize : NSObject
@@ -41,9 +42,12 @@
 // ステージ座標y座標からデバイススクリーン座標の取得
 + (NSInteger)yOfStage:(float)abspos;
 // 矩形のデバイス補正、x座標、y座標、幅、高さ指定
-+ (CGRect)deviceRectByX:(float)x Y:(float)y Width:(float)w Height:(float)h;
++ (CGRect)deviceRectByX:(float)x y:(float)y width:(float)w height:(float)h;
 // 句形のデバイス補正、座標、サイズ指定
-+ (CGRect)deviceRectByPoint:(CGPoint)point Size:(CGSize)size;
++ (CGRect)deviceRectByPoint:(CGPoint)point size:(CGSize)size;
 // 句形のデバイス補正、矩形指定
 + (CGRect)deviceRectByRect:(CGRect)rect;
+// 中心座標とサイズから矩形を作成する
++ (CGRect)makeRectFromCenter:(CGPoint)center size:(NSInteger)size;
+
 @end

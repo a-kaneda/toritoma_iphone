@@ -5,11 +5,23 @@
  共通ライブラリのヘッダーをインクルードする。
  */
 
-// デバッグログ出力マクロ定義
-#import "AKLog.h"
+// 共通関数定義
+#import "AKCommon.h"
 
 // 画面サイズ管理クラス
 #import "AKScreenSize.h"
+
+// フォントクラス
+#import "AKFont.h"
+
+// ラベルクラス
+#import "AKLabel.h"
+
+// メニュー項目クラス
+#import "AKMenuItem.h"
+
+// インターフェースクラス
+#import "AKInterface.h"
 
 // カスタマイズNavigation Controller
 #import "AKNavigationController.h"

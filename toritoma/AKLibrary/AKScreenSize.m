@@ -244,7 +244,7 @@
  @param h 高さ
  @return 補正した矩形
  */
-+ (CGRect)deviceRectByX:(float)x Y:(float)y Width:(float)w Height:(float)h
++ (CGRect)deviceRectByX:(float)x y:(float)y width:(float)w height:(float)h
 {
     CGRect rect;
     
@@ -258,6 +258,8 @@
         rect.size.width *= 2;
         rect.size.height *= 2;
     }
+    
+    AKLog(0, @"x=%f y=%f w=%f h=%f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
     // 作成した矩形を返す
     return rect;
@@ -274,9 +276,9 @@
  @param size サイズ
  @return 補正した矩形
  */
-+ (CGRect)deviceRectByPoint:(CGPoint)point Size:(CGSize)size
++ (CGRect)deviceRectByPoint:(CGPoint)point size:(CGSize)size
 {
-    return [AKScreenSize deviceRectByX:point.x Y:point.y Width:size.width Height:size.height];
+    return [AKScreenSize deviceRectByX:point.x y:point.y width:size.width height:size.height];
 }
 
 /*!
@@ -291,7 +293,20 @@
  */
 + (CGRect)deviceRectByRect:(CGRect)rect
 {
-    return [AKScreenSize deviceRectByX:rect.origin.x Y:rect.origin.y Width:rect.size.width Height:rect.size.height];
+    return [AKScreenSize deviceRectByX:rect.origin.x y:rect.origin.y width:rect.size.width height:rect.size.height];
+}
+
+/*!
+ @brief 中心座標とサイズから矩形を作成する
+ 
+ 中心座標とサイズから矩形を作成する。
+ @param center 中心座標
+ @param size サイズ
+ @return 矩形
+ */
++ (CGRect)makeRectFromCenter:(CGPoint)center size:(NSInteger)size
+{
+    return CGRectMake(center.x - size / 2, center.y - size / 2, size, size);
 }
 
 @end

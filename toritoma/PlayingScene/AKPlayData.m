@@ -70,4 +70,23 @@ static const float kAKPlayerDefaultPosY = 128.0f;
     [self.player move:dt];
 }
 
+/*!
+ @brief 自機の移動
+ 
+ 自機を移動する。
+ @param dx x座標の移動量
+ @param dy y座標の移動量
+ */
+- (void)movePlayerByDx:(float)dx dy:(float)dy
+{
+    // x方向に移動する
+    self.player.positionX = AKRangeCheckF(self.player.positionX + dx,
+                                          0.0f,
+                                          [AKScreenSize stageSize].width);
+    
+    // y方向に移動する
+    self.player.positionY = AKRangeCheckF(self.player.positionY + dy,
+                                          0.0f,
+                                          [AKScreenSize stageSize].height);
+}
 @end
