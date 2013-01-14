@@ -11,6 +11,7 @@
 enum {
     kAKLayerPosZBack = 0,   ///< 背景レイヤー
     kAKLayerPosZCharacter,  ///< キャラクターレイヤー
+    kAKLayerPosZFrame,      ///< 枠レイヤー
     kAKLayerPosZInfo,       ///< 情報レイヤー
     kAKLayerPosZResult,     ///< ステージクリアレイヤー
     kAKLayerPosZInterface   ///< インターフェースレイヤー
@@ -51,6 +52,9 @@ static const float kAKPlayerMoveVal = 1.8f;
     // 状態をシーン読み込み前に設定する
     self.state = kAKGameStatePreLoad;
     
+    // 背景レイヤーを作成する
+    [self addChild:AKCreateBackColorLayer() z:kAKLayerPosZBack tag:kAKLayerPosZBack];
+    
     // キャラクターを配置するレイヤーを作成する
     CCLayer *characterLayer = [CCLayer node];
     
@@ -69,6 +73,33 @@ static const float kAKPlayerMoveVal = 1.8f;
                                      tag:kAKMenuTagPlaying];
     
     interfaceLayer.enableTag = 0xFFFFFFFF;
+    
+    // 左側の枠レイヤーを作成する
+    [self addChild:AKCreateColorLayer(kAKColorLittleDark,
+                                      CGRectMake(0.0f,
+                                                 0.0f,
+                                                 ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f,
+                                                 [AKScreenSize screenSize].height))
+                 z:kAKLayerPosZFrame
+               tag:kAKLayerPosZFrame];
+    
+    // 右側の枠レイヤーを作成する
+    [self addChild:AKCreateColorLayer(kAKColorLittleDark,
+                                      CGRectMake([AKScreenSize positionFromHorizontalCenterPoint:[AKScreenSize stageSize].width / 2.0f],
+                                                 0.0f,
+                                                 ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f,
+                                                 [AKScreenSize screenSize].height))
+                 z:kAKLayerPosZFrame
+               tag:kAKLayerPosZFrame];
+    
+    // 下側の枠レイヤーを作成する
+    [self addChild:AKCreateColorLayer(kAKColorLittleDark,
+                                      CGRectMake(([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f,
+                                                 0.0f,
+                                                 [AKScreenSize screenSize].width,
+                                                 [AKScreenSize screenSize].height - [AKScreenSize stageSize].height))
+                 z:kAKLayerPosZFrame
+               tag:kAKLayerPosZFrame];
     
     // ゲームデータを生成する
     self.data = [[[AKPlayData alloc] initWithScene:self] autorelease];

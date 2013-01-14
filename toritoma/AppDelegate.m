@@ -42,6 +42,9 @@
 									sharegroup:nil
 								 multiSampling:NO
 							   numberOfSamples:0];
+    
+    // マルチタッチを有効にする
+    [glView setMultipleTouchEnabled:YES];
 
 	director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
 

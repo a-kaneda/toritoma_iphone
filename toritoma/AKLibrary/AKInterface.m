@@ -149,7 +149,7 @@
     // メニュー項目が登録されていない場合は処理を終了する
     if (self.menuItems == nil) {
         AKLog(1, @"メニュー項目なし");
-        return NO;
+        return YES;
     }
     
     // 画面上のタッチ位置を取得する
@@ -191,7 +191,7 @@
         }
     }
     
-    return NO;
+    return YES;
 }
 
 /*!
@@ -265,7 +265,7 @@
 {
     AKLog(0, @"start");
 
-    // 終了するメニュー項目を検索する
+    // 移動するメニュー項目を検索する
     for (AKMenuItem *item in [self.menuItems objectEnumerator]) {
         
         // メニュー項目のタッチイベントと移動されたタッチイベントが一致した場合
@@ -283,7 +283,30 @@
             // 前回タッチ位置を更新する
             item.prevPoint = location;
             
-            break;
+            return;
+        }
+    }
+    
+    // 画面上のタッチ位置を取得する
+    CGPoint locationInView = [touch locationInView:[touch view]];
+    
+    // cocos2dの座標系に変換する
+    CGPoint location = [[CCDirector sharedDirector] convertToGL:locationInView];
+    
+    // 一致するメニュー項目がなかった場合に、まだタッチイベントが開始されていない項目がある場合は関連付ける
+    for (AKMenuItem *item in [self.menuItems objectEnumerator]) {
+        
+        // スライド入力とすでにタッチイベントが開始されているものは除外する
+        if (item.type != kAKMenuTypeSlide || item.touch != nil) {
+            continue;
+        }
+        
+        // 有効な項目で選択されている場合は処理を行う
+        if ((item.tag & self.enableTag || item.tag == 0) && [item isSelectPos:location]) {
+            item.touch = touch;
+            item.prevPoint = location;
+            [self.parent performSelector:item.action withObject:item];
+            return;
         }
     }
     

@@ -35,9 +35,9 @@
  */
 + (CGSize)stageSize
 {
-    // ステージサイズは432x256とする
+    // ステージサイズは384x256とする
     // iPhone 3.5インチでスクリーンサイズとの比率を0.9:0.8とする
-    NSInteger width = 432;
+    NSInteger width = 384;
     NSInteger height = 256;
     
     // iPadの場合は倍にする

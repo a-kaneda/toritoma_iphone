@@ -11,6 +11,18 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
+/// 色番号
+enum kAKColorNumber {
+    kAKColorLight = 0,      ///< 明るい色
+    kAKColorLittleLight,    ///< やや明るい色
+    kAKColorLittleDark,     ///< やや暗い色
+    kAKColorDark,           ///< 暗い色
+    kAKColorCount           ///< 色種類数
+};
+
+// 色
+const ccColor4B kAKColor[kAKColorCount];
+
 #ifdef DEBUG
 
 /*!
@@ -57,7 +69,11 @@ BOOL AKIsInside(CGPoint point, CGRect rect);
 // 中心座標とサイズから矩形を作成する
 CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size);
 
+// 単一色レイヤーを作成する
+CCLayerColor *AKCreateColorLayer(int colorNo, CGRect rect);
+
 // 背景色レイヤーを作成する
 CCLayerColor *AKCreateBackColorLayer(void);
+
 
 #endif

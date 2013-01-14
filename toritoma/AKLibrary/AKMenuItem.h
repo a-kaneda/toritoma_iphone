@@ -11,8 +11,8 @@
 
 /// メニューの種別
 enum AKMenuType {
-    kAKMenuTypeButton = 0,  //!< ボタン
-    kAKMenuTypeSlide        //!< スライド入力
+    kAKMenuTypeButton = 0,  ///< ボタン
+    kAKMenuTypeSlide        ///< スライド入力
 };
 
 // メニュー項目クラス

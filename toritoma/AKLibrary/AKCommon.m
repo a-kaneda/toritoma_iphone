@@ -9,6 +9,15 @@
 #import <math.h>
 #import "AKCommon.h"
 
+
+/// 色
+const ccColor4B kAKColor[kAKColorCount] = {
+    {156, 179, 137, 255},
+    {110, 132, 100, 255},
+    { 64,  85,  63, 255},
+    { 18,  38,  26, 255}
+};
+
 /*!
  @brief 範囲チェック(実数)
 
@@ -252,6 +261,31 @@ CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size)
 }
 
 /*!
+ @brief 単一色レイヤーを作成する
+ 
+ 単一色のレイヤーを作成する。
+ @param colorNo 色番号
+ @param rect レイヤーの矩形位置
+ @return 単一色レイヤー
+ */
+CCLayerColor *AKCreateColorLayer(int colorNo, CGRect rect)
+{
+    assert(colorNo >= 0 && colorNo < kAKColorCount);
+    
+    // レイヤーを作成する
+    CCLayerColor *layer = [CCLayerColor layerWithColor:kAKColor[colorNo]];
+    
+    // サイズを設定する
+    layer.contentSize = rect.size;
+    
+    // 位置を設定する
+    layer.position = rect.origin;
+    
+    // 作成したレイヤーを返す
+    return layer;
+}
+
+/*!
  @brief 背景色レイヤーを作成する
  
  背景色で塗りつぶされ、画面サイズを埋めるサイズ・位置のレイヤーを作成する。
@@ -259,29 +293,12 @@ CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size)
  */
 CCLayerColor *AKCreateBackColorLayer(void)
 {
-    // 背景色Red
-    const NSInteger kAKBGColorR = 156;
-    // 背景色Green
-    const NSInteger kAKBGColorG = 179;
-    // 背景色Blue
-    const NSInteger kAKBGColorB = 137;
-    // 背景色Alpha
-    const NSInteger kAKBGColorA = 255;
-    
-    // 背景レイヤーを生成する
-    CCLayerColor *back = [CCLayerColor layerWithColor:ccc4(kAKBGColorR,
-                                                           kAKBGColorG,
-                                                           kAKBGColorB,
-                                                           kAKBGColorA)];
     
     // サイズを画面サイズに設定する
     // Landscapeのため、幅と高さを入れ替える
-    back.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.height,
-                                  [[UIScreen mainScreen] bounds].size.width);
-    
-    AKLog(0, @"width=%f height=%f", back.contentSize.width, back.contentSize.height);
-    AKLog(0, @"x=%f y=%f", back.position.x, back.position.y);
-    
-    // 作成した背景レイヤーを返す
-    return back;
+    return AKCreateColorLayer(kAKColorLight,
+                              CGRectMake(0.0f,
+                                         0.0f,
+                                         [[UIScreen mainScreen] bounds].size.height,
+                                         [[UIScreen mainScreen] bounds].size.width));
 }
