@@ -17,6 +17,8 @@
     NSInteger currentLine_;
     /// 待機時間
     float sleepTime_;
+    /// 停止中かどうか
+    BOOL isPause_;
 }
 
 /// 読み込んだ内容
@@ -28,5 +30,7 @@
 + (id)scriptWithStageNo:(NSInteger)stage;
 // 更新処理
 - (void)update:(float)dt;
+// 停止解除
+- (void)resume;
 
 @end

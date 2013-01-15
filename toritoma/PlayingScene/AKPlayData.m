@@ -114,6 +114,17 @@ static const float kAKPlayerDefaultPosY = 128.0f;
 }
 
 /*!
+ @brief スクリプト実行再開
+ 
+ 停止中のスクリプト実行を再会する。
+ ボスを倒した時などに呼び出す。
+ */
+- (void)resumeScript
+{
+    [self.script resume];
+}
+
+/*!
  @brief 自機の移動
  
  自機を移動する。

@@ -36,6 +36,7 @@ static NSString *kAKScriptFileName = @"stage_%d";
     }
     
     // メンバ変数を初期化する
+    isPause_ = NO;
     currentLine_ = 0;
     sleepTime_ = 0.0f;
     
@@ -121,6 +122,11 @@ static NSString *kAKScriptFileName = @"stage_%d";
  */
 - (void)update:(float)dt
 {
+    // 停止中の場合は処理を終了する
+    if (isPause_) {
+        return;
+    }
+    
     // 現在の待機時間をカウントする
     sleepTime_ += dt;
     
@@ -156,6 +162,15 @@ static NSString *kAKScriptFileName = @"stage_%d";
                 AKLog(1, @"敵の生成:%d", data.value);
                 break;
                 
+            case kAKScriptOpeBoss:      // ボスの生成
+                // ボスを生成する
+                AKLog(1, @"ボスの生成:%d", data.value);
+                
+                // ボスが倒されるまでスクリプトの実行を停止する
+                isPause_ = YES;
+                
+                break;
+                
             case kAKScriptOpeBack:      // 背景の生成
                 // 背景を生成する
                 AKLog(1, @"背景の生成:%d", data.value);
@@ -188,6 +203,17 @@ static NSString *kAKScriptFileName = @"stage_%d";
     if (currentLine_ >= self.dataList.count) {
         AKLog(0, @"すべての行を実行完了");
     }
+}
+
+/*!
+ @brief 停止解除
+ 
+ 停止中フラグを落とす。
+ ボスを倒した時などに呼び出す。
+ */
+- (void)resume
+{
+    isPause_ = NO;
 }
 
 @end

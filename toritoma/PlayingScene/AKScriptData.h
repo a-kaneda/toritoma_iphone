@@ -11,6 +11,7 @@
 /// スクリプト命令種別
 enum AKScriptOpeType {
     kAKScriptOpeEnemy = 0,  ///< 敵の生成
+    kAKScriptOpeBoss,       ///< ボスの生成
     kAKScriptOpeBack,       ///< 背景の生成
     kAKScriptOpeWall,       ///< 障害物の生成
     kAKScriptOpeScroll,     ///< スクロールスピード変更

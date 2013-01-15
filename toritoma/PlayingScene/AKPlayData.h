@@ -37,6 +37,8 @@
 - (void)update:(ccTime)dt;
 // スクリプト読み込み
 - (void)readScript:(NSInteger)stage;
+// スクリプト実行再開
+- (void)resumeScript;
 // 自機の移動
 - (void)movePlayerByDx:(float)dx dy:(float)dy;
 

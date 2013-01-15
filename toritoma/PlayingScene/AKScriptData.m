@@ -39,6 +39,10 @@
     if ([type isEqualToString:@"enemy"]) {
         type_ = kAKScriptOpeEnemy;
     }
+    // ボス
+    else if ([type isEqualToString:@"boss"]) {
+        type_ = kAKScriptOpeBoss;
+    }
     // 背景
     else if ([type isEqualToString:@"back"]) {
         type_ = kAKScriptOpeBack;
