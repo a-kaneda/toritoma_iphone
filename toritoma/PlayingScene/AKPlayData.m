@@ -20,7 +20,32 @@ static const float kAKPlayerDefaultPosY = 128.0f;
 @implementation AKPlayData
 
 @synthesize scene = scene_;
+@synthesize script = script_;
 @synthesize player = player_;
+
+/*!
+ @brief インスタンス取得
+ 
+ インスタンスを取得する。
+ 現在のシーンがプレイシーン以外の場合はnilを返す。
+ @return ゲームデータクラスのインスタンス
+ */
++ (AKPlayData *)getInstance
+{
+    // 実行中のシーンを取得する
+    CCScene *scene = [[CCDirector sharedDirector] runningScene];
+    
+    // ゲームプレイシーンでゲームプレイ中の場合は一時停止状態にする
+    if ([scene isKindOfClass:[AKPlayingScene class]]) {
+        
+        // プレイデータクラスをシーンから取得して返す
+        return ((AKPlayingScene *)scene).data;
+    }
+    
+    // 現在実行中のシーンがゲームプレイシーンでない場合はエラー
+    NSAssert(0, @"ゲームプレイ中以外にゲームシーンクラスの取得が行われた");
+    return nil;
+}
 
 /*!
  @brief オブジェクト初期化処理
@@ -33,7 +58,7 @@ static const float kAKPlayerDefaultPosY = 128.0f;
 {
     AKLog(1, @"start");
     
-    // スーパークラスの生成処理
+    // スーパークラスの初期化処理を行う
     self = [super init];
     if (!self) {
         AKLog(1, @"error");
@@ -66,8 +91,26 @@ static const float kAKPlayerDefaultPosY = 128.0f;
  */
 - (void)update:(ccTime)dt
 {
+    // スクリプトを実行する
+    [self.script update:dt];
+    
     // 自機を更新する
     [self.player move:dt];
+}
+
+/*!
+ @brief スクリプト読み込み
+ 
+ スクリプトファイルを読み込む。
+ @param stage ステージ番号
+ */
+- (void)readScript:(NSInteger)stage
+{
+    // スクリプトファイルを読み込む
+    self.script = [AKScript scriptWithStageNo:stage];
+    
+    // 最初の待機まで命令を実行する
+    [self.script update:0.0f];
 }
 
 /*!

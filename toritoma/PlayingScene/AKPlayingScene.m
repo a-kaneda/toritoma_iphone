@@ -19,9 +19,10 @@ enum {
 
 /// プレイ中メニュー項目のタグ
 static const NSUInteger kAKMenuTagPlaying = 0x01;
-
 /// 自機移動をスライド量の何倍にするか
 static const float kAKPlayerMoveVal = 1.8f;
+/// 開始ステージ番号
+static const NSInteger kAKStartStage = 1;
 
 /*!
  @brief プレイシーンクラス
@@ -212,6 +213,11 @@ static const float kAKPlayerMoveVal = 1.8f;
  */
 - (void)updateStart:(ccTime)dt
 {
+    AKLog(1, @"start");
+    
+    // 開始ステージのスクリプトを読み込む
+    [self.data readScript:kAKStartStage];
+    
     // 状態をプレイ中へと進める
     self.state = kAKGameStatePlaying;
 }
