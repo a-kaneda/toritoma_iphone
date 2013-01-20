@@ -9,6 +9,7 @@
 #import "AKPlayingScene.h"
 #import "AKPlayer.h"
 #import "AKEnemy.h"
+#import "AKEffect.h"
 #import "AKScript.h"
 #import "AKCharacterPool.h"
 
@@ -24,6 +25,8 @@
     AKPlayer *player_;
     /// 敵キャラプール
     AKCharacterPool *enemyPool_;
+    /// 画面効果プール
+    AKCharacterPool *effectPool_;
 }
 
 /// シーンクラス(弱い参照)
@@ -34,6 +37,8 @@
 @property (nonatomic, retain)AKPlayer *player;
 /// 敵キャラプール
 @property (nonatomic, retain)AKCharacterPool *enemyPool;
+/// 画面効果プール
+@property (nonatomic, retain)AKCharacterPool *effectPool;
 
 // インスタンス取得
 + (AKPlayData *)getInstance;
@@ -49,5 +54,7 @@
 - (void)movePlayerByDx:(float)dx dy:(float)dy;
 // 敵生成
 - (void)entryEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
+// 画面効果生成
+- (void)entryEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 
 @end

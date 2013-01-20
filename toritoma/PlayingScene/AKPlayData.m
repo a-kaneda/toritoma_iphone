@@ -13,16 +13,20 @@ static const float kAKPlayerDefaultPosX = 50.0f;
 static const float kAKPlayerDefaultPosY = 128.0f;
 /// 敵キャラの同時出現最大数
 static const NSInteger kAKMaxEnemyCount = 32;
+/// 画面効果の同時出現最大数
+static const NSInteger kAKMaxEffectCount = 64;
+
 /// キャラクター配置のz座標
 enum AKCharacterPositionZ {
     kAKCharaPosZBack = 0,   ///< 背景
-    kAKCharaPosZPlayer,     ///< 自機
     kAKCharaPosZPlayerShot, ///< 自機弾
+    kAKCharaPosZPlayer,     ///< 自機
+    kAKCharaPosZOption,     ///< オプション
     kAKCharaPosZEnemy,      ///< 敵
+    kAKCharaPosZEffect,     ///< 爆発効果
     kAKCharaPosZEnemyShot,  ///< 敵弾
     kAKCharaPosZWall        ///< 障害物
 };
-
 
 /*!
  @brief ゲームデータ
@@ -35,6 +39,7 @@ enum AKCharacterPositionZ {
 @synthesize script = script_;
 @synthesize player = player_;
 @synthesize enemyPool = enemyPool_;
+@synthesize effectPool = effectPool_;
 
 /*!
  @brief インスタンス取得
@@ -94,6 +99,9 @@ enum AKCharacterPositionZ {
     // 敵キャラプールを作成する
     self.enemyPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemy class] Size:kAKMaxEnemyCount] autorelease];
     
+    // 画面効果プールを作成する
+    self.effectPool = [[[AKCharacterPool alloc] initWithClass:[AKEffect class] Size:kAKMaxEffectCount] autorelease];
+    
     AKLog(1, @"end");
     return self;
 }
@@ -110,6 +118,7 @@ enum AKCharacterPositionZ {
     // メンバを解放する
     self.player = nil;
     self.enemyPool = nil;
+    self.effectPool = nil;
     
     // スーパークラスの処理を行う
     [super dealloc];
@@ -138,6 +147,20 @@ enum AKCharacterPositionZ {
             AKLog(0, @"enemy move start.");
             [enemy move:dt];
         }
+    }
+    
+    // 画面効果を更新する
+    for (AKEffect *effect in [self.effectPool.pool objectEnumerator]) {
+        if (effect.isStaged) {
+            [effect move:dt];
+        }
+    }
+    
+    // 自機が無敵状態でない場合は当たり判定処理を行う
+    if (!self.player.isInvincible) {
+        
+        // 自機と敵の当たり判定処理を行う
+        [self.player hit:[self.enemyPool.pool objectEnumerator]];
     }
 }
 
@@ -197,18 +220,38 @@ enum AKCharacterPositionZ {
  */
 - (void)entryEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
 {
-    AKEnemy *enemy = nil;     // 敵
-    
     // プールから未使用のメモリを取得する
-    enemy = [self.enemyPool getNext];
+    AKEnemy *enemy = [self.enemyPool getNext];
     if (enemy == nil) {
         // 空きがない場合は処理終了
         NSAssert(0, @"敵プールに空きなし");
-        AKLog(1, @"敵プールに空きなし");
         return;
     }
     
     // 敵を生成する
     [enemy createEnemyType:type x:x y:y z:kAKCharaPosZEnemy parent:self.scene.characterLayer];
 }
+
+/*!
+ @brief 画面効果生成
+ 
+ 画面効果を生成する。
+ @param type 画面効果種別
+ @param x x座標
+ @param y y座標
+ */
+- (void)entryEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
+{    
+    // プールから未使用のメモリを取得する
+    AKEffect *effect = [self.effectPool getNext];
+    if (effect == nil) {
+        // 空きがない場合は処理終了
+        NSAssert(0, @"画面効果プールに空きなし");
+        return;
+    }
+    
+    // 敵を生成する
+    [effect createEffectType:type x:x y:y z:kAKCharaPosZEffect parent:self.scene.characterLayer];
+}
+
 @end

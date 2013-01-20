@@ -35,6 +35,8 @@
     float animationInterval_;
     /// アニメーション時間
     float animationTime_;
+    /// アニメーション繰り返し回数
+    NSInteger animationRepeat_;
     /// 画像読み込み位置
     CGPoint imageBasePos_;
     /// 画像サイズ
@@ -65,6 +67,8 @@
 @property (nonatomic)float animationInterval;
 /// アニメーション時間
 @property (nonatomic)float animationTime;
+/// アニメーション繰り返し回数
+@property (nonatomic)NSInteger animationRepeat;
 /// 画像読み込み位置
 @property (nonatomic)CGPoint imageBasePos;
 /// 画像サイズ

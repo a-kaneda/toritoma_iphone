@@ -29,6 +29,7 @@ static const float kAKDefaultAnimationInterval = 0.2f;
 @synthesize animationPattern = animationPattern_;
 @synthesize animationInterval = animationInterval_;
 @synthesize animationTime = animationTime_;
+@synthesize animationRepeat = animationRepeat_;
 @synthesize imageBasePos = imageBasePos_;
 @synthesize imageSize = imageSize_;
 
@@ -65,6 +66,9 @@ static const float kAKDefaultAnimationInterval = 0.2f;
     
     // アニメーションのデフォルト間隔を設定する
     self.animationInterval = kAKDefaultAnimationInterval;
+    
+    // アニメーション繰り返し回数は0(無限)とする
+    self.animationRepeat = 0;
     
     return self;
 }
@@ -112,6 +116,8 @@ static const float kAKDefaultAnimationInterval = 0.2f;
         
         // 画面から取り除く
         [self.image removeFromParentAndCleanup:YES];
+        
+        return;
     }
             
     // 座標の移動
@@ -134,6 +140,25 @@ static const float kAKDefaultAnimationInterval = 0.2f;
     if (pattern > self.animationPattern) {
         self.animationTime = 0.0f;
         pattern = 1;
+        
+        // 繰り返し回数が設定されている場合
+        if (self.animationRepeat > 0) {
+            
+            // 繰り返し回数を減らす
+            self.animationRepeat--;
+            
+            // 繰り返し回数が0になった場合は画面から取り除く
+            if (self.animationRepeat <= 0) {
+                
+                // ステージ配置フラグを落とす
+                self.isStaged = NO;
+                
+                // 画面から取り除く
+                [self.image removeFromParentAndCleanup:YES];
+                
+                return;
+            }
+        }
     }
     
     AKLog(0, @"pattern=%d time=%f interval=%f", pattern, self.animationTime, self.animationInterval);

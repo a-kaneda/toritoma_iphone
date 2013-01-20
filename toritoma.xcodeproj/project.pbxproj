@@ -25,6 +25,8 @@
 		0CCC526716AA9D1800E9A397 /* Player.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC526516AA9D1800E9A397 /* Player.png */; };
 		0CCC526916AA9D7100E9A397 /* stage_1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC526816AA9D7100E9A397 /* stage_1.txt */; };
 		0CCC526C16AA9E7500E9A397 /* AKEnemy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC526B16AA9E7400E9A397 /* AKEnemy.m */; };
+		0CCC526F16ABDF9B00E9A397 /* AKEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC526E16ABDF9A00E9A397 /* AKEffect.m */; };
+		0CCC527116ABE54500E9A397 /* Effect_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC527016ABE54500E9A397 /* Effect_01.png */; };
 		0CD2CAEE169922AE00088557 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAED169922AE00088557 /* QuartzCore.framework */; };
 		0CD2CAF0169922AE00088557 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAEF169922AE00088557 /* OpenGLES.framework */; };
 		0CD2CAF2169922AE00088557 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAF1169922AE00088557 /* OpenAL.framework */; };
@@ -190,6 +192,9 @@
 		0CCC526816AA9D7100E9A397 /* stage_1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_1.txt; path = Resources/Script/stage_1.txt; sourceTree = "<group>"; };
 		0CCC526A16AA9E7400E9A397 /* AKEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemy.h; sourceTree = "<group>"; };
 		0CCC526B16AA9E7400E9A397 /* AKEnemy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemy.m; sourceTree = "<group>"; };
+		0CCC526D16ABDF9A00E9A397 /* AKEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEffect.h; sourceTree = "<group>"; };
+		0CCC526E16ABDF9A00E9A397 /* AKEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEffect.m; sourceTree = "<group>"; };
+		0CCC527016ABE54500E9A397 /* Effect_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Effect_01.png; path = Resources/Image/Effect_01.png; sourceTree = "<group>"; };
 		0CD2CAE9169922AE00088557 /* toritoma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toritoma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CD2CAED169922AE00088557 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0CD2CAEF169922AE00088557 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -484,6 +489,8 @@
 		0CCA883F1699603700EB243F /* PlayingScene */ = {
 			isa = PBXGroup;
 			children = (
+				0CCC526D16ABDF9A00E9A397 /* AKEffect.h */,
+				0CCC526E16ABDF9A00E9A397 /* AKEffect.m */,
 				0CCC526A16AA9E7400E9A397 /* AKEnemy.h */,
 				0CCC526B16AA9E7400E9A397 /* AKEnemy.m */,
 				0CCC524216A348AB00E9A397 /* AKPlayer.h */,
@@ -522,6 +529,7 @@
 		0CCC526316AA9C8C00E9A397 /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				0CCC527016ABE54500E9A397 /* Effect_01.png */,
 				0CCC526416AA9D1800E9A397 /* Enemy_01.png */,
 				0CCC526516AA9D1800E9A397 /* Player.png */,
 			);
@@ -1042,6 +1050,7 @@
 				0CCC526616AA9D1800E9A397 /* Enemy_01.png in Resources */,
 				0CCC526716AA9D1800E9A397 /* Player.png in Resources */,
 				0CCC526916AA9D7100E9A397 /* stage_1.txt in Resources */,
+				0CCC527116ABE54500E9A397 /* Effect_01.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1172,6 +1181,7 @@
 				0CCC525C16A4A2B200E9A397 /* AKScript.m in Sources */,
 				0CCC525F16A58DB500E9A397 /* AKScriptData.m in Sources */,
 				0CCC526C16AA9E7500E9A397 /* AKEnemy.m in Sources */,
+				0CCC526F16ABDF9B00E9A397 /* AKEffect.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

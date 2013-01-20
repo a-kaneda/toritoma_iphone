@@ -6,15 +6,7 @@
  */
 
 #import "AKEnemy.h"
-
-/// 爆発エフェクト画像のファイル名
-static NSString *kAKExplosion = @"Explosion.png";
-/// 爆発エフェクトの位置とサイズ
-static const CGRect kAKExplosionRect = {0, 0, 32, 32};
-/// 爆発エフェクトのフレーム数
-static const NSInteger kAKExplosionFrameCount = 8;
-/// 爆発エフェクトのフレーム更新間隔
-static const float kAKExplosionFrameDelay = 0.2f;
+#import "AKPlayData.h"
 
 /// 画像ファイル名のフォーマット
 static NSString *kAKImageFileFormat = @"Enemy_%02d.png";
@@ -24,12 +16,12 @@ static const NSInteger kAKEnemyImageDefCount = 1;
 static const NSInteger kAKEnemyDefCount = 1;
 
 /// 敵画像の定義
-static const struct AKEnemyImageDef kAKEnemyImageDef[] = {
+static const struct AKEnemyImageDef kAKEnemyImageDef[kAKEnemyImageDefCount] = {
     {1, 32, 32, 2, 0.05f}   // トンボ
 };
 
 /// 敵の定義
-static const struct AKEnemyDef kAKEnemyDef[] = {
+static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
     {1, 1, 1, 32, 32, 1, 100}   // トンボ
 };
 
@@ -85,6 +77,7 @@ static const struct AKEnemyDef kAKEnemyDef[] = {
  @brief 生成処理
 
  敵キャラを生成する。
+ @param type 敵キャラの種別
  @param x 生成位置x座標
  @param y 生成位置y座標
  @param z 生成位置z座標
@@ -221,12 +214,10 @@ static const struct AKEnemyDef kAKEnemyDef[] = {
  */
 - (void)destroy_01
 {
+    AKLog(1, @"start");
+    
     // 画面効果を生成する
-//    [[AKGameScene getInstance] entryEffect:kAKExplosion
-//                                 startRect:kAKExplosionRect
-//                                frameCount:kAKExplosionFrameCount
-//                                     delay:kAKExplosionFrameDelay
-//                                      posX:self.absx posY:self.absy];
+    [[AKPlayData getInstance] entryEffect:1 x:self.positionX y:self.positionY];
 }
 
 /*!
