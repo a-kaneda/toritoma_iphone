@@ -1,0 +1,8 @@
+# コメント
+enemy 1 400 200
+back 2
+sleep 3000
+enemy 1 400 100
+wall 3
+speed 4
+bgm 5

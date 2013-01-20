@@ -14,7 +14,6 @@
 		0CCC523A16A29BFE00E9A397 /* AKCharacterPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC523816A29BFE00E9A397 /* AKCharacterPool.m */; };
 		0CCC523F16A2A27000E9A397 /* AKScreenSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC523E16A2A27000E9A397 /* AKScreenSize.m */; };
 		0CCC524416A348AC00E9A397 /* AKPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC524316A348AB00E9A397 /* AKPlayer.m */; };
-		0CCC524616A3721600E9A397 /* Player.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC524516A3721600E9A397 /* Player.png */; };
 		0CCC524916A382C600E9A397 /* AKInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC524816A382C600E9A397 /* AKInterface.m */; };
 		0CCC524C16A382ED00E9A397 /* AKMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC524B16A382ED00E9A397 /* AKMenuItem.m */; };
 		0CCC525116A3838300E9A397 /* AKFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC524E16A3838300E9A397 /* AKFont.m */; };
@@ -22,7 +21,10 @@
 		0CCC525916A38E8F00E9A397 /* AKCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC525816A38E8F00E9A397 /* AKCommon.m */; };
 		0CCC525C16A4A2B200E9A397 /* AKScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC525B16A4A2B200E9A397 /* AKScript.m */; };
 		0CCC525F16A58DB500E9A397 /* AKScriptData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC525E16A58DB500E9A397 /* AKScriptData.m */; };
-		0CCC526216A5F9D100E9A397 /* stage_1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC526116A5F9D100E9A397 /* stage_1.txt */; };
+		0CCC526616AA9D1800E9A397 /* Enemy_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC526416AA9D1800E9A397 /* Enemy_01.png */; };
+		0CCC526716AA9D1800E9A397 /* Player.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC526516AA9D1800E9A397 /* Player.png */; };
+		0CCC526916AA9D7100E9A397 /* stage_1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC526816AA9D7100E9A397 /* stage_1.txt */; };
+		0CCC526C16AA9E7500E9A397 /* AKEnemy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC526B16AA9E7400E9A397 /* AKEnemy.m */; };
 		0CD2CAEE169922AE00088557 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAED169922AE00088557 /* QuartzCore.framework */; };
 		0CD2CAF0169922AE00088557 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAEF169922AE00088557 /* OpenGLES.framework */; };
 		0CD2CAF2169922AE00088557 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAF1169922AE00088557 /* OpenAL.framework */; };
@@ -169,7 +171,6 @@
 		0CCC523E16A2A27000E9A397 /* AKScreenSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKScreenSize.m; sourceTree = "<group>"; };
 		0CCC524216A348AB00E9A397 /* AKPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayer.h; sourceTree = "<group>"; };
 		0CCC524316A348AB00E9A397 /* AKPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayer.m; sourceTree = "<group>"; };
-		0CCC524516A3721600E9A397 /* Player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Player.png; path = Resources/Player.png; sourceTree = "<group>"; };
 		0CCC524716A382C600E9A397 /* AKInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKInterface.h; sourceTree = "<group>"; };
 		0CCC524816A382C600E9A397 /* AKInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKInterface.m; sourceTree = "<group>"; };
 		0CCC524A16A382ED00E9A397 /* AKMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKMenuItem.h; sourceTree = "<group>"; };
@@ -184,7 +185,11 @@
 		0CCC525B16A4A2B200E9A397 /* AKScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKScript.m; sourceTree = "<group>"; };
 		0CCC525D16A58DB400E9A397 /* AKScriptData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKScriptData.h; sourceTree = "<group>"; };
 		0CCC525E16A58DB500E9A397 /* AKScriptData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKScriptData.m; sourceTree = "<group>"; };
-		0CCC526116A5F9D100E9A397 /* stage_1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = stage_1.txt; sourceTree = "<group>"; };
+		0CCC526416AA9D1800E9A397 /* Enemy_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Enemy_01.png; path = Resources/Image/Enemy_01.png; sourceTree = "<group>"; };
+		0CCC526516AA9D1800E9A397 /* Player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Player.png; path = Resources/Image/Player.png; sourceTree = "<group>"; };
+		0CCC526816AA9D7100E9A397 /* stage_1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_1.txt; path = Resources/Script/stage_1.txt; sourceTree = "<group>"; };
+		0CCC526A16AA9E7400E9A397 /* AKEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemy.h; sourceTree = "<group>"; };
+		0CCC526B16AA9E7400E9A397 /* AKEnemy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemy.m; sourceTree = "<group>"; };
 		0CD2CAE9169922AE00088557 /* toritoma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toritoma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CD2CAED169922AE00088557 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0CD2CAEF169922AE00088557 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -479,6 +484,8 @@
 		0CCA883F1699603700EB243F /* PlayingScene */ = {
 			isa = PBXGroup;
 			children = (
+				0CCC526A16AA9E7400E9A397 /* AKEnemy.h */,
+				0CCC526B16AA9E7400E9A397 /* AKEnemy.m */,
 				0CCC524216A348AB00E9A397 /* AKPlayer.h */,
 				0CCC524316A348AB00E9A397 /* AKPlayer.m */,
 				0CCC523516A29BFE00E9A397 /* AKCharacter.h */,
@@ -507,9 +514,18 @@
 		0CCC526016A5F99F00E9A397 /* Script */ = {
 			isa = PBXGroup;
 			children = (
-				0CCC526116A5F9D100E9A397 /* stage_1.txt */,
+				0CCC526816AA9D7100E9A397 /* stage_1.txt */,
 			);
 			name = Script;
+			sourceTree = "<group>";
+		};
+		0CCC526316AA9C8C00E9A397 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				0CCC526416AA9D1800E9A397 /* Enemy_01.png */,
+				0CCC526516AA9D1800E9A397 /* Player.png */,
+			);
+			name = Image;
 			sourceTree = "<group>";
 		};
 		0CD2CADE169922AE00088557 = {
@@ -563,8 +579,8 @@
 		0CD2CB00169922AE00088557 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0CCC526316AA9C8C00E9A397 /* Image */,
 				0CCC526016A5F99F00E9A397 /* Script */,
-				0CCC524516A3721600E9A397 /* Player.png */,
 				0CD2CB01169922AE00088557 /* Default.png */,
 				0CD2CB03169922AE00088557 /* Default@2x.png */,
 				0CD2CB05169922AE00088557 /* Default-568h@2x.png */,
@@ -1023,8 +1039,9 @@
 				0CD2CB1A169922AE00088557 /* Icon@2x.png in Resources */,
 				0CD2CB1D169922AE00088557 /* iTunesArtwork in Resources */,
 				0CD2CC66169922AF00088557 /* ChangeLog in Resources */,
-				0CCC524616A3721600E9A397 /* Player.png in Resources */,
-				0CCC526216A5F9D100E9A397 /* stage_1.txt in Resources */,
+				0CCC526616AA9D1800E9A397 /* Enemy_01.png in Resources */,
+				0CCC526716AA9D1800E9A397 /* Player.png in Resources */,
+				0CCC526916AA9D7100E9A397 /* stage_1.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1154,6 +1171,7 @@
 				0CCC525916A38E8F00E9A397 /* AKCommon.m in Sources */,
 				0CCC525C16A4A2B200E9A397 /* AKScript.m in Sources */,
 				0CCC525F16A58DB500E9A397 /* AKScriptData.m in Sources */,
+				0CCC526C16AA9E7500E9A397 /* AKEnemy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,6 +11,18 @@
 static const float kAKPlayerDefaultPosX = 50.0f;
 /// 自機初期位置y座標
 static const float kAKPlayerDefaultPosY = 128.0f;
+/// 敵キャラの同時出現最大数
+static const NSInteger kAKMaxEnemyCount = 32;
+/// キャラクター配置のz座標
+enum AKCharacterPositionZ {
+    kAKCharaPosZBack = 0,   ///< 背景
+    kAKCharaPosZPlayer,     ///< 自機
+    kAKCharaPosZPlayerShot, ///< 自機弾
+    kAKCharaPosZEnemy,      ///< 敵
+    kAKCharaPosZEnemyShot,  ///< 敵弾
+    kAKCharaPosZWall        ///< 障害物
+};
+
 
 /*!
  @brief ゲームデータ
@@ -22,6 +34,7 @@ static const float kAKPlayerDefaultPosY = 128.0f;
 @synthesize scene = scene_;
 @synthesize script = script_;
 @synthesize player = player_;
+@synthesize enemyPool = enemyPool_;
 
 /*!
  @brief インスタンス取得
@@ -78,8 +91,30 @@ static const float kAKPlayerDefaultPosY = 128.0f;
     // 自機をシーンに追加する
     [self.scene addCharacterImage:self.player.image];
     
+    // 敵キャラプールを作成する
+    self.enemyPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemy class] Size:kAKMaxEnemyCount] autorelease];
+    
     AKLog(1, @"end");
     return self;
+}
+
+/*!
+ @brief オブジェクト解放処理
+ 
+ オブジェクトの解放を行う。
+ */
+- (void)dealloc
+{
+    AKLog(1, @"start");
+    
+    // メンバを解放する
+    self.player = nil;
+    self.enemyPool = nil;
+    
+    // スーパークラスの処理を行う
+    [super dealloc];
+    
+    AKLog(1, @"end");
 }
 
 /*!
@@ -96,6 +131,14 @@ static const float kAKPlayerDefaultPosY = 128.0f;
     
     // 自機を更新する
     [self.player move:dt];
+    
+    // 敵を更新する
+    for (AKEnemy *enemy in [self.enemyPool.pool objectEnumerator]) {
+        if (enemy.isStaged) {
+            AKLog(0, @"enemy move start.");
+            [enemy move:dt];
+        }
+    }
 }
 
 /*!
@@ -142,5 +185,30 @@ static const float kAKPlayerDefaultPosY = 128.0f;
     self.player.positionY = AKRangeCheckF(self.player.positionY + dy,
                                           0.0f,
                                           [AKScreenSize stageSize].height);
+}
+
+/*!
+ @brief 敵生成
+ 
+ 敵キャラを生成する。
+ @param type 敵種別
+ @param x x座標
+ @param y y座標
+ */
+- (void)entryEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
+{
+    AKEnemy *enemy = nil;     // 敵
+    
+    // プールから未使用のメモリを取得する
+    enemy = [self.enemyPool getNext];
+    if (enemy == nil) {
+        // 空きがない場合は処理終了
+        NSAssert(0, @"敵プールに空きなし");
+        AKLog(1, @"敵プールに空きなし");
+        return;
+    }
+    
+    // 敵を生成する
+    [enemy createEnemyType:type x:x y:y z:kAKCharaPosZEnemy parent:self.scene.characterLayer];
 }
 @end

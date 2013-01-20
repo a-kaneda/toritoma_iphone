@@ -8,7 +8,9 @@
 #import <Foundation/Foundation.h>
 #import "AKPlayingScene.h"
 #import "AKPlayer.h"
+#import "AKEnemy.h"
 #import "AKScript.h"
+#import "AKCharacterPool.h"
 
 @class AKPlayingScene;
 
@@ -20,6 +22,8 @@
     AKScript *script_;
     /// 自機
     AKPlayer *player_;
+    /// 敵キャラプール
+    AKCharacterPool *enemyPool_;
 }
 
 /// シーンクラス(弱い参照)
@@ -28,6 +32,8 @@
 @property (nonatomic, retain)AKScript *script;
 /// 自機
 @property (nonatomic, retain)AKPlayer *player;
+/// 敵キャラプール
+@property (nonatomic, retain)AKCharacterPool *enemyPool;
 
 // インスタンス取得
 + (AKPlayData *)getInstance;
@@ -41,5 +47,7 @@
 - (void)resumeScript;
 // 自機の移動
 - (void)movePlayerByDx:(float)dx dy:(float)dy;
+// 敵生成
+- (void)entryEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 
 @end

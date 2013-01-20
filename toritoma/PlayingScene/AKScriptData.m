@@ -16,6 +16,8 @@
 
 @synthesize type = type_;
 @synthesize value = value_;
+@synthesize positionX = positionX_;
+@synthesize positionY = positionY_;
 
 /*!
  @brief 初期化処理
@@ -23,9 +25,11 @@
  初期化処理を行う。
  @param type 命令種別
  @param value 命令の値
+ @param x x座標
+ @param y y座標
  @return 初期化したインスタンス
  */
-- (id)initWithType:(NSString *)type value:(NSInteger)value
+- (id)initWithType:(NSString *)type value:(NSInteger)value x:(NSInteger)x y:(NSInteger)y
 {
     // スーパークラスの初期化処理を行う
     self = [super init];
@@ -74,6 +78,10 @@
     // 値を設定する
     value_ = value;
     
+    // x座標、y座標を設定する
+    positionX_ = x;
+    positionY_ = y;
+    
     return self;
 }
 
@@ -83,10 +91,12 @@
  インスタンスの生成、初期化、autoreleaseを行う。
  @param type 命令種別
  @param value 命令の値
+ @param x x座標
+ @param y y座標
  @return 初期化したインスタンス
  */
-+ (id)scriptDataWithType:(NSString *)type value:(NSInteger)value
++ (id)scriptDataWithType:(NSString *)type value:(NSInteger)value x:(NSInteger)x y:(NSInteger)y
 {
-    return [[[AKScriptData alloc] initWithType:type value:value] autorelease];
+    return [[[AKScriptData alloc] initWithType:type value:value x:x y:y] autorelease];
 }
 @end

@@ -25,16 +25,24 @@ enum AKScriptOpeType {
     enum AKScriptOpeType type_;
     /// 命令の値
     NSInteger value_;
+    /// 生成位置x座標
+    NSInteger positionX_;
+    /// 生成位置y座標
+    NSInteger positionY_;
 }
 
 /// 命令種別
 @property (nonatomic, readonly)enum AKScriptOpeType type;
 /// 命令の値
 @property (nonatomic, readonly)NSInteger value;
+/// 生成位置x座標
+@property (nonatomic, readonly)NSInteger positionX;
+/// 生成位置y座標
+@property (nonatomic, readonly)NSInteger positionY;
 
 // 初期化処理
-- (id)initWithType:(NSString *)type value:(NSInteger)value;
+- (id)initWithType:(NSString *)type value:(NSInteger)value x:(NSInteger)x y:(NSInteger)y;
 // コンビニエンスコンストラクタ
-+ (id)scriptDataWithType:(NSString *)type value:(NSInteger)value;
++ (id)scriptDataWithType:(NSString *)type value:(NSInteger)value x:(NSInteger)x y:(NSInteger)y;
 
 @end

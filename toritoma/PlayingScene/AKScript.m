@@ -6,6 +6,7 @@
  */
 
 #import "AKScript.h"
+#import "AKPlayData.h"
 
 /// ステージ構成定義のスクリプトファイル名
 static NSString *kAKScriptFileName = @"stage_%d";
@@ -90,11 +91,23 @@ static NSString *kAKScriptFileName = @"stage_%d";
         // 1個目のパラメータは命令種別として扱う
         NSString *type = [params objectAtIndex:0];
         
-        // 2個めのパラメータは命令の値として扱う
+        // 2個目のパラメータは命令の値として扱う
         NSInteger value = [[params objectAtIndex:1] integerValue];
         
+        // 3個目のパラメータがある場合はx座標として扱う
+        NSInteger x = 0;
+        if (params.count >= 3) {
+            x = [[params objectAtIndex:2] integerValue];
+        }
+        
+        // 4個目のパラメータがある場合はy座標として扱う
+        NSInteger y = 0;
+        if (params.count >= 4) {
+            y = [[params objectAtIndex:3] integerValue];
+        }
+        
         // スクリプトデータを作成し、配列に格納する
-        [self.dataList addObject:[AKScriptData scriptDataWithType:type value:value]];
+        [self.dataList addObject:[AKScriptData scriptDataWithType:type value:value x:x y:y]];
     }
     
     return self;
@@ -159,7 +172,8 @@ static NSString *kAKScriptFileName = @"stage_%d";
                 
             case kAKScriptOpeEnemy:     // 敵の生成
                 // 敵を生成する
-                AKLog(1, @"敵の生成:%d", data.value);
+                AKLog(1, @"敵の生成:%d pos=(%d, %d)", data.value, data.positionX, data.positionY);
+                [[AKPlayData getInstance] entryEnemy:data.value x:data.positionX y:data.positionY];
                 break;
                 
             case kAKScriptOpeBoss:      // ボスの生成
