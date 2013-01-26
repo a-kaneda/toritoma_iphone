@@ -111,13 +111,7 @@ static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
     
     // 画像名を作成する
     self.imageName = [NSString stringWithFormat:kAKImageNameFormat, imageDef->fileNo];;
-    
-    // 表示矩形を設定する
-    [self.image setTextureRect:CGRectMake(0.0f,
-                                          0.0f,
-                                          imageDef->width,
-                                          imageDef->height)];
-            
+                
     // アニメーションフレームの個数を設定する
     self.animationPattern = imageDef->animationFrame;
     

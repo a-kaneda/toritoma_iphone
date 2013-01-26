@@ -46,13 +46,7 @@ static const struct AKEffectDef kAKEffectDef[kAKEffectDefCount] = {
     
     // 画像名を作成する
     self.imageName = [NSString stringWithFormat:kAKImageNameFormat, kAKEffectDef[type - 1].fileNo];
-    
-    // 表示矩形を設定する
-    [self.image setTextureRect:CGRectMake(0.0f,
-                                          0.0f,
-                                          kAKEffectDef[type - 1].width,
-                                          kAKEffectDef[type - 1].height)];
-    
+        
     // アニメーションフレームの個数を設定する
     self.animationPattern = kAKEffectDef[type - 1].animationFrame;
     
