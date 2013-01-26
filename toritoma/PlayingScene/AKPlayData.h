@@ -27,6 +27,8 @@
     AKCharacterPool *enemyPool_;
     /// 画面効果プール
     AKCharacterPool *effectPool_;
+    /// キャラクター配置バッチノード
+    NSMutableArray *batches_;
 }
 
 /// シーンクラス(弱い参照)
@@ -39,6 +41,8 @@
 @property (nonatomic, retain)AKCharacterPool *enemyPool;
 /// 画面効果プール
 @property (nonatomic, retain)AKCharacterPool *effectPool;
+/// キャラクター配置バッチノード
+@property (nonatomic, retain)NSMutableArray *batches;
 
 // インスタンス取得
 + (AKPlayData *)getInstance;

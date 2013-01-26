@@ -8,8 +8,8 @@
 #import "AKEnemy.h"
 #import "AKPlayData.h"
 
-/// 画像ファイル名のフォーマット
-static NSString *kAKImageFileFormat = @"Enemy_%02d.png";
+/// 画像名のフォーマット
+static NSString *kAKImageNameFormat = @"Enemy_%02d";
 /// 画像の種類の数
 static const NSInteger kAKEnemyImageDefCount = 1;
 /// 敵の種類の数
@@ -80,10 +80,9 @@ static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
  @param type 敵キャラの種別
  @param x 生成位置x座標
  @param y 生成位置y座標
- @param z 生成位置z座標
  @param parent 敵キャラを配置する親ノード
  */
-- (void)createEnemyType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y z:(NSInteger)z parent:(CCNode*)parent;
+- (void)createEnemyType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y parent:(CCNode*)parent;
 {
     // パラメータの内容をメンバに設定する
     self.positionX = x;
@@ -110,19 +109,15 @@ static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
     // 画像定義を取得する
     const struct AKEnemyImageDef *imageDef = &kAKEnemyImageDef[kAKEnemyDef[type - 1].image - 1];
     
-    // ファイル名を作成する
-    NSString *imageFile = [NSString stringWithFormat:kAKImageFileFormat, imageDef->fileNo];
-
-    // 画像を読み込む
-    self.image = [CCSprite spriteWithFile:imageFile
-                                     rect:CGRectMake(0.0f,
-                                                     0.0f,
-                                                     imageDef->width,
-                                                     imageDef->height)];
+    // 画像名を作成する
+    self.imageName = [NSString stringWithFormat:kAKImageNameFormat, imageDef->fileNo];;
     
-    // 画像サイズを設定する
-    self.imageSize = CGSizeMake(imageDef->width, imageDef->height);
-    
+    // 表示矩形を設定する
+    [self.image setTextureRect:CGRectMake(0.0f,
+                                          0.0f,
+                                          imageDef->width,
+                                          imageDef->height)];
+            
     // アニメーションフレームの個数を設定する
     self.animationPattern = imageDef->animationFrame;
     
@@ -140,7 +135,7 @@ static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
     score_ = kAKEnemyDef[type - 1].score;
     
     // レイヤーに配置する
-    [parent addChild:self.image z:z];
+    [parent addChild:self.image];
 }
 
 /*!

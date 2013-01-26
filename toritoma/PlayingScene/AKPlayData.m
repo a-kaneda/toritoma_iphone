@@ -15,6 +15,10 @@ static const float kAKPlayerDefaultPosY = 128.0f;
 static const NSInteger kAKMaxEnemyCount = 32;
 /// 画面効果の同時出現最大数
 static const NSInteger kAKMaxEffectCount = 64;
+/// キャラクターテクスチャアトラス定義ファイル名
+static NSString *kAKTextureAtlasDefFile = @"Character.plist";
+/// キャラクターテクスチャアトラスファイル名
+static NSString *kAKTextureAtlasFile = @"Character.png";
 
 /// キャラクター配置のz座標
 enum AKCharacterPositionZ {
@@ -25,7 +29,8 @@ enum AKCharacterPositionZ {
     kAKCharaPosZEnemy,      ///< 敵
     kAKCharaPosZEffect,     ///< 爆発効果
     kAKCharaPosZEnemyShot,  ///< 敵弾
-    kAKCharaPosZWall        ///< 障害物
+    kAKCharaPosZWall,       ///< 障害物
+    kAKCharaPosZCount       ///< z座標種別の数
 };
 
 /*!
@@ -40,6 +45,7 @@ enum AKCharacterPositionZ {
 @synthesize player = player_;
 @synthesize enemyPool = enemyPool_;
 @synthesize effectPool = effectPool_;
+@synthesize batches = batches_;
 
 /*!
  @brief インスタンス取得
@@ -86,6 +92,25 @@ enum AKCharacterPositionZ {
     // シーンをメンバに設定する
     scene_ = scene;
     
+    // バッチノード配列を作成する
+    self.batches = [NSMutableArray arrayWithCapacity:kAKCharaPosZCount];
+    
+    // テクスチャアトラスを読み込む
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kAKTextureAtlasDefFile textureFilename:kAKTextureAtlasFile];
+    
+    // 各z座標用にバッチノードを作成する
+    for (int i = 0; i < kAKCharaPosZCount; i++) {
+        
+        // バッチノードをファイルから作成する
+        CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:kAKTextureAtlasFile];
+        
+        // 配列に保存する
+        [self.batches addObject:batch];
+        
+        // シーンに配置する
+        [scene.characterLayer addChild:batch z:i];
+    }
+    
     // 自機を作成する
     self.player = [[[AKPlayer alloc] init] autorelease];
     
@@ -93,8 +118,8 @@ enum AKCharacterPositionZ {
     self.player.positionX = kAKPlayerDefaultPosX;
     self.player.positionY = kAKPlayerDefaultPosY;
     
-    // 自機をシーンに追加する
-    [self.scene addCharacterImage:self.player.image];
+    // 自機をバッチノードに追加する
+    [[self.batches objectAtIndex:kAKCharaPosZPlayer] addChild:self.player.image];
     
     // 敵キャラプールを作成する
     self.enemyPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemy class] Size:kAKMaxEnemyCount] autorelease];
@@ -119,6 +144,10 @@ enum AKCharacterPositionZ {
     self.player = nil;
     self.enemyPool = nil;
     self.effectPool = nil;
+    for (CCNode *node in [self.batches objectEnumerator]) {
+        [node removeFromParentAndCleanup:YES];
+    }
+    self.batches = nil;
     
     // スーパークラスの処理を行う
     [super dealloc];
@@ -229,7 +258,7 @@ enum AKCharacterPositionZ {
     }
     
     // 敵を生成する
-    [enemy createEnemyType:type x:x y:y z:kAKCharaPosZEnemy parent:self.scene.characterLayer];
+    [enemy createEnemyType:type x:x y:y parent:[self.batches objectAtIndex:kAKCharaPosZEnemy]];
 }
 
 /*!
@@ -251,7 +280,7 @@ enum AKCharacterPositionZ {
     }
     
     // 敵を生成する
-    [effect createEffectType:type x:x y:y z:kAKCharaPosZEffect parent:self.scene.characterLayer];
+    [effect createEffectType:type x:x y:y parent:[self.batches objectAtIndex:kAKCharaPosZEffect]];
 }
 
 @end

@@ -44,7 +44,7 @@ struct AKEnemyDef {
 }
 
 // 生成処理
-- (void)createEnemyType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y z:(NSInteger)z parent:(CCNode*)parent;
+- (void)createEnemyType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y parent:(CCNode*)parent;
 // 動作処理取得
 - (SEL)actionSelector:(NSInteger)type;
 // 破壊処理取得

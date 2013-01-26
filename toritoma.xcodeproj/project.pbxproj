@@ -21,12 +21,11 @@
 		0CCC525916A38E8F00E9A397 /* AKCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC525816A38E8F00E9A397 /* AKCommon.m */; };
 		0CCC525C16A4A2B200E9A397 /* AKScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC525B16A4A2B200E9A397 /* AKScript.m */; };
 		0CCC525F16A58DB500E9A397 /* AKScriptData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC525E16A58DB500E9A397 /* AKScriptData.m */; };
-		0CCC526616AA9D1800E9A397 /* Enemy_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC526416AA9D1800E9A397 /* Enemy_01.png */; };
-		0CCC526716AA9D1800E9A397 /* Player.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC526516AA9D1800E9A397 /* Player.png */; };
 		0CCC526916AA9D7100E9A397 /* stage_1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC526816AA9D7100E9A397 /* stage_1.txt */; };
 		0CCC526C16AA9E7500E9A397 /* AKEnemy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC526B16AA9E7400E9A397 /* AKEnemy.m */; };
 		0CCC526F16ABDF9B00E9A397 /* AKEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC526E16ABDF9A00E9A397 /* AKEffect.m */; };
-		0CCC527116ABE54500E9A397 /* Effect_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC527016ABE54500E9A397 /* Effect_01.png */; };
+		0CCC527416ADF3AE00E9A397 /* Character.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC527216ADF3AE00E9A397 /* Character.plist */; };
+		0CCC527516ADF3AE00E9A397 /* Character.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC527316ADF3AE00E9A397 /* Character.png */; };
 		0CD2CAEE169922AE00088557 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAED169922AE00088557 /* QuartzCore.framework */; };
 		0CD2CAF0169922AE00088557 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAEF169922AE00088557 /* OpenGLES.framework */; };
 		0CD2CAF2169922AE00088557 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAF1169922AE00088557 /* OpenAL.framework */; };
@@ -187,14 +186,13 @@
 		0CCC525B16A4A2B200E9A397 /* AKScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKScript.m; sourceTree = "<group>"; };
 		0CCC525D16A58DB400E9A397 /* AKScriptData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKScriptData.h; sourceTree = "<group>"; };
 		0CCC525E16A58DB500E9A397 /* AKScriptData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKScriptData.m; sourceTree = "<group>"; };
-		0CCC526416AA9D1800E9A397 /* Enemy_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Enemy_01.png; path = Resources/Image/Enemy_01.png; sourceTree = "<group>"; };
-		0CCC526516AA9D1800E9A397 /* Player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Player.png; path = Resources/Image/Player.png; sourceTree = "<group>"; };
 		0CCC526816AA9D7100E9A397 /* stage_1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_1.txt; path = Resources/Script/stage_1.txt; sourceTree = "<group>"; };
 		0CCC526A16AA9E7400E9A397 /* AKEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemy.h; sourceTree = "<group>"; };
 		0CCC526B16AA9E7400E9A397 /* AKEnemy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemy.m; sourceTree = "<group>"; };
 		0CCC526D16ABDF9A00E9A397 /* AKEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEffect.h; sourceTree = "<group>"; };
 		0CCC526E16ABDF9A00E9A397 /* AKEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEffect.m; sourceTree = "<group>"; };
-		0CCC527016ABE54500E9A397 /* Effect_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Effect_01.png; path = Resources/Image/Effect_01.png; sourceTree = "<group>"; };
+		0CCC527216ADF3AE00E9A397 /* Character.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Character.plist; path = Resources/Image/Character.plist; sourceTree = "<group>"; };
+		0CCC527316ADF3AE00E9A397 /* Character.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Character.png; path = Resources/Image/Character.png; sourceTree = "<group>"; };
 		0CD2CAE9169922AE00088557 /* toritoma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toritoma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CD2CAED169922AE00088557 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0CD2CAEF169922AE00088557 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -529,9 +527,8 @@
 		0CCC526316AA9C8C00E9A397 /* Image */ = {
 			isa = PBXGroup;
 			children = (
-				0CCC527016ABE54500E9A397 /* Effect_01.png */,
-				0CCC526416AA9D1800E9A397 /* Enemy_01.png */,
-				0CCC526516AA9D1800E9A397 /* Player.png */,
+				0CCC527216ADF3AE00E9A397 /* Character.plist */,
+				0CCC527316ADF3AE00E9A397 /* Character.png */,
 			);
 			name = Image;
 			sourceTree = "<group>";
@@ -1047,10 +1044,9 @@
 				0CD2CB1A169922AE00088557 /* Icon@2x.png in Resources */,
 				0CD2CB1D169922AE00088557 /* iTunesArtwork in Resources */,
 				0CD2CC66169922AF00088557 /* ChangeLog in Resources */,
-				0CCC526616AA9D1800E9A397 /* Enemy_01.png in Resources */,
-				0CCC526716AA9D1800E9A397 /* Player.png in Resources */,
 				0CCC526916AA9D7100E9A397 /* stage_1.txt in Resources */,
-				0CCC527116ABE54500E9A397 /* Effect_01.png in Resources */,
+				0CCC527416ADF3AE00E9A397 /* Character.plist in Resources */,
+				0CCC527516ADF3AE00E9A397 /* Character.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

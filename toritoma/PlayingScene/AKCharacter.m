@@ -9,6 +9,8 @@
 
 /// デフォルトアニメーション間隔
 static const float kAKDefaultAnimationInterval = 0.2f;
+/// 画像ファイル名のフォーマット
+static NSString *kAKImageFileFormat = @"%@_%02d.png";
 
 /*!
  @brief キャラクタークラス
@@ -30,8 +32,6 @@ static const float kAKDefaultAnimationInterval = 0.2f;
 @synthesize animationInterval = animationInterval_;
 @synthesize animationTime = animationTime_;
 @synthesize animationRepeat = animationRepeat_;
-@synthesize imageBasePos = imageBasePos_;
-@synthesize imageSize = imageSize_;
 
 /*!
  @brief オブジェクト生成処理
@@ -58,8 +58,6 @@ static const float kAKDefaultAnimationInterval = 0.2f;
     self.hitPoint = 0;
     self.isStaged = NO;
     self.animationTime = 0.0f;
-    self.imageBasePos = ccp(0.0f, 0.0f);
-    self.imageSize = CGSizeMake(0.0f, 0.0f);
     
     // アニメーションのデフォルトパターン数は1(アニメーションなし)とする
     self.animationPattern = 1;
@@ -86,6 +84,42 @@ static const float kAKDefaultAnimationInterval = 0.2f;
     
     // スーパークラスの解放処理
     [super dealloc];
+}
+
+/*!
+ @brief 画像名の取得
+ 
+ 画像名を取得する。
+ @return 画像名
+ */
+- (NSString *)imageName
+{
+    return imageName_;
+}
+
+/*!
+ @brief 画像名の設定
+ 
+ 画像名を設定する。
+ @param imageName 画像名
+ */
+- (void)setImageName:(NSString *)imageName
+{
+    // スプライト名を設定する
+    if (imageName_ != imageName) {
+        [imageName_ release];
+        imageName_ = [imageName retain];
+    }
+    
+    // スプライト名が設定された場合はスプライト作成を行う
+    if (imageName_ != nil) {
+        
+        // 画像ファイル名を決定する
+        NSString *imageFileName = [NSString stringWithFormat:kAKImageFileFormat, imageName_, 1];
+        
+        // 画像を読み込む
+        self.image = [CCSprite spriteWithSpriteFrameName:imageFileName];
+    }
 }
 
 /*!
@@ -162,13 +196,12 @@ static const float kAKDefaultAnimationInterval = 0.2f;
     }
     
     AKLog(0, @"pattern=%d time=%f interval=%f", pattern, self.animationTime, self.animationInterval);
-    AKLog(0, @"base=(%f, %f) size=(%f, %f)", self.imageBasePos.x, self.imageBasePos.y, self.imageSize.width, self.imageSize.height);
     
-    // アニメーションパターンに応じてテクスチャ位置を設定する
-    [self.image setTextureRect:[AKScreenSize deviceRectByX:self.imageBasePos.x + self.imageSize.width * (pattern - 1)
-                                                         y:self.imageBasePos.y
-                                                     width:self.imageSize.width
-                                                    height:self.imageSize.height]];
+    // アニメーションパターンに応じて画像ファイル名を作成する
+    NSString *imageFileName = [NSString stringWithFormat:kAKImageFileFormat, self.imageName, pattern];
+    
+    // 表示スプライトを変更する
+    [self.image setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:imageFileName]];
     
     // キャラクター固有の動作を行う
     [self action:dt];

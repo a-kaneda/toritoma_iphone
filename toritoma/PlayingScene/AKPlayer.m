@@ -12,7 +12,7 @@ static const NSInteger kAKPlayerSize = 16;
 /// 復活後の無敵状態の時間
 static const float kAKInvincibleTime = 2.0f;
 /// 自機の画像ファイル名
-static NSString *kAKPlayerImageFile = @"Player.png";
+static NSString *kAKPlayerImageFile = @"Player_%02d";
 /// 画像サイズ
 static const float kAKPlayerImageSize = 32;
 /// アニメーションフレーム数
@@ -45,19 +45,15 @@ static const NSInteger kAKPlayerAnimationCount = 2;
     self.width = kAKPlayerSize;
     self.height = kAKPlayerSize;
     
-    // 画像サイズを設定する
-    self.imageSize = CGSizeMake(kAKPlayerImageSize, kAKPlayerImageSize);
-    
     // アニメーションフレームの個数を設定する
     self.animationPattern = kAKPlayerAnimationCount;
     
     // 状態を初期化する
     [self reset];
     
-    // 画像の読込
-    self.image = [CCSprite spriteWithFile:kAKPlayerImageFile rect:CGRectMake(0, 0, kAKPlayerImageSize, kAKPlayerImageSize)];
-    NSAssert(self.image != nil, @"画像読み込みに失敗");
-    
+    // 画像名を設定する
+    self.imageName = [NSString stringWithFormat:kAKPlayerImageFile, 1];
+                                              
     return self;
 }
 

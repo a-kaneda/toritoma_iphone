@@ -7,8 +7,8 @@
 
 #import "AKEffect.h"
 
-/// 画像ファイル名のフォーマット
-static NSString *kAKImageFileFormat = @"Effect_%02d.png";
+/// 画像名のフォーマット
+static NSString *kAKImageNameFormat = @"Effect_%02d";
 /// 画面効果の種類の数
 static const NSInteger kAKEffectDefCount = 1;
 /// 画面効果の定義
@@ -30,10 +30,9 @@ static const struct AKEffectDef kAKEffectDef[kAKEffectDefCount] = {
  @param type 画面効果の種別
  @param x 生成位置x座標
  @param y 生成位置y座標
- @param z 生成位置z座標
  @param parent 画面効果を配置する親ノード
  */
-- (void)createEffectType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y z:(NSInteger)z parent:(CCLayer *)parent
+- (void)createEffectType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y parent:(CCLayer *)parent
 {
     // パラメータの内容をメンバに設定する
     self.positionX = x;
@@ -45,18 +44,14 @@ static const struct AKEffectDef kAKEffectDef[kAKEffectDefCount] = {
     
     NSAssert(type > 0 && type <= kAKEffectDefCount, @"画面効果種別が不正");
     
-    // ファイル名を作成する
-    NSString *imageFile = [NSString stringWithFormat:kAKImageFileFormat, kAKEffectDef[type - 1].fileNo];
+    // 画像名を作成する
+    self.imageName = [NSString stringWithFormat:kAKImageNameFormat, kAKEffectDef[type - 1].fileNo];
     
-    // 画像を読み込む
-    self.image = [CCSprite spriteWithFile:imageFile
-                                     rect:CGRectMake(0.0f,
-                                                     0.0f,
-                                                     kAKEffectDef[type - 1].width,
-                                                     kAKEffectDef[type - 1].height)];
-    
-    // 画像サイズを設定する
-    self.imageSize = CGSizeMake(kAKEffectDef[type - 1].width, kAKEffectDef[type - 1].height);
+    // 表示矩形を設定する
+    [self.image setTextureRect:CGRectMake(0.0f,
+                                          0.0f,
+                                          kAKEffectDef[type - 1].width,
+                                          kAKEffectDef[type - 1].height)];
     
     // アニメーションフレームの個数を設定する
     self.animationPattern = kAKEffectDef[type - 1].animationFrame;
@@ -68,6 +63,6 @@ static const struct AKEffectDef kAKEffectDef[kAKEffectDefCount] = {
     self.animationRepeat = kAKEffectDef[type - 1].animationRepeat;
 
     // レイヤーに配置する
-    [parent addChild:self.image z:z];
+    [parent addChild:self.image];
 }
 @end

@@ -25,6 +25,6 @@ struct AKEffectDef {
 }
 
 // 画面効果開始
-- (void)createEffectType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y z:(NSInteger)z parent:(CCLayer *)parent;
+- (void)createEffectType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y parent:(CCLayer *)parent;
 
 @end
