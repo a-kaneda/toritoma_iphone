@@ -168,29 +168,36 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     self.animationTime += dt;
     
     // 表示するパターンを決定する
-    NSInteger pattern = (NSInteger)(self.animationTime / self.animationInterval) + 1;
+    NSInteger pattern = 1;
     
-    // パターンがパターン数を超えた場合はアニメーション時間をリセットし、パターンを最初のものに戻す。
-    if (pattern > self.animationPattern) {
-        self.animationTime = 0.0f;
-        pattern = 1;
+    // アニメーションパターンが複数存在する場合はパターン切り替えを行う
+    if (self.animationPattern >= 2) {
         
-        // 繰り返し回数が設定されている場合
-        if (self.animationRepeat > 0) {
+        // 経過時間からパターンを決定する
+        pattern = (NSInteger)(self.animationTime / self.animationInterval) + 1;
+    
+        // パターンがパターン数を超えた場合はアニメーション時間をリセットし、パターンを最初のものに戻す。
+        if (pattern > self.animationPattern) {
+            self.animationTime = 0.0f;
+            pattern = 1;
             
-            // 繰り返し回数を減らす
-            self.animationRepeat--;
-            
-            // 繰り返し回数が0になった場合は画面から取り除く
-            if (self.animationRepeat <= 0) {
+            // 繰り返し回数が設定されている場合
+            if (self.animationRepeat > 0) {
                 
-                // ステージ配置フラグを落とす
-                self.isStaged = NO;
+                // 繰り返し回数を減らす
+                self.animationRepeat--;
                 
-                // 画面から取り除く
-                [self.image removeFromParentAndCleanup:YES];
-                
-                return;
+                // 繰り返し回数が0になった場合は画面から取り除く
+                if (self.animationRepeat <= 0) {
+                    
+                    // ステージ配置フラグを落とす
+                    self.isStaged = NO;
+                    
+                    // 画面から取り除く
+                    [self.image removeFromParentAndCleanup:YES];
+                    
+                    return;
+                }
             }
         }
     }

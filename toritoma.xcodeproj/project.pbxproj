@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C2FD94C16BAA59C009DCC2D /* AKEnemyShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */; };
 		0CCA883D1699580B00EB243F /* AKNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA883C1699580B00EB243F /* AKNavigationController.m */; };
 		0CCA88431699615D00EB243F /* AKPlayingScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA88421699615D00EB243F /* AKPlayingScene.m */; };
 		0CCA88461699665D00EB243F /* AKPlayData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA88451699665D00EB243F /* AKPlayData.m */; };
@@ -158,6 +159,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0C2FD94A16BAA59C009DCC2D /* AKEnemyShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemyShot.h; sourceTree = "<group>"; };
+		0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemyShot.m; sourceTree = "<group>"; };
 		0CCA883B1699580B00EB243F /* AKNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKNavigationController.h; sourceTree = "<group>"; };
 		0CCA883C1699580B00EB243F /* AKNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKNavigationController.m; sourceTree = "<group>"; };
 		0CCA88411699615D00EB243F /* AKPlayingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayingScene.h; sourceTree = "<group>"; };
@@ -491,6 +494,8 @@
 				0CCC526E16ABDF9A00E9A397 /* AKEffect.m */,
 				0CCC526A16AA9E7400E9A397 /* AKEnemy.h */,
 				0CCC526B16AA9E7400E9A397 /* AKEnemy.m */,
+				0C2FD94A16BAA59C009DCC2D /* AKEnemyShot.h */,
+				0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */,
 				0CCC524216A348AB00E9A397 /* AKPlayer.h */,
 				0CCC524316A348AB00E9A397 /* AKPlayer.m */,
 				0CCC523516A29BFE00E9A397 /* AKCharacter.h */,
@@ -1004,7 +1009,7 @@
 		0CD2CAE0169922AE00088557 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "KANEDA AKIHIRO";
 			};
 			buildConfigurationList = 0CD2CAE3169922AE00088557 /* Build configuration list for PBXProject "toritoma" */;
@@ -1178,6 +1183,7 @@
 				0CCC525F16A58DB500E9A397 /* AKScriptData.m in Sources */,
 				0CCC526C16AA9E7500E9A397 /* AKEnemy.m in Sources */,
 				0CCC526F16ABDF9B00E9A397 /* AKEffect.m in Sources */,
+				0C2FD94C16BAA59C009DCC2D /* AKEnemyShot.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1188,6 +1194,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1198,6 +1208,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				SDKROOT = iphoneos;
@@ -1209,6 +1220,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1217,6 +1232,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				SDKROOT = iphoneos;

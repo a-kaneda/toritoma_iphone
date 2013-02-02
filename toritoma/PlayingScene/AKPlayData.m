@@ -6,6 +6,9 @@
  */
 
 #import "AKPlayData.h"
+#import "AKEnemy.h"
+#import "AKEnemyShot.h"
+#import "AKEffect.h"
 
 /// 自機初期位置x座標
 static const float kAKPlayerDefaultPosX = 50.0f;
@@ -13,6 +16,8 @@ static const float kAKPlayerDefaultPosX = 50.0f;
 static const float kAKPlayerDefaultPosY = 128.0f;
 /// 敵キャラの同時出現最大数
 static const NSInteger kAKMaxEnemyCount = 32;
+/// 敵弾の同時出現最大数
+static const NSInteger kAKMaxEnemyShotCount = 256;
 /// 画面効果の同時出現最大数
 static const NSInteger kAKMaxEffectCount = 64;
 /// キャラクターテクスチャアトラス定義ファイル名
@@ -44,6 +49,7 @@ enum AKCharacterPositionZ {
 @synthesize script = script_;
 @synthesize player = player_;
 @synthesize enemyPool = enemyPool_;
+@synthesize enemyShotPool = enemyShotPool_;
 @synthesize effectPool = effectPool_;
 @synthesize batches = batches_;
 
@@ -124,6 +130,9 @@ enum AKCharacterPositionZ {
     // 敵キャラプールを作成する
     self.enemyPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemy class] Size:kAKMaxEnemyCount] autorelease];
     
+    // 敵弾プールを作成する
+    self.enemyShotPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemyShot class] Size:kAKMaxEnemyShotCount] autorelease];
+    
     // 画面効果プールを作成する
     self.effectPool = [[[AKCharacterPool alloc] initWithClass:[AKEffect class] Size:kAKMaxEffectCount] autorelease];
     
@@ -143,6 +152,7 @@ enum AKCharacterPositionZ {
     // メンバを解放する
     self.player = nil;
     self.enemyPool = nil;
+    self.enemyShotPool = nil;
     self.effectPool = nil;
     for (CCNode *node in [self.batches objectEnumerator]) {
         [node removeFromParentAndCleanup:YES];
@@ -178,6 +188,13 @@ enum AKCharacterPositionZ {
         }
     }
     
+    // 敵弾を更新する
+    for (AKEnemyShot *enemyShot in [self.enemyShotPool.pool objectEnumerator]) {
+        if (enemyShot.isStaged) {
+            [enemyShot move:dt];
+        }
+    }
+    
     // 画面効果を更新する
     for (AKEffect *effect in [self.effectPool.pool objectEnumerator]) {
         if (effect.isStaged) {
@@ -190,6 +207,9 @@ enum AKCharacterPositionZ {
         
         // 自機と敵の当たり判定処理を行う
         [self.player hit:[self.enemyPool.pool objectEnumerator]];
+        
+        // 自機と敵弾の当たり判定処理を行う
+        [self.player hit:[self.enemyShotPool.pool objectEnumerator]];
     }
 }
 
@@ -262,6 +282,39 @@ enum AKCharacterPositionZ {
 }
 
 /*!
+ @brief 敵弾生成
+ 
+ 敵の弾を生成する。
+ @param type 種別
+ @param x 生成位置x座標
+ @param y 生成位置y座標
+ @param angle 進行方向
+ @param speed スピード
+ */
+- (void)createEnemyShotType:(NSInteger)type
+                          x:(NSInteger)x
+                          y:(NSInteger)y
+                      angle:(float)angle
+                      speed:(float)speed
+{
+    // プールから未使用のメモリを取得する
+    AKEnemyShot *enemyShot = [self.enemyShotPool getNext];
+    if (enemyShot == nil) {
+        // 空きがない場合は処理終了
+        NSAssert(0, @"敵弾プールに空きなし");
+        return;
+    }
+    
+    // 敵弾を生成する
+    [enemyShot createEnemyShotType:type
+                                 x:x
+                                 y:y
+                             angle:angle
+                             speed:speed
+                            parent:[self.batches objectAtIndex:kAKCharaPosZEnemyShot]];
+}
+
+/*!
  @brief 画面効果生成
  
  画面効果を生成する。
@@ -279,8 +332,11 @@ enum AKCharacterPositionZ {
         return;
     }
     
-    // 敵を生成する
-    [effect createEffectType:type x:x y:y parent:[self.batches objectAtIndex:kAKCharaPosZEffect]];
+    // 画面効果を生成する
+    [effect createEffectType:type
+                           x:x
+                           y:y
+                      parent:[self.batches objectAtIndex:kAKCharaPosZEffect]];
 }
 
 @end

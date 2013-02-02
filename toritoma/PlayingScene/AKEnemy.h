@@ -12,8 +12,6 @@
 /// 敵画像定義
 struct AKEnemyImageDef {
     NSInteger fileNo;           ///< ファイル名の番号
-    NSInteger width;            ///< 幅
-    NSInteger height;           ///< 高さ
     NSInteger animationFrame;   ///< アニメーションフレーム数
     float animationInterval;    ///< アニメーション更新間隔
 };
@@ -54,5 +52,5 @@ struct AKEnemyDef {
 // 破壊処理1
 - (void)destroy_01;
 // n-Way弾発射
-- (void)fireNWay:(NSInteger)way interval:(float)interval;
+- (void)fireNWay:(NSInteger)way interval:(float)interval speed:(float)speed;
 @end
