@@ -108,6 +108,19 @@
                 <key>sourceSize</key>
                 <string>{32,32}</string>
             </dict>
+            <key>EnemyShot_01_01.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{114,2},{12,12}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{2,2},{12,12}}</string>
+                <key>sourceSize</key>
+                <string>{16,16}</string>
+            </dict>
             <key>Enemy_01_01.png</key>
             <dict>
                 <key>frame</key>
@@ -133,6 +146,19 @@
                 <string>{{0,10},{32,14}}</string>
                 <key>sourceSize</key>
                 <string>{32,32}</string>
+            </dict>
+            <key>PlayerShot_01_01.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{98,2},{14,12}}</string>
+                <key>offset</key>
+                <string>{-1,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,2},{14,12}}</string>
+                <key>sourceSize</key>
+                <string>{16,16}</string>
             </dict>
             <key>Player_01_01.png</key>
             <dict>
@@ -170,7 +196,7 @@
             <key>size</key>
             <string>{128,128}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:b4d1091560bddcd6c465b045c2652779$</string>
+            <string>$TexturePacker:SmartUpdate:daa1a4be603150bbee80d4d76fcf1f8d$</string>
             <key>textureFileName</key>
             <string>Character.png</string>
         </dict>
