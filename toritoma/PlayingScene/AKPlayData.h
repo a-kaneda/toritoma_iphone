@@ -21,6 +21,8 @@
     AKScript *script_;
     /// 自機
     AKPlayer *player_;
+    /// 自機弾プール
+    AKCharacterPool *playerShotPool_;
     /// 敵キャラプール
     AKCharacterPool *enemyPool_;
     /// 敵弾プール
@@ -37,6 +39,8 @@
 @property (nonatomic, retain)AKScript *script;
 /// 自機
 @property (nonatomic, retain)AKPlayer *player;
+/// 自機弾プール
+@property (nonatomic, retain)AKCharacterPool *playerShotPool;
 /// 敵キャラプール
 @property (nonatomic, retain)AKCharacterPool *enemyPool;
 /// 敵弾プール
@@ -58,8 +62,10 @@
 - (void)resumeScript;
 // 自機の移動
 - (void)movePlayerByDx:(float)dx dy:(float)dy;
+// 自機弾生成
+- (void)createPlayerShotAtX:(NSInteger)x y:(NSInteger)y;
 // 敵生成
-- (void)entryEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
+- (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 // 敵弾生成
 - (void)createEnemyShotType:(NSInteger)type
                           x:(NSInteger)x
@@ -67,6 +73,6 @@
                       angle:(float)angle
                       speed:(float)speed;
 // 画面効果生成
-- (void)entryEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
+- (void)createEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 
 @end

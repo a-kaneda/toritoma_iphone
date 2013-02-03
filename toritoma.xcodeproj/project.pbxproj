@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C2FD94C16BAA59C009DCC2D /* AKEnemyShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */; };
+		0CABC16716BE41CC00AFFE1B /* AKPlayerShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */; };
 		0CCA883D1699580B00EB243F /* AKNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA883C1699580B00EB243F /* AKNavigationController.m */; };
 		0CCA88431699615D00EB243F /* AKPlayingScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA88421699615D00EB243F /* AKPlayingScene.m */; };
 		0CCA88461699665D00EB243F /* AKPlayData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA88451699665D00EB243F /* AKPlayData.m */; };
@@ -161,6 +162,8 @@
 /* Begin PBXFileReference section */
 		0C2FD94A16BAA59C009DCC2D /* AKEnemyShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemyShot.h; sourceTree = "<group>"; };
 		0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemyShot.m; sourceTree = "<group>"; };
+		0CABC16516BE41CC00AFFE1B /* AKPlayerShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayerShot.h; sourceTree = "<group>"; };
+		0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayerShot.m; sourceTree = "<group>"; };
 		0CCA883B1699580B00EB243F /* AKNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKNavigationController.h; sourceTree = "<group>"; };
 		0CCA883C1699580B00EB243F /* AKNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKNavigationController.m; sourceTree = "<group>"; };
 		0CCA88411699615D00EB243F /* AKPlayingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayingScene.h; sourceTree = "<group>"; };
@@ -498,6 +501,8 @@
 				0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */,
 				0CCC524216A348AB00E9A397 /* AKPlayer.h */,
 				0CCC524316A348AB00E9A397 /* AKPlayer.m */,
+				0CABC16516BE41CC00AFFE1B /* AKPlayerShot.h */,
+				0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */,
 				0CCC523516A29BFE00E9A397 /* AKCharacter.h */,
 				0CCC523616A29BFE00E9A397 /* AKCharacter.m */,
 				0CCC523716A29BFE00E9A397 /* AKCharacterPool.h */,
@@ -1184,6 +1189,7 @@
 				0CCC526C16AA9E7500E9A397 /* AKEnemy.m in Sources */,
 				0CCC526F16ABDF9B00E9A397 /* AKEffect.m in Sources */,
 				0C2FD94C16BAA59C009DCC2D /* AKEnemyShot.m in Sources */,
+				0CABC16716BE41CC00AFFE1B /* AKPlayerShot.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,6 +6,7 @@
  */
 
 #import "AKPlayer.h"
+#import "AKPlayData.h"
 
 /// 自機のサイズ
 static const NSInteger kAKPlayerSize = 16;
@@ -17,6 +18,8 @@ static NSString *kAKPlayerImageFile = @"Player_%02d";
 static const float kAKPlayerImageSize = 32;
 /// アニメーションフレーム数
 static const NSInteger kAKPlayerAnimationCount = 2;
+/// 弾発射の間隔
+static const float kAKPlayerShotInterval = 0.2f;
 
 /*!
  @brief 自機クラス
@@ -53,6 +56,9 @@ static const NSInteger kAKPlayerAnimationCount = 2;
     
     // 画像名を設定する
     self.imageName = [NSString stringWithFormat:kAKPlayerImageFile, 1];
+    
+    // 弾発射までの残り時間を設定する
+    shootTime_ = kAKPlayerShotInterval;
                                               
     return self;
 }
@@ -70,9 +76,22 @@ static const NSInteger kAKPlayerAnimationCount = 2;
         invincivleTime_ -= dt;
         
         // 無敵時間が切れている場合は通常状態に戻す
-        if (invincivleTime_ < 0) {
+        if (invincivleTime_ < 0.0f) {
             isInvincible_ = NO;
         }
+    }
+    
+    // 弾発射までの時間をカウントする
+    shootTime_ -= dt;
+    
+    // 弾発射までの残り時間が0になっている場合は弾を発射する
+    if (shootTime_ < 0.0f) {
+        
+        // 自機弾を生成する
+        [[AKPlayData getInstance] createPlayerShotAtX:self.positionX y:self.positionY];
+        
+        // 弾発射までの残り時間をリセットする
+        shootTime_ = kAKPlayerShotInterval;
     }
 }
 

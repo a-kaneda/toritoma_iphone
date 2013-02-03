@@ -6,6 +6,7 @@
  */
 
 #import "AKPlayData.h"
+#import "AKPlayerShot.h"
 #import "AKEnemy.h"
 #import "AKEnemyShot.h"
 #import "AKEffect.h"
@@ -14,6 +15,8 @@
 static const float kAKPlayerDefaultPosX = 50.0f;
 /// 自機初期位置y座標
 static const float kAKPlayerDefaultPosY = 128.0f;
+/// 自機弾の同時出現最大数
+static const NSInteger kAKMaxPlayerShotCount = 128;
 /// 敵キャラの同時出現最大数
 static const NSInteger kAKMaxEnemyCount = 32;
 /// 敵弾の同時出現最大数
@@ -48,6 +51,7 @@ enum AKCharacterPositionZ {
 @synthesize scene = scene_;
 @synthesize script = script_;
 @synthesize player = player_;
+@synthesize playerShotPool = playerShotPool_;
 @synthesize enemyPool = enemyPool_;
 @synthesize enemyShotPool = enemyShotPool_;
 @synthesize effectPool = effectPool_;
@@ -127,6 +131,9 @@ enum AKCharacterPositionZ {
     // 自機をバッチノードに追加する
     [[self.batches objectAtIndex:kAKCharaPosZPlayer] addChild:self.player.image];
     
+    // 自機弾プールを作成する
+    self.playerShotPool = [[[AKCharacterPool alloc] initWithClass:[AKPlayerShot class] Size:kAKMaxPlayerShotCount] autorelease];
+    
     // 敵キャラプールを作成する
     self.enemyPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemy class] Size:kAKMaxEnemyCount] autorelease];
     
@@ -151,6 +158,7 @@ enum AKCharacterPositionZ {
     
     // メンバを解放する
     self.player = nil;
+    self.playerShotPool = nil;
     self.enemyPool = nil;
     self.enemyShotPool = nil;
     self.effectPool = nil;
@@ -180,6 +188,13 @@ enum AKCharacterPositionZ {
     // 自機を更新する
     [self.player move:dt];
     
+    // 自機弾を更新する
+    for (AKPlayerShot *playerShot in [self.playerShotPool.pool objectEnumerator]) {
+        if (playerShot.isStaged) {
+            [playerShot move:dt];
+        }
+    }
+    
     // 敵を更新する
     for (AKEnemy *enemy in [self.enemyPool.pool objectEnumerator]) {
         if (enemy.isStaged) {
@@ -200,6 +215,11 @@ enum AKCharacterPositionZ {
         if (effect.isStaged) {
             [effect move:dt];
         }
+    }
+    
+    // 敵と自機弾の当たり判定を行う
+    for (AKEnemy *enemy in [self.enemyPool.pool objectEnumerator]) {
+        [enemy hit:[self.playerShotPool.pool objectEnumerator]];
     }
     
     // 自機が無敵状態でない場合は当たり判定処理を行う
@@ -260,6 +280,27 @@ enum AKCharacterPositionZ {
 }
 
 /*!
+ @brief 自機弾生成
+ 
+ 自機弾を生成する。
+ @param x 生成位置x座標
+ @param y 生成位置y座標
+ */
+- (void)createPlayerShotAtX:(NSInteger)x y:(NSInteger)y
+{
+    // プールから未使用のメモリを取得する
+    AKPlayerShot *playerShot = [self.playerShotPool getNext];
+    if (playerShot == nil) {
+        // 空きがない場合は処理終了
+        NSAssert(0, @"自機弾プールに空きなし");
+        return;
+    }
+    
+    // 自機弾を生成する
+    [playerShot createPlayerShotAtX:x y:y parent:[self.batches objectAtIndex:kAKCharaPosZPlayerShot]];
+}
+
+/*!
  @brief 敵生成
  
  敵キャラを生成する。
@@ -267,7 +308,7 @@ enum AKCharacterPositionZ {
  @param x x座標
  @param y y座標
  */
-- (void)entryEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
+- (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
 {
     // プールから未使用のメモリを取得する
     AKEnemy *enemy = [self.enemyPool getNext];
@@ -322,7 +363,7 @@ enum AKCharacterPositionZ {
  @param x x座標
  @param y y座標
  */
-- (void)entryEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
+- (void)createEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
 {    
     // プールから未使用のメモリを取得する
     AKEffect *effect = [self.effectPool getNext];

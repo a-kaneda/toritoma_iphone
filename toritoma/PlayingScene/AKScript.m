@@ -173,7 +173,7 @@ static NSString *kAKScriptFileName = @"stage_%d";
             case kAKScriptOpeEnemy:     // 敵の生成
                 // 敵を生成する
                 AKLog(1, @"敵の生成:%d pos=(%d, %d)", data.value, data.positionX, data.positionY);
-                [[AKPlayData getInstance] entryEnemy:data.value x:data.positionX y:data.positionY];
+                [[AKPlayData getInstance] createEnemy:data.value x:data.positionX y:data.positionY];
                 break;
                 
             case kAKScriptOpeBoss:      // ボスの生成

@@ -22,7 +22,7 @@ static const struct AKEnemyImageDef kAKEnemyImageDef[kAKEnemyImageDefCount] = {
 
 /// 敵の定義
 static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
-    {1, 1, 1, 32, 32, 1, 100}   // トンボ
+    {1, 1, 1, 32, 32, 3, 100}   // トンボ
 };
 
 /// 標準弾の種別
@@ -212,7 +212,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     AKLog(1, @"start");
     
     // 画面効果を生成する
-    [[AKPlayData getInstance] entryEffect:1 x:self.positionX y:self.positionY];
+    [[AKPlayData getInstance] createEffect:1 x:self.positionX y:self.positionY];
 }
 
 /*!
