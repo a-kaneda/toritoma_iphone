@@ -7,9 +7,12 @@
 
 #import "AKPlayer.h"
 #import "AKPlayData.h"
+#import "AKEnemyShot.h"
 
 /// 自機のサイズ
-static const NSInteger kAKPlayerSize = 16;
+static const NSInteger kAKPlayerSize = 8;
+/// 自機のかすり判定サイズ
+static const NSInteger kAKPlayerGrazeSize = 24;
 /// 復活後の無敵状態の時間
 static const float kAKInvincibleTime = 2.0f;
 /// 自機の画像ファイル名
@@ -59,6 +62,9 @@ static const float kAKPlayerShotInterval = 0.2f;
     
     // 弾発射までの残り時間を設定する
     shootTime_ = kAKPlayerShotInterval;
+    
+    // チキンゲージをリセットする
+    chickenGauge_ = 0.0f;
                                               
     return self;
 }
@@ -165,5 +171,63 @@ static const float kAKPlayerShotInterval = 0.2f;
     
     // アクションはすべて停止する
     [self.image stopAllActions];
+}
+
+/*!
+ @brief かすり判定
+ 
+ 自機が敵弾にかすっているか判定し、かすっている場合は弾のかすりポイントを自機の方へ移す。
+ @param characters 判定対象のキャラクター群
+ */
+- (void)graze:(const NSEnumerator *)characters
+{
+    // 画面に配置されていない場合は処理しない
+    if (!self.isStaged) {
+        return;
+    }
+    
+    // 自キャラのかすり判定の上下左右の端を計算する
+    float myleft = self.positionX - kAKPlayerGrazeSize / 2.0f;
+    float myright = self.positionX + kAKPlayerGrazeSize / 2.0f;
+    float mytop = self.positionY + kAKPlayerGrazeSize / 2.0f;
+    float mybottom = self.positionY - kAKPlayerGrazeSize / 2.0f;
+    
+    // 判定対象のキャラクターごとに判定を行う
+    for (AKEnemyShot *target in characters) {
+        
+        // 相手が画面に配置されていない場合は処理しない
+        if (!target.isStaged) {
+            continue;
+        }
+        
+        // 相手の上下左右の端を計算する
+        float targetleft = target.positionX - target.width / 2.0f;
+        float targetright = target.positionX + target.width / 2.0f;
+        float targettop = target.positionY + target.height / 2.0f;
+        float targetbottom = target.positionY - target.height / 2.0f;
+        
+        AKLog(0, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
+        
+        // 以下のすべての条件を満たしている時、衝突していると判断する。
+        //   ・相手の右端が自キャラの左端よりも右側にある
+        //   ・相手の左端が自キャラの右端よりも左側にある
+        //   ・相手の上端が自キャラの下端よりも上側にある
+        //   ・相手の下端が自キャラの上端よりも下側にある
+        if ((targetright > myleft) &&
+            (targetleft < myright) &&
+            (targettop > mybottom) &&
+            (targetbottom < mytop)) {
+            
+            // 相手のかすりポイントを取得する
+            if (target.grazePoint > 0.0f) {
+                chickenGauge_ += target.grazePoint;
+            }
+            
+            // 相手のかすりポイントをリセットする
+            target.grazePoint = 0.0f;
+            
+            AKLog(1, @"chickenGauge_=%f", chickenGauge_);
+        }
+    }
 }
 @end

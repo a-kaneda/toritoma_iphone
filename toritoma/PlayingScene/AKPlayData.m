@@ -225,6 +225,9 @@ enum AKCharacterPositionZ {
     // 自機が無敵状態でない場合は当たり判定処理を行う
     if (!self.player.isInvincible) {
         
+        // 自機と敵弾のかすり判定処理を行う
+        [self.player graze:[self.enemyShotPool.pool objectEnumerator]];
+        
         // 自機と敵の当たり判定処理を行う
         [self.player hit:[self.enemyPool.pool objectEnumerator]];
         

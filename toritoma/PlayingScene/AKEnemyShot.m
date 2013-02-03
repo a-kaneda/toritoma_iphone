@@ -26,6 +26,8 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
 
 @implementation AKEnemyShot
 
+@synthesize grazePoint = grazePoint_;
+
 /*!
  @brief キャラクター固有の動作
  
@@ -37,7 +39,7 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
     NSNumber *objdt = NULL;     // フレーム更新間隔(オブジェクト版)
     
     // かすりポイントを減少させる
-    grazePoint_ -= dt;
+    self.grazePoint -= dt;
     
     // 動作開始からの経過時間をカウントする
     time_ += dt;
@@ -107,7 +109,7 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
     self.hitPoint = 1;
     
     // かすりポイントを設定する
-    grazePoint_ = kAKEnemyShotDef[type - 1].grazePoint;
+    self.grazePoint = kAKEnemyShotDef[type - 1].grazePoint;
     
     // レイヤーに配置する
     [parent addChild:self.image];

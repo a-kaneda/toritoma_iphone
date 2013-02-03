@@ -35,6 +35,9 @@ struct AKEnemyShotDef {
     float grazePoint_;
 }
 
+/// かすりポイント
+@property (nonatomic)float grazePoint;
+
 // 敵弾生成
 - (void)createEnemyShotType:(NSInteger)type
                           x:(NSInteger)x

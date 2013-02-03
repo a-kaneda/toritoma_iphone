@@ -17,6 +17,8 @@
     float invincivleTime_;
     /// 弾発射までの残り時間
     float shootTime_;
+    /// チキンゲージ
+    float chickenGauge_;
 }
 
 /// 無敵状態かどうか
@@ -26,5 +28,7 @@
 - (void)rebirth;
 // 初期化
 - (void)reset;
+// かすり判定
+- (void)graze:(const NSEnumerator *)characters;
 
 @end
