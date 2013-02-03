@@ -387,7 +387,10 @@
 #if __CC_PLATFORM_IOS
 	
 	UIImage* image	= [[UIImage alloc] initWithCGImage:imageRef scale:CC_CONTENT_SCALE_FACTOR() orientation:UIImageOrientationUp];
-	NSData *imageData;
+    // 2013.02.02 A.Kaneda : Warning回避 <START>
+//	NSData *imageData;
+    NSData *imageData = nil;
+    // 2013.02.02 A.Kaneda : Warning回避 <START>
 
 	if( format == kCCImageFormatPNG )
 		imageData = UIImagePNGRepresentation( image );
