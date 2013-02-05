@@ -17,12 +17,19 @@ enum {
     kAKLayerPosZInterface   ///< インターフェースレイヤー
 };
 
+/// キャラクターテクスチャアトラス定義ファイル名
+NSString *kAKTextureAtlasDefFile = @"Character.plist";
+/// キャラクターテクスチャアトラスファイル名
+NSString *kAKTextureAtlasFile = @"Character.png";
+
 /// プレイ中メニュー項目のタグ
 static const NSUInteger kAKMenuTagPlaying = 0x01;
 /// 自機移動をスライド量の何倍にするか
 static const float kAKPlayerMoveVal = 1.8f;
 /// 開始ステージ番号
 static const NSInteger kAKStartStage = 1;
+/// チキンゲージ配置位置、下からの比率
+static const float kAKChickenGaugePosFromBottomPoint = 48.0f;
 
 /*!
  @brief プレイシーンクラス
@@ -32,6 +39,7 @@ static const NSInteger kAKStartStage = 1;
 @implementation AKPlayingScene
 
 @synthesize data = data_;
+@synthesize chickenGauge = chickenGauge_;
 
 /*!
  @brief オブジェクト初期化処理
@@ -53,6 +61,9 @@ static const NSInteger kAKStartStage = 1;
     // 状態をシーン読み込み前に設定する
     self.state = kAKGameStatePreLoad;
     
+    // テクスチャアトラスを読み込む
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kAKTextureAtlasDefFile textureFilename:kAKTextureAtlasFile];
+    
     // 背景レイヤーを作成する
     [self addChild:AKCreateBackColorLayer() z:kAKLayerPosZBack tag:kAKLayerPosZBack];
     
@@ -61,6 +72,22 @@ static const NSInteger kAKStartStage = 1;
     
     // キャラクターレイヤーを画面に配置する
     [self addChild:characterLayer z:kAKLayerPosZCharacter tag:kAKLayerPosZCharacter];
+    
+    // 情報レイヤーを作成する
+    CCLayer *infoLayer = [CCLayer node];
+    
+    // 情報レイヤーを画面に配置する
+    [self addChild:infoLayer z:kAKLayerPosZInfo tag:kAKLayerPosZInfo];
+    
+    // チキンゲージを作成する
+    self.chickenGauge = [AKChickenGauge node];
+    
+    // チキンゲージを画面に情報レイヤーに配置する
+    [infoLayer addChild:self.chickenGauge];
+    
+    // チキンゲージの座標を設定する
+    self.chickenGauge.position = ccp([AKScreenSize center].x,
+                                     [AKScreenSize positionFromBottomPoint:kAKChickenGaugePosFromBottomPoint]);
     
     // インターフェースレイヤーを作成する
     AKInterface *interfaceLayer = [AKInterface node];
@@ -123,6 +150,8 @@ static const NSInteger kAKStartStage = 1;
     
     // メンバを解放する
     self.data = nil;
+    [self.chickenGauge removeFromParentAndCleanup:YES];
+    self.chickenGauge = nil;
 
     // スーパークラスの処理を行う
     [super dealloc];

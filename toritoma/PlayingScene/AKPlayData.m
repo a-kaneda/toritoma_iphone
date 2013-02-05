@@ -23,10 +23,6 @@ static const NSInteger kAKMaxEnemyCount = 32;
 static const NSInteger kAKMaxEnemyShotCount = 256;
 /// 画面効果の同時出現最大数
 static const NSInteger kAKMaxEffectCount = 64;
-/// キャラクターテクスチャアトラス定義ファイル名
-static NSString *kAKTextureAtlasDefFile = @"Character.plist";
-/// キャラクターテクスチャアトラスファイル名
-static NSString *kAKTextureAtlasFile = @"Character.png";
 
 /// キャラクター配置のz座標
 enum AKCharacterPositionZ {
@@ -104,9 +100,6 @@ enum AKCharacterPositionZ {
     
     // バッチノード配列を作成する
     self.batches = [NSMutableArray arrayWithCapacity:kAKCharaPosZCount];
-    
-    // テクスチャアトラスを読み込む
-    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kAKTextureAtlasDefFile textureFilename:kAKTextureAtlasFile];
     
     // 各z座標用にバッチノードを作成する
     for (int i = 0; i < kAKCharaPosZCount; i++) {
@@ -234,6 +227,9 @@ enum AKCharacterPositionZ {
         // 自機と敵弾の当たり判定処理を行う
         [self.player hit:[self.enemyShotPool.pool objectEnumerator]];
     }
+    
+    // チキンゲージの溜まっている比率を更新する
+    self.scene.chickenGauge.percent = self.player.chickenGauge;
 }
 
 /*!

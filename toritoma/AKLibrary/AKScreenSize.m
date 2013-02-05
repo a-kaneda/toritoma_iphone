@@ -309,4 +309,23 @@
     return CGRectMake(center.x - size / 2, center.y - size / 2, size, size);
 }
 
+/*!
+ @brief 長さのデバイス補正
+ 
+ 長さをデバイスに応じて補正する。iPadの場合は2倍にする。
+ @param len プログラム上の長さ
+ @return デバイスごとに対応した長さ
+ */
++ (float)deviceLength:(float)len
+{
+    // iPadの場合は倍にして返す
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return len * 2;
+    }
+    // iPhone/iPod touchの場合はそのままとする
+    else {
+        return len;
+    }
+}
+
 @end

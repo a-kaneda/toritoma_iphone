@@ -49,5 +49,7 @@
 + (CGRect)deviceRectByRect:(CGRect)rect;
 // 中心座標とサイズから矩形を作成する
 + (CGRect)makeRectFromCenter:(CGPoint)center size:(NSInteger)size;
+// 長さのデバイス補正
++ (float)deviceLength:(float)len;
 
 @end

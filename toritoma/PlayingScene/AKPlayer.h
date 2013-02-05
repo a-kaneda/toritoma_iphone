@@ -23,6 +23,8 @@
 
 /// 無敵状態かどうか
 @property (nonatomic)BOOL isInvincible;
+/// チキンゲージ
+@property (nonatomic)float chickenGauge;
 
 // 復活
 - (void)rebirth;

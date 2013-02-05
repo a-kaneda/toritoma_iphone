@@ -12,7 +12,7 @@
 /// 自機のサイズ
 static const NSInteger kAKPlayerSize = 8;
 /// 自機のかすり判定サイズ
-static const NSInteger kAKPlayerGrazeSize = 24;
+static const NSInteger kAKPlayerGrazeSize = 32;
 /// 復活後の無敵状態の時間
 static const float kAKInvincibleTime = 2.0f;
 /// 自機の画像ファイル名
@@ -32,6 +32,7 @@ static const float kAKPlayerShotInterval = 0.2f;
 @implementation AKPlayer
 
 @synthesize isInvincible = isInvincible_;
+@synthesize chickenGauge = chickenGauge_;
 
 /*!
  @brief オブジェクト生成処理
@@ -64,7 +65,7 @@ static const float kAKPlayerShotInterval = 0.2f;
     shootTime_ = kAKPlayerShotInterval;
     
     // チキンゲージをリセットする
-    chickenGauge_ = 0.0f;
+    self.chickenGauge = 0.0f;
                                               
     return self;
 }
@@ -220,13 +221,13 @@ static const float kAKPlayerShotInterval = 0.2f;
             
             // 相手のかすりポイントを取得する
             if (target.grazePoint > 0.0f) {
-                chickenGauge_ += target.grazePoint;
+                self.chickenGauge += target.grazePoint;
             }
             
             // 相手のかすりポイントをリセットする
             target.grazePoint = 0.0f;
             
-            AKLog(1, @"chickenGauge_=%f", chickenGauge_);
+            AKLog(1, @"chickenGauge=%f", self.chickenGauge);
         }
     }
 }

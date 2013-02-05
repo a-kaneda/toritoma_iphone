@@ -6,6 +6,7 @@
  */
 
 #import "AKFont.h"
+#import "AKScreenSize.h"
 
 /// フォントサイズ
 const NSInteger kAKFontSize = 16;
@@ -56,12 +57,7 @@ static AKFont *sharedInstance_;
  */
 + (NSInteger)fontSize
 {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return kAKFontSize * 2;
-    }
-    else {
-        return kAKFontSize;
-    }
+    return [AKScreenSize deviceLength:kAKFontSize];
 }
 
 /*!
@@ -132,11 +128,8 @@ static AKFont *sharedInstance_;
     // 文字の位置情報を文字全体の情報から検索する
     NSDictionary *charInfo = [self.fontMap objectForKey:key];
     
-    // iPadの場合は文字サイズを倍にする
-    NSInteger fontSize = kAKFontSize;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        fontSize *= 2;
-    }
+    // フォントサイズを取得する
+    NSInteger fontSize = [AKFont fontSize];
     
     // 見つからない場合は一番左上のダミー文字を返す
     if (charInfo == nil) {
