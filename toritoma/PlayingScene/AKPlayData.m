@@ -28,8 +28,8 @@ static const NSInteger kAKMaxEffectCount = 64;
 enum AKCharacterPositionZ {
     kAKCharaPosZBack = 0,   ///< 背景
     kAKCharaPosZPlayerShot, ///< 自機弾
-    kAKCharaPosZPlayer,     ///< 自機
     kAKCharaPosZOption,     ///< オプション
+    kAKCharaPosZPlayer,     ///< 自機
     kAKCharaPosZEnemy,      ///< 敵
     kAKCharaPosZEffect,     ///< 爆発効果
     kAKCharaPosZEnemyShot,  ///< 敵弾
@@ -115,14 +115,12 @@ enum AKCharacterPositionZ {
     }
     
     // 自機を作成する
-    self.player = [[[AKPlayer alloc] init] autorelease];
+    self.player = [[[AKPlayer alloc] initWithParent:[self.batches objectAtIndex:kAKCharaPosZPlayer]
+                                       optionParent:[self.batches objectAtIndex:kAKCharaPosZOption]] autorelease];
     
     // 初期位置を設定する
     self.player.positionX = kAKPlayerDefaultPosX;
     self.player.positionY = kAKPlayerDefaultPosY;
-    
-    // 自機をバッチノードに追加する
-    [[self.batches objectAtIndex:kAKCharaPosZPlayer] addChild:self.player.image];
     
     // 自機弾プールを作成する
     self.playerShotPool = [[[AKCharacterPool alloc] initWithClass:[AKPlayerShot class] Size:kAKMaxPlayerShotCount] autorelease];
@@ -230,6 +228,9 @@ enum AKCharacterPositionZ {
     
     // チキンゲージの溜まっている比率を更新する
     self.scene.chickenGauge.percent = self.player.chickenGauge;
+    
+    // チキンゲージからオプション個数を決定する
+    [self.player updateOptionCount];
 }
 
 /*!
@@ -267,15 +268,13 @@ enum AKCharacterPositionZ {
  */
 - (void)movePlayerByDx:(float)dx dy:(float)dy
 {
-    // x方向に移動する
-    self.player.positionX = AKRangeCheckF(self.player.positionX + dx,
-                                          0.0f,
-                                          [AKScreenSize stageSize].width);
-    
-    // y方向に移動する
-    self.player.positionY = AKRangeCheckF(self.player.positionY + dy,
-                                          0.0f,
-                                          [AKScreenSize stageSize].height);
+    // 移動先の座標を設定する
+    [self.player setPositionX:AKRangeCheckF(self.player.positionX + dx,
+                                            0.0f,
+                                            [AKScreenSize stageSize].width)
+                            y:AKRangeCheckF(self.player.positionY + dy,
+                                            0.0f,
+                                            [AKScreenSize stageSize].height)];
 }
 
 /*!

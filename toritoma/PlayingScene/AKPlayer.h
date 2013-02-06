@@ -5,9 +5,8 @@
  自機を管理するクラスを定義する。
  */
 
-#import <Foundation/Foundation.h>
-#import "cocos2d.h"
 #import "AKCharacter.h"
+#import "AKOption.h"
 
 // 自機クラス
 @interface AKPlayer : AKCharacter {
@@ -19,18 +18,28 @@
     float shootTime_;
     /// チキンゲージ
     float chickenGauge_;
+    /// オプション
+    AKOption *option_;
 }
 
 /// 無敵状態かどうか
 @property (nonatomic)BOOL isInvincible;
 /// チキンゲージ
 @property (nonatomic)float chickenGauge;
+/// オプション
+@property (nonatomic, retain)AKOption *option;
 
+// 初期化処理
+- (id)initWithParent:(CCNode *)parent optionParent:(CCNode *)optionParent;
 // 復活
 - (void)rebirth;
 // 初期化
 - (void)reset;
 // かすり判定
 - (void)graze:(const NSEnumerator *)characters;
+// 移動座標設定
+- (void)setPositionX:(float)x y:(float)y;
+// オプション数更新
+- (void)updateOptionCount;
 
 @end

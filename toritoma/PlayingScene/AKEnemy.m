@@ -182,7 +182,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
 - (void)action_01:(ccTime)dt
 {
     // 弾のスピード
-    const float kAKShotSpeed = 260.f;
+    const float kAKShotSpeed = 150.f;
     
     // 左へ直進する
     self.speedX = -120.0f;

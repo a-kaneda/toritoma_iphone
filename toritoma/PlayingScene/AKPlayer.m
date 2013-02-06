@@ -23,6 +23,8 @@ static const float kAKPlayerImageSize = 32;
 static const NSInteger kAKPlayerAnimationCount = 2;
 /// 弾発射の間隔
 static const float kAKPlayerShotInterval = 0.2f;
+/// 最大のオプション数
+static const NSInteger kAKMaxOptionCount = 3;
 
 /*!
  @brief 自機クラス
@@ -33,14 +35,17 @@ static const float kAKPlayerShotInterval = 0.2f;
 
 @synthesize isInvincible = isInvincible_;
 @synthesize chickenGauge = chickenGauge_;
+@synthesize option = option_;
 
 /*!
  @brief オブジェクト生成処理
 
  オブジェクトの生成を行う。
+ @param parent 画像を配置するノード
+ @param optionParent オプションの画像を配置するノード
  @return 生成したオブジェクト。失敗時はnilを返す。
  */
-- (id)init
+- (id)initWithParent:(CCNode *)parent optionParent:(CCNode *)optionParent;
 {
     // スーパークラスの生成処理
     self = [super init];
@@ -66,6 +71,12 @@ static const float kAKPlayerShotInterval = 0.2f;
     
     // チキンゲージをリセットする
     self.chickenGauge = 0.0f;
+    
+    // 画像を親ノードに配置する
+    [parent addChild:self.image];
+    
+    // オプションを作成する
+    self.option = [[[AKOption alloc] initWithOptionCount:kAKMaxOptionCount parent:optionParent] autorelease];
                                               
     return self;
 }
@@ -74,6 +85,7 @@ static const float kAKPlayerShotInterval = 0.2f;
  @brief キャラクター固有の動作
 
  速度によって位置を移動する。自機の表示位置は固定とする。
+ オプションの移動も行う。
  @param dt フレーム更新間隔
  */
 - (void)action:(ccTime)dt
@@ -99,6 +111,11 @@ static const float kAKPlayerShotInterval = 0.2f;
         
         // 弾発射までの残り時間をリセットする
         shootTime_ = kAKPlayerShotInterval;
+    }
+    
+    // オプションの移動を行う
+    if (self.option) {
+        [self.option move:dt];
     }
 }
 
@@ -222,13 +239,60 @@ static const float kAKPlayerShotInterval = 0.2f;
             // 相手のかすりポイントを取得する
             if (target.grazePoint > 0.0f) {
                 self.chickenGauge += target.grazePoint;
+                
+                // 最大で100%とする
+                if (self.chickenGauge > 100.0f) {
+                    self.chickenGauge = 100.0f;
+                }
             }
             
             // 相手のかすりポイントをリセットする
             target.grazePoint = 0.0f;
             
-            AKLog(1, @"chickenGauge=%f", self.chickenGauge);
+            AKLog(0, @"chickenGauge=%f", self.chickenGauge);
         }
+    }
+}
+
+/*!
+ @brief 移動座標設定
+ 
+ 移動座標を設定する。オプションが付属している場合はオプションの移動も行う。
+ @param x 移動先x座標
+ @param y 移動先y座標
+ */
+- (void)setPositionX:(float)x y:(float)y
+{
+    // オプションに自分の移動前の座標を通知する
+    if (self.option != nil && self.option.isStaged) {
+        [self.option setPositionX:self.positionX y:self.positionY];
+    }
+    
+    // 移動先の座標を設定する
+    self.positionX = x;
+    self.positionY = y;
+}
+
+/*!
+ @brief オプション個数更新
+ 
+ チキンゲージに応じてオプション個数を更新する。
+ */
+- (void)updateOptionCount
+{
+    // チキンゲージからオプション個数を計算する
+    NSInteger count = self.chickenGauge / (100.0f / (kAKMaxOptionCount + 1));
+    
+    // 最大個数で制限をかける
+    if (count > kAKMaxOptionCount) {
+        count = kAKMaxOptionCount;
+    }
+    
+    AKLog(1, @"ゲージ=%f オプション個数=%d", self.chickenGauge, count);
+    
+    // 自分の座標を初期座標として次のオプションを設定する
+    if (self.option != nil) {
+        [self.option setOptionCount:count x:self.positionX y:self.positionY];
     }
 }
 @end

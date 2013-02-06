@@ -13,7 +13,7 @@ static NSString *kAKEmptyImageName = @"ChickenGauge_01.png";
 /// 満ゲージの画像名
 static NSString *kAKFullImageName = @"ChickenGauge_02.png";
 /// 画像の幅
-static const NSInteger kAKImageWidth = 250;
+static const NSInteger kAKImageWidth = 256;
 /// 画像の高さ
 static const NSInteger kAKImageHeight = 16;
 
