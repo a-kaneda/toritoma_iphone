@@ -288,7 +288,7 @@ static const NSInteger kAKMaxOptionCount = 3;
         count = kAKMaxOptionCount;
     }
     
-    AKLog(1, @"ゲージ=%f オプション個数=%d", self.chickenGauge, count);
+    AKLog(0, @"ゲージ=%f オプション個数=%d", self.chickenGauge, count);
     
     // 自分の座標を初期座標として次のオプションを設定する
     if (self.option != nil) {

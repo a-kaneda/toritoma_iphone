@@ -25,6 +25,25 @@ const ccColor4B kAKColor[kAKColorCount];
 
 #ifdef DEBUG
 
+/// デバッグフラグ
+extern unsigned long debug_flg;
+
+/*!
+ @brief デバッグフラグ取得
+
+ デバッグ用のフラグを取得する。ログの出力条件に使用する。
+ @return フラグ値
+ */
+#define AKGetDebugFlg() (debug_flg)
+
+/*!
+ @brief デバッグフラグ設定
+ 
+ デバッグ用のフラグを設定する。ログの出力条件に使用する。
+ @param flg フラグ値
+ */
+#define AKSetDebugFlg(flg) (debug_flg = (flg))
+
 /*!
  @brief デバッグログ
  
@@ -35,6 +54,22 @@ const ccColor4B kAKColor[kAKColorCount];
 #define AKLog(cond, fmt, ...) if (cond) NSLog(@"%s(%d) " fmt, __FUNCTION__, __LINE__, ## __VA_ARGS__)
 
 #else
+
+/*!
+ @brief デバッグフラグ取得
+ 
+ デバッグ用のフラグを取得する。ログの出力条件に使用する。
+ @return フラグ値
+ */
+#define AKGetDebugFlg()
+/*!
+ @brief デバッグフラグ設定
+ 
+ デバッグ用のフラグを設定する。ログの出力条件に使用する。
+ @param flg フラグ値
+ */
+#define AKSetDebugFlg(flg)
+
 /*!
  @brief デバッグログ
  

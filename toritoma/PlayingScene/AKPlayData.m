@@ -220,10 +220,10 @@ enum AKCharacterPositionZ {
         [self.player graze:[self.enemyShotPool.pool objectEnumerator]];
         
         // 自機と敵の当たり判定処理を行う
-        [self.player hit:[self.enemyPool.pool objectEnumerator]];
+//        [self.player hit:[self.enemyPool.pool objectEnumerator]];
         
         // 自機と敵弾の当たり判定処理を行う
-        [self.player hit:[self.enemyShotPool.pool objectEnumerator]];
+//        [self.player hit:[self.enemyShotPool.pool objectEnumerator]];
     }
     
     // チキンゲージの溜まっている比率を更新する

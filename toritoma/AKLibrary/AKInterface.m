@@ -240,6 +240,8 @@
         
         // メニュー項目のタッチイベントと終了されたタッチイベントが一致した場合
         if (item.touch == touch) {
+            
+            AKLog(0, @"タッチ入力終了");
 
             // 最後のイベントを実行する
             [self.parent performSelector:item.action withObject:item];
@@ -287,6 +289,8 @@
         }
     }
     
+    AKLog(0, @"メニューに対応していないスライド");
+    
     // 画面上のタッチ位置を取得する
     CGPoint locationInView = [touch locationInView:[touch view]];
     
@@ -296,13 +300,22 @@
     // 一致するメニュー項目がなかった場合に、まだタッチイベントが開始されていない項目がある場合は関連付ける
     for (AKMenuItem *item in [self.menuItems objectEnumerator]) {
         
-        // スライド入力とすでにタッチイベントが開始されているものは除外する
+        AKLog(0 && item.type == kAKMenuTypeSlide, @"touch=%@", item.touch);
+        
+        // スライド入力以外とすでにタッチイベントが開始されているものは除外する
         if (item.type != kAKMenuTypeSlide || item.touch != nil) {
             continue;
         }
         
+        AKSetDebugFlg(0);
+        AKLog(AKGetDebugFlg(), @"isSelectedPos=%d", [item isSelectPos:location]);
+        AKSetDebugFlg(0);
+        
         // 有効な項目で選択されている場合は処理を行う
         if ((item.tag & self.enableTag || item.tag == 0) && [item isSelectPos:location]) {
+            
+            AKLog(1, @"メニュー項目切り替え");
+            
             item.touch = touch;
             item.prevPoint = location;
             [self.parent performSelector:item.action withObject:item];

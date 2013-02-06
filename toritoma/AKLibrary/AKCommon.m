@@ -9,6 +9,12 @@
 #import <math.h>
 #import "AKCommon.h"
 
+#ifdef DEBUG
+
+/// デバッグフラグ
+unsigned long debug_flg = 0;
+
+#endif
 
 /// 色
 const ccColor4B kAKColor[kAKColorCount] = {
@@ -237,6 +243,8 @@ NSArray* AKCalcNWayAngle(int count, float centerAngle, float space)
  */
 BOOL AKIsInside(CGPoint point, CGRect rect)
 {
+    AKLog(AKGetDebugFlg(), @"point=(%f,%f) rect=(%f,%f,%f,%f)", point.x, point.y, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    
     if ((point.x >= rect.origin.x && point.x <= rect.origin.x + rect.size.width) &&
         (point.y >= rect.origin.y && point.y <= rect.origin.y + rect.size.height)) {
         

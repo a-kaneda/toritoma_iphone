@@ -29,7 +29,7 @@ static const float kAKPlayerMoveVal = 1.8f;
 /// 開始ステージ番号
 static const NSInteger kAKStartStage = 1;
 /// チキンゲージ配置位置、下からの比率
-static const float kAKChickenGaugePosFromBottomPoint = 48.0f;
+static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
 
 /*!
  @brief プレイシーンクラス
@@ -96,7 +96,7 @@ static const float kAKChickenGaugePosFromBottomPoint = 48.0f;
     [self addChild:interfaceLayer z:kAKLayerPosZInterface tag:kAKLayerPosZInterface];
     
     // スライド入力を画面全体に配置する
-    [interfaceLayer addSlideMenuWithRect:CGRectMake(0.0f, 0.0f, [AKScreenSize stageSize].width, [AKScreenSize stageSize].height)
+    [interfaceLayer addSlideMenuWithRect:CGRectMake(0.0f, 0.0f, [AKScreenSize screenSize].width, [AKScreenSize screenSize].height)
                                   action:@selector(movePlayer:)
                                      tag:kAKMenuTagPlaying];
     
