@@ -28,11 +28,6 @@ enum AKGameState {
     kAKGameStateSleep           ///< スリープ処理中
 };
 
-/// キャラクターテクスチャアトラス定義ファイル名
-extern NSString *kAKTextureAtlasDefFile;
-/// キャラクターテクスチャアトラスファイル名
-extern NSString *kAKTextureAtlasFile;
-
 // プレイシーンクラス
 @interface AKPlayingScene : CCScene {
     /// ゲームデータ
@@ -41,6 +36,8 @@ extern NSString *kAKTextureAtlasFile;
     enum AKGameState state_;
     /// チキンゲージ
     AKChickenGauge *chickenGauge_;
+    /// シールドボタン
+    CCSprite *shieldButton_;
 }
 
 /// ゲームデータ
@@ -49,6 +46,8 @@ extern NSString *kAKTextureAtlasFile;
 @property (nonatomic)enum AKGameState state;
 /// チキンゲージ
 @property (nonatomic, retain)AKChickenGauge *chickenGauge;
+/// シールドボタン
+@property (nonatomic, retain)CCSprite *shieldButton;
 
 // キャラクターレイヤー取得
 - (CCLayer *)characterLayer;
@@ -56,9 +55,11 @@ extern NSString *kAKTextureAtlasFile;
 - (void)updateStart:(ccTime)dt;
 // プレイ中の更新処理
 - (void)updatePlaying:(ccTime)dt;
-// キャラクターイメージの追加
-- (void)addCharacterImage:(CCSprite *)image;
 // 自機の移動
 - (void)movePlayer:(id)object;
+// シールドボタン選択処理
+- (void)touchShieldButton:(id)object;
+// シールドボタン表示切替
+- (void)setShieldButtonSelected:(Boolean)selected;
 
 @end

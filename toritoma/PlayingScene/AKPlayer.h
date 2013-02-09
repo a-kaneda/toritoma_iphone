@@ -41,5 +41,7 @@
 - (void)setPositionX:(float)x y:(float)y;
 // オプション数更新
 - (void)updateOptionCount;
+// シールド有無設定
+- (void)setShield:(Boolean)shield;
 
 @end

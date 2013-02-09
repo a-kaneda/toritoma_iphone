@@ -10,6 +10,7 @@
 #import "AKPlayer.h"
 #import "AKScript.h"
 #import "AKCharacterPool.h"
+#import "AKEnemyShot.h"
 
 @class AKPlayingScene;
 
@@ -23,6 +24,8 @@
     AKPlayer *player_;
     /// 自機弾プール
     AKCharacterPool *playerShotPool_;
+    /// 反射弾プール
+    AKCharacterPool *reflectedShotPool_;
     /// 敵キャラプール
     AKCharacterPool *enemyPool_;
     /// 敵弾プール
@@ -31,6 +34,8 @@
     AKCharacterPool *effectPool_;
     /// キャラクター配置バッチノード
     NSMutableArray *batches_;
+    /// シールドモード
+    Boolean shield_;
 }
 
 /// シーンクラス(弱い参照)
@@ -41,6 +46,8 @@
 @property (nonatomic, retain)AKPlayer *player;
 /// 自機弾プール
 @property (nonatomic, retain)AKCharacterPool *playerShotPool;
+/// 反射弾プール
+@property (nonatomic, retain)AKCharacterPool *refrectedShotPool;
 /// 敵キャラプール
 @property (nonatomic, retain)AKCharacterPool *enemyPool;
 /// 敵弾プール
@@ -49,9 +56,11 @@
 @property (nonatomic, retain)AKCharacterPool *effectPool;
 /// キャラクター配置バッチノード
 @property (nonatomic, retain)NSMutableArray *batches;
+/// シールドモード
+@property (nonatomic)Boolean shield;
 
 // インスタンス取得
-+ (AKPlayData *)getInstance;
++ (AKPlayData *)sharedInstance;
 // オブジェクト初期化処理
 - (id)initWithScene:(AKPlayingScene *)scene;
 // 状態更新
@@ -64,6 +73,8 @@
 - (void)movePlayerByDx:(float)dx dy:(float)dy;
 // 自機弾生成
 - (void)createPlayerShotAtX:(NSInteger)x y:(NSInteger)y;
+// 反射弾生成
+- (void)createReflectiedShot:(AKEnemyShot *)enemyShot;
 // 敵生成
 - (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 // 敵弾生成

@@ -47,7 +47,7 @@ static NSString *kAKScriptFileName = @"stage_%d";
     // ファイルパスをバンドルから取得する
     NSBundle *bundle = [NSBundle mainBundle];
     NSString *filePath = [bundle pathForResource:file ofType:@"txt"];
-    AKLog(1, @"filePath=%@", filePath);
+    AKLog(0, @"filePath=%@", filePath);
     
     // ステージ定義ファイルを読み込む
     NSError *error = nil;
@@ -72,11 +72,11 @@ static NSString *kAKScriptFileName = @"stage_%d";
         
         // 1行の文字列を取得する
         NSString *line = [stageScript substringWithRange:lineRange];
-        AKLog(1, @"%@", line);
+        AKLog(0, @"%@", line);
         
         // 1文字目が"#"の場合は処理を飛ばす
         if ([[line substringToIndex:1] isEqualToString:@"#"]) {
-            AKLog(1, @"コメント:%@", line);
+            AKLog(0, @"コメント:%@", line);
             continue;
         }
         
@@ -173,7 +173,7 @@ static NSString *kAKScriptFileName = @"stage_%d";
             case kAKScriptOpeEnemy:     // 敵の生成
                 // 敵を生成する
                 AKLog(1, @"敵の生成:%d pos=(%d, %d)", data.value, data.positionX, data.positionY);
-                [[AKPlayData getInstance] createEnemy:data.value x:data.positionX y:data.positionY];
+                [[AKPlayData sharedInstance] createEnemy:data.value x:data.positionX y:data.positionY];
                 break;
                 
             case kAKScriptOpeBoss:      // ボスの生成

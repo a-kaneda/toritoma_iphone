@@ -8,7 +8,6 @@
 #import "AKPlayData.h"
 #import "AKPlayerShot.h"
 #import "AKEnemy.h"
-#import "AKEnemyShot.h"
 #import "AKEffect.h"
 
 /// 自機初期位置x座標
@@ -23,6 +22,12 @@ static const NSInteger kAKMaxEnemyCount = 32;
 static const NSInteger kAKMaxEnemyShotCount = 256;
 /// 画面効果の同時出現最大数
 static const NSInteger kAKMaxEffectCount = 64;
+/// シールドによるゲージ消費率
+static const float kAKChickenGaugeUseSpeed = 50.0f;
+/// キャラクターテクスチャアトラス定義ファイル名
+NSString *kAKTextureAtlasDefFile = @"Character.plist";
+/// キャラクターテクスチャアトラスファイル名
+NSString *kAKTextureAtlasFile = @"Character.png";
 
 /// キャラクター配置のz座標
 enum AKCharacterPositionZ {
@@ -48,10 +53,12 @@ enum AKCharacterPositionZ {
 @synthesize script = script_;
 @synthesize player = player_;
 @synthesize playerShotPool = playerShotPool_;
+@synthesize refrectedShotPool = reflectedShotPool_;
 @synthesize enemyPool = enemyPool_;
 @synthesize enemyShotPool = enemyShotPool_;
 @synthesize effectPool = effectPool_;
 @synthesize batches = batches_;
+@synthesize shield = shield_;
 
 /*!
  @brief インスタンス取得
@@ -60,7 +67,7 @@ enum AKCharacterPositionZ {
  現在のシーンがプレイシーン以外の場合はnilを返す。
  @return ゲームデータクラスのインスタンス
  */
-+ (AKPlayData *)getInstance
++ (AKPlayData *)sharedInstance
 {
     // 実行中のシーンを取得する
     CCScene *scene = [[CCDirector sharedDirector] runningScene];
@@ -98,6 +105,9 @@ enum AKCharacterPositionZ {
     // シーンをメンバに設定する
     scene_ = scene;
     
+    // テクスチャアトラスを読み込む
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kAKTextureAtlasDefFile textureFilename:kAKTextureAtlasFile];
+    
     // バッチノード配列を作成する
     self.batches = [NSMutableArray arrayWithCapacity:kAKCharaPosZCount];
     
@@ -125,6 +135,9 @@ enum AKCharacterPositionZ {
     // 自機弾プールを作成する
     self.playerShotPool = [[[AKCharacterPool alloc] initWithClass:[AKPlayerShot class] Size:kAKMaxPlayerShotCount] autorelease];
     
+    // 反射弾プールを作成する
+    self.refrectedShotPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemyShot class] Size:kAKMaxEnemyShotCount] autorelease];
+    
     // 敵キャラプールを作成する
     self.enemyPool = [[[AKCharacterPool alloc] initWithClass:[AKEnemy class] Size:kAKMaxEnemyCount] autorelease];
     
@@ -133,6 +146,9 @@ enum AKCharacterPositionZ {
     
     // 画面効果プールを作成する
     self.effectPool = [[[AKCharacterPool alloc] initWithClass:[AKEffect class] Size:kAKMaxEffectCount] autorelease];
+    
+    // シールドは無効状態で初期化する
+    self.shield = NO;
     
     AKLog(1, @"end");
     return self;
@@ -150,6 +166,7 @@ enum AKCharacterPositionZ {
     // メンバを解放する
     self.player = nil;
     self.playerShotPool = nil;
+    self.refrectedShotPool = nil;
     self.enemyPool = nil;
     self.enemyShotPool = nil;
     self.effectPool = nil;
@@ -162,6 +179,26 @@ enum AKCharacterPositionZ {
     [super dealloc];
     
     AKLog(1, @"end");
+}
+
+/*!
+ @brief シールドモード設定
+ 
+ シールドモードの有効無効を設定する。
+ 画面のシールドボタンの表示も切り替える。
+ @param shield シールドモードが有効かどうか
+ */
+- (void)setShield:(Boolean)shield
+{
+    // メンバに設定する
+    shield_ = shield;
+    
+    // シーンのシールドボタンの表示を切り替える
+    [self.scene setShieldButtonSelected:shield];
+    
+    // 自機・オプションに対してシールド有無を設定する
+    // オプションは自機の処理の中で設定される
+    [self.player setShield:shield];
 }
 
 /*!
@@ -183,6 +220,13 @@ enum AKCharacterPositionZ {
     for (AKPlayerShot *playerShot in [self.playerShotPool.pool objectEnumerator]) {
         if (playerShot.isStaged) {
             [playerShot move:dt];
+        }
+    }
+    
+    // 反射弾を更新する
+    for (AKEnemyShot *refrectedShot in [self.refrectedShotPool.pool objectEnumerator]) {
+        if (refrectedShot.isStaged) {
+            [refrectedShot move:dt];
         }
     }
     
@@ -208,9 +252,29 @@ enum AKCharacterPositionZ {
         }
     }
     
-    // 敵と自機弾の当たり判定を行う
+    // 敵と自機弾、反射弾の当たり判定を行う
     for (AKEnemy *enemy in [self.enemyPool.pool objectEnumerator]) {
-        [enemy hit:[self.playerShotPool.pool objectEnumerator]];
+        [enemy checkHit:[self.playerShotPool.pool objectEnumerator]];
+        [enemy checkHit:[self.refrectedShotPool.pool objectEnumerator]];
+    }
+    
+    // シールド有効時、反射の判定を行う
+    if (self.shield) {
+        
+        // オプションを取得する
+        AKOption *option = self.player.option;
+        
+        // 各オプションに対して当たり判定を行う
+        while (option != nil && option.isStaged) {
+            
+            AKLog(0, @"反射判定");
+            
+            // 敵弾との当たり判定を行う
+            [option checkHit:[self.enemyShotPool.pool objectEnumerator]];
+            
+            // 次のオプションを取得する
+            option = option.next;
+        }
     }
     
     // 自機が無敵状態でない場合は当たり判定処理を行う
@@ -220,10 +284,21 @@ enum AKCharacterPositionZ {
         [self.player graze:[self.enemyShotPool.pool objectEnumerator]];
         
         // 自機と敵の当たり判定処理を行う
-//        [self.player hit:[self.enemyPool.pool objectEnumerator]];
+        [self.player checkHit:[self.enemyPool.pool objectEnumerator]];
         
         // 自機と敵弾の当たり判定処理を行う
-//        [self.player hit:[self.enemyShotPool.pool objectEnumerator]];
+        [self.player checkHit:[self.enemyShotPool.pool objectEnumerator]];
+    }
+    
+    // シールドが有効な場合はチキンゲージを減少させる
+    if (self.shield) {
+        self.player.chickenGauge -= kAKChickenGaugeUseSpeed * dt;
+        
+        // チキンゲージがなくなった場合は強制的にシールドを無効にする
+        if (self.player.chickenGauge < 0.0f) {
+            self.player.chickenGauge = 0.0f;
+            self.shield = NO;
+        }
     }
     
     // チキンゲージの溜まっている比率を更新する
@@ -296,6 +371,28 @@ enum AKCharacterPositionZ {
     
     // 自機弾を生成する
     [playerShot createPlayerShotAtX:x y:y parent:[self.batches objectAtIndex:kAKCharaPosZPlayerShot]];
+}
+
+/*!
+ @brief 反射弾生成
+ 
+ 反射弾を生成する。
+ @param enemyShot 反射する敵弾
+ */
+- (void)createReflectiedShot:(AKEnemyShot *)enemyShot
+{
+    AKLog(1, @"反射弾生成");
+    
+    // プールから未使用のメモリを取得する
+    AKEnemyShot *reflectedShot = [self.refrectedShotPool getNext];
+    if (reflectedShot == nil) {
+        // 空きがない場合は処理終了
+        NSAssert(0, @"反射弾プールに空きなし");
+        return;
+    }
+    
+    // 反射する敵弾を元に反射弾を生成する
+    [reflectedShot createReflectedShot:enemyShot parent:[self.batches objectAtIndex:kAKCharaPosZPlayerShot]];
 }
 
 /*!

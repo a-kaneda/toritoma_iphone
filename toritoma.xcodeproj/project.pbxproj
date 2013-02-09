@@ -13,6 +13,8 @@
 		0CB2ACE516C068190094AFFA /* ChickenGauge_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE316C068190094AFFA /* ChickenGauge_01.png */; };
 		0CB2ACE616C068190094AFFA /* ChickenGauge_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE416C068190094AFFA /* ChickenGauge_02.png */; };
 		0CB2ACE916C221FC0094AFFA /* AKOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE816C221FC0094AFFA /* AKOption.m */; };
+		0CB2ACF016C3E3790094AFFA /* Control.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2ACEE16C3E3790094AFFA /* Control.plist */; };
+		0CB2ACF116C3E3790094AFFA /* Control.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2ACEF16C3E3790094AFFA /* Control.png */; };
 		0CCA883D1699580B00EB243F /* AKNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA883C1699580B00EB243F /* AKNavigationController.m */; };
 		0CCA88431699615D00EB243F /* AKPlayingScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA88421699615D00EB243F /* AKPlayingScene.m */; };
 		0CCA88461699665D00EB243F /* AKPlayData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA88451699665D00EB243F /* AKPlayData.m */; };
@@ -174,6 +176,8 @@
 		0CB2ACE416C068190094AFFA /* ChickenGauge_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChickenGauge_02.png; path = Resources/Image/ChickenGauge_02.png; sourceTree = "<group>"; };
 		0CB2ACE716C221FC0094AFFA /* AKOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKOption.h; sourceTree = "<group>"; };
 		0CB2ACE816C221FC0094AFFA /* AKOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKOption.m; sourceTree = "<group>"; };
+		0CB2ACEE16C3E3790094AFFA /* Control.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Control.plist; path = Resources/Image/Control.plist; sourceTree = "<group>"; };
+		0CB2ACEF16C3E3790094AFFA /* Control.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Control.png; path = Resources/Image/Control.png; sourceTree = "<group>"; };
 		0CCA883B1699580B00EB243F /* AKNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKNavigationController.h; sourceTree = "<group>"; };
 		0CCA883C1699580B00EB243F /* AKNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKNavigationController.m; sourceTree = "<group>"; };
 		0CCA88411699615D00EB243F /* AKPlayingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayingScene.h; sourceTree = "<group>"; };
@@ -553,6 +557,8 @@
 			children = (
 				0CCC527216ADF3AE00E9A397 /* Character.plist */,
 				0CCC527316ADF3AE00E9A397 /* Character.png */,
+				0CB2ACEE16C3E3790094AFFA /* Control.plist */,
+				0CB2ACEF16C3E3790094AFFA /* Control.png */,
 				0CB2ACE316C068190094AFFA /* ChickenGauge_01.png */,
 				0CB2ACE416C068190094AFFA /* ChickenGauge_02.png */,
 			);
@@ -1075,6 +1081,8 @@
 				0CCC527516ADF3AE00E9A397 /* Character.png in Resources */,
 				0CB2ACE516C068190094AFFA /* ChickenGauge_01.png in Resources */,
 				0CB2ACE616C068190094AFFA /* ChickenGauge_02.png in Resources */,
+				0CB2ACF016C3E3790094AFFA /* Control.plist in Resources */,
+				0CB2ACF116C3E3790094AFFA /* Control.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

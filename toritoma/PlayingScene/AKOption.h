@@ -15,12 +15,16 @@
     float shootTime_;
     /// 次のオプション
     AKOption *next_;
+    /// シールド有無
+    Boolean shield_;
 }
 
 /// 移動座標
 @property (nonatomic, retain)NSMutableArray *movePositions;
 /// 次のオプション
 @property (nonatomic, retain)AKOption *next;
+/// シールド有無
+@property (nonatomic)Boolean shield;
 
 // 初期化処理
 - (id)initWithOptionCount:(NSInteger)count parent:(CCNode *)parent;

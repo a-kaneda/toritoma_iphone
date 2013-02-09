@@ -17,11 +17,6 @@ enum {
     kAKLayerPosZInterface   ///< インターフェースレイヤー
 };
 
-/// キャラクターテクスチャアトラス定義ファイル名
-NSString *kAKTextureAtlasDefFile = @"Character.plist";
-/// キャラクターテクスチャアトラスファイル名
-NSString *kAKTextureAtlasFile = @"Character.png";
-
 /// プレイ中メニュー項目のタグ
 static const NSUInteger kAKMenuTagPlaying = 0x01;
 /// 自機移動をスライド量の何倍にするか
@@ -30,6 +25,18 @@ static const float kAKPlayerMoveVal = 1.8f;
 static const NSInteger kAKStartStage = 1;
 /// チキンゲージ配置位置、下からの比率
 static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
+/// コントロールテクスチャアトラス定義ファイル名
+static NSString *kAKTextureAtlasDefFile = @"Control.plist";
+/// コントロールテクスチャアトラスファイル名
+static NSString *kAKTextureAtlasFile = @"Control.png";
+/// シールドボタン配置位置、右からの座標
+static const float kAKShieldButtonPosFromRightPoint = 50.0f;
+/// シールドボタン配置位置、下からの座標
+static const float kAKShieldButtonPosFromBottomPoint = 50.0f;
+/// シールドボタン非選択時の画像名
+static NSString *kAKShiledButtonNoSelectImage = @"ShieldButton_01.png";
+/// シールドボタン選択時の画像名
+static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
 
 /*!
  @brief プレイシーンクラス
@@ -40,6 +47,7 @@ static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
 
 @synthesize data = data_;
 @synthesize chickenGauge = chickenGauge_;
+@synthesize shieldButton = shieldButton_;
 
 /*!
  @brief オブジェクト初期化処理
@@ -63,7 +71,7 @@ static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
     
     // テクスチャアトラスを読み込む
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kAKTextureAtlasDefFile textureFilename:kAKTextureAtlasFile];
-    
+
     // 背景レイヤーを作成する
     [self addChild:AKCreateBackColorLayer() z:kAKLayerPosZBack tag:kAKLayerPosZBack];
     
@@ -94,6 +102,14 @@ static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
     
     // インターフェースレイヤーを画面に配置する
     [self addChild:interfaceLayer z:kAKLayerPosZInterface tag:kAKLayerPosZInterface];
+    
+    // シールドボタンを作成する
+    self.shieldButton = [interfaceLayer addMenuWithSpriteFrame:kAKShiledButtonNoSelectImage
+                                                         atPos:ccp([AKScreenSize positionFromRightPoint:kAKShieldButtonPosFromRightPoint],
+                                                                   [AKScreenSize positionFromBottomPoint:kAKShieldButtonPosFromBottomPoint])
+                                                        action:@selector(touchShieldButton:)
+                                                             z:0
+                                                           tag:kAKMenuTagPlaying type:kAKMenuTypeMomentary];
     
     // スライド入力を画面全体に配置する
     [interfaceLayer addSlideMenuWithRect:CGRectMake(0.0f, 0.0f, [AKScreenSize screenSize].width, [AKScreenSize screenSize].height)
@@ -142,7 +158,7 @@ static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
 /*!
  @brief オブジェクト解放処理
  
- オブジェクトの解放を行う。
+ メンバの解放を行う。
  */
 - (void)dealloc
 {
@@ -152,6 +168,8 @@ static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
     self.data = nil;
     [self.chickenGauge removeFromParentAndCleanup:YES];
     self.chickenGauge = nil;
+    [self.shieldButton removeFromParentAndCleanup:YES];
+    self.shieldButton = nil;
 
     // スーパークラスの処理を行う
     [super dealloc];
@@ -264,17 +282,6 @@ static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
 }
 
 /*!
- @brief キャラクターイメージの追加
- 
- キャラクターイメージのキャラクターレイヤーに追加する。
- @param image キャラクターイメージ
- */
-- (void)addCharacterImage:(CCSprite *)image
-{
-    [self.characterLayer addChild:image];
-}
-
-/*!
  @brief 自機の移動
  
  スライド入力によって自機を移動する。
@@ -299,4 +306,54 @@ static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
     [self.data movePlayerByDx:(location.x - item.prevPoint.x) * kAKPlayerMoveVal
                            dy:(location.y - item.prevPoint.y) * kAKPlayerMoveVal];
 }
+
+/*!
+ @brief シールドボタン選択処理
+ 
+ シールドボタン選択時にシールドを有効にする。
+ 選択解除時にシールドを解除する。
+ @param object メニュー項目
+ */
+- (void)touchShieldButton:(id)object
+{
+    NSAssert([object isKindOfClass:[AKMenuItem class]], @"メニュー項目のクラスが違う");
+    
+    // メニュー項目クラスにキャストする
+    AKMenuItem *item = (AKMenuItem *)object;
+    
+    // タッチのフェーズによって処理を分ける
+    switch (item.touch.phase) {
+        case UITouchPhaseBegan:     // タッチ開始
+            // シールドモードを有効にする
+            self.data.shield = YES;
+            break;
+            
+        case UITouchPhaseCancelled: // タッチ取り消し
+        case UITouchPhaseEnded:     // タッチ終了
+            // シールドモードを無効にする
+            self.data.shield = NO;
+            break;
+            
+        default:                    // その他は無処理
+            break;
+    }
+}
+
+/*!
+ @brief シールドボタン表示切替
+ 
+ シールドボタンの表示を選択・非選択状態で切り替えを行う。
+ @param seleted 選択状態かどうか
+ */
+- (void)setShieldButtonSelected:(Boolean)selected
+{
+    // 選択中かどうかで画像を切り替える
+    if (selected) {
+        [self.shieldButton setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:kAKShiledButtonSelectedImage]];
+    }
+    else {
+        [self.shieldButton setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:kAKShiledButtonNoSelectImage]];
+    }
+}
+
 @end

@@ -13,6 +13,8 @@ static NSString *kAKImageNameFormat = @"EnemyShot_%02d";
 static const NSInteger kAKEnemyShotImageDefCount = 1;
 /// 敵弾の種類の数
 static const NSInteger kAKEnemyShotDefCount = 1;
+/// 反射弾の威力
+static const NSInteger kAKReflectionPower = 5;
 
 /// 敵画像の定義
 static const struct AKEnemyShotImageDef kAKEnemyShotImageDef[kAKEnemyShotImageDefCount] = {
@@ -26,6 +28,7 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
 
 @implementation AKEnemyShot
 
+@synthesize action = action_;
 @synthesize grazePoint = grazePoint_;
 
 /*!
@@ -87,7 +90,7 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
     state_ = 0;
     
     // 動作処理を設定する
-    action_ = [self actionSelector:kAKEnemyShotDef[type - 1].action];
+    self.action = [self actionSelector:kAKEnemyShotDef[type - 1].action];
     
     // 画像定義を取得する
     const struct AKEnemyShotImageDef *imageDef = &kAKEnemyShotImageDef[kAKEnemyShotDef[type - 1].image - 1];
@@ -110,6 +113,61 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
     
     // かすりポイントを設定する
     self.grazePoint = kAKEnemyShotDef[type - 1].grazePoint;
+    
+    // レイヤーに配置する
+    [parent addChild:self.image];
+}
+
+/*!
+ @brief 反射弾生成
+ 
+ 反射弾を生成する。
+ 元になった弾と速度を反対にし、残りのパラメータは同じものを生成する。
+ @param base 反射する弾
+ @param parent 配置する親ノード
+ */
+- (void)createReflectedShot:(AKEnemyShot *)base parent:(CCNode *)parent
+{
+    AKLog(1, @"反射弾生成");
+    
+    // 位置を設定する
+    self.positionX = base.positionX;
+    self.positionY = base.positionY;
+    
+    // スピード反転させて設定する
+    self.speedX = -base.speedX;
+    self.speedY = -base.speedY;
+    
+    // 配置フラグを立てる
+    isStaged_ = YES;
+    
+    // 動作時間をクリアする
+    time_ = 0;
+    
+    // 状態をクリアする
+    state_ = 0;
+    
+    // 動作処理を設定する
+    self.action = base.action;
+    
+    // 画像名を作成する
+    self.imageName = base.imageName;
+    
+    // アニメーションフレームの個数を設定する
+    self.animationPattern = base.animationPattern;
+    
+    // アニメーションフレーム間隔を設定する
+    self.animationInterval = base.animationInterval;
+    
+    // 当たり判定のサイズを設定する
+    self.width = base.width;
+    self.height = base.height;
+    
+    // ヒットポイントを設定する
+    self.hitPoint = 1;
+    
+    // 攻撃力は反射弾の場合は補正をかける
+    self.power = kAKReflectionPower;
     
     // レイヤーに配置する
     [parent addChild:self.image];

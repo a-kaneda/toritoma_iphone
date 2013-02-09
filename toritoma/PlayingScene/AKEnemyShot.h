@@ -35,6 +35,8 @@ struct AKEnemyShotDef {
     float grazePoint_;
 }
 
+/// 動作処理のセレクタ
+@property (nonatomic)SEL action;
 /// かすりポイント
 @property (nonatomic)float grazePoint;
 
@@ -45,6 +47,8 @@ struct AKEnemyShotDef {
                       angle:(float)angle
                       speed:(float)speed
                      parent:(CCNode *)parent;
+// 反射弾生成
+- (void)createReflectedShot:(AKEnemyShot *)base parent:(CCNode *)parent;
 // 動作処理取得
 - (SEL)actionSelector:(NSInteger)type;
 // 標準弾動作

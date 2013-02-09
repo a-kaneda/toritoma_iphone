@@ -11,16 +11,21 @@
 
 /// オプションの画像ファイル名
 static NSString *kAKOptionImageFile = @"Option_%02d";
-/// アニメーションフレーム数
-static const NSInteger kAKOptionAnimationCount = 2;
+/// シールドなし時のアニメーションフレーム数
+static const NSInteger kAKOptionAnimationCountOfShieldOff = 2;
+/// シールドあり時のアニメーションフレーム数
+static const NSInteger kAKOptionAnimationCountOfShieldOn = 1;
 /// 弾発射の間隔
 static const float kAKOptionShotInterval = 0.2f;
 /// オプション間の距離
-static const NSInteger kAKOptionSpace = 30;
+static const NSInteger kAKOptionSpace = 20;
+/// オプションの当たり判定
+static const NSInteger kAKOptionSize = 16;
 
 @implementation AKOption
 
 @synthesize movePositions = movePositions_;
+@synthesize shield = shield_;
 
 /*!
  @brief オブジェクト生成処理
@@ -40,24 +45,32 @@ static const NSInteger kAKOptionSpace = 30;
     }
     
     // アニメーションフレームの個数を設定する
-    self.animationPattern = kAKOptionAnimationCount;
-        
+    self.animationPattern = kAKOptionAnimationCountOfShieldOff;
+    
     // 画像名を設定する
     self.imageName = [NSString stringWithFormat:kAKOptionImageFile, 1];
     
     // 弾発射までの残り時間を設定する
     shootTime_ = kAKOptionShotInterval;
     
-    // 初期状態では画面には配置しない
-    self.isStaged = NO;
-    self.image.visible = NO;
-    
     // 移動座標を保存する配列を作成する
     self.movePositions = [NSMutableArray arrayWithCapacity:kAKOptionSpace];
     
     // ヒットポイントは1としておく
     self.hitPoint = 1;
+    
+    // オプションの当たり判定を設定する
+    // これはシールド時のみ使用する
+    self.width = kAKOptionSize;
+    self.height = kAKOptionSize;
+    
+    // 初期状態はシールドなしとする
+    self.shield = NO;
 
+    // 初期状態では画面には配置しない
+    self.isStaged = NO;
+    self.image.visible = NO;
+    
     // 画像を親ノードに配置する
     [parent addChild:self.image];
     
@@ -84,6 +97,47 @@ static const NSInteger kAKOptionSpace = 30;
 }
 
 /*!
+ @brief シールド有無設定
+ 
+ シールド有無を設定する。
+ 画像の切り替えも行う。
+ 次のオプションに対しても同様の設定を行う。
+ @param shield シールド有無
+ */
+- (void)setShield:(Boolean)shield
+{
+    // メンバに設定する
+    shield_ = shield;
+        
+    // シールド有無によって画像を切り替える
+    if (shield) {
+        
+        AKLog(0, @"シールドあり");
+        
+        // 画像名を設定する
+        self.imageName = [NSString stringWithFormat:kAKOptionImageFile, 2];
+        
+        // アニメーションフレームの個数を設定する
+        self.animationPattern = kAKOptionAnimationCountOfShieldOn;
+    }
+    else {
+
+        AKLog(0, @"シールドなし");
+
+        // 画像名を設定する
+        self.imageName = [NSString stringWithFormat:kAKOptionImageFile, 1];
+        
+        // アニメーションフレームの個数を設定する
+        self.animationPattern = kAKOptionAnimationCountOfShieldOff;
+    }
+    
+    // 次のオプションがある場合は次のオプションにも設定する
+    if (self.next != nil) {
+        self.next.shield = shield;
+    }
+}
+
+/*!
  @brief キャラクター固有の動作
  
  速度によって位置を移動する。オプションの表示位置は固定とする。
@@ -99,7 +153,7 @@ static const NSInteger kAKOptionSpace = 30;
     if (shootTime_ < 0.0f) {
         
         // 自機弾を生成する
-        [[AKPlayData getInstance] createPlayerShotAtX:self.positionX y:self.positionY];
+        [[AKPlayData sharedInstance] createPlayerShotAtX:self.positionX y:self.positionY];
         
         // 弾発射までの残り時間をリセットする
         shootTime_ = kAKOptionShotInterval;
@@ -109,6 +163,27 @@ static const NSInteger kAKOptionSpace = 30;
     if (self.next != nil) {
         [self.next move:dt];
     }
+}
+
+/*!
+ @brief 衝突処理
+ 
+ 衝突した時の処理。
+ 反射弾を作成後、相手のHPを0にする。
+ @param character 衝突した相手
+ */
+- (void)hit:(AKCharacter *)character
+{
+    AKLog(1, @"反射処理開始");
+    
+    // 衝突したものが敵弾以外の場合はエラー
+    NSAssert([character isKindOfClass:[AKEnemyShot class]], @"不正なオブジェクトと衝突");
+    
+    // 反射弾を作成する
+    [[AKPlayData sharedInstance] createReflectiedShot:(AKEnemyShot *)character];
+    
+    // 相手のHPを0にする
+    character.hitPoint = 0;
 }
 
 /*!
@@ -178,6 +253,9 @@ static const NSInteger kAKOptionSpace = 30;
             self.image.visible = YES;
             self.positionX = x;
             self.positionY = y;
+            // 初期表示時に前回の位置に表示されることを防ぐため、画像位置も変更する
+            self.image.position = ccp([AKScreenSize xOfStage:self.positionX],
+                                      [AKScreenSize yOfStage:self.positionY]);
         }
     }
     // オプション個数が0以下の場合はオプションを無効とする

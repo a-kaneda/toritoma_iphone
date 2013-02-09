@@ -37,6 +37,13 @@
                        action:(SEL)action
                             z:(NSInteger)z
                           tag:(NSUInteger)tag;
+// スプライトフレームからメニュー項目作成
+- (CCSprite *)addMenuWithSpriteFrame:(NSString *)spriteName
+                               atPos:(CGPoint)pos
+                              action:(SEL)action
+                                   z:(NSInteger)z
+                                 tag:(NSUInteger)tag
+                                type:(enum AKMenuType)type;
 // 文字列からメニュー項目作成
 - (AKLabel *)addMenuWithString:(NSString*)menuString
                          atPos:(CGPoint)pos

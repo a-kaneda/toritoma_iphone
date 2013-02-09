@@ -27,6 +27,8 @@
     float speedY_;
     /// HP
     NSInteger hitPoint_;
+    /// 攻撃力
+    NSInteger power_;
     /// ステージ上に存在しているかどうか
     BOOL isStaged_;
     /// アニメーションパターン数
@@ -57,6 +59,8 @@
 @property (nonatomic)float speedY;
 /// HP
 @property (nonatomic)NSInteger hitPoint;
+/// 攻撃力
+@property (nonatomic)NSInteger power;
 /// ステージ上に存在しているかどうか
 @property (nonatomic)BOOL isStaged;
 /// アニメーションパターン数
@@ -79,7 +83,9 @@
 // 破壊処理
 - (void)destroy;
 // 衝突判定
-- (void)hit:(const NSEnumerator *)characters;
+- (void)checkHit:(const NSEnumerator *)characters;
+// 衝突処理
+- (void)hit:(AKCharacter *)character;
 // 画面外配置判定
 - (BOOL)isOutOfStage;
 @end

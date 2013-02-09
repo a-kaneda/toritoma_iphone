@@ -168,26 +168,36 @@
             
             AKLog(0, @"tag = %d action = %@", item.tag, NSStringFromSelector(item.action));
             
-            // スライド入力の場合
-            if (item.type == kAKMenuTypeSlide) {
-                
-                // まだスライド開始していない場合は開始する
-                if (item.touch == nil) {
-                    item.touch = touch;
-                    item.prevPoint = location;
+            // メニュー種別に応じて処理を分岐する
+            switch (item.type) {
+                case kAKMenuTypeButton:     // タッチボタン
+                    // 選択されていれば親ノードにイベントを送信する
                     [self.parent performSelector:item.action withObject:item];
                     return YES;
-                }
-                // すでにスライド開始している場合は処理しない
-                else {
-                    continue;
-                }
+                    
+                case kAKMenuTypeMomentary:  // モーメンタリボタン
+                    // まだ選択されていない場合はON状態にする
+                    if (item.touch == nil) {
+                        item.touch = touch;
+                        [self.parent performSelector:item.action withObject:item];
+                        return YES;
+                    }
+                    break;
+                    
+                case kAKMenuTypeSlide:      // スライド入力
+                    // まだスライド開始していない場合は開始する
+                    if (item.touch == nil) {
+                        AKLog(1, @"スライド入力開始");
+                        item.touch = touch;
+                        item.prevPoint = location;
+                        [self.parent performSelector:item.action withObject:item];
+                        return YES;
+                    }
+                    break;
+                    
+                default:
+                    break;
             }
-            
-            // 選択されていれば親ノードにイベントを送信する
-            [self.parent performSelector:item.action withObject:item];
-            
-            break;
         }
     }
     
@@ -392,6 +402,52 @@
     // メニュー項目を追加する
     [self addMenuItem:[AKMenuItem itemWithRect:rect
                                           type:kAKMenuTypeButton
+                                        action:action
+                                           tag:tag]];
+    
+    // 作成したメニュー項目を返す
+    return item;
+}
+
+/*!
+ @brief スプライトフレームからメニュー項目作成
+ 
+ スプライトフレームを読み込んでスプライトを作成し、同じ位置にメニュー項目を作成する。
+ @param spriteName 画像名
+ @param pos メニュー項目の位置
+ @param action ボタンタップ時の処理
+ @param z メニュー項目のz座標
+ @param tag メニュー項目のタグ
+ @param type メニュータイプ
+ @return 作成したメニュー項目
+ */
+- (CCSprite *)addMenuWithSpriteFrame:(NSString *)spriteName
+                               atPos:(CGPoint)pos
+                              action:(SEL)action
+                                   z:(NSInteger)z
+                                 tag:(NSUInteger)tag
+                                type:(enum AKMenuType)type
+{
+    // ボタンの画像を読み込む
+    CCSprite *item = [CCSprite spriteWithSpriteFrameName:spriteName];
+    assert(item != nil);
+    
+    // ボタンの位置を設定する
+    item.position = pos;
+    
+    // ボタンをレイヤーに配置する
+    [self addChild:item z:z tag:tag];
+    
+    // メニュー項目の位置をスプライトの左上の端を設定する
+    // メニュー項目の大きさにスプライトのサイズを設定する
+    CGRect rect = CGRectMake(item.position.x - item.contentSize.width / 2,
+                             item.position.y - item.contentSize.height / 2,
+                             item.contentSize.width,
+                             item.contentSize.height);
+
+    // メニュー項目を追加する
+    [self addMenuItem:[AKMenuItem itemWithRect:rect
+                                          type:type
                                         action:action
                                            tag:tag]];
     

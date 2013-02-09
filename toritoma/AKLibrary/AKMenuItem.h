@@ -12,6 +12,7 @@
 /// メニューの種別
 enum AKMenuType {
     kAKMenuTypeButton = 0,  ///< ボタン
+    kAKMenuTypeMomentary,   ///< モーメンタリボタン
     kAKMenuTypeSlide        ///< スライド入力
 };
 
@@ -27,7 +28,7 @@ enum AKMenuType {
     NSUInteger tag_;
     /// 前回タッチ位置(スライド入力時に使用)
     CGPoint prevPoint_;
-    /// タッチ情報(スライド入力時に使用、弱い参照)
+    /// タッチ情報(弱い参照)
     UITouch *touch_;
 }
 
@@ -39,7 +40,7 @@ enum AKMenuType {
 @property (nonatomic)NSUInteger tag;
 /// 前回タッチ位置(スライド入力時に使用)
 @property (nonatomic)CGPoint prevPoint;
-/// タッチ情報(スライド入力時に使用、弱い参照)
+/// タッチ情報(弱い参照)
 @property (nonatomic, assign)UITouch *touch;
 
 // 矩形指定のメニュー項目生成

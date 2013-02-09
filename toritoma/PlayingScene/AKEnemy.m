@@ -212,7 +212,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     AKLog(1, @"start");
     
     // 画面効果を生成する
-    [[AKPlayData getInstance] createEffect:1 x:self.positionX y:self.positionY];
+    [[AKPlayData sharedInstance] createEffect:1 x:self.positionX y:self.positionY];
 }
 
 /*!
@@ -226,7 +226,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
 - (void)fireNWay:(NSInteger)way interval:(float)interval speed:(float)speed
 {
     // 自機インスタンスを取得する
-    AKCharacter *player = [AKPlayData getInstance].player;
+    AKCharacter *player = [AKPlayData sharedInstance].player;
     
     // 敵と自機の位置から角度を計算する
     float baseAnble = AKCalcDestAngle(self.positionX,
@@ -240,7 +240,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     // 各弾を発射する
     for (NSNumber *angle in angleArray) {
         // 通常弾を生成する
-        [[AKPlayData getInstance] createEnemyShotType:kAKEnemyShotTypeNormal
+        [[AKPlayData sharedInstance] createEnemyShotType:kAKEnemyShotTypeNormal
                                                     x:self.positionX
                                                     y:self.positionY
                                                 angle:[angle floatValue]

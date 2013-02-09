@@ -107,7 +107,7 @@ static const NSInteger kAKMaxOptionCount = 3;
     if (shootTime_ < 0.0f) {
         
         // 自機弾を生成する
-        [[AKPlayData getInstance] createPlayerShotAtX:self.positionX y:self.positionY];
+        [[AKPlayData sharedInstance] createPlayerShotAtX:self.positionX y:self.positionY];
         
         // 弾発射までの残り時間をリセットする
         shootTime_ = kAKPlayerShotInterval;
@@ -293,6 +293,20 @@ static const NSInteger kAKMaxOptionCount = 3;
     // 自分の座標を初期座標として次のオプションを設定する
     if (self.option != nil) {
         [self.option setOptionCount:count x:self.positionX y:self.positionY];
+    }
+}
+
+/*!
+ @brief シールド有無設定
+ 
+ オプションのシールド有無を設定する。
+ @param shield シールド有無
+ */
+- (void)setShield:(Boolean)shield
+{
+    // オプションがある場合はオプションのシールド有無を設定する
+    if (self.option != nil) {
+        self.option.shield = shield;
     }
 }
 @end

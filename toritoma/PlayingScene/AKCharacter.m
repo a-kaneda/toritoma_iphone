@@ -27,6 +27,7 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
 @synthesize speedX = speedX_;
 @synthesize speedY = speedY_;
 @synthesize hitPoint = hitPoint_;
+@synthesize power = power_;
 @synthesize isStaged = isStaged_;
 @synthesize animationPattern = animationPattern_;
 @synthesize animationInterval = animationInterval_;
@@ -58,6 +59,9 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     self.hitPoint = 0;
     self.isStaged = NO;
     self.animationTime = 0.0f;
+    
+    // 攻撃力の初期値は1とする
+    self.power = 1;
     
     // アニメーションのデフォルトパターン数は1(アニメーションなし)とする
     self.animationPattern = 1;
@@ -117,8 +121,14 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
         // 画像ファイル名を決定する
         NSString *imageFileName = [NSString stringWithFormat:kAKImageFileFormat, imageName_, 1];
         
-        // 画像を読み込む
-        self.image = [CCSprite spriteWithSpriteFrameName:imageFileName];
+        // スプライト作成前の場合はスプライトを作成する
+        if (self.image == nil) {
+            self.image = [CCSprite spriteWithSpriteFrameName:imageFileName];
+        }
+        // すでにスプライトを作成している場合は画像の切り替えを行う
+        else {
+            [self.image setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:imageFileName]];
+        }
     }
 }
 
@@ -246,7 +256,7 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
  キャラクターが衝突しているか調べ、衝突しているときはHPを減らす。
  @param characters 判定対象のキャラクター群
  */
-- (void)hit:(const NSEnumerator *)characters
+- (void)checkHit:(const NSEnumerator *)characters
 {
     // 画面に配置されていない場合は処理しない
     if (!self.isStaged) {
@@ -259,7 +269,7 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     float mytop = self.positionY + self.height / 2.0f;
     float mybottom = self.positionY - self.height / 2.0f;
     
-    AKLog(0, @"    my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
+    AKLog(0, @"my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
     
     // 判定対象のキャラクターごとに判定を行う
     for (AKCharacter *target in characters) {
@@ -287,13 +297,25 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
             (targettop > mybottom) &&
             (targetbottom < mytop)) {
             
-            // 自分と相手のHPを減らす
-            self.hitPoint--;
-            target.hitPoint--;
+            // 衝突処理を行う
+            [self hit:target];
             
             AKLog(0, @"self.hitPoint=%d, target.hitPoint=%d", self.hitPoint, target.hitPoint);
         }
     }
+}
+
+/*!
+ @brief 衝突処理
+ 
+ 衝突した時の処理、自分と相手のHPを減らす。
+ @param character 衝突した相手
+ */
+- (void)hit:(AKCharacter *)character
+{    
+    // 自分と相手のHPを衝突した相手の攻撃力分減らす
+    self.hitPoint -= character.power;
+    character.hitPoint -= self.power;
 }
 
 /*!
