@@ -52,7 +52,7 @@
         type_ = kAKScriptOpeBack;
     }
     // 障害物
-    else if ([type isEqualToString:@"wall"]) {
+    else if ([type isEqualToString:@"block"]) {
         type_ = kAKScriptOpeWall;
     }
     // スクロールスピード変更

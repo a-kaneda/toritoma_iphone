@@ -1,173 +1,186 @@
 # コメント
+speed 50
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500
 enemy 1 400 200
-sleep 3000
+sleep 1500
+block 1 400 50
+sleep 1500
 enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
-enemy 1 400 200
-sleep 3000
-enemy 1 400 100
-sleep 3000
+sleep 1500
+block 1 400 150
+sleep 1500

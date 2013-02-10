@@ -72,6 +72,11 @@ static const NSInteger kAKMaxOptionCount = 3;
     // チキンゲージをリセットする
     self.chickenGauge = 0.0f;
     
+    // 障害物と衝突した時の処理に自機を設定する。
+    // 自機の場合は移動時は無処理(画面入力時にチェックするため)。
+    // 障害物の衝突判定時は移動を行う。
+    self.blockHitAction = kAKBlockHitPlayer;
+    
     // 画像を親ノードに配置する
     [parent addChild:self.image];
     
@@ -268,9 +273,17 @@ static const NSInteger kAKMaxOptionCount = 3;
         [self.option setPositionX:self.positionX y:self.positionY];
     }
     
+    // 移動前の座標を記憶する
+    self.prevPositionX = self.positionX;
+    self.prevPositionY = self.positionY;
+    
     // 移動先の座標を設定する
     self.positionX = x;
     self.positionY = y;
+    
+    // 障害物との衝突判定を行う
+    [self checkHit:[[AKPlayData sharedInstance].blockPool.pool objectEnumerator]
+              func:@selector(moveOfBlockHit:)];
 }
 
 /*!

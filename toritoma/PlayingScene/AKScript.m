@@ -192,12 +192,14 @@ static NSString *kAKScriptFileName = @"stage_%d";
                 
             case kAKScriptOpeWall:      // 障害物の生成
                 // 障害物を生成する
-                AKLog(1, @"障害物の生成:%d", data.value);
+                AKLog(1, @"障害物の生成:%d pos=(%d, %d)", data.value, data.positionX, data.positionY);
+                [[AKPlayData sharedInstance] createBlock:data.value x:data.positionX y:data.positionY];
                 break;
                 
             case kAKScriptOpeScroll:    // スクロールスピード変更
                 // スクロールスピードを変更する
                 AKLog(1, @"スクロールスピード変更:%d", data.value);
+                [AKPlayData sharedInstance].scrollSpeedX = data.value;
                 break;
                 
             case kAKScriptOpeBGM:       // BGM変更

@@ -32,10 +32,16 @@
     AKCharacterPool *enemyShotPool_;
     /// 画面効果プール
     AKCharacterPool *effectPool_;
+    /// 障害物プール
+    AKCharacterPool *blockPool_;
     /// キャラクター配置バッチノード
     NSMutableArray *batches_;
     /// シールドモード
     Boolean shield_;
+    /// x軸方向のスクロールスピード
+    float scrollSpeedX_;
+    /// y軸方向のスクロールスピード
+    float scrollSpeedY_;
 }
 
 /// シーンクラス(弱い参照)
@@ -54,10 +60,16 @@
 @property (nonatomic, retain)AKCharacterPool *enemyShotPool;
 /// 画面効果プール
 @property (nonatomic, retain)AKCharacterPool *effectPool;
+/// 障害物プール
+@property (nonatomic, retain)AKCharacterPool *blockPool;
 /// キャラクター配置バッチノード
 @property (nonatomic, retain)NSMutableArray *batches;
 /// シールドモード
 @property (nonatomic)Boolean shield;
+/// x軸方向のスクロールスピード
+@property (nonatomic)float scrollSpeedX;
+/// y軸方向のスクロールスピード
+@property (nonatomic)float scrollSpeedY;
 
 // インスタンス取得
 + (AKPlayData *)sharedInstance;
@@ -85,5 +97,7 @@
                       speed:(float)speed;
 // 画面効果生成
 - (void)createEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
+// 障害物生成
+- (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 
 @end

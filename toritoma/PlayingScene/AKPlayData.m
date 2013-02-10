@@ -9,6 +9,7 @@
 #import "AKPlayerShot.h"
 #import "AKEnemy.h"
 #import "AKEffect.h"
+#import "AKBlock.h"
 
 /// 自機初期位置x座標
 static const float kAKPlayerDefaultPosX = 50.0f;
@@ -22,6 +23,8 @@ static const NSInteger kAKMaxEnemyCount = 32;
 static const NSInteger kAKMaxEnemyShotCount = 256;
 /// 画面効果の同時出現最大数
 static const NSInteger kAKMaxEffectCount = 64;
+/// 障害物の同時出現最大数
+static const NSInteger kAKMaxBlockCount = 64;
 /// シールドによるゲージ消費率
 static const float kAKChickenGaugeUseSpeed = 50.0f;
 /// キャラクターテクスチャアトラス定義ファイル名
@@ -38,7 +41,7 @@ enum AKCharacterPositionZ {
     kAKCharaPosZEnemy,      ///< 敵
     kAKCharaPosZEffect,     ///< 爆発効果
     kAKCharaPosZEnemyShot,  ///< 敵弾
-    kAKCharaPosZWall,       ///< 障害物
+    kAKCharaPosZBlock,       ///< 障害物
     kAKCharaPosZCount       ///< z座標種別の数
 };
 
@@ -57,8 +60,11 @@ enum AKCharacterPositionZ {
 @synthesize enemyPool = enemyPool_;
 @synthesize enemyShotPool = enemyShotPool_;
 @synthesize effectPool = effectPool_;
+@synthesize blockPool = blockPool_;
 @synthesize batches = batches_;
 @synthesize shield = shield_;
+@synthesize scrollSpeedX = scrollSpeedX_;
+@synthesize scrollSpeedY = scrollSpeedY_;
 
 /*!
  @brief インスタンス取得
@@ -147,8 +153,15 @@ enum AKCharacterPositionZ {
     // 画面効果プールを作成する
     self.effectPool = [[[AKCharacterPool alloc] initWithClass:[AKEffect class] Size:kAKMaxEffectCount] autorelease];
     
+    // 障害物プールを作成する
+    self.blockPool = [[[AKCharacterPool alloc] initWithClass:[AKBlock class] Size:kAKMaxBlockCount] autorelease];
+    
     // シールドは無効状態で初期化する
     self.shield = NO;
+    
+    // スクロールスピードは0で初期化する
+    self.scrollSpeedX = 0.0f;
+    self.scrollSpeedY = 0.0f;
     
     AKLog(1, @"end");
     return self;
@@ -170,6 +183,7 @@ enum AKCharacterPositionZ {
     self.enemyPool = nil;
     self.enemyShotPool = nil;
     self.effectPool = nil;
+    self.blockPool = nil;
     for (CCNode *node in [self.batches objectEnumerator]) {
         [node removeFromParentAndCleanup:YES];
     }
@@ -213,6 +227,13 @@ enum AKCharacterPositionZ {
     // スクリプトを実行する
     [self.script update:dt];
     
+    // 障害物を更新する
+    for (AKBlock *block in [self.blockPool.pool objectEnumerator]) {
+        if (block.isStaged) {
+            [block move:dt];
+        }
+    }
+    
     // 自機を更新する
     [self.player move:dt];
     
@@ -252,9 +273,31 @@ enum AKCharacterPositionZ {
         }
     }
     
+    // 障害物の当たり判定を行う
+    for (AKBlock *block in [self.blockPool.pool objectEnumerator]) {
+        if (block.isStaged) {
+            
+            // 自機との当たり判定を行う
+            [block checkHit:[NSArray arrayWithObject:self.player]];
+            
+            // 自機弾との当たり判定を行う
+            [block checkHit:[self.playerShotPool.pool objectEnumerator]];
+            
+            // 敵との当たり判定を行う
+            [block checkHit:[self.enemyPool.pool objectEnumerator]];
+            
+            // 敵弾との当たり判定を行う
+            [block checkHit:[self.enemyShotPool.pool objectEnumerator]];
+        }
+    }
+    
     // 敵と自機弾、反射弾の当たり判定を行う
     for (AKEnemy *enemy in [self.enemyPool.pool objectEnumerator]) {
+        
+        // 自機弾との当たり判定を行う
         [enemy checkHit:[self.playerShotPool.pool objectEnumerator]];
+        
+        // 反射弾との当たり判定を行う
         [enemy checkHit:[self.refrectedShotPool.pool objectEnumerator]];
     }
     
@@ -364,7 +407,7 @@ enum AKCharacterPositionZ {
     // プールから未使用のメモリを取得する
     AKPlayerShot *playerShot = [self.playerShotPool getNext];
     if (playerShot == nil) {
-        // 空きがない場合は処理終了
+        // 空きがない場合は処理終了する
         NSAssert(0, @"自機弾プールに空きなし");
         return;
     }
@@ -386,7 +429,7 @@ enum AKCharacterPositionZ {
     // プールから未使用のメモリを取得する
     AKEnemyShot *reflectedShot = [self.refrectedShotPool getNext];
     if (reflectedShot == nil) {
-        // 空きがない場合は処理終了
+        // 空きがない場合は処理終了する
         NSAssert(0, @"反射弾プールに空きなし");
         return;
     }
@@ -408,7 +451,7 @@ enum AKCharacterPositionZ {
     // プールから未使用のメモリを取得する
     AKEnemy *enemy = [self.enemyPool getNext];
     if (enemy == nil) {
-        // 空きがない場合は処理終了
+        // 空きがない場合は処理終了する
         NSAssert(0, @"敵プールに空きなし");
         return;
     }
@@ -436,7 +479,7 @@ enum AKCharacterPositionZ {
     // プールから未使用のメモリを取得する
     AKEnemyShot *enemyShot = [self.enemyShotPool getNext];
     if (enemyShot == nil) {
-        // 空きがない場合は処理終了
+        // 空きがない場合は処理終了する
         NSAssert(0, @"敵弾プールに空きなし");
         return;
     }
@@ -463,7 +506,7 @@ enum AKCharacterPositionZ {
     // プールから未使用のメモリを取得する
     AKEffect *effect = [self.effectPool getNext];
     if (effect == nil) {
-        // 空きがない場合は処理終了
+        // 空きがない場合は処理終了する
         NSAssert(0, @"画面効果プールに空きなし");
         return;
     }
@@ -473,6 +516,31 @@ enum AKCharacterPositionZ {
                            x:x
                            y:y
                       parent:[self.batches objectAtIndex:kAKCharaPosZEffect]];
+}
+
+/*!
+ @brief 障害物生成
+ 
+ 障害物を生成する。
+ @param type 障害物種別
+ @param x x座標
+ @param y y座標
+ */
+- (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
+{
+    // プールから未使用のメモリを取得する
+    AKBlock *block = [self.blockPool getNext];
+    if (block == nil) {
+        // 空きがない場合は処理終了する
+        NSAssert(0, @"障害物プールに空きなし");
+        return;
+    }
+    
+    // 障害物を生成する
+    [block createBlockType:type
+                         x:x
+                         y:y
+                    parent:[self.batches objectAtIndex:kAKCharaPosZBlock]];
 }
 
 @end

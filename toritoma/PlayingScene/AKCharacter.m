@@ -6,6 +6,7 @@
  */
 
 #import "AKCharacter.h"
+#import "AKPlayData.h"
 
 /// デフォルトアニメーション間隔
 static const float kAKDefaultAnimationInterval = 0.2f;
@@ -24,6 +25,8 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
 @synthesize height = height_;
 @synthesize positionX = positionX_;
 @synthesize positionY = positionY_;
+@synthesize prevPositionX = prevPositionX_;
+@synthesize prevPositionY = prevPositionY_;
 @synthesize speedX = speedX_;
 @synthesize speedY = speedY_;
 @synthesize hitPoint = hitPoint_;
@@ -33,6 +36,8 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
 @synthesize animationInterval = animationInterval_;
 @synthesize animationTime = animationTime_;
 @synthesize animationRepeat = animationRepeat_;
+@synthesize isScroll = isScroll_;
+@synthesize blockHitAction = blockHitAction_;
 
 /*!
  @brief オブジェクト生成処理
@@ -54,11 +59,14 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     self.height = 0;
     self.positionX = 0.0f;
     self.positionY = 0.0f;
+    self.prevPositionX = 0.0f;
+    self.prevPositionY = 0.0f;
     self.speedX = 0.0f;
     self.speedY = 0.0f;
     self.hitPoint = 0;
     self.isStaged = NO;
     self.animationTime = 0.0f;
+    self.isScroll = NO;
     
     // 攻撃力の初期値は1とする
     self.power = 1;
@@ -163,10 +171,40 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
         
         return;
     }
+    
+    // 移動前の座標を記憶する
+    self.prevPositionX = self.positionX;
+    self.prevPositionY = self.positionY;
             
     // 座標の移動
     self.positionX += (self.speedX * dt);
     self.positionY += (self.speedY * dt);
+    
+    // 画面スクロールの影響を受ける場合は画面スクロール分も移動する
+    if (self.isScroll) {
+        self.positionX -= [AKPlayData sharedInstance].scrollSpeedX * dt;
+        self.positionY -= [AKPlayData sharedInstance].scrollSpeedY * dt;
+    }
+    
+    // 障害物との衝突判定を行う
+    switch (self.blockHitAction) {
+        case kAKBlockHitNone:       // 無処理
+        case kAKBlockHitPlayer:     // 自機
+            break;
+            
+        case kAKBlockHitMove:       // 移動
+            [self checkHit:[[AKPlayData sharedInstance].blockPool.pool objectEnumerator]
+                      func:@selector(moveOfBlockHit:)];
+            break;
+            
+        case kAKBlockHitDisappear:  // 消滅
+            [self checkHit:[[AKPlayData sharedInstance].blockPool.pool objectEnumerator]
+                      func:@selector(disappearOfBlockHit:)];
+            break;
+            
+        default:
+            break;
+    }
     
     AKLog(0, @"pos=(%.0f, %.0f) scr=(%d, %d)", self.positionX, self.positionY, [AKScreenSize xOfStage:self.positionX], [AKScreenSize yOfStage:self.positionY]);
         
@@ -251,16 +289,18 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
 }
 
 /*!
- @brief 衝突判定
-
- キャラクターが衝突しているか調べ、衝突しているときはHPを減らす。
+ @brief 衝突判定(汎用)
+ 
+ 衝突判定を行う。衝突時にどのような処理を行うかをパラメータで指定する。
  @param characters 判定対象のキャラクター群
+ @param func 衝突時処理
+ @return 衝突したかどうか
  */
-- (void)checkHit:(const NSEnumerator *)characters
+- (Boolean)checkHit:(const NSEnumerator *)characters func:(SEL)func
 {
     // 画面に配置されていない場合は処理しない
     if (!self.isStaged) {
-        return;
+        return NO;
     }
     
     // 自キャラの上下左右の端を計算する
@@ -270,6 +310,9 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     float mybottom = self.positionY - self.height / 2.0f;
     
     AKLog(0, @"my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
+    
+    // 衝突したかどうかを記憶する
+    Boolean isHit = NO;
     
     // 判定対象のキャラクターごとに判定を行う
     for (AKCharacter *target in characters) {
@@ -298,11 +341,30 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
             (targetbottom < mytop)) {
             
             // 衝突処理を行う
-            [self hit:target];
+            if (func != NULL) {
+                [self performSelector:func withObject:target];
+            }
             
             AKLog(0, @"self.hitPoint=%d, target.hitPoint=%d", self.hitPoint, target.hitPoint);
+            
+            // 衝突したかどうかを記憶する
+            isHit = YES;
         }
     }
+    
+    // 衝突したかどうかを返す
+    return isHit;
+}
+
+/*!
+ @brief キャラクター衝突判定
+
+ キャラクターが衝突しているか調べ、衝突しているときはHPを減らす。
+ @param characters 判定対象のキャラクター群
+ */
+- (void)checkHit:(const NSEnumerator *)characters
+{
+    [self checkHit:characters func:@selector(hit:)];
 }
 
 /*!
@@ -312,10 +374,97 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
  @param character 衝突した相手
  */
 - (void)hit:(AKCharacter *)character
-{    
+{
     // 自分と相手のHPを衝突した相手の攻撃力分減らす
     self.hitPoint -= character.power;
     character.hitPoint -= self.power;
+}
+
+/*!
+ @brief 障害物との衝突による移動
+ 
+ 障害物との衝突時に行う移動処理。
+ 進行方向と反対方向へ移動して障害物の境界まで戻る。
+ @param character 衝突した相手
+ */
+- (void)moveOfBlockHit:(AKCharacter *)character
+{
+    // x方向右に進んでいる時に衝突した場合
+    if (self.positionX > self.prevPositionX &&
+        self.positionX > character.positionX - (self.width + character.width) / 2) {
+
+        // 前回の右端が障害物の左端よりも左側ならば
+        // 右端を障害物の左端に合わせる
+        if (self.prevPositionX < character.positionX - (self.width + character.width) / 2) {
+            self.positionX = character.positionX - (self.width + character.width) / 2;
+        }
+        // そうでない場合は前回値に戻す
+        else {
+            self.positionX = self.prevPositionX;
+        }
+    }
+    // x方向左に進んでいる時に衝突した場合
+    else if (self.positionX < self.prevPositionX &&
+             self.positionX < character.positionX + (self.width + character.width) / 2) {
+        
+        // 前回の左端が障害物の右端よりも右側ならば
+        // 左端を障害物の右端に合わせる
+        if (self.prevPositionX > character.positionX + (self.width + character.width) / 2) {
+            self.positionX = character.positionX + (self.width + character.width) / 2;
+        }
+        // そうでない場合は前回値に戻す
+        else {
+            self.positionX = self.prevPositionX;
+        }
+    }
+    // x方向に進んでいない、または衝突していない場合は無処理
+    else {
+        // 無処理
+    }
+    
+    // y方向上に進んでいる時に衝突した場合
+    if (self.positionY > self.prevPositionY &&
+        self.positionY > character.positionY - (self.height + character.height) / 2) {
+        
+        // 前回の上端が障害物の下端よりも下側ならば
+        // 上端を障害物の下端に合わせる
+        if (self.prevPositionY < character.positionY - (self.height + character.height) / 2) {
+            self.positionY = character.positionY - (self.height + character.height) / 2;
+        }
+        // そうでない場合は前回値に戻す
+        else {
+            self.positionY = self.prevPositionY;
+        }
+    }
+    // y方向下に進んでいる時に衝突した場合
+    else if (self.positionY < self.prevPositionY &&
+             self.positionY < character.positionY + (self.height + character.height) / 2) {
+        
+        // 前回の下端が障害物の上端よりも上側ならば
+        // 下端を障害物の上端に合わせる
+        if (self.prevPositionY > character.positionY + (self.height + character.height) / 2) {
+            self.positionY = character.positionY + (self.height + character.height) / 2;
+        }
+        // そうでない場合は前回値に戻す
+        else {
+            self.positionY = self.prevPositionY;
+        }
+    }
+    // y方向に進んでいない、または衝突していない場合は無処理
+    else {
+        // 無処理
+    }
+}
+
+/*!
+ @brief 障害物との衝突による消滅
+ 
+ 障害物との衝突時に行う消滅処理。自分のHPを0にする。
+ @param character 衝突した相手
+ */
+- (void)disappearOfBlockHit:(AKCharacter *)character
+{
+    self.hitPoint = 0.0;
 }
 
 /*!

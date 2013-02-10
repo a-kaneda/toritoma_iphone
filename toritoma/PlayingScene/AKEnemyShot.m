@@ -114,6 +114,9 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
     // かすりポイントを設定する
     self.grazePoint = kAKEnemyShotDef[type - 1].grazePoint;
     
+    // 障害物衝突時は消滅する
+    self.blockHitAction = kAKBlockHitDisappear;
+
     // レイヤーに配置する
     [parent addChild:self.image];
 }
@@ -168,6 +171,9 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
     
     // 攻撃力は反射弾の場合は補正をかける
     self.power = kAKReflectionPower;
+    
+    // 障害物衝突時は消滅する
+    self.blockHitAction = kAKBlockHitDisappear;
     
     // レイヤーに配置する
     [parent addChild:self.image];

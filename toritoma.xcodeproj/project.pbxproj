@@ -15,6 +15,7 @@
 		0CB2ACE916C221FC0094AFFA /* AKOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE816C221FC0094AFFA /* AKOption.m */; };
 		0CB2ACF016C3E3790094AFFA /* Control.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2ACEE16C3E3790094AFFA /* Control.plist */; };
 		0CB2ACF116C3E3790094AFFA /* Control.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2ACEF16C3E3790094AFFA /* Control.png */; };
+		0CB2ACF416C73AB00094AFFA /* AKBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB2ACF316C73AAF0094AFFA /* AKBlock.m */; };
 		0CCA883D1699580B00EB243F /* AKNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA883C1699580B00EB243F /* AKNavigationController.m */; };
 		0CCA88431699615D00EB243F /* AKPlayingScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA88421699615D00EB243F /* AKPlayingScene.m */; };
 		0CCA88461699665D00EB243F /* AKPlayData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA88451699665D00EB243F /* AKPlayData.m */; };
@@ -178,6 +179,8 @@
 		0CB2ACE816C221FC0094AFFA /* AKOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKOption.m; sourceTree = "<group>"; };
 		0CB2ACEE16C3E3790094AFFA /* Control.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Control.plist; path = Resources/Image/Control.plist; sourceTree = "<group>"; };
 		0CB2ACEF16C3E3790094AFFA /* Control.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Control.png; path = Resources/Image/Control.png; sourceTree = "<group>"; };
+		0CB2ACF216C73AAF0094AFFA /* AKBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKBlock.h; sourceTree = "<group>"; };
+		0CB2ACF316C73AAF0094AFFA /* AKBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKBlock.m; sourceTree = "<group>"; };
 		0CCA883B1699580B00EB243F /* AKNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKNavigationController.h; sourceTree = "<group>"; };
 		0CCA883C1699580B00EB243F /* AKNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKNavigationController.m; sourceTree = "<group>"; };
 		0CCA88411699615D00EB243F /* AKPlayingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayingScene.h; sourceTree = "<group>"; };
@@ -521,6 +524,8 @@
 				0CCC524316A348AB00E9A397 /* AKPlayer.m */,
 				0CB2ACE716C221FC0094AFFA /* AKOption.h */,
 				0CB2ACE816C221FC0094AFFA /* AKOption.m */,
+				0CB2ACF216C73AAF0094AFFA /* AKBlock.h */,
+				0CB2ACF316C73AAF0094AFFA /* AKBlock.m */,
 				0CABC16516BE41CC00AFFE1B /* AKPlayerShot.h */,
 				0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */,
 				0CCA88411699615D00EB243F /* AKPlayingScene.h */,
@@ -1218,6 +1223,7 @@
 				0CABC16716BE41CC00AFFE1B /* AKPlayerShot.m in Sources */,
 				0CB2ACE216BF14600094AFFA /* AKChickenGauge.m in Sources */,
 				0CB2ACE916C221FC0094AFFA /* AKOption.m in Sources */,
+				0CB2ACF416C73AB00094AFFA /* AKBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

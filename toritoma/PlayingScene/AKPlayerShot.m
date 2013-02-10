@@ -56,6 +56,9 @@ static const NSInteger kAKPlayerShotHeight = 6;
     // ヒットポイントを設定する
     self.hitPoint = 1;
     
+    // 障害物衝突時は消滅する
+    self.blockHitAction = kAKBlockHitDisappear;
+
     // レイヤーに配置する
     [parent addChild:self.image];
 }
