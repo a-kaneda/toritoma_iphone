@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C2FD94C16BAA59C009DCC2D /* AKEnemyShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */; };
+		0C7E06CB16C9970C0044BF42 /* AKBack.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7E06CA16C9970C0044BF42 /* AKBack.m */; };
 		0CABC16716BE41CC00AFFE1B /* AKPlayerShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */; };
 		0CB2ACE216BF14600094AFFA /* AKChickenGauge.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE116BF14600094AFFA /* AKChickenGauge.m */; };
 		0CB2ACE516C068190094AFFA /* ChickenGauge_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE316C068190094AFFA /* ChickenGauge_01.png */; };
@@ -169,6 +170,8 @@
 /* Begin PBXFileReference section */
 		0C2FD94A16BAA59C009DCC2D /* AKEnemyShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemyShot.h; sourceTree = "<group>"; };
 		0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemyShot.m; sourceTree = "<group>"; };
+		0C7E06C916C9970C0044BF42 /* AKBack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKBack.h; sourceTree = "<group>"; };
+		0C7E06CA16C9970C0044BF42 /* AKBack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKBack.m; sourceTree = "<group>"; };
 		0CABC16516BE41CC00AFFE1B /* AKPlayerShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayerShot.h; sourceTree = "<group>"; };
 		0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayerShot.m; sourceTree = "<group>"; };
 		0CB2ACE016BF14600094AFFA /* AKChickenGauge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKChickenGauge.h; sourceTree = "<group>"; };
@@ -526,6 +529,8 @@
 				0CB2ACE816C221FC0094AFFA /* AKOption.m */,
 				0CB2ACF216C73AAF0094AFFA /* AKBlock.h */,
 				0CB2ACF316C73AAF0094AFFA /* AKBlock.m */,
+				0C7E06C916C9970C0044BF42 /* AKBack.h */,
+				0C7E06CA16C9970C0044BF42 /* AKBack.m */,
 				0CABC16516BE41CC00AFFE1B /* AKPlayerShot.h */,
 				0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */,
 				0CCA88411699615D00EB243F /* AKPlayingScene.h */,
@@ -1224,6 +1229,7 @@
 				0CB2ACE216BF14600094AFFA /* AKChickenGauge.m in Sources */,
 				0CB2ACE916C221FC0094AFFA /* AKOption.m in Sources */,
 				0CB2ACF416C73AB00094AFFA /* AKBlock.m in Sources */,
+				0C7E06CB16C9970C0044BF42 /* AKBack.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

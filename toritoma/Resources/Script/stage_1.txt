@@ -1,6 +1,15 @@
 # コメント
 speed 50
 enemy 1 400 200
+back 1 400 16
+back 1 400 48
+back 1 400 80
+back 1 400 112
+back 1 400 144
+back 1 400 176
+back 1 400 208
+back 1 400 240
+back 1 400 272
 sleep 1500
 block 1 400 50
 sleep 1500

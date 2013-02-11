@@ -188,6 +188,7 @@ static NSString *kAKScriptFileName = @"stage_%d";
             case kAKScriptOpeBack:      // 背景の生成
                 // 背景を生成する
                 AKLog(1, @"背景の生成:%d", data.value);
+                [[AKPlayData sharedInstance] createBack:data.value x:data.positionX y:data.positionY];
                 break;
                 
             case kAKScriptOpeWall:      // 障害物の生成

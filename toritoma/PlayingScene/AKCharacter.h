@@ -53,8 +53,8 @@ enum AKBlockHitAction {
     NSInteger animationRepeat_;
     /// スプライト名
     NSString *imageName_;
-    /// スクロール速度の影響を受けるかどうか
-    Boolean isScroll_;
+    /// スクロール速度の影響を受ける割合
+    float scrollSpeed_;
     /// 障害物と衝突した時の動作
     enum AKBlockHitAction blockHitAction_;
 }
@@ -91,8 +91,8 @@ enum AKBlockHitAction {
 @property (nonatomic)float animationTime;
 /// アニメーション繰り返し回数
 @property (nonatomic)NSInteger animationRepeat;
-/// スクロール速度の影響を受けるかどうか
-@property (nonatomic)Boolean isScroll;
+/// スクロール速度の影響を受ける割合
+@property (nonatomic)float scrollSpeed;
 /// 障害物と衝突した時の動作
 @property (nonatomic)enum AKBlockHitAction blockHitAction;
 

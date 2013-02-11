@@ -10,6 +10,7 @@
 #import "AKEnemy.h"
 #import "AKEffect.h"
 #import "AKBlock.h"
+#import "AKBack.h"
 
 /// 自機初期位置x座標
 static const float kAKPlayerDefaultPosX = 50.0f;
@@ -25,6 +26,8 @@ static const NSInteger kAKMaxEnemyShotCount = 256;
 static const NSInteger kAKMaxEffectCount = 64;
 /// 障害物の同時出現最大数
 static const NSInteger kAKMaxBlockCount = 64;
+/// 背景の同時出現最大数
+static const NSInteger kAKMaxBackCount = 128;
 /// シールドによるゲージ消費率
 static const float kAKChickenGaugeUseSpeed = 50.0f;
 /// キャラクターテクスチャアトラス定義ファイル名
@@ -61,6 +64,7 @@ enum AKCharacterPositionZ {
 @synthesize enemyShotPool = enemyShotPool_;
 @synthesize effectPool = effectPool_;
 @synthesize blockPool = blockPool_;
+@synthesize backPool = backPool_;
 @synthesize batches = batches_;
 @synthesize shield = shield_;
 @synthesize scrollSpeedX = scrollSpeedX_;
@@ -156,6 +160,9 @@ enum AKCharacterPositionZ {
     // 障害物プールを作成する
     self.blockPool = [[[AKCharacterPool alloc] initWithClass:[AKBlock class] Size:kAKMaxBlockCount] autorelease];
     
+    // 背景プールを作成する
+    self.backPool = [[[AKCharacterPool alloc] initWithClass:[AKBack class] Size:kAKMaxBackCount] autorelease];
+    
     // シールドは無効状態で初期化する
     self.shield = NO;
     
@@ -184,6 +191,7 @@ enum AKCharacterPositionZ {
     self.enemyShotPool = nil;
     self.effectPool = nil;
     self.blockPool = nil;
+    self.backPool = nil;
     for (CCNode *node in [self.batches objectEnumerator]) {
         [node removeFromParentAndCleanup:YES];
     }
@@ -226,6 +234,13 @@ enum AKCharacterPositionZ {
 {
     // スクリプトを実行する
     [self.script update:dt];
+    
+    // 背景を更新する
+    for (AKBack *back in [self.backPool.pool objectEnumerator]) {
+        if (back.isStaged) {
+            [back move:dt];
+        }
+    }
     
     // 障害物を更新する
     for (AKBlock *block in [self.blockPool.pool objectEnumerator]) {
@@ -541,6 +556,31 @@ enum AKCharacterPositionZ {
                          x:x
                          y:y
                     parent:[self.batches objectAtIndex:kAKCharaPosZBlock]];
+}
+
+/*!
+ @brief 背景生成
+ 
+ 背景物を生成する。
+ @param type 障害物種別
+ @param x x座標
+ @param y y座標
+ */
+- (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
+{
+    // プールから未使用のメモリを取得する
+    AKBack *back = [self.backPool getNext];
+    if (back == nil) {
+        // 空きがない場合は処理終了する
+        NSAssert(0, @"背景プールに空きなし");
+        return;
+    }
+    
+    // 背景を生成する
+    [back createBackType:type
+                       x:x
+                       y:y
+                  parent:[self.batches objectAtIndex:kAKCharaPosZBack]];
 }
 
 @end

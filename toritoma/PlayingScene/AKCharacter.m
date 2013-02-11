@@ -36,7 +36,7 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
 @synthesize animationInterval = animationInterval_;
 @synthesize animationTime = animationTime_;
 @synthesize animationRepeat = animationRepeat_;
-@synthesize isScroll = isScroll_;
+@synthesize scrollSpeed = scrollSpeed_;
 @synthesize blockHitAction = blockHitAction_;
 
 /*!
@@ -66,7 +66,7 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     self.hitPoint = 0;
     self.isStaged = NO;
     self.animationTime = 0.0f;
-    self.isScroll = NO;
+    self.scrollSpeed = 0.0f;
     
     // 攻撃力の初期値は1とする
     self.power = 1;
@@ -177,15 +177,10 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     self.prevPositionY = self.positionY;
             
     // 座標の移動
-    self.positionX += (self.speedX * dt);
-    self.positionY += (self.speedY * dt);
-    
     // 画面スクロールの影響を受ける場合は画面スクロール分も移動する
-    if (self.isScroll) {
-        self.positionX -= [AKPlayData sharedInstance].scrollSpeedX * dt;
-        self.positionY -= [AKPlayData sharedInstance].scrollSpeedY * dt;
-    }
-    
+    self.positionX += (self.speedX * dt) - ([AKPlayData sharedInstance].scrollSpeedX * dt * self.scrollSpeed);
+    self.positionY += (self.speedY * dt) - ([AKPlayData sharedInstance].scrollSpeedY * dt * self.scrollSpeed);
+        
     // 障害物との衝突判定を行う
     switch (self.blockHitAction) {
         case kAKBlockHitNone:       // 無処理

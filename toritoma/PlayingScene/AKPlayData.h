@@ -34,6 +34,8 @@
     AKCharacterPool *effectPool_;
     /// 障害物プール
     AKCharacterPool *blockPool_;
+    /// 背景プール
+    AKCharacterPool *backPool_;
     /// キャラクター配置バッチノード
     NSMutableArray *batches_;
     /// シールドモード
@@ -62,6 +64,8 @@
 @property (nonatomic, retain)AKCharacterPool *effectPool;
 /// 障害物プール
 @property (nonatomic, retain)AKCharacterPool *blockPool;
+/// 背景プール
+@property (nonatomic, retain)AKCharacterPool *backPool;
 /// キャラクター配置バッチノード
 @property (nonatomic, retain)NSMutableArray *batches;
 /// シールドモード
@@ -99,5 +103,7 @@
 - (void)createEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 // 障害物生成
 - (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
+// 背景生成
+- (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 
 @end

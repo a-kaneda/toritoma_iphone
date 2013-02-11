@@ -64,7 +64,7 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
     self.height = kAKBlockDef[type - 1].hitHeight;
     
     // 障害物は基本的に画面スクロールに応じて移動する
-    self.isScroll = YES;
+    self.scrollSpeed = 1.0f;
         
     // レイヤーに配置する
     [parent addChild:self.image];
