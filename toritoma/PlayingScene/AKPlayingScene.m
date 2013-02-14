@@ -170,6 +170,9 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
     self.chickenGauge = nil;
     [self.shieldButton removeFromParentAndCleanup:YES];
     self.shieldButton = nil;
+    
+    // 未使用のスプライトフレームを解放する
+    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
 
     // スーパークラスの処理を行う
     [super dealloc];
@@ -345,7 +348,7 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
  シールドボタンの表示を選択・非選択状態で切り替えを行う。
  @param seleted 選択状態かどうか
  */
-- (void)setShieldButtonSelected:(Boolean)selected
+- (void)setShieldButtonSelected:(BOOL)selected
 {
     // 選択中かどうかで画像を切り替える
     if (selected) {

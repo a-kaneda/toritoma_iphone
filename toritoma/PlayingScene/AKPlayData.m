@@ -34,6 +34,8 @@ static const float kAKChickenGaugeUseSpeed = 50.0f;
 NSString *kAKTextureAtlasDefFile = @"Character.plist";
 /// キャラクターテクスチャアトラスファイル名
 NSString *kAKTextureAtlasFile = @"Character.png";
+/// ステージクリア後の待機時間
+static const float kAKStageClearWaitTime = 5.0f;
 
 /// キャラクター配置のz座標
 enum AKCharacterPositionZ {
@@ -69,6 +71,7 @@ enum AKCharacterPositionZ {
 @synthesize shield = shield_;
 @synthesize scrollSpeedX = scrollSpeedX_;
 @synthesize scrollSpeedY = scrollSpeedY_;
+@synthesize boss = boss_;
 
 /*!
  @brief インスタンス取得
@@ -170,6 +173,11 @@ enum AKCharacterPositionZ {
     self.scrollSpeedX = 0.0f;
     self.scrollSpeedY = 0.0f;
     
+    // その他のメンバを初期化する
+    stage_ = 0;
+    clearWait_ = 0.0f;
+    boss_ = nil;
+    
     AKLog(1, @"end");
     return self;
 }
@@ -185,6 +193,7 @@ enum AKCharacterPositionZ {
     
     // メンバを解放する
     self.player = nil;
+    self.boss = nil;
     self.playerShotPool = nil;
     self.refrectedShotPool = nil;
     self.enemyPool = nil;
@@ -210,7 +219,7 @@ enum AKCharacterPositionZ {
  画面のシールドボタンの表示も切り替える。
  @param shield シールドモードが有効かどうか
  */
-- (void)setShield:(Boolean)shield
+- (void)setShield:(BOOL)shield
 {
     // メンバに設定する
     shield_ = shield;
@@ -232,8 +241,35 @@ enum AKCharacterPositionZ {
  */
 - (void)update:(ccTime)dt
 {
-    // スクリプトを実行する
-    [self.script update:dt];
+    // クリア後の待機中の場合はスクリプトを実行しない
+    if (clearWait_ > 0.0f) {
+        
+        // 待機時間をカウントする
+        clearWait_ -= dt;
+        
+        // 待機時間が経過した場合は次のステージへと進める
+        if (clearWait_ < 0.0f) {
+            
+            AKLog(1, @"ステージクリア後の待機時間経過");
+            
+            // 次のステージのスクリプトを読み込む
+            [self readScript:stage_ + 1];
+            
+            // 待機時間をリセットする
+            clearWait_ = 0.0f;
+        }
+    }
+    // ステージ実行中の場合はスクリプトの実行を行う
+    else {
+        // スクリプトを実行する
+        if ([self.script update:dt]) {
+            
+            AKLog(1, @"ステージ%dクリア", stage_);
+            
+            // スクリプトをすべて実行した場合はクリア後の待機時間を設定する
+            clearWait_ = kAKStageClearWaitTime;
+        }
+    }
     
     // 背景を更新する
     for (AKBack *back in [self.backPool.pool objectEnumerator]) {
@@ -348,6 +384,22 @@ enum AKCharacterPositionZ {
         [self.player checkHit:[self.enemyShotPool.pool objectEnumerator]];
     }
     
+    // ボスが登場している場合
+    if (self.boss != nil) {
+        
+        // ボスが倒された(いなくなった)場合、スクリプトの読み込みを再開する
+        if (!self.boss.isStaged) {
+            
+            AKLog(1, @"ボス撃破");
+            
+            // スクリプトの読み込みを再開する
+            [self.script resume];
+            
+            // ボスを削除する
+            self.boss = nil;
+        }
+    }
+    
     // シールドが有効な場合はチキンゲージを減少させる
     if (self.shield) {
         self.player.chickenGauge -= kAKChickenGaugeUseSpeed * dt;
@@ -374,6 +426,9 @@ enum AKCharacterPositionZ {
  */
 - (void)readScript:(NSInteger)stage
 {
+    // ステージ番号をメンバに設定する
+    stage_ = stage;
+    
     // スクリプトファイルを読み込む
     self.script = [AKScript scriptWithStageNo:stage];
     
@@ -461,7 +516,7 @@ enum AKCharacterPositionZ {
  @param x x座標
  @param y y座標
  */
-- (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
+- (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBoss:(BOOL)isBoss
 {
     // プールから未使用のメモリを取得する
     AKEnemy *enemy = [self.enemyPool getNext];
@@ -469,6 +524,11 @@ enum AKCharacterPositionZ {
         // 空きがない場合は処理終了する
         NSAssert(0, @"敵プールに空きなし");
         return;
+    }
+    
+    // ボスキャラの場合はメンバに設定する
+    if (isBoss) {
+        self.boss = enemy;
     }
     
     // 敵を生成する

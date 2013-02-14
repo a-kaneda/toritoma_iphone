@@ -104,7 +104,7 @@ static const NSInteger kAKOptionSize = 16;
  次のオプションに対しても同様の設定を行う。
  @param shield シールド有無
  */
-- (void)setShield:(Boolean)shield
+- (void)setShield:(BOOL)shield
 {
     // メンバに設定する
     shield_ = shield;

@@ -80,6 +80,10 @@ static const NSInteger kAKImageHeight = 16;
     [self.fullImage removeFromParentAndCleanup:YES];
     self.fullImage = nil;
     
+    // テクスチャを解放する
+    [[CCTextureCache sharedTextureCache] removeTextureForKey:kAKEmptyImageName];
+    [[CCTextureCache sharedTextureCache] removeTextureForKey:kAKFullImageName];
+    
     // スーパークラスの解放処理
     [super dealloc];
 }

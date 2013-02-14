@@ -187,7 +187,7 @@
                 case kAKMenuTypeSlide:      // スライド入力
                     // まだスライド開始していない場合は開始する
                     if (item.touch == nil) {
-                        AKLog(1, @"スライド入力開始");
+                        AKLog(0, @"スライド入力開始");
                         item.touch = touch;
                         item.prevPoint = location;
                         [self.parent performSelector:item.action withObject:item];

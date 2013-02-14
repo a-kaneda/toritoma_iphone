@@ -16,7 +16,7 @@
     /// 次のオプション
     AKOption *next_;
     /// シールド有無
-    Boolean shield_;
+    BOOL shield_;
 }
 
 /// 移動座標
@@ -24,7 +24,7 @@
 /// 次のオプション
 @property (nonatomic, retain)AKOption *next;
 /// シールド有無
-@property (nonatomic)Boolean shield;
+@property (nonatomic)BOOL shield;
 
 // 初期化処理
 - (id)initWithOptionCount:(NSInteger)count parent:(CCNode *)parent;

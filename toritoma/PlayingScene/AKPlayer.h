@@ -42,6 +42,6 @@
 // オプション数更新
 - (void)updateOptionCount;
 // シールド有無設定
-- (void)setShield:(Boolean)shield;
+- (void)setShield:(BOOL)shield;
 
 @end

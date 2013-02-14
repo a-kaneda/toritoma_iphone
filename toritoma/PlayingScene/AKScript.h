@@ -29,7 +29,7 @@
 // コンビニエンスコンストラクタ
 + (id)scriptWithStageNo:(NSInteger)stage;
 // 更新処理
-- (void)update:(float)dt;
+- (BOOL)update:(float)dt;
 // 停止解除
 - (void)resume;
 

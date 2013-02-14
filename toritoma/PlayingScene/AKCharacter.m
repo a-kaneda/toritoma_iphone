@@ -291,7 +291,7 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
  @param func 衝突時処理
  @return 衝突したかどうか
  */
-- (Boolean)checkHit:(const NSEnumerator *)characters func:(SEL)func
+- (BOOL)checkHit:(const NSEnumerator *)characters func:(SEL)func
 {
     // 画面に配置されていない場合は処理しない
     if (!self.isStaged) {
@@ -307,7 +307,7 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     AKLog(0, @"my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
     
     // 衝突したかどうかを記憶する
-    Boolean isHit = NO;
+    BOOL isHit = NO;
     
     // 判定対象のキャラクターごとに判定を行う
     for (AKCharacter *target in characters) {

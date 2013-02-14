@@ -18,6 +18,10 @@
 @interface AKPlayData : NSObject {
     /// シーンクラス(弱い参照)
     AKPlayingScene *scene_;
+    /// ステージ番号
+    NSInteger stage_;
+    /// クリア後の待機時間
+    float clearWait_;
     /// スクリプト情報
     AKScript *script_;
     /// 自機
@@ -39,11 +43,13 @@
     /// キャラクター配置バッチノード
     NSMutableArray *batches_;
     /// シールドモード
-    Boolean shield_;
+    BOOL shield_;
     /// x軸方向のスクロールスピード
     float scrollSpeedX_;
     /// y軸方向のスクロールスピード
     float scrollSpeedY_;
+    /// ボスキャラ
+    AKCharacter *boss_;
 }
 
 /// シーンクラス(弱い参照)
@@ -69,11 +75,13 @@
 /// キャラクター配置バッチノード
 @property (nonatomic, retain)NSMutableArray *batches;
 /// シールドモード
-@property (nonatomic)Boolean shield;
+@property (nonatomic)BOOL shield;
 /// x軸方向のスクロールスピード
 @property (nonatomic)float scrollSpeedX;
 /// y軸方向のスクロールスピード
 @property (nonatomic)float scrollSpeedY;
+/// ボスキャラ
+@property (nonatomic, retain)AKCharacter *boss;
 
 // インスタンス取得
 + (AKPlayData *)sharedInstance;
@@ -92,7 +100,7 @@
 // 反射弾生成
 - (void)createReflectiedShot:(AKEnemyShot *)enemyShot;
 // 敵生成
-- (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
+- (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBoss:(BOOL)isBoss;
 // 敵弾生成
 - (void)createEnemyShotType:(NSInteger)type
                           x:(NSInteger)x

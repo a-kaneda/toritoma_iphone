@@ -107,7 +107,7 @@ enum AKBlockHitAction {
 // 破壊処理
 - (void)destroy;
 // 衝突判定(汎用)
-- (Boolean)checkHit:(const NSEnumerator *)characters func:(SEL)func;
+- (BOOL)checkHit:(const NSEnumerator *)characters func:(SEL)func;
 // キャラクター衝突判定
 - (void)checkHit:(const NSEnumerator *)characters;
 // 衝突処理

@@ -132,12 +132,13 @@ static NSString *kAKScriptFileName = @"stage_%d";
  待機命令を見つけるまで命令を実行する。
  待機命令を見つけたら指定された時間経過するまで待機する。
  @param dt フレーム更新間隔
+ @return すべてのスクリプトを実行し終わったかどうか
  */
-- (void)update:(float)dt
+- (BOOL)update:(float)dt
 {
     // 停止中の場合は処理を終了する
     if (isPause_) {
-        return;
+        return NO;
     }
     
     // 現在の待機時間をカウントする
@@ -173,12 +174,13 @@ static NSString *kAKScriptFileName = @"stage_%d";
             case kAKScriptOpeEnemy:     // 敵の生成
                 // 敵を生成する
                 AKLog(1, @"敵の生成:%d pos=(%d, %d)", data.value, data.positionX, data.positionY);
-                [[AKPlayData sharedInstance] createEnemy:data.value x:data.positionX y:data.positionY];
+                [[AKPlayData sharedInstance] createEnemy:data.value x:data.positionX y:data.positionY isBoss:NO];
                 break;
                 
             case kAKScriptOpeBoss:      // ボスの生成
                 // ボスを生成する
                 AKLog(1, @"ボスの生成:%d", data.value);
+                [[AKPlayData sharedInstance] createEnemy:data.value x:data.positionX y:data.positionY isBoss:YES];
                 
                 // ボスが倒されるまでスクリプトの実行を停止する
                 isPause_ = YES;
@@ -199,8 +201,9 @@ static NSString *kAKScriptFileName = @"stage_%d";
                 
             case kAKScriptOpeScroll:    // スクロールスピード変更
                 // スクロールスピードを変更する
-                AKLog(1, @"スクロールスピード変更:%d", data.value);
-                [AKPlayData sharedInstance].scrollSpeedX = data.value;
+                AKLog(1, @"スクロールスピード変更:(%d, %d)", data.positionX, data.positionY);
+                [AKPlayData sharedInstance].scrollSpeedX = data.positionX;
+                [AKPlayData sharedInstance].scrollSpeedY = data.positionY;
                 break;
                 
             case kAKScriptOpeBGM:       // BGM変更
@@ -219,7 +222,10 @@ static NSString *kAKScriptFileName = @"stage_%d";
     // すべての行を実行した場合はステージクリア処理を行う
     if (currentLine_ >= self.dataList.count) {
         AKLog(0, @"すべての行を実行完了");
+        return YES;
     }
+    
+    return NO;
 }
 
 /*!

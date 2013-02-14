@@ -13,7 +13,7 @@ static NSString *kAKImageNameFormat = @"Enemy_%02d";
 /// 画像の種類の数
 static const NSInteger kAKEnemyImageDefCount = 1;
 /// 敵の種類の数
-static const NSInteger kAKEnemyDefCount = 1;
+static const NSInteger kAKEnemyDefCount = 2;
 
 /// 敵画像の定義
 static const struct AKEnemyImageDef kAKEnemyImageDef[kAKEnemyImageDefCount] = {
@@ -22,7 +22,8 @@ static const struct AKEnemyImageDef kAKEnemyImageDef[kAKEnemyImageDefCount] = {
 
 /// 敵の定義
 static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
-    {1, 1, 1, 32, 32, 3, 100}   // トンボ
+    {1, 1, 1, 32, 32, 3, 100},  // トンボ
+    {2, 1, 1, 32, 32, 3, 100}   // テスト用
 };
 
 /// 標準弾の種別
@@ -148,6 +149,9 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
         case 1:
             return @selector(action_01:);
             
+        case 2:
+            return @selector(action_02:);
+            
         default:
             NSAssert(0, @"不正な種別");
             return @selector(action_01:);
@@ -186,6 +190,35 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     
     // 左へ直進する
     self.speedX = -120.0f;
+    self.speedY = 0.0f;
+    
+    // 一定時間経過しているときは自機を狙う1-way弾を発射する
+    if (time_ > 1.0f) {
+        
+        // 弾を発射する
+        [self fireNWay:1 interval:0.0f speed:kAKShotSpeed];
+        
+        // 動作時間の初期化を行う
+        time_ = 0.0f;
+    }
+    
+    AKLog(0, @"pos=(%f, %f)", self.positionX, self.positionY);
+    AKLog(0, @"img=(%f, %f)", self.image.position.x, self.image.position.y);
+}
+
+/*!
+ @brief 動作処理2
+ 
+ 停止。一定間隔で自機を狙う1-way弾発射。
+ @param dt フレーム更新間隔
+ */
+- (void)action_02:(ccTime)dt
+{
+    // 弾のスピード
+    const float kAKShotSpeed = 150.f;
+    
+    // 動かない
+    self.speedX = 0.0f;
     self.speedY = 0.0f;
     
     // 一定時間経過しているときは自機を狙う1-way弾を発射する

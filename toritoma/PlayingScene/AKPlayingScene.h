@@ -60,6 +60,6 @@ enum AKGameState {
 // シールドボタン選択処理
 - (void)touchShieldButton:(id)object;
 // シールドボタン表示切替
-- (void)setShieldButtonSelected:(Boolean)selected;
+- (void)setShieldButtonSelected:(BOOL)selected;
 
 @end

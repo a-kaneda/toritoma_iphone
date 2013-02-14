@@ -49,6 +49,8 @@ struct AKEnemyDef {
 - (SEL)destroySeletor:(NSInteger)type;
 // 動作処理1
 - (void)action_01:(ccTime)dt;
+// 動作処理2
+- (void)action_02:(ccTime)dt;
 // 破壊処理1
 - (void)destroy_01;
 // n-Way弾発射

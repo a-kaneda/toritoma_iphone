@@ -315,7 +315,7 @@ static const NSInteger kAKMaxOptionCount = 3;
  オプションのシールド有無を設定する。
  @param shield シールド有無
  */
-- (void)setShield:(Boolean)shield
+- (void)setShield:(BOOL)shield
 {
     // オプションがある場合はオプションのシールド有無を設定する
     if (self.option != nil) {
