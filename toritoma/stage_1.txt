@@ -1,7 +1,0 @@
-# コメント
-enemy 1
-back 2
-sleep 3000
-wall 3
-speed 4
-bgm 5
