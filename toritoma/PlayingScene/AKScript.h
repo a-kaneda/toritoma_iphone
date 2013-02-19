@@ -62,6 +62,8 @@
 + (id)scriptWithStageNo:(NSInteger)stage;
 // 更新処理
 - (BOOL)update:(float)dt;
+// 命令実行
+- (void)execScriptData:(AKScriptData *)data;
 // 停止解除
 - (void)resume;
 

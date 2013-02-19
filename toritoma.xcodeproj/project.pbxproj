@@ -169,6 +169,7 @@
 		0CD2CC80169922B000088557 /* vec4.c in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2CC7F169922B000088557 /* vec4.c */; };
 		0CD2CC85169922B000088557 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2CC84169922B000088557 /* main.m */; };
 		0CD2CC88169922B000088557 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2CC87169922B000088557 /* AppDelegate.m */; };
+		0CE6278F16D41E72008CDCC2 /* AKLogNoDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE6278E16D41E72008CDCC2 /* AKLogNoDef.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -496,6 +497,8 @@
 		0CD2CC86169922B000088557 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0CD2CC87169922B000088557 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0CD2CC9B169934A000088557 /* AKLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLib.h; sourceTree = "<group>"; };
+		0CE6278D16D2D1CC008CDCC2 /* AKLogNoDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKLogNoDef.h; sourceTree = "<group>"; };
+		0CE6278E16D41E72008CDCC2 /* AKLogNoDef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKLogNoDef.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1028,6 +1031,8 @@
 				0CCA883B1699580B00EB243F /* AKNavigationController.h */,
 				0CCA883C1699580B00EB243F /* AKNavigationController.m */,
 				0CD2CC9B169934A000088557 /* AKLib.h */,
+				0CE6278D16D2D1CC008CDCC2 /* AKLogNoDef.h */,
+				0CE6278E16D41E72008CDCC2 /* AKLogNoDef.m */,
 			);
 			path = AKLibrary;
 			sourceTree = "<group>";
@@ -1246,6 +1251,7 @@
 				0CB2ACE916C221FC0094AFFA /* AKOption.m in Sources */,
 				0CB2ACF416C73AB00094AFFA /* AKBlock.m in Sources */,
 				0C7E06CB16C9970C0044BF42 /* AKBack.m in Sources */,
+				0CE6278F16D41E72008CDCC2 /* AKLogNoDef.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

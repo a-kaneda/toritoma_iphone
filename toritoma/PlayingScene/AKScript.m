@@ -61,7 +61,7 @@ static NSString *kAKScriptFileName = @"stage_%d";
     // スーパークラスの初期化処理を行う
     self = [super init];
     if (!self) {
-        AKLog(1, @"error");
+        AKLog(kAKLogScript_0, @"error");
         return nil;
     }
     
@@ -76,7 +76,7 @@ static NSString *kAKScriptFileName = @"stage_%d";
     // ファイルパスをバンドルから取得する
     NSBundle *bundle = [NSBundle mainBundle];
     NSString *filePath = [bundle pathForResource:file ofType:@"txt"];
-    AKLog(0, @"filePath=%@", filePath);
+    AKLog(kAKLogScript_1, @"filePath=%@", filePath);
     
     // ステージ定義ファイルを読み込む
     NSError *error = nil;
@@ -85,7 +85,7 @@ static NSString *kAKScriptFileName = @"stage_%d";
                                                          error:&error];
     // ファイル読み込みエラー
     if (stageScript == nil && error != nil) {
-        AKLog(1, @"%@", [error localizedDescription]);
+        AKLog(kAKLogScript_0, @"%@", [error localizedDescription]);
     }
     
     // スクリプトデータ保存用の配列を作成する
@@ -93,6 +93,9 @@ static NSString *kAKScriptFileName = @"stage_%d";
     
     // 繰り返し命令保存用の配列を作成する
     self.repeatList = [NSMutableArray array];
+    
+    // 前回のループで作成した命令オブジェクト
+    AKScriptData *prevData = nil;
     
     // ステージ定義ファイルの範囲の間は処理を続ける
     for (NSRange lineRange = {0};
@@ -104,11 +107,11 @@ static NSString *kAKScriptFileName = @"stage_%d";
         
         // 1行の文字列を取得する
         NSString *line = [stageScript substringWithRange:lineRange];
-        AKLog(0, @"%@", line);
+        AKLog(kAKLogScript_2, @"%@", line);
         
         // 1文字目が"#"の場合は処理を飛ばす
         if ([[line substringToIndex:1] isEqualToString:@"#"]) {
-            AKLog(0, @"コメント:%@", line);
+            AKLog(kAKLogScript_0, @"コメント:%@", line);
             continue;
         }
         
@@ -119,27 +122,34 @@ static NSString *kAKScriptFileName = @"stage_%d";
         
         // 空白区切りでトークンを分割する
         NSArray *params = [line componentsSeparatedByString:@" "];
-             
-        // 1個目のパラメータは命令種別として扱う
-        NSString *type = [params objectAtIndex:0];
         
-        // 2個目のパラメータは命令の値として扱う
-        NSInteger value = [[params objectAtIndex:1] integerValue];
+        // スクリプトデータを作成する
+        AKScriptData *scriptData = [AKScriptData scriptDataWithParams:params];
         
-        // 3個目のパラメータがある場合はx座標として扱う
-        NSInteger x = 0;
-        if (params.count >= 3) {
-            x = [[params objectAtIndex:2] integerValue];
+        // 前回作成したデータが繰り返し命令の場合は繰り返し命令のメンバに設定する
+        if (prevData != nil && prevData.type == kAKScriptOpeRepeat) {
+            
+            AKLog(kAKLogScript_1, @"繰り返し命令の登録");
+            
+            // 繰り返し命令のあとに繰り返し命令、待機命令が出てきた場合はエラーとして無視する
+            if (scriptData.type == kAKScriptOpeRepeat ||
+                scriptData.type == kAKScriptOpeSleep) {
+                
+                AKLog(kAKLogScript_0, @"繰り返し対象の命令が不正:%d", scriptData.type);
+                NSAssert(NO, @"繰り返し対象の命令が不正");
+                continue;
+            }
+            
+            // 繰り返し命令のメンバに設定する
+            prevData.repeatOpe = scriptData;
+        }
+        // その他の場合は自分のメンバに設定する
+        else {
+            [self.dataList addObject:scriptData];
         }
         
-        // 4個目のパラメータがある場合はy座標として扱う
-        NSInteger y = 0;
-        if (params.count >= 4) {
-            y = [[params objectAtIndex:3] integerValue];
-        }
-        
-        // スクリプトデータを作成し、配列に格納する
-        [self.dataList addObject:[AKScriptData scriptDataWithType:type value:value x:x y:y]];
+        // 今回作成したデータを前回分として保存する
+        prevData = scriptData;
     }
     
     return self;
@@ -155,6 +165,21 @@ static NSString *kAKScriptFileName = @"stage_%d";
 + (id)scriptWithStageNo:(NSInteger)stage
 {
     return [[[AKScript alloc] initWithStageNo:stage] autorelease];
+}
+
+/*!
+ @brief オブジェクト解放処理
+ 
+ オブジェクトの解放を行う。
+ */
+- (void)dealloc
+{
+    // メンバを解放する
+    self.dataList = nil;
+    self.repeatList = nil;
+    
+    // スーパークラスの処理を行う
+    [super dealloc];
 }
 
 /*!
@@ -176,6 +201,24 @@ static NSString *kAKScriptFileName = @"stage_%d";
     // 現在の待機時間をカウントする
     sleepTime_ += dt;
     
+    // 繰り返し命令を実行する
+    for (AKScriptData *data in [self.repeatList objectEnumerator]) {
+        
+        // 繰り返し待機時間をカウントする
+        data.repeatWaitTime += dt;
+        
+        // 繰り返し間隔を経過している場合は命令を実行する
+        // 繰り返し間隔はミリ秒で指定しているので桁合わせを行う
+        if (data.repeatWaitTime > data.repeatInterval / 1000.0f) {
+            
+            // 繰り返し命令を実行する
+            [self execScriptData:data.repeatOpe];
+            
+            // 繰り返し待機時間をリセットする
+            data.repeatWaitTime = 0.0f;
+        }
+    }
+    
     // 各命令を実行する
     for (; currentLine_ < self.dataList.count; currentLine_++) {
         
@@ -185,79 +228,133 @@ static NSString *kAKScriptFileName = @"stage_%d";
         // 待機の場合は指定待機時間経過しているかチェックする
         if (data.type == kAKScriptOpeSleep) {
             
-            AKLog(0, @"待機:%d 現在の待機時間:%f", data.value, sleepTime_);
+            AKLog(kAKLogScript_2, @"待機:%d 現在の待機時間:%f", data.sleepTime, sleepTime_);
 
             // 待機時間が経過していない場合は処理を終了する
             // 待機時間はミリ秒で指定しているので桁合わせを行う
-            if (sleepTime_ < data.value / 1000.0f) {
+            if (sleepTime_ < data.sleepTime / 1000.0f) {
                 break;
             }
             // 待機時間が経過している場合は指定された時間分だけ
             // 現在の待機時間からマイナスして次の命令を実行する
             else {
-                sleepTime_ -= data.value / 1000.0f;
+                sleepTime_ -= data.sleepTime / 1000.0f;
                 continue;
             }
         }
         
-        // 命令の種別に応じて処理を実行する
-        switch (data.type) {
-                
-            case kAKScriptOpeEnemy:     // 敵の生成
-                // 敵を生成する
-                AKLog(1, @"敵の生成:%d pos=(%d, %d)", data.value, data.positionX, data.positionY);
-                [[AKPlayData sharedInstance] createEnemy:data.value x:data.positionX y:data.positionY isBoss:NO];
-                break;
-                
-            case kAKScriptOpeBoss:      // ボスの生成
-                // ボスを生成する
-                AKLog(1, @"ボスの生成:%d", data.value);
-                [[AKPlayData sharedInstance] createEnemy:data.value x:data.positionX y:data.positionY isBoss:YES];
-                
-                // ボスが倒されるまでスクリプトの実行を停止する
-                isPause_ = YES;
-                
-                break;
-                
-            case kAKScriptOpeBack:      // 背景の生成
-                // 背景を生成する
-                AKLog(1, @"背景の生成:%d", data.value);
-                [[AKPlayData sharedInstance] createBack:data.value x:data.positionX y:data.positionY];
-                break;
-                
-            case kAKScriptOpeWall:      // 障害物の生成
-                // 障害物を生成する
-                AKLog(1, @"障害物の生成:%d pos=(%d, %d)", data.value, data.positionX, data.positionY);
-                [[AKPlayData sharedInstance] createBlock:data.value x:data.positionX y:data.positionY];
-                break;
-                
-            case kAKScriptOpeScroll:    // スクロールスピード変更
-                // スクロールスピードを変更する
-                AKLog(1, @"スクロールスピード変更:(%d, %d)", data.positionX, data.positionY);
-                [AKPlayData sharedInstance].scrollSpeedX = data.positionX;
-                [AKPlayData sharedInstance].scrollSpeedY = data.positionY;
-                break;
-                
-            case kAKScriptOpeBGM:       // BGM変更
-                // BGMを変更する
-                AKLog(1, @"BGM変更:%d", data.value);
-                break;
-                
-            default:                    // その他
-                // 不明な命令種別のため、エラー
-                AKLog(1, @"不明な命令種別:%d", data.value);
-                NSAssert(0, @"不明な命令種別");
-                break;
-        }
+        // スクリプトの処理を実行する
+        [self execScriptData:data];
     }
     
-    // すべての行を実行した場合はステージクリア処理を行う
+    // すべての行を実行した場合は終了を呼び出し元に返す
     if (currentLine_ >= self.dataList.count) {
-        AKLog(0, @"すべての行を実行完了");
+        AKLog(kAKLogScript_1, @"すべての行を実行完了");
         return YES;
     }
     
     return NO;
+}
+
+/*!
+ @brief 命令実行
+ 
+ スクリプトデータの命令を実行する。
+ */
+- (void)execScriptData:(AKScriptData *)data
+{
+    // 命令の種別に応じて処理を実行する
+    switch (data.type) {
+            
+        case kAKScriptOpeEnemy:     // 敵の生成
+            // 敵を生成する
+            AKLog(kAKLogScript_1, @"敵の生成:%d pos=(%d, %d)", data.characterNo, data.positionX, data.positionY);
+            [[AKPlayData sharedInstance] createEnemy:data.characterNo
+                                                   x:data.positionX
+                                                   y:data.positionY
+                                              isBoss:NO];
+            break;
+            
+        case kAKScriptOpeBoss:      // ボスの生成
+            // ボスを生成する
+            AKLog(kAKLogScript_1, @"ボスの生成:%d pos=(%d, %d)", data.characterNo, data.positionX, data.positionY);
+            [[AKPlayData sharedInstance] createEnemy:data.characterNo
+                                                   x:data.positionX
+                                                   y:data.positionY
+                                              isBoss:YES];
+            
+            // ボスが倒されるまでスクリプトの実行を停止する
+            isPause_ = YES;
+            
+            break;
+            
+        case kAKScriptOpeBack:      // 背景の生成
+            // 背景を生成する
+            AKLog(kAKLogScript_1, @"背景の生成:%d pos=(%d, %d)", data.characterNo, data.positionX, data.positionY);
+            [[AKPlayData sharedInstance] createBack:data.characterNo
+                                                  x:data.positionX
+                                                  y:data.positionY];
+            break;
+            
+        case kAKScriptOpeWall:      // 障害物の生成
+            // 障害物を生成する
+            AKLog(kAKLogScript_1, @"障害物の生成:%d pos=(%d, %d)", data.characterNo, data.positionX, data.positionY);
+            [[AKPlayData sharedInstance] createBlock:data.characterNo
+                                                   x:data.positionX
+                                                   y:data.positionY];
+            break;
+            
+        case kAKScriptOpeScroll:    // スクロールスピード変更
+            // スクロールスピードを変更する
+            AKLog(kAKLogScript_1, @"スクロールスピード変更:(%d, %d)", data.positionX, data.positionY);
+            [AKPlayData sharedInstance].scrollSpeedX = data.positionX;
+            [AKPlayData sharedInstance].scrollSpeedY = data.positionY;
+            break;
+            
+        case kAKScriptOpeBGM:       // BGM変更
+            // BGMを変更する
+            AKLog(kAKLogScript_1, @"BGM変更:%d", data.bgmNo);
+            break;
+            
+        case kAKScriptOpeRepeat:    // 繰り返し命令
+            // 繰り返し命令を実行する
+            AKLog(kAKLogScript_1, @"");
+            
+            // 繰り返しの開始の場合は命令を実行後、繰り返し命令配列に登録する
+            if (data.enableRepeat) {
+                
+                // 繰り返し命令を実行する
+                [self execScriptData:data.repeatOpe];
+                
+                // 繰り返し命令配列に登録する
+                [self.repeatList addObject:data];
+                
+            }
+            // 繰り返しの停止の場合は繰り返し命令配列から削除する
+            else {
+                
+                // 削除対象の命令の配列を作成する
+                NSMutableArray *removeDatas = [NSMutableArray arrayWithCapacity:self.repeatList.count];
+                
+                // 繰り返し命令配列からIDが一致するものを削除配列に登録する
+                for (AKScriptData *repeatData in [self.repeatList objectEnumerator]) {
+                    
+                    if (repeatData.repeatID == data.repeatID) {
+                        [removeDatas addObject:repeatData];
+                    }
+                }
+                
+                // 繰り返し命令配列から削除対象の命令を削除する
+                [self.repeatList removeObjectsInArray:removeDatas];
+            }
+            break;
+            
+        default:                    // その他
+            // 不明な命令種別のため、エラー
+            AKLog(kAKLogScript_0, @"不明な命令種別:%d", data.type);
+            NSAssert(NO, @"不明な命令種別");
+            break;
+    }
 }
 
 /*!
@@ -270,5 +367,4 @@ static NSString *kAKScriptFileName = @"stage_%d";
 {
     isPause_ = NO;
 }
-
 @end

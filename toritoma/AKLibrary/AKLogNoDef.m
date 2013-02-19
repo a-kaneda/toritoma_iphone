@@ -27,32 +27,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
- @file AKLib.h
- @brief 共通ライブラリインクルード
+ @file AKLogNoDef.m
+ @brief ログ区分定義
  
- 共通ライブラリのヘッダーをインクルードする。
+ ログの開始、停止を管理するための定数を定義する。
  */
 
-// 共通関数定義
-#import "AKCommon.h"
-
-// 画面サイズ管理クラス
-#import "AKScreenSize.h"
-
-// フォントクラス
-#import "AKFont.h"
-
-// ラベルクラス
-#import "AKLabel.h"
-
-// メニュー項目クラス
-#import "AKMenuItem.h"
-
-// インターフェースクラス
-#import "AKInterface.h"
-
-// カスタマイズNavigation Controller
-#import "AKNavigationController.h"
-
-// ログ区分定義
 #import "AKLogNoDef.h"
+
+BOOL kAKLogScript_0 = YES;
+BOOL kAKLogScript_1 = YES;
+BOOL kAKLogScript_2 = NO;
+BOOL kAKLogScriptData_0 = YES;
+BOOL kAKLogScriptData_1 = NO;

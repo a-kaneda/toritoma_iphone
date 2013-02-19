@@ -55,24 +55,22 @@ enum AKScriptOpeType {
 @interface AKScriptData : NSObject {
     /// 命令種別
     enum AKScriptOpeType type_;
-    /// 命令の値
-    NSInteger value_;
-    /// 生成位置x座標
-    NSInteger positionX_;
-    /// 生成位置y座標
-    NSInteger positionY_;
     /// パラメータ
     NSInteger params_[kAKMaxParamCount];
     /// 繰り返し命令
-    AKScriptData *repeat_;
+    AKScriptData *repeatOpe_;
+    /// 繰り返し待機時間
+    float repeatWaitTime_;
 }
 
 /// 命令種別
 @property (nonatomic, readonly)enum AKScriptOpeType type;
-/// 命令の値
-@property (nonatomic, readonly)NSInteger value;
-/// 種別
-@property (nonatomic, readonly)NSInteger characterType;
+/// 繰り返し命令
+@property (nonatomic, retain)AKScriptData *repeatOpe;
+/// 繰り返し待機時間
+@property (nonatomic)float repeatWaitTime;
+/// 生成キャラクター番号
+@property (nonatomic, readonly)NSInteger characterNo;
 /// 生成位置x座標
 @property (nonatomic, readonly)NSInteger positionX;
 /// 生成位置y座標
@@ -81,6 +79,8 @@ enum AKScriptOpeType {
 @property (nonatomic, readonly)NSInteger speedX;
 /// スクロールスピードy座標
 @property (nonatomic, readonly)NSInteger speedY;
+/// BGM番号
+@property (nonatomic, readonly)NSInteger bgmNo;
 /// 待機時間
 @property (nonatomic, readonly)NSInteger sleepTime;
 /// 繰り返し有効・無効
@@ -91,8 +91,8 @@ enum AKScriptOpeType {
 @property (nonatomic, readonly)NSInteger repeatInterval;
 
 // 初期化処理
-- (id)initWithType:(NSString *)type value:(NSInteger)value x:(NSInteger)x y:(NSInteger)y;
+- (id)initWithParams:(NSArray *)params;
 // コンビニエンスコンストラクタ
-+ (id)scriptDataWithType:(NSString *)type value:(NSInteger)value x:(NSInteger)x y:(NSInteger)y;
++ (id)scriptDataWithParams:(NSArray *)params;
 
 @end
