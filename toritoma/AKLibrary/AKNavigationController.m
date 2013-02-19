@@ -36,6 +36,7 @@
 #import <Twitter/TWTweetComposeViewController.h>
 #import "AKNavigationController.h"
 #import "SimpleAudioEngine.h"
+#import "AKLogNoDef.h"
 
 /// アプリのURL
 //static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id569653828?l=ja&ls=1&mt=8";
@@ -93,7 +94,7 @@
  */
 - (void)viewDidLoad
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogNavigationController_1, @"start");
     
     // スーパークラスの処理を実行する
     [super viewDidLoad];
@@ -103,7 +104,7 @@
 //        [self createAdBanner];
 //    }
     
-    AKLog(1, @"end");
+    AKLog(kAKLogNavigationController_1, @"end");
 }
 
 /*!
@@ -191,7 +192,7 @@
 /*
 - (void)createAdBanner
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogNavigationController_1, @"start");
     
     // 画面下部に標準サイズのビューを作成する
     self.bannerView = [[[GADBannerView alloc] initWithFrame:CGRectMake(0.0,
@@ -217,7 +218,7 @@
     // リクエストを行って広告を読み込む
     [self.bannerView loadRequest:request];
     
-    AKLog(1, @"end");
+    AKLog(kAKLogNavigationController_1, @"end");
 }
  */
 
@@ -229,7 +230,7 @@
 /*
 - (void)deleteAdBanner
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogNavigationController_1, @"start");
     
     // バナーを取り除く
     [self.bannerView removeFromSuperview];
@@ -240,7 +241,7 @@
     // バナーを削除する
     self.bannerView = nil;
     
-    AKLog(1, @"end");
+    AKLog(kAKLogNavigationController_1, @"end");
 }
  */
 
@@ -265,16 +266,16 @@
     viewController.completionHandler = ^(TWTweetComposeViewControllerResult res) {
         
         // 送信完了時のログを出力する
-        AKLog(res == TWTweetComposeViewControllerResultDone, @"Tweet送信完了");
+        AKLog(kAKLogNavigationController_1 && res == TWTweetComposeViewControllerResultDone, @"Tweet送信完了");
         
         // 送信キャンセル時のログを出力する
-        AKLog(res == TWTweetComposeViewControllerResultCancelled, @"Tweetキャンセル");
+        AKLog(kAKLogNavigationController_1 && res == TWTweetComposeViewControllerResultCancelled, @"Tweetキャンセル");
         
         // モーダルウィンドウを閉じる
         [self dismissModalViewControllerAnimated:YES];
     };
     
-    AKLog(1, @"Twitter View表示");
+    AKLog(kAKLogNavigationController_1, @"Twitter View表示");
     // Twitter Viewを表示する
     [self presentModalViewController:viewController animated:YES];
 }
@@ -290,7 +291,7 @@
 /*
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogNavigationController_1, @"start");
     
     // 画面内に広告を表示する
     bannerView.frame = CGRectMake(0.0,
@@ -298,7 +299,7 @@
                                   bannerView.frame.size.width,
                                   bannerView.frame.size.height);
     
-    AKLog(1, @"end");
+    AKLog(kAKLogNavigationController_1, @"end");
 }
  */
 
@@ -313,7 +314,7 @@
 /*
 - (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogNavigationController_1, @"start");
     
     // ビューの位置を画面外に設定する
     bannerView.frame = CGRectMake(0.0,
@@ -321,7 +322,7 @@
                                   bannerView.frame.size.width,
                                   bannerView.frame.size.height);
     
-    AKLog(1, @"end");
+    AKLog(kAKLogNavigationController_1, @"end");
 }
  */
 
@@ -335,7 +336,7 @@
 /*
 - (void)adViewWillPresentScreen:(GADBannerView *)bannerView
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogNavigationController_1, @"start");
     
     // 実行中のシーンを取得する
     CCScene *scene = [[CCDirector sharedDirector] runningScene];
@@ -357,7 +358,7 @@
         }
     }
     
-    AKLog(1, @"end");
+    AKLog(kAKLogNavigationController_1, @"end");
 }
  */
 
@@ -370,7 +371,7 @@
 /*
 - (void)adViewDidDismissScreen:(GADBannerView *)bannerView
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogNavigationController_1, @"start");
 }
  */
 
@@ -383,7 +384,7 @@
 /*
 - (void)adViewWillLeaveApplication:(GADBannerView *)bannerView
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogNavigationController_1, @"start");
 }
  */
 @end

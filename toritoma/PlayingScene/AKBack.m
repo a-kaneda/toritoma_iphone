@@ -63,7 +63,7 @@ static const struct AKBackDef kAKBackDef[kAKBackDefCount] = {
  */
 - (void)createBackType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y parent:(CCNode *)parent
 {
-    AKLog(0, @"背景生成");
+    AKLog(kAKLogBack_1, @"背景生成");
     
     // パラメータの内容をメンバに設定する
     self.positionX = x;

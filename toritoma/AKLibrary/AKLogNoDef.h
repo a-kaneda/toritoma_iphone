@@ -31,10 +31,52 @@
  @brief ログ区分定義
  
  ログの開始、停止を管理するための定数を定義する。
+ 定数名はkAK<クラス名>_<区分>とする。
+ 区分は0:エラー処理、1:通常処理、2〜:ループ処理等頻繁に呼ばれる処理とする。
  */
 
+#ifdef DEBUG
+extern BOOL kAKLogBack_0;
+extern BOOL kAKLogBack_1;
+extern BOOL kAKLogBlock_0;
+extern BOOL kAKLogBlock_1;
+extern BOOL kAKLogCharacter_0;
+extern BOOL kAKLogCharacter_1;
+extern BOOL kAKLogCharacterPool_0;
+extern BOOL kAKLogCharacterPool_1;
+extern BOOL kAKLogChickenGauge_0;
+extern BOOL kAKLogChickenGauge_1;
+extern BOOL kAKLogEffect_0;
+extern BOOL kAKLogEffect_1;
+extern BOOL kAKLogEnemy_0;
+extern BOOL kAKLogEnemy_1;
+extern BOOL kAKLogEnemyShot_0;
+extern BOOL kAKLogEnemyShot_1;
+extern BOOL kAKLogFont_0;
+extern BOOL kAKLogFont_1;
+extern BOOL kAKLogInterface_0;
+extern BOOL kAKLogInterface_1;
+extern BOOL kAKLogLabel_0;
+extern BOOL kAKLogLabel_1;
+extern BOOL kAKLogMenuItem_0;
+extern BOOL kAKLogMenuItem_1;
+extern BOOL kAKLogNavigationController_0;
+extern BOOL kAKLogNavigationController_1;
+extern BOOL kAKLogOption_0;
+extern BOOL kAKLogOption_1;
+extern BOOL kAKLogPlayData_0;
+extern BOOL kAKLogPlayData_1;
+extern BOOL kAKLogPlayer_0;
+extern BOOL kAKLogPlayer_1;
+extern BOOL kAKLogPlayerShot_0;
+extern BOOL kAKLogPlayerShot_1;
+extern BOOL kAKLogPlayingScene_0;
+extern BOOL kAKLogPlayingScene_1;
+extern BOOL kAKLogScreenSize_0;
+extern BOOL kAKLogScreenSize_1;
 extern BOOL kAKLogScript_0;
 extern BOOL kAKLogScript_1;
 extern BOOL kAKLogScript_2;
 extern BOOL kAKLogScriptData_0;
 extern BOOL kAKLogScriptData_1;
+#endif

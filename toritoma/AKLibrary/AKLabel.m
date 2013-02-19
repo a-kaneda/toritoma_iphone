@@ -34,6 +34,7 @@
  */
 
 #import "AKLabel.h"
+#import "AKLogNoDef.h"
 
 /// 左上の枠のキー
 static NSString *kAKTopLeft = @"TopLeft";
@@ -271,7 +272,7 @@ enum {
     // 変更された場合のみ処理を行う
     if (isReverse_ != isReverse) {
         
-        AKLog(1, @"色反転設定:%d", isReverse);
+        AKLog(kAKLogLabel_1, @"色反転設定:%d", isReverse);
 
         // メンバに設定する
         isReverse_ = isReverse;
@@ -339,7 +340,7 @@ enum {
  */
 - (void)setString:(NSString *)label
 {
-    AKLog(0, @"start setString:label.lengt=%d length_=%d line_=%d", label.length, length_, line_);
+    AKLog(kAKLogLabel_1, @"start setString:label.lengt=%d length_=%d line_=%d", label.length, length_, line_);
     
     // 文字列が表示可能文字数を超えている場合はエラー
     assert(label.length <= length_ * line_);
@@ -380,7 +381,7 @@ enum {
                 c = ' ';
             }
             
-            AKLog(0, @"x=%d y=%d c=%C", x, y, c);
+            AKLog(kAKLogLabel_1, @"x=%d y=%d c=%C", x, y, c);
             
             // フォントクラスからスプライトフレームを生成する
             CCSpriteFrame *charSpriteFrame = [[AKFont sharedInstance] spriteFrameOfChar:c isReverse:self.isReverse];
@@ -491,7 +492,9 @@ enum {
             break;
             
         default:
-            NSAssert(0, @"枠の種類が異常:m_frame=%d", frame_);
+        
+            AKLog(kAKLogLabel_0, @"枠の種類が異常:m_frame=%d", frame_);
+            NSAssert(NO, @"枠の種類が異常");
             return;
     }
     
@@ -499,54 +502,54 @@ enum {
     // 枠を入れるため、上下+-1個分用意する。
     for (int y = -1; y < (int)(line_ * kAKLabelLineHeight) + 1; y++) {
         
-        AKLog(0, @"y=%d pos=%f", y, (-y + line_ * kAKLabelLineHeight / 2.0f) * [AKFont fontSize]);
+        AKLog(kAKLogLabel_1, @"y=%d pos=%f", y, (-y + line_ * kAKLabelLineHeight / 2.0f) * [AKFont fontSize]);
         
         // 枠を入れるため、左右+-1個分用意する。
         for (int x = -1; x < length_ + 1; x++) {
             
-            AKLog(0 && y == -1, @"x=%d pos=%f", x, (x - length_ / 2.0f) * [AKFont fontSize]);
+            AKLog(kAKLogLabel_1 && y == -1, @"x=%d pos=%f", x, (x - length_ / 2.0f) * [AKFont fontSize]);
             
             // キー文字列
             NSString *key = nil;
             
             // 左上の場合
             if (y == -1 && x == -1) {
-                AKLog(0, @"x=%d y=%d topleft", x, y);
+                AKLog(kAKLogLabel_1, @"x=%d y=%d topleft", x, y);
                 key = keyTopLeft;
             }
             // 右上の場合
             else if (y == -1 && x == length_) {
-                AKLog(0, @"x=%d y=%d topright", x, y);
+                AKLog(kAKLogLabel_1, @"x=%d y=%d topright", x, y);
                 key = keyTopRight;
             }
             // 左下の場合
             else if (y == (int)(line_ * 1.5) && x == -1) {
-                AKLog(0, @"x=%d y=%d bottomleft", x, y);
+                AKLog(kAKLogLabel_1, @"x=%d y=%d bottomleft", x, y);
                 key = keyBottomLeft;
             }
             // 右下の場合
             else if (y == (int)(line_ * 1.5) && x == length_) {
-                AKLog(0, @"x=%d y=%d bottomright", x, y);
+                AKLog(kAKLogLabel_1, @"x=%d y=%d bottomright", x, y);
                 key = keyBottomRight;
             }
             // 上の場合
             else if (y == -1) {
-                AKLog(0, @"x=%d y=%d topbar", x, y);
+                AKLog(kAKLogLabel_1, @"x=%d y=%d topbar", x, y);
                 key = keyTopBar;
             }
             // 左の場合
             else if (x == -1) {
-                AKLog(0, @"x=%d y=%d leftbar", x, y);
+                AKLog(kAKLogLabel_1, @"x=%d y=%d leftbar", x, y);
                 key = keyLeftBar;
             }
             // 右の場合
             else if (x == length_) {
-                AKLog(0, @"x=%d y=%d rightbar", x, y);
+                AKLog(kAKLogLabel_1, @"x=%d y=%d rightbar", x, y);
                 key = keyRightBar;
             }
             // 下の場合
             else if (y == (int)(line_ * 1.5)) {
-                AKLog(0, @"x=%d y=%d bottombar", x, y);
+                AKLog(kAKLogLabel_1, @"x=%d y=%d bottombar", x, y);
                 key = keyBottomBar;
             }
             // 文字の部分の場合
@@ -557,7 +560,7 @@ enum {
             // 先頭からの文字数をタグとする
             // xとyはそれぞれ-1からスタートしているため、+1して0からスタートするように補正する。
             NSInteger tag = (x + 1) + (y + 1) * (length_ + 1 + 1);
-            AKLog(0, @"tag=%d", tag);
+            AKLog(kAKLogLabel_1, @"tag=%d", tag);
             
             // フォントクラスからスプライトフレームを生成する
             CCSpriteFrame *charSpriteFrame = [[AKFont sharedInstance] spriteFrameWithKey:key isReverse:self.isReverse];

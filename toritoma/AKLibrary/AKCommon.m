@@ -164,7 +164,7 @@ float AKCalcDestAngle(float srcx, float srcy, float dstx, float dsty)
         angle += M_PI;
     }
 
-    AKLog(0, @"angle=%f vy=%f vx=%f vy/vx=%f", AKCnvAngleRad2Deg(angle), vy, vx, vy / vx);
+    AKLog(NO, @"angle=%f vy=%f vx=%f vy/vx=%f", AKCnvAngleRad2Deg(angle), vy, vx, vy / vx);
     
     return angle;
 }
@@ -187,7 +187,7 @@ int AKCalcRotDirect(float angle, float srcx, float srcy, float dstx, float dsty)
     float destsin = 0.0f;   // sin(目的角度 - 現在の角度)
     float destcos = 0.0f;   // cos(目的角度 - 現在の角度)
     
-    AKLog(0, @"angle=%f src=(%f, %f) dst=(%f, %f)", AKCnvAngleRad2Deg(angle), srcx, srcy, dstx, dsty);
+    AKLog(NO, @"angle=%f src=(%f, %f) dst=(%f, %f)", AKCnvAngleRad2Deg(angle), srcx, srcy, dstx, dsty);
  
     // 角度を計算する
     destangle = AKCalcDestAngle(srcx, srcy, dstx, dsty);
@@ -271,7 +271,7 @@ NSArray* AKCalcNWayAngle(int count, float centerAngle, float space)
  */
 BOOL AKIsInside(CGPoint point, CGRect rect)
 {
-    AKLog(AKGetDebugFlg(), @"point=(%f,%f) rect=(%f,%f,%f,%f)", point.x, point.y, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    AKLog(NO, @"point=(%f,%f) rect=(%f,%f,%f,%f)", point.x, point.y, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
     if ((point.x >= rect.origin.x && point.x <= rect.origin.x + rect.size.width) &&
         (point.y >= rect.origin.y && point.y <= rect.origin.y + rect.size.height)) {

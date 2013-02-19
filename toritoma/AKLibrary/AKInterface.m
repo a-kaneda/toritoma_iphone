@@ -34,9 +34,7 @@
  */
 
 #import "AKInterface.h"
-
-// スライド入力の誤差許容範囲
-
+#import "AKLogNoDef.h"
 
 /*!
  @brief 画面入力管理クラス
@@ -153,7 +151,7 @@
  */
 - (void)onEnter
 {
-    AKLog(1, @"onEnter start");
+    AKLog(kAKLogInterface_1, @"onEnter start");
     
     // 親クラスの処理を呼び出す
     [super onEnter];
@@ -161,7 +159,7 @@
     // タッチイベント処理を開始する
     [[[CCDirector sharedDirector] touchDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
 
-    AKLog(1, @"onEnter end");
+    AKLog(kAKLogInterface_1, @"onEnter end");
 }
 
 /*!
@@ -176,7 +174,7 @@
 {
     // メニュー項目が登録されていない場合は処理を終了する
     if (self.menuItems == nil) {
-        AKLog(1, @"メニュー項目なし");
+        AKLog(kAKLogInterface_1, @"メニュー項目なし");
         return YES;
     }
     
@@ -186,7 +184,7 @@
     // cocos2dの座標系に変換する
     CGPoint location = [[CCDirector sharedDirector] convertToGL:locationInView];
     
-    AKLog(0, @"location = (%f, %f)", location.x, location.y);
+    AKLog(kAKLogInterface_1, @"location = (%f, %f)", location.x, location.y);
     
     // 各項目の選択処理を行う
     for (AKMenuItem *item in [self.menuItems objectEnumerator]) {
@@ -194,7 +192,7 @@
         // 有効な項目で選択されている場合は処理を行う
         if ((item.tag & self.enableTag || item.tag == 0) && [item isSelectPos:location]) {
             
-            AKLog(0, @"tag = %d action = %@", item.tag, NSStringFromSelector(item.action));
+            AKLog(kAKLogInterface_1, @"tag = %d action = %@", item.tag, NSStringFromSelector(item.action));
             
             // メニュー種別に応じて処理を分岐する
             switch (item.type) {
@@ -215,7 +213,7 @@
                 case kAKMenuTypeSlide:      // スライド入力
                     // まだスライド開始していない場合は開始する
                     if (item.touch == nil) {
-                        AKLog(0, @"スライド入力開始");
+                        AKLog(kAKLogInterface_1, @"スライド入力開始");
                         item.touch = touch;
                         item.prevPoint = location;
                         [self.parent performSelector:item.action withObject:item];
@@ -241,7 +239,7 @@
  */
 - (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    AKLog(0, @"start");
+    AKLog(kAKLogInterface_1, @"start");
     
     // キャンセルするメニュー項目を検索する
     for (AKMenuItem *item in [self.menuItems objectEnumerator]) {
@@ -259,7 +257,7 @@
         }
     }
     
-    AKLog(0, @"end");
+    AKLog(kAKLogInterface_1, @"end");
 }
 
 /*!
@@ -271,7 +269,7 @@
  */
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    AKLog(0, @"start");
+    AKLog(kAKLogInterface_1, @"start");
 
     // 終了するメニュー項目を検索する
     for (AKMenuItem *item in [self.menuItems objectEnumerator]) {
@@ -279,7 +277,7 @@
         // メニュー項目のタッチイベントと終了されたタッチイベントが一致した場合
         if (item.touch == touch) {
             
-            AKLog(0, @"タッチ入力終了");
+            AKLog(kAKLogInterface_1, @"タッチ入力終了");
 
             // 最後のイベントを実行する
             [self.parent performSelector:item.action withObject:item];
@@ -291,7 +289,7 @@
         }
     }
 
-    AKLog(0, @"end");
+    AKLog(kAKLogInterface_1, @"end");
 }
 
 /*!
@@ -303,7 +301,7 @@
  */
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    AKLog(0, @"start");
+    AKLog(kAKLogInterface_1, @"start");
 
     // 移動するメニュー項目を検索する
     for (AKMenuItem *item in [self.menuItems objectEnumerator]) {
@@ -327,7 +325,7 @@
         }
     }
     
-    AKLog(0, @"メニューに対応していないスライド");
+    AKLog(kAKLogInterface_1, @"メニューに対応していないスライド");
     
     // 画面上のタッチ位置を取得する
     CGPoint locationInView = [touch locationInView:[touch view]];
@@ -338,21 +336,19 @@
     // 一致するメニュー項目がなかった場合に、まだタッチイベントが開始されていない項目がある場合は関連付ける
     for (AKMenuItem *item in [self.menuItems objectEnumerator]) {
         
-        AKLog(0 && item.type == kAKMenuTypeSlide, @"touch=%@", item.touch);
+        AKLog(kAKLogInterface_1 && item.type == kAKMenuTypeSlide, @"touch=%@", item.touch);
         
         // スライド入力以外とすでにタッチイベントが開始されているものは除外する
         if (item.type != kAKMenuTypeSlide || item.touch != nil) {
             continue;
         }
         
-        AKSetDebugFlg(0);
-        AKLog(AKGetDebugFlg(), @"isSelectedPos=%d", [item isSelectPos:location]);
-        AKSetDebugFlg(0);
+        AKLog(kAKLogInterface_1, @"isSelectedPos=%d", [item isSelectPos:location]);
         
         // 有効な項目で選択されている場合は処理を行う
         if ((item.tag & self.enableTag || item.tag == 0) && [item isSelectPos:location]) {
             
-            AKLog(1, @"メニュー項目切り替え");
+            AKLog(kAKLogInterface_1, @"メニュー項目切り替え");
             
             item.touch = touch;
             item.prevPoint = location;
@@ -361,7 +357,7 @@
         }
     }
     
-    AKLog(0, @"end");
+    AKLog(kAKLogInterface_1, @"end");
 }
 
 /*!
@@ -514,7 +510,7 @@
     // ラベルを画面に配置する
     [self addChild:label z:z tag:tag];
     
-    AKLog(0, @"rect=(%f, %f, %f, %f)", label.rect.origin.x, label.rect.origin.y, label.rect.size.width, label.rect.size.height);
+    AKLog(kAKLogInterface_1, @"rect=(%f, %f, %f, %f)", label.rect.origin.x, label.rect.origin.y, label.rect.size.width, label.rect.size.height);
     
     // メニュー項目をインターフェースに追加する
     [self addMenuItem:[AKMenuItem itemWithRect:label.rect type:kAKMenuTypeButton action:action tag:tag]];

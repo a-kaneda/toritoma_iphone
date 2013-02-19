@@ -64,7 +64,7 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
  */
 - (void)createBlockType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y parent:(CCNode *)parent
 {
-    AKLog(1, @"障害物生成");
+    AKLog(kAKLogBlock_1, @"障害物生成");
     
     // パラメータの内容をメンバに設定する
     self.positionX = x;
@@ -134,7 +134,7 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
  */
 - (void)pushCharacter:(AKCharacter *)character
 {
-    AKLog(1, @"障害物とキャラクターの衝突");
+    AKLog(kAKLogBlock_1, @"障害物とキャラクターの衝突");
     
     // 障害物左端への移動
     float leftX = self.positionX - (self.width + character.width) / 2;

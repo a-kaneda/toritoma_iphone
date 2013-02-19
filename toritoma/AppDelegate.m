@@ -156,8 +156,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // 画面の向きがLandscapeの場合のみ回転を許可する。    
-    AKLog(1, @"interfaceOrientation=%d retval=%d",
-          interfaceOrientation, UIInterfaceOrientationIsLandscape(interfaceOrientation));
     return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 

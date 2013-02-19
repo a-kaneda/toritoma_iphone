@@ -181,7 +181,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
             return @selector(action_02:);
             
         default:
-            NSAssert(0, @"不正な種別");
+            NSAssert(NO, @"不正な種別");
             return @selector(action_01:);
     }
 }
@@ -200,7 +200,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
             return @selector(destroy_01);
             
         default:
-            NSAssert(0, @"不正な種別");
+            NSAssert(NO, @"不正な種別");
             return @selector(destroy_01);
     }
 }
@@ -230,8 +230,8 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
         time_ = 0.0f;
     }
     
-    AKLog(0, @"pos=(%f, %f)", self.positionX, self.positionY);
-    AKLog(0, @"img=(%f, %f)", self.image.position.x, self.image.position.y);
+    AKLog(kAKLogEnemy_1, @"pos=(%f, %f)", self.positionX, self.positionY);
+    AKLog(kAKLogEnemy_1, @"img=(%f, %f)", self.image.position.x, self.image.position.y);
 }
 
 /*!
@@ -259,8 +259,8 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
         time_ = 0.0f;
     }
     
-    AKLog(0, @"pos=(%f, %f)", self.positionX, self.positionY);
-    AKLog(0, @"img=(%f, %f)", self.image.position.x, self.image.position.y);
+    AKLog(kAKLogEnemy_1, @"pos=(%f, %f)", self.positionX, self.positionY);
+    AKLog(kAKLogEnemy_1, @"img=(%f, %f)", self.image.position.x, self.image.position.y);
 }
 
 /*!
@@ -270,7 +270,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  */
 - (void)destroy_01
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogEnemy_1, @"start");
     
     // 画面効果を生成する
     [[AKPlayData sharedInstance] createEffect:1 x:self.positionX y:self.positionY];

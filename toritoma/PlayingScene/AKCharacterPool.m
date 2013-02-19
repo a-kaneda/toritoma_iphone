@@ -57,7 +57,7 @@
     int i = 0;                  // ループ変数
     AKCharacter *character = nil; // キャラクター生成用バッファ
     
-    AKLog(0, @"class=%@ size=%d", characlass, size);
+    AKLog(kAKLogCharacterPool_1, @"class=%@ size=%d", characlass, size);
     
     // スーパークラスの生成処理
     self = [super init];
@@ -110,7 +110,7 @@
     AKCharacter *ret = nil;   // 戻り値
     AKCharacter *work = nil;  // ワーク変数
     
-    AKLog(0, @"m_size=%d", size_);
+    AKLog(kAKLogCharacterPool_1, @"m_size=%d", size_);
     
     // 未使用のキャラクターを検索する
     for (i = 0; i < size_; i++) {
@@ -121,7 +121,7 @@
         // インデックスを進める
         next_ = (next_ + 1) % size_;
         
-        AKLog(0, @"i=%d work.isStaged=%d", i, work.isStaged);
+        AKLog(kAKLogCharacterPool_1, @"i=%d work.isStaged=%d", i, work.isStaged);
         
         // 使用中かどうか調べる
         if (!work.isStaged) {

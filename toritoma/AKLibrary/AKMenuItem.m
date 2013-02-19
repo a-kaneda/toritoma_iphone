@@ -34,6 +34,7 @@
  */
 
 #import "AKMenuItem.h"
+#import "AKLogNoDef.h"
 
 /*!
  @brief メニュー項目クラス
@@ -67,7 +68,7 @@
         return nil;
     }
     
-    AKLog(0, "rect = (%f, %f, %f, %f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    AKLog(kAKLogMenuItem_1, "rect = (%f, %f, %f, %f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
     // 引数をメンバに設定する
     pos_ = rect;

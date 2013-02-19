@@ -257,7 +257,7 @@ static const NSInteger kAKMaxOptionCount = 3;
         float targettop = target.positionY + target.height / 2.0f;
         float targetbottom = target.positionY - target.height / 2.0f;
         
-        AKLog(0, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
+        AKLog(kAKLogPlayer_1, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
         
         // 以下のすべての条件を満たしている時、衝突していると判断する。
         //   ・相手の右端が自キャラの左端よりも右側にある
@@ -282,7 +282,7 @@ static const NSInteger kAKMaxOptionCount = 3;
             // 相手のかすりポイントをリセットする
             target.grazePoint = 0.0f;
             
-            AKLog(0, @"chickenGauge=%f", self.chickenGauge);
+            AKLog(kAKLogPlayer_1, @"chickenGauge=%f", self.chickenGauge);
         }
     }
 }
@@ -329,7 +329,7 @@ static const NSInteger kAKMaxOptionCount = 3;
         count = kAKMaxOptionCount;
     }
     
-    AKLog(0, @"ゲージ=%f オプション個数=%d", self.chickenGauge, count);
+    AKLog(kAKLogPlayer_1, @"ゲージ=%f オプション個数=%d", self.chickenGauge, count);
     
     // 自分の座標を初期座標として次のオプションを設定する
     if (self.option != nil) {

@@ -229,7 +229,9 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
             break;
     }
     
-    AKLog(0, @"pos=(%.0f, %.0f) scr=(%d, %d)", self.positionX, self.positionY, [AKScreenSize xOfStage:self.positionX], [AKScreenSize yOfStage:self.positionY]);
+    AKLog(kAKLogCharacter_1, @"pos=(%.0f, %.0f) scr=(%d, %d)",
+          self.positionX, self.positionY,
+          [AKScreenSize xOfStage:self.positionX], [AKScreenSize yOfStage:self.positionY]);
         
     // 表示座標の設定
     self.image.position = ccp([AKScreenSize xOfStage:self.positionX],
@@ -273,7 +275,7 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
         }
     }
     
-    AKLog(0, @"pattern=%d time=%f interval=%f", pattern, self.animationTime, self.animationInterval);
+    AKLog(kAKLogCharacter_1, @"pattern=%d time=%f interval=%f", pattern, self.animationTime, self.animationInterval);
     
     // アニメーションパターンに応じて画像ファイル名を作成する
     NSString *imageFileName = [NSString stringWithFormat:kAKImageFileFormat, self.imageName, pattern];
@@ -307,7 +309,7 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     self.isStaged = NO;
     
     // 画面から取り除く
-    AKLog(0, @"removeFromParentAndCleanup実行");
+    AKLog(kAKLogCharacter_1, @"removeFromParentAndCleanup実行");
     [self.image removeFromParentAndCleanup:YES];
 }
 
@@ -332,7 +334,7 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     float mytop = self.positionY + self.height / 2.0f;
     float mybottom = self.positionY - self.height / 2.0f;
     
-    AKLog(0, @"my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
+    AKLog(kAKLogCharacter_1, @"my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
     
     // 衝突したかどうかを記憶する
     BOOL isHit = NO;
@@ -351,7 +353,7 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
         float targettop = target.positionY + target.height / 2.0f;
         float targetbottom = target.positionY - target.height / 2.0f;
         
-        AKLog(0, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
+        AKLog(kAKLogCharacter_1, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
         
         // 以下のすべての条件を満たしている時、衝突していると判断する。
         //   ・相手の右端が自キャラの左端よりも右側にある
@@ -368,7 +370,7 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
                 [self performSelector:func withObject:target];
             }
             
-            AKLog(0, @"self.hitPoint=%d, target.hitPoint=%d", self.hitPoint, target.hitPoint);
+            AKLog(kAKLogCharacter_1, @"self.hitPoint=%d, target.hitPoint=%d", self.hitPoint, target.hitPoint);
             
             // 衝突したかどうかを記憶する
             isHit = YES;

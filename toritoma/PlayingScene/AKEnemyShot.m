@@ -159,7 +159,7 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
  */
 - (void)createReflectedShot:(AKEnemyShot *)base parent:(CCNode *)parent
 {
-    AKLog(1, @"反射弾生成");
+    AKLog(kAKLogEnemyShot_1, @"反射弾生成");
     
     // 位置を設定する
     self.positionX = base.positionX;
@@ -221,7 +221,7 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
             return @selector(action_01:);
             
         default:
-            NSAssert(0, @"不正な種別");
+            NSAssert(NO, @"不正な種別");
             return @selector(action_01:);
     }
 }

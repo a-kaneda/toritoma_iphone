@@ -121,7 +121,8 @@ enum AKCharacterPositionZ {
     }
     
     // 現在実行中のシーンがゲームプレイシーンでない場合はエラー
-    NSAssert(0, @"ゲームプレイ中以外にゲームシーンクラスの取得が行われた");
+    AKLog(kAKLogPlayData_0, @"ゲームプレイ中以外にゲームシーンクラスの取得が行われた");
+    NSAssert(NO, @"ゲームプレイ中以外にゲームシーンクラスの取得が行われた");
     return nil;
 }
 
@@ -134,12 +135,12 @@ enum AKCharacterPositionZ {
  */
 - (id)initWithScene:(AKPlayingScene *)scene
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogPlayData_1, @"start");
     
     // スーパークラスの初期化処理を行う
     self = [super init];
     if (!self) {
-        AKLog(1, @"error");
+        AKLog(kAKLogPlayData_0, @"error");
         return nil;
     }
     
@@ -206,7 +207,7 @@ enum AKCharacterPositionZ {
     clearWait_ = 0.0f;
     boss_ = nil;
     
-    AKLog(1, @"end");
+    AKLog(kAKLogPlayData_1, @"end");
     return self;
 }
 
@@ -217,7 +218,7 @@ enum AKCharacterPositionZ {
  */
 - (void)dealloc
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogPlayData_1, @"start");
     
     // メンバを解放する
     self.player = nil;
@@ -237,7 +238,7 @@ enum AKCharacterPositionZ {
     // スーパークラスの処理を行う
     [super dealloc];
     
-    AKLog(1, @"end");
+    AKLog(kAKLogPlayData_1, @"end");
 }
 
 /*!
@@ -278,7 +279,7 @@ enum AKCharacterPositionZ {
         // 待機時間が経過した場合は次のステージへと進める
         if (clearWait_ < 0.0f) {
             
-            AKLog(1, @"ステージクリア後の待機時間経過");
+            AKLog(kAKLogPlayData_1, @"ステージクリア後の待機時間経過");
             
             // 次のステージのスクリプトを読み込む
             [self readScript:stage_ + 1];
@@ -292,7 +293,7 @@ enum AKCharacterPositionZ {
         // スクリプトを実行する
         if ([self.script update:dt]) {
             
-            AKLog(1, @"ステージ%dクリア", stage_);
+            AKLog(kAKLogPlayData_1, @"ステージ%dクリア", stage_);
             
             // スクリプトをすべて実行した場合はクリア後の待機時間を設定する
             clearWait_ = kAKStageClearWaitTime;
@@ -333,7 +334,7 @@ enum AKCharacterPositionZ {
     // 敵を更新する
     for (AKEnemy *enemy in [self.enemyPool.pool objectEnumerator]) {
         if (enemy.isStaged) {
-            AKLog(0, @"enemy move start.");
+            AKLog(kAKLogPlayData_1, @"enemy move start.");
             [enemy move:dt];
         }
     }
@@ -389,7 +390,7 @@ enum AKCharacterPositionZ {
         // 各オプションに対して当たり判定を行う
         while (option != nil && option.isStaged) {
             
-            AKLog(0, @"反射判定");
+            AKLog(kAKLogPlayData_1, @"反射判定");
             
             // 敵弾との当たり判定を行う
             [option checkHit:[self.enemyShotPool.pool objectEnumerator]];
@@ -418,7 +419,7 @@ enum AKCharacterPositionZ {
         // ボスが倒された(いなくなった)場合、スクリプトの読み込みを再開する
         if (!self.boss.isStaged) {
             
-            AKLog(1, @"ボス撃破");
+            AKLog(kAKLogPlayData_1, @"ボス撃破");
             
             // スクリプトの読み込みを再開する
             [self.script resume];
@@ -506,7 +507,8 @@ enum AKCharacterPositionZ {
     AKPlayerShot *playerShot = [self.playerShotPool getNext];
     if (playerShot == nil) {
         // 空きがない場合は処理終了する
-        NSAssert(0, @"自機弾プールに空きなし");
+        AKLog(kAKLogPlayData_0, @"自機弾プールに空きなし");
+        NSAssert(NO, @"自機弾プールに空きなし");
         return;
     }
     
@@ -522,13 +524,14 @@ enum AKCharacterPositionZ {
  */
 - (void)createReflectiedShot:(AKEnemyShot *)enemyShot
 {
-    AKLog(1, @"反射弾生成");
+    AKLog(kAKLogPlayData_1, @"反射弾生成");
     
     // プールから未使用のメモリを取得する
     AKEnemyShot *reflectedShot = [self.refrectedShotPool getNext];
     if (reflectedShot == nil) {
         // 空きがない場合は処理終了する
-        NSAssert(0, @"反射弾プールに空きなし");
+        AKLog(kAKLogPlayData_0, @"反射弾プールに空きなし");
+        NSAssert(NO, @"反射弾プールに空きなし");
         return;
     }
     
@@ -550,7 +553,8 @@ enum AKCharacterPositionZ {
     AKEnemy *enemy = [self.enemyPool getNext];
     if (enemy == nil) {
         // 空きがない場合は処理終了する
-        NSAssert(0, @"敵プールに空きなし");
+        AKLog(kAKLogPlayData_0, @"敵プールに空きなし");
+        NSAssert(NO, @"敵プールに空きなし");
         return;
     }
     
@@ -583,7 +587,8 @@ enum AKCharacterPositionZ {
     AKEnemyShot *enemyShot = [self.enemyShotPool getNext];
     if (enemyShot == nil) {
         // 空きがない場合は処理終了する
-        NSAssert(0, @"敵弾プールに空きなし");
+        AKLog(kAKLogPlayData_0, @"敵弾プールに空きなし");
+        NSAssert(NO, @"敵弾プールに空きなし");
         return;
     }
     
@@ -610,7 +615,8 @@ enum AKCharacterPositionZ {
     AKEffect *effect = [self.effectPool getNext];
     if (effect == nil) {
         // 空きがない場合は処理終了する
-        NSAssert(0, @"画面効果プールに空きなし");
+        AKLog(kAKLogPlayData_0, @"画面効果プールに空きなし");
+        NSAssert(NO, @"画面効果プールに空きなし");
         return;
     }
     
@@ -635,7 +641,8 @@ enum AKCharacterPositionZ {
     AKBlock *block = [self.blockPool getNext];
     if (block == nil) {
         // 空きがない場合は処理終了する
-        NSAssert(0, @"障害物プールに空きなし");
+        AKLog(kAKLogPlayData_0, @"障害物プールに空きなし");
+        NSAssert(NO, @"障害物プールに空きなし");
         return;
     }
     
@@ -660,7 +667,8 @@ enum AKCharacterPositionZ {
     AKBack *back = [self.backPool getNext];
     if (back == nil) {
         // 空きがない場合は処理終了する
-        NSAssert(0, @"背景プールに空きなし");
+        AKLog(kAKLogPlayData_0, @"背景プールに空きなし");
+        NSAssert(NO, @"背景プールに空きなし");
         return;
     }
     

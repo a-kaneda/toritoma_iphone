@@ -35,6 +35,7 @@
 
 #import "AKFont.h"
 #import "AKScreenSize.h"
+#import "AKLogNoDef.h"
 
 /// フォントサイズ
 const NSInteger kAKFontSize = 16;
@@ -189,7 +190,7 @@ static AKFont *sharedInstance_;
  */
 - (CCSpriteFrame *)spriteFrameOfChar:(unichar)c isReverse:(BOOL)isReverse
 {
-    AKLog(0, @"c=%c rect=(%f,%f) isReverse=%d", c, [self rectOfChar:c].origin.x, [self rectOfChar:c].origin.y, isReverse);
+    AKLog(kAKLogFont_1, @"c=%c rect=(%f,%f) isReverse=%d", c, [self rectOfChar:c].origin.x, [self rectOfChar:c].origin.y, isReverse);
     
     // 文字の座標を取得する
     CGRect charRect = [self rectOfChar:c];
@@ -216,7 +217,7 @@ static AKFont *sharedInstance_;
  */
 - (CCSpriteFrame *)spriteFrameWithKey:(NSString *)key isReverse:(BOOL)isReverse
 {
-    AKLog(0, @"key=%@ rect=(%f,%f) isReverse=%d", key, [self rectByKey:key].origin.x, [self rectByKey:key].origin.y, isReverse);
+    AKLog(kAKLogFont_1, @"key=%@ rect=(%f,%f) isReverse=%d", key, [self rectByKey:key].origin.x, [self rectByKey:key].origin.y, isReverse);
     
     // 文字の座標を取得する
     CGRect charRect = [self rectByKey:key];

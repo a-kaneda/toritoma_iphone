@@ -34,6 +34,7 @@
  */
 
 #import "AKScreenSize.h"
+#import "AKLogNoDef.h"
 
 /*!
  @brief 画面サイズ管理クラス
@@ -286,7 +287,7 @@
         rect.size.height *= 2;
     }
     
-    AKLog(0, @"x=%f y=%f w=%f h=%f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    AKLog(kAKLogScreenSize_1, @"x=%f y=%f w=%f h=%f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
     // 作成した矩形を返す
     return rect;

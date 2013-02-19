@@ -139,7 +139,7 @@ static const NSInteger kAKOptionSize = 16;
     // シールド有無によって画像を切り替える
     if (shield) {
         
-        AKLog(0, @"シールドあり");
+        AKLog(kAKLogOption_1, @"シールドあり");
         
         // 画像名を設定する
         self.imageName = [NSString stringWithFormat:kAKOptionImageFile, 2];
@@ -149,7 +149,7 @@ static const NSInteger kAKOptionSize = 16;
     }
     else {
 
-        AKLog(0, @"シールドなし");
+        AKLog(kAKLogOption_1, @"シールドなし");
 
         // 画像名を設定する
         self.imageName = [NSString stringWithFormat:kAKOptionImageFile, 1];
@@ -201,7 +201,7 @@ static const NSInteger kAKOptionSize = 16;
  */
 - (void)hit:(AKCharacter *)character
 {
-    AKLog(1, @"反射処理開始");
+    AKLog(kAKLogOption_1, @"反射処理開始");
     
     // 衝突したものが敵弾以外の場合はエラー
     NSAssert([character isKindOfClass:[AKEnemyShot class]], @"不正なオブジェクトと衝突");
@@ -268,14 +268,14 @@ static const NSInteger kAKOptionSize = 16;
  */
 - (void)setOptionCount:(NSInteger)count x:(float)x y:(float)y
 {
-    AKLog(0, @"count=%d", count);
+    AKLog(kAKLogOption_1, @"count=%d", count);
     
     // オプション個数が設定された場合はオプションを有効とする
     if (count > 0) {
         
         // 配置されていない場合は配置状態にして、初期配置位置に移動する
         if (!self.isStaged) {
-            AKLog(1, @"オプション配置");
+            AKLog(kAKLogOption_1, @"オプション配置");
             self.isStaged = YES;
             self.image.visible = YES;
             self.positionX = x;
@@ -290,7 +290,7 @@ static const NSInteger kAKOptionSize = 16;
         
         // 配置されている場合は配置状態を解除して、移動座標をすべてクリアする
         if (self.isStaged) {
-            AKLog(1, @"オプション削除");
+            AKLog(kAKLogOption_1, @"オプション削除");
             self.isStaged = NO;
             self.image.visible = NO;
             [self.movePositions removeAllObjects];

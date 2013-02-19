@@ -85,12 +85,12 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
  */
 - (id)init
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogPlayingScene_1, @"start");
     
     // スーパークラスの処理を行う
     self = [super init];
     if (!self) {
-        AKLog(1, @"error");
+        AKLog(kAKLogPlayingScene_0, @"error");
         return nil;
     }
     
@@ -179,7 +179,7 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
     // 更新処理開始
     [self scheduleUpdate];
     
-    AKLog(1, @"end");
+    AKLog(kAKLogPlayingScene_1, @"end");
     return self;
 }
 
@@ -190,7 +190,7 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
  */
 - (void)dealloc
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogPlayingScene_1, @"start");
     
     // メンバを解放する
     self.data = nil;
@@ -205,7 +205,7 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
     // スーパークラスの処理を行う
     [super dealloc];
 
-    AKLog(1, @"end");
+    AKLog(kAKLogPlayingScene_1, @"end");
 }
 
 /*!
@@ -291,7 +291,7 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
  */
 - (void)updateStart:(ccTime)dt
 {
-    AKLog(1, @"start");
+    AKLog(kAKLogPlayingScene_1, @"start");
     
     // 開始ステージのスクリプトを読み込む
     [self.data readScript:kAKStartStage];
@@ -331,7 +331,7 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
     // cocos2dの座標系に変換する
     CGPoint location = [[CCDirector sharedDirector] convertToGL:locationInView];
 
-    AKLog(0, @"prev=(%f, %f) location=(%f, %f)", item.prevPoint.x, item.prevPoint.y, location.x, location.y);
+    AKLog(kAKLogPlayingScene_1, @"prev=(%f, %f) location=(%f, %f)", item.prevPoint.x, item.prevPoint.y, location.x, location.y);
     
     // 自機を移動する
     [self.data movePlayerByDx:(location.x - item.prevPoint.x) * kAKPlayerMoveVal

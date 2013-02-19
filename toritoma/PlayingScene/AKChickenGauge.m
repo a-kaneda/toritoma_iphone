@@ -67,7 +67,7 @@ static const NSInteger kAKImageHeight = 16;
     // スーパークラスの初期化処理を行う
     self = [super init];
     if (!self) {
-        AKLog(1, @"error");
+        AKLog(kAKLogChickenGauge_0, @"error");
         return nil;
     }
     
