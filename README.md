@@ -10,7 +10,7 @@ cocos2d for iPhoneを使用しています。
 
 使用したライブラリ
 ---
-* [cocos2d-iphone v2.0](http://www.cocos2d-iphone.org)
+* cocos2d-iphone v2.0(http://www.cocos2d-iphone.org)
 
 ライセンス
 ---
