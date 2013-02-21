@@ -24,3 +24,5 @@ DerivedData
 !*.xcworkspace/contents.xcworkspacedata
 # 外部ライブラリ
 libs/
+# 画像ファイル
+picture/9*
