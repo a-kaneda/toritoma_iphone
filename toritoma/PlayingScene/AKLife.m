@@ -39,6 +39,8 @@
 static NSString *kAKLifeMarkImageName = @"Life.png";
 /// 残機数のラベル書式
 static NSString *kAKLifeNumberFormat = @":%02d";
+/// 残機数表示の最大値
+static const NSInteger kAKLifeCountViewMax = 99;
 /// 残機マークのサイズ
 static const NSInteger kAKLifeMarkSize = 16;
 
@@ -131,17 +133,47 @@ static const NSInteger kAKLifeMarkSize = 16;
  */
 - (void)setLifeCount:(NSInteger)lifeCount
 {
+    AKLog(kAKLogLife_1, @"start:lifeCount=%d", lifeCount);
+    
     // メンバに設定する
     lifeCount_ = lifeCount;
+
+    // 残機が範囲外の場合は補正する
+    NSInteger lifeCountView;
+    if (lifeCount < 0) {
+        lifeCountView = 0;
+    }
+    else if (lifeCount > kAKLifeCountViewMax) {
+        lifeCountView = kAKLifeCountViewMax;
+    }
+    else {
+        lifeCountView = lifeCount;
+    }
     
     // 残機文字列を作成する
-    NSString *labelStr = [NSString stringWithFormat:kAKLifeNumberFormat, self.lifeCount];
+    NSString *labelStr = [NSString stringWithFormat:kAKLifeNumberFormat, lifeCountView];
     
-    // 残機数ラベルを作成する
-    self.numberLabel = [AKLabel labelWithString:labelStr
-                                      maxLength:labelStr.length
-                                        maxLine:1
-                                          frame:kAKLabelFrameNone];
+    // ラベルが作成されていない場合
+    if (self.numberLabel == nil) {
+        
+        AKLog(1, @"ラベル作成:\"%@\"", labelStr);
+        
+        // 残機数ラベルを作成する
+        self.numberLabel = [AKLabel labelWithString:labelStr
+                                          maxLength:labelStr.length
+                                            maxLine:1
+                                              frame:kAKLabelFrameNone];
+    }
+    // ラベルが作成されている場合
+    else {
+
+        AKLog(1, @"ラベル変更:\"%@\"", labelStr);
+
+        // 表示文字列を変更する
+        [self.numberLabel setString:labelStr];
+    }
+    
+    AKLog(kAKLogLife_1, @"end");
 }
 
 /*!

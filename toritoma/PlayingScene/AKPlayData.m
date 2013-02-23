@@ -66,6 +66,8 @@ NSString *kAKTextureAtlasFile = @"Character.png";
 static const float kAKStageClearWaitTime = 5.0f;
 /// 初期残機
 static const NSInteger kAKInitialLife = 2;
+/// 自機復活待機時間
+static const float kAKRebirthInterval = 1.0f;
 
 /// キャラクター配置のz座標
 enum AKCharacterPositionZ {
@@ -76,7 +78,7 @@ enum AKCharacterPositionZ {
     kAKCharaPosZEnemy,      ///< 敵
     kAKCharaPosZEffect,     ///< 爆発効果
     kAKCharaPosZEnemyShot,  ///< 敵弾
-    kAKCharaPosZBlock,       ///< 障害物
+    kAKCharaPosZBlock,      ///< 障害物
     kAKCharaPosZCount       ///< z座標種別の数
 };
 
@@ -231,11 +233,12 @@ enum AKCharacterPositionZ {
     self.scrollSpeedY = 0.0f;
     
     // 残機の初期値を設定する
-    life_ = kAKInitialLife;
+    self.life = kAKInitialLife;
     
     // その他のメンバを初期化する
     stage_ = 0;
     clearWait_ = 0.0f;
+    rebirthWait_ = 0.0f;
     boss_ = nil;    
 }
 
@@ -267,6 +270,22 @@ enum AKCharacterPositionZ {
     [super dealloc];
     
     AKLog(kAKLogPlayData_1, @"end");
+}
+
+/*!
+ @brief 残機設定
+ 
+ 残機を設定する。
+ 画面の残機表示の更新も行う。
+ @param life 残機
+ */
+- (void)setLife:(NSInteger)life
+{
+    // メンバに設定する
+    life_ = life;
+    
+    // シーンの残機表示の更新を行う
+    self.scene.life.lifeCount = life;
 }
 
 /*!
@@ -325,6 +344,19 @@ enum AKCharacterPositionZ {
             
             // スクリプトをすべて実行した場合はクリア後の待機時間を設定する
             clearWait_ = kAKStageClearWaitTime;
+        }
+    }
+    
+    // 自機が破壊されている場合は復活までの時間をカウントする
+    if (!self.player.isStaged) {
+        
+        rebirthWait_ -= dt;
+        
+        // 復活までの時間が経過している場合は自機を復活する
+        if (rebirthWait_ < 0) {
+            
+            // 自機を復活させる
+            [self.player rebirth];
         }
     }
     
@@ -707,4 +739,28 @@ enum AKCharacterPositionZ {
                   parent:[self.batches objectAtIndex:kAKCharaPosZBack]];
 }
 
+/*!
+ @brief 失敗時処理
+ 
+ 失敗した時の処理を行う。
+ */
+- (void)miss
+{
+    // 残機がまだ残っている場合は残機を一つ減らして復活処理を行う
+    if (self.life) {
+        
+        // シールドをオフにする
+        self.shield = NO;
+        
+        // 残機をひとつ減らす
+        self.life = self.life - 1;
+                
+        // 自機復活待機時間を設定する
+        rebirthWait_ = kAKRebirthInterval;
+    }
+    // [TODO]残機が残っていない場合はゲームオーバーとする
+    else {
+        
+    }
+}
 @end

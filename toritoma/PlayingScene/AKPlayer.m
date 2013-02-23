@@ -159,9 +159,10 @@ static const NSInteger kAKMaxOptionCount = 3;
  */
 - (void)destroy
 {
-    // 破壊時の効果音を鳴らす
+    // [TODO]破壊時の効果音を鳴らす
 
     // 画面効果を生成する
+    [[AKPlayData sharedInstance] createEffect:2 x:self.positionX y:self.positionY];
     
     // 配置フラグを落とす
     self.isStaged = NO;
@@ -170,6 +171,7 @@ static const NSInteger kAKMaxOptionCount = 3;
     self.image.visible = NO;
     
     // 自機破壊時の処理を行う
+    [[AKPlayData sharedInstance] miss];
 }
 
 /*!
@@ -191,6 +193,9 @@ static const NSInteger kAKMaxOptionCount = 3;
     // 無敵状態にする
     isInvincible_ = YES;
     invincivleTime_ = kAKInvincibleTime;
+    
+    // チキンゲージを初期化する
+    self.chickenGauge = 0.0f;
     
     // 無敵中はブリンクする
     CCBlink *blink = [CCBlink actionWithDuration:kAKInvincibleTime blinks:kAKInvincibleTime * 8];

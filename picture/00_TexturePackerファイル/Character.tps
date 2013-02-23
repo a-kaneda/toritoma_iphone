@@ -22,7 +22,7 @@
         <key>dataFormat</key>
         <string>cocos2d</string>
         <key>textureFileName</key>
-        <filename>Character.png</filename>
+        <filename>../../toritoma/Resources/Image/Character.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -111,7 +111,7 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>Character.plist</filename>
+        <filename>../../toritoma/Resources/Image/Character.plist</filename>
         <key>mainExtension</key>
         <string></string>
         <key>forceIdenticalLayout</key>
@@ -160,6 +160,7 @@
             <filename>../93_アウトプット加工用/Character/Option_02_01.png</filename>
             <filename>../93_アウトプット加工用/Character/Block_01_01.png</filename>
             <filename>../93_アウトプット加工用/Character/Back_01_01.png</filename>
+            <filename>../93_アウトプット加工用/Character/Effect_02_01.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

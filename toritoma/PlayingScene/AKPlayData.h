@@ -50,6 +50,8 @@
     NSInteger stage_;
     /// クリア後の待機時間
     float clearWait_;
+    /// 復活待機時間
+    float rebirthWait_;
     /// 残機
     NSInteger life_;
     /// スクリプト情報
@@ -85,7 +87,7 @@
 /// シーンクラス(弱い参照)
 @property (nonatomic, readonly)AKPlayingScene *scene;
 /// 残機
-@property (nonatomic, readonly)NSInteger life;
+@property (nonatomic)NSInteger life;
 /// スクリプト情報
 @property (nonatomic, retain)AKScript *script;
 /// 自機
@@ -149,5 +151,7 @@
 - (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 // 背景生成
 - (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
+// 失敗時処理
+- (void)miss;
 
 @end
