@@ -64,6 +64,8 @@ NSString *kAKTextureAtlasDefFile = @"Character.plist";
 NSString *kAKTextureAtlasFile = @"Character.png";
 /// ステージクリア後の待機時間
 static const float kAKStageClearWaitTime = 5.0f;
+/// 初期残機
+static const NSInteger kAKInitialLife = 2;
 
 /// キャラクター配置のz座標
 enum AKCharacterPositionZ {
@@ -86,6 +88,7 @@ enum AKCharacterPositionZ {
 @implementation AKPlayData
 
 @synthesize scene = scene_;
+@synthesize life = life_;
 @synthesize script = script_;
 @synthesize player = player_;
 @synthesize playerShotPool = playerShotPool_;
@@ -150,6 +153,23 @@ enum AKCharacterPositionZ {
     // テクスチャアトラスを読み込む
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kAKTextureAtlasDefFile textureFilename:kAKTextureAtlasFile];
     
+    // メンバオブジェクトを生成する
+    [self createMember];
+    
+    // ゲームデータを初期化する
+    [self clearPlayData];
+        
+    AKLog(kAKLogPlayData_1, @"end");
+    return self;
+}
+
+/*!
+ @brief メンバオブジェクト生成処理
+ 
+ メンバオブジェクトを生成する。
+ */
+- (void)createMember
+{
     // バッチノード配列を作成する
     self.batches = [NSMutableArray arrayWithCapacity:kAKCharaPosZCount];
     
@@ -163,16 +183,12 @@ enum AKCharacterPositionZ {
         [self.batches addObject:batch];
         
         // シーンに配置する
-        [scene.characterLayer addChild:batch z:i];
+        [self.scene.characterLayer addChild:batch z:i];
     }
     
     // 自機を作成する
     self.player = [[[AKPlayer alloc] initWithParent:[self.batches objectAtIndex:kAKCharaPosZPlayer]
                                        optionParent:[self.batches objectAtIndex:kAKCharaPosZOption]] autorelease];
-    
-    // 初期位置を設定する
-    self.player.positionX = kAKPlayerDefaultPosX;
-    self.player.positionY = kAKPlayerDefaultPosY;
     
     // 自機弾プールを作成する
     self.playerShotPool = [[[AKCharacterPool alloc] initWithClass:[AKPlayerShot class] Size:kAKMaxPlayerShotCount] autorelease];
@@ -193,7 +209,19 @@ enum AKCharacterPositionZ {
     self.blockPool = [[[AKCharacterPool alloc] initWithClass:[AKBlock class] Size:kAKMaxBlockCount] autorelease];
     
     // 背景プールを作成する
-    self.backPool = [[[AKCharacterPool alloc] initWithClass:[AKBack class] Size:kAKMaxBackCount] autorelease];
+    self.backPool = [[[AKCharacterPool alloc] initWithClass:[AKBack class] Size:kAKMaxBackCount] autorelease];    
+}
+
+/*!
+ @brief 初期値設定処理
+ 
+ ゲームデータに初期値を設定する。
+ */
+- (void)clearPlayData
+{
+    // 自機の初期位置を設定する
+    self.player.positionX = kAKPlayerDefaultPosX;
+    self.player.positionY = kAKPlayerDefaultPosY;
     
     // シールドは無効状態で初期化する
     self.shield = NO;
@@ -202,13 +230,13 @@ enum AKCharacterPositionZ {
     self.scrollSpeedX = 0.0f;
     self.scrollSpeedY = 0.0f;
     
+    // 残機の初期値を設定する
+    life_ = kAKInitialLife;
+    
     // その他のメンバを初期化する
     stage_ = 0;
     clearWait_ = 0.0f;
-    boss_ = nil;
-    
-    AKLog(kAKLogPlayData_1, @"end");
-    return self;
+    boss_ = nil;    
 }
 
 /*!

@@ -58,6 +58,8 @@ extern BOOL kAKLogInterface_0;
 extern BOOL kAKLogInterface_1;
 extern BOOL kAKLogLabel_0;
 extern BOOL kAKLogLabel_1;
+extern BOOL kAKLogLife_0;
+extern BOOL kAKLogLife_1;
 extern BOOL kAKLogMenuItem_0;
 extern BOOL kAKLogMenuItem_1;
 extern BOOL kAKLogNavigationController_0;

@@ -27,58 +27,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
- @file AKLogNoDef.m
- @brief ログ区分定義
+ @file AKLife.h
+ @brief 残機表示クラス定義
  
- ログの開始、停止を管理するための定数を定義する。
+ 残機表示のクラスを定義する。
  */
 
-#import "AKLogNoDef.h"
+#import "AKLib.h"
 
-#ifdef DEBUG
-BOOL kAKLogBack_0 = YES;
-BOOL kAKLogBack_1 = NO;
-BOOL kAKLogBlock_0 = YES;
-BOOL kAKLogBlock_1 = NO;
-BOOL kAKLogCharacter_0 = YES;
-BOOL kAKLogCharacter_1 = NO;
-BOOL kAKLogCharacterPool_0 = YES;
-BOOL kAKLogCharacterPool_1 = NO;
-BOOL kAKLogChickenGauge_0 = YES;
-BOOL kAKLogChickenGauge_1 = NO;
-BOOL kAKLogEffect_0 = YES;
-BOOL kAKLogEffect_1 = NO;
-BOOL kAKLogEnemy_0 = YES;
-BOOL kAKLogEnemy_1 = NO;
-BOOL kAKLogEnemyShot_0 = YES;
-BOOL kAKLogEnemyShot_1 = NO;
-BOOL kAKLogFont_0 = YES;
-BOOL kAKLogFont_1 = NO;
-BOOL kAKLogInterface_0 = YES;
-BOOL kAKLogInterface_1 = NO;
-BOOL kAKLogLabel_0 = YES;
-BOOL kAKLogLabel_1 = NO;
-BOOL kAKLogLife_0 = YES;
-BOOL kAKLogLife_1 = YES;
-BOOL kAKLogMenuItem_0 = YES;
-BOOL kAKLogMenuItem_1 = NO;
-BOOL kAKLogNavigationController_0 = YES;
-BOOL kAKLogNavigationController_1 = NO;
-BOOL kAKLogOption_0 = YES;
-BOOL kAKLogOption_1 = NO;
-BOOL kAKLogPlayData_0 = YES;
-BOOL kAKLogPlayData_1 = NO;
-BOOL kAKLogPlayer_0 = YES;
-BOOL kAKLogPlayer_1 = NO;
-BOOL kAKLogPlayerShot_0 = YES;
-BOOL kAKLogPlayerShot_1 = NO;
-BOOL kAKLogPlayingScene_0 = YES;
-BOOL kAKLogPlayingScene_1 = NO;
-BOOL kAKLogScreenSize_0 = YES;
-BOOL kAKLogScreenSize_1 = NO;
-BOOL kAKLogScript_0 = YES;
-BOOL kAKLogScript_1 = NO;
-BOOL kAKLogScript_2 = NO;
-BOOL kAKLogScriptData_0 = YES;
-BOOL kAKLogScriptData_1 = NO;
-#endif
+// 残機表示クラス
+@interface AKLife : CCNode {
+    /// マーク
+    CCSprite *mark_;
+    /// 残機数ラベル
+    AKLabel *numberLabel_;
+    /// 残機数
+    NSInteger lifeCount_;
+}
+
+/// マーク
+@property (nonatomic, retain)CCSprite *mark;
+/// 残機数ラベル
+@property (nonatomic, retain)AKLabel *numberLabel;
+/// 残機数
+@property (nonatomic)NSInteger lifeCount;
+/// 幅
+@property (nonatomic, readonly)NSInteger width;
+
+@end

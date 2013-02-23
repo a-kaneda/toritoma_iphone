@@ -33,11 +33,10 @@
  プレイシーンクラスを定義する。
  */
 
-#import <Foundation/Foundation.h>
-#import "cocos2d.h"
 #import "AKLib.h"
 #import "AKPlayData.h"
 #import "AKChickenGauge.h"
+#import "AKLife.h"
 
 @class AKPlayData;
 
@@ -66,6 +65,8 @@ enum AKGameState {
     AKChickenGauge *chickenGauge_;
     /// シールドボタン
     CCSprite *shieldButton_;
+    /// 残機表示
+    AKLife *life_;
 }
 
 /// ゲームデータ
@@ -76,6 +77,8 @@ enum AKGameState {
 @property (nonatomic, retain)AKChickenGauge *chickenGauge;
 /// シールドボタン
 @property (nonatomic, retain)CCSprite *shieldButton;
+/// 残機表示
+@property (nonatomic, retain)AKLife *life;
 
 // キャラクターレイヤー取得
 - (CCLayer *)characterLayer;

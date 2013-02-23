@@ -4,6 +4,19 @@
     <dict>
         <key>frames</key>
         <dict>
+            <key>Life.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{68,2},{16,16}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{16,16}}</string>
+                <key>sourceSize</key>
+                <string>{16,16}</string>
+            </dict>
             <key>ShieldButton_01.png</key>
             <dict>
                 <key>frame</key>
@@ -40,7 +53,7 @@
             <key>size</key>
             <string>{128,256}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:61ee4173ece8fab47e8c2257ce0fbbc6$</string>
+            <string>$TexturePacker:SmartUpdate:8b003c3fc2a8935f869b5ba5d932af63$</string>
             <key>textureFileName</key>
             <string>Control.png</string>
         </dict>

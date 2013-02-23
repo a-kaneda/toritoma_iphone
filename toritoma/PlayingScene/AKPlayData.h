@@ -33,7 +33,7 @@
  プレイ画面シーンのデータを管理するクラスを定義する。
  */
 
-#import <Foundation/Foundation.h>
+#import "AKLib.h"
 #import "AKPlayingScene.h"
 #import "AKPlayer.h"
 #import "AKScript.h"
@@ -50,6 +50,8 @@
     NSInteger stage_;
     /// クリア後の待機時間
     float clearWait_;
+    /// 残機
+    NSInteger life_;
     /// スクリプト情報
     AKScript *script_;
     /// 自機
@@ -82,6 +84,8 @@
 
 /// シーンクラス(弱い参照)
 @property (nonatomic, readonly)AKPlayingScene *scene;
+/// 残機
+@property (nonatomic, readonly)NSInteger life;
 /// スクリプト情報
 @property (nonatomic, retain)AKScript *script;
 /// 自機
@@ -115,6 +119,10 @@
 + (AKPlayData *)sharedInstance;
 // オブジェクト初期化処理
 - (id)initWithScene:(AKPlayingScene *)scene;
+// メンバオブジェクト生成処理
+- (void)createMember;
+// 初期値設定処理
+- (void)clearPlayData;
 // 状態更新
 - (void)update:(ccTime)dt;
 // スクリプト読み込み

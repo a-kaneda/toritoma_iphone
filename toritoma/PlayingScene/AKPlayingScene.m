@@ -51,8 +51,12 @@ static const NSUInteger kAKMenuTagPlaying = 0x01;
 static const float kAKPlayerMoveVal = 1.8f;
 /// 開始ステージ番号
 static const NSInteger kAKStartStage = 1;
-/// チキンゲージ配置位置、下からの比率
+/// チキンゲージ配置位置、下からの座標
 static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
+/// 残機表示の位置、左からの座標
+static const float kAKLifePosFromLeftPoint = 8.0f;
+/// 残機表示の位置、下からの座標
+static const float kAKLifePosFromBottomPoint = 16.0f;
 /// コントロールテクスチャアトラス定義ファイル名
 static NSString *kAKTextureAtlasDefFile = @"Control.plist";
 /// コントロールテクスチャアトラスファイル名
@@ -118,12 +122,22 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
     // チキンゲージを作成する
     self.chickenGauge = [AKChickenGauge node];
     
-    // チキンゲージを画面に情報レイヤーに配置する
+    // チキンゲージを情報レイヤーに配置する
     [infoLayer addChild:self.chickenGauge];
     
     // チキンゲージの座標を設定する
     self.chickenGauge.position = ccp([AKScreenSize center].x,
                                      [AKScreenSize positionFromBottomPoint:kAKChickenGaugePosFromBottomPoint]);
+    
+    // 残機表示を作成する
+    self.life = [AKLife node];
+    
+    // 残機表示を情報レイヤーに配置する
+    [infoLayer addChild:self.life];
+    
+    // 残機表示の座標を設定する
+    self.life.position = ccp([AKScreenSize xOfStage:[AKScreenSize positionFromLeftPoint:kAKLifePosFromLeftPoint]] + self.life.width / 2,
+                             [AKScreenSize yOfStage:[AKScreenSize positionFromBottomPoint:kAKLifePosFromBottomPoint]]);
     
     // インターフェースレイヤーを作成する
     AKInterface *interfaceLayer = [AKInterface node];
@@ -196,6 +210,8 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
     self.data = nil;
     [self.chickenGauge removeFromParentAndCleanup:YES];
     self.chickenGauge = nil;
+    [self.life removeFromParentAndCleanup:YES];
+    self.life = nil;
     [self.shieldButton removeFromParentAndCleanup:YES];
     self.shieldButton = nil;
     

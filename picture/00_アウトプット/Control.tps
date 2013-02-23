@@ -143,7 +143,7 @@
         <array>
             <filename>../93_アウトプット加工用/Control/ShieldButton_01.png</filename>
             <filename>../93_アウトプット加工用/Control/ShieldButton_02.png</filename>
-            <filename>../93_アウトプット加工用/Control/Life_01.png</filename>
+            <filename>../93_アウトプット加工用/Control/Life.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

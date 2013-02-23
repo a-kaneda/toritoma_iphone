@@ -13,6 +13,9 @@
 		0C7E06D316CD81930044BF42 /* stage_3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06CF16CD81930044BF42 /* stage_3.txt */; };
 		0C7E06D416CD81930044BF42 /* stage_4.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06D016CD81930044BF42 /* stage_4.txt */; };
 		0C7E06D516CD81930044BF42 /* stage_5.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06D116CD81930044BF42 /* stage_5.txt */; };
+		0C90F1D316D88ACE008D2C2E /* Font.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C90F1D116D88ACE008D2C2E /* Font.plist */; };
+		0C90F1D416D88ACE008D2C2E /* Font.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C90F1D216D88ACE008D2C2E /* Font.png */; };
+		0C90F1D716D88CA9008D2C2E /* AKLife.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C90F1D616D88CA9008D2C2E /* AKLife.m */; };
 		0CABC16716BE41CC00AFFE1B /* AKPlayerShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */; };
 		0CB2ACE216BF14600094AFFA /* AKChickenGauge.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE116BF14600094AFFA /* AKChickenGauge.m */; };
 		0CB2ACE516C068190094AFFA /* ChickenGauge_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE316C068190094AFFA /* ChickenGauge_01.png */; };
@@ -181,6 +184,10 @@
 		0C7E06CF16CD81930044BF42 /* stage_3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_3.txt; path = Resources/Script/stage_3.txt; sourceTree = "<group>"; };
 		0C7E06D016CD81930044BF42 /* stage_4.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_4.txt; path = Resources/Script/stage_4.txt; sourceTree = "<group>"; };
 		0C7E06D116CD81930044BF42 /* stage_5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_5.txt; path = Resources/Script/stage_5.txt; sourceTree = "<group>"; };
+		0C90F1D116D88ACE008D2C2E /* Font.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Font.plist; path = Resources/Image/Font.plist; sourceTree = "<group>"; };
+		0C90F1D216D88ACE008D2C2E /* Font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Font.png; path = Resources/Image/Font.png; sourceTree = "<group>"; };
+		0C90F1D516D88CA9008D2C2E /* AKLife.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLife.h; sourceTree = "<group>"; };
+		0C90F1D616D88CA9008D2C2E /* AKLife.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKLife.m; sourceTree = "<group>"; };
 		0CABC16516BE41CC00AFFE1B /* AKPlayerShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayerShot.h; sourceTree = "<group>"; };
 		0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayerShot.m; sourceTree = "<group>"; };
 		0CB2ACE016BF14600094AFFA /* AKChickenGauge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKChickenGauge.h; sourceTree = "<group>"; };
@@ -554,6 +561,8 @@
 				0CCC525E16A58DB500E9A397 /* AKScriptData.m */,
 				0CB2ACE016BF14600094AFFA /* AKChickenGauge.h */,
 				0CB2ACE116BF14600094AFFA /* AKChickenGauge.m */,
+				0C90F1D516D88CA9008D2C2E /* AKLife.h */,
+				0C90F1D616D88CA9008D2C2E /* AKLife.m */,
 			);
 			path = PlayingScene;
 			sourceTree = "<group>";
@@ -586,6 +595,8 @@
 				0CB2ACEF16C3E3790094AFFA /* Control.png */,
 				0CB2ACE316C068190094AFFA /* ChickenGauge_01.png */,
 				0CB2ACE416C068190094AFFA /* ChickenGauge_02.png */,
+				0C90F1D116D88ACE008D2C2E /* Font.plist */,
+				0C90F1D216D88ACE008D2C2E /* Font.png */,
 			);
 			name = Image;
 			sourceTree = "<group>";
@@ -1114,6 +1125,8 @@
 				0C7E06D316CD81930044BF42 /* stage_3.txt in Resources */,
 				0C7E06D416CD81930044BF42 /* stage_4.txt in Resources */,
 				0C7E06D516CD81930044BF42 /* stage_5.txt in Resources */,
+				0C90F1D316D88ACE008D2C2E /* Font.plist in Resources */,
+				0C90F1D416D88ACE008D2C2E /* Font.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1252,6 +1265,7 @@
 				0CB2ACF416C73AB00094AFFA /* AKBlock.m in Sources */,
 				0C7E06CB16C9970C0044BF42 /* AKBack.m in Sources */,
 				0CE6278F16D41E72008CDCC2 /* AKLogNoDef.m in Sources */,
+				0C90F1D716D88CA9008D2C2E /* AKLife.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
