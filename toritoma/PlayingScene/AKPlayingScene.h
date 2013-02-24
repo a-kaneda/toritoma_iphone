@@ -34,6 +34,7 @@
  */
 
 #import "AKLib.h"
+#import "AKPlayingSceneIF.h"
 #import "AKPlayData.h"
 #import "AKChickenGauge.h"
 #import "AKLife.h"
@@ -61,10 +62,12 @@ enum AKGameState {
     AKPlayData *data_;
     /// ゲームプレイの状態
     enum AKGameState state_;
+    /// スリープ後に遷移する状態
+    enum AKGameState nextState_;
+    /// スリープ時間
+    float sleepTime_;
     /// チキンゲージ
     AKChickenGauge *chickenGauge_;
-    /// シールドボタン
-    CCSprite *shieldButton_;
     /// 残機表示
     AKLife *life_;
 }
@@ -75,22 +78,38 @@ enum AKGameState {
 @property (nonatomic)enum AKGameState state;
 /// チキンゲージ
 @property (nonatomic, retain)AKChickenGauge *chickenGauge;
-/// シールドボタン
-@property (nonatomic, retain)CCSprite *shieldButton;
 /// 残機表示
 @property (nonatomic, retain)AKLife *life;
+// キャラクターレイヤー
+@property (nonatomic, readonly)CCLayer *characterLayer;
+// インターフェースレイヤー
+@property (nonatomic, readonly)AKPlayingSceneIF *interfaceLayer;
 
-// キャラクターレイヤー取得
-- (CCLayer *)characterLayer;
+// 背景レイヤー作成
+- (void)createBackGround;
+// キャラクターレイヤー作成
+- (void)createCharacterLayer;
+// 情報レイヤー作成
+- (void)createInfoLayer;
+// インターフェースレイヤー作成
+- (void)createInterface;
+// 枠レイヤー作成
+- (void)createFrame;
 // ゲーム開始時の更新処理
 - (void)updateStart:(ccTime)dt;
 // プレイ中の更新処理
 - (void)updatePlaying:(ccTime)dt;
+// スリープ処理中の更新処理
+- (void)updateSleep:(ccTime)dt;
 // 自機の移動
 - (void)movePlayer:(id)object;
 // シールドボタン選択処理
 - (void)touchShieldButton:(id)object;
 // シールドボタン表示切替
 - (void)setShieldButtonSelected:(BOOL)selected;
+// ゲームオーバー
+- (void)gameOver;
+// 終了ボタン選択処理
+- (void)touchQuitButton:(id)object;
 
 @end

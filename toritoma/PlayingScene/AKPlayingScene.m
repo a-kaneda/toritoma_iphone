@@ -45,8 +45,6 @@ enum {
     kAKLayerPosZInterface   ///< インターフェースレイヤー
 };
 
-/// プレイ中メニュー項目のタグ
-static const NSUInteger kAKMenuTagPlaying = 0x01;
 /// 自機移動をスライド量の何倍にするか
 static const float kAKPlayerMoveVal = 1.8f;
 /// 開始ステージ番号
@@ -61,14 +59,8 @@ static const float kAKLifePosFromBottomPoint = 16.0f;
 static NSString *kAKTextureAtlasDefFile = @"Control.plist";
 /// コントロールテクスチャアトラスファイル名
 static NSString *kAKTextureAtlasFile = @"Control.png";
-/// シールドボタン配置位置、右からの座標
-static const float kAKShieldButtonPosFromRightPoint = 50.0f;
-/// シールドボタン配置位置、下からの座標
-static const float kAKShieldButtonPosFromBottomPoint = 50.0f;
-/// シールドボタン非選択時の画像名
-static NSString *kAKShiledButtonNoSelectImage = @"ShieldButton_01.png";
-/// シールドボタン選択時の画像名
-static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
+/// ゲームオーバー時の待機時間
+static const float kAKGameOverWaitTime = 1.0f;
 
 /*!
  @brief プレイシーンクラス
@@ -78,8 +70,8 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
 @implementation AKPlayingScene
 
 @synthesize data = data_;
+@synthesize state = state_;
 @synthesize chickenGauge = chickenGauge_;
-@synthesize shieldButton = shieldButton_;
 
 /*!
  @brief オブジェクト初期化処理
@@ -98,21 +90,72 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
         return nil;
     }
     
-    // 状態をシーン読み込み前に設定する
-    self.state = kAKGameStatePreLoad;
-    
     // テクスチャアトラスを読み込む
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kAKTextureAtlasDefFile textureFilename:kAKTextureAtlasFile];
 
     // 背景レイヤーを作成する
-    [self addChild:AKCreateBackColorLayer() z:kAKLayerPosZBack tag:kAKLayerPosZBack];
+    [self createBackGround];
+
+    // キャラクターレイヤーを作成する
+    [self createCharacterLayer];
     
+    // 情報レイヤーを作成する
+    [self createInfoLayer];
+    
+    // インターフェースレイヤーを作成する
+    [self createInterface];
+    
+    // 枠レイヤーを作成する
+    [self createFrame];
+    
+    // 状態をシーン読み込み前に設定する
+    self.state = kAKGameStatePreLoad;
+    
+    // スリープ時間を初期化する
+    sleepTime_ = 0.0f;
+    
+    // ゲームデータを生成する
+    self.data = [[[AKPlayData alloc] initWithScene:self] autorelease];
+
+    // 更新処理開始
+    [self scheduleUpdate];
+    
+    AKLog(kAKLogPlayingScene_1, @"end");
+    return self;
+}
+
+/*!
+ @brief 背景レイヤー作成
+ 
+ 背景レイヤーを作成する。
+ */
+- (void)createBackGround
+{
+    // 背景レイヤーを作成する
+    [self addChild:AKCreateBackColorLayer() z:kAKLayerPosZBack tag:kAKLayerPosZBack];    
+}
+
+/*!
+ @brief キャラクターレイヤー作成
+ 
+ キャラクターレイヤーを作成する。
+ */
+- (void)createCharacterLayer
+{
     // キャラクターを配置するレイヤーを作成する
     CCLayer *characterLayer = [CCLayer node];
     
     // キャラクターレイヤーを画面に配置する
     [self addChild:characterLayer z:kAKLayerPosZCharacter tag:kAKLayerPosZCharacter];
-    
+}
+
+/*!
+ @brief 情報レイヤー作成
+ 
+ 情報レイヤーを作成する。レイヤーに配置するものも作成する。
+ */
+- (void)createInfoLayer
+{
     // 情報レイヤーを作成する
     CCLayer *infoLayer = [CCLayer node];
     
@@ -137,29 +180,30 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
     
     // 残機表示の座標を設定する
     self.life.position = ccp([AKScreenSize xOfStage:kAKLifePosFromLeftPoint] - self.life.width / 2,
-                             [AKScreenSize yOfStage:kAKLifePosFromBottomPoint]);
-    
+                             [AKScreenSize yOfStage:kAKLifePosFromBottomPoint]);    
+}
+
+/*!
+ @brief インターフェースレイヤー作成
+ 
+ インターフェースレイヤーを作成する。レイヤーに配置するものも作成する。
+ */
+- (void)createInterface
+{
     // インターフェースレイヤーを作成する
-    AKInterface *interfaceLayer = [AKInterface node];
+    AKPlayingSceneIF *interfaceLayer = [AKPlayingSceneIF node];
     
     // インターフェースレイヤーを画面に配置する
     [self addChild:interfaceLayer z:kAKLayerPosZInterface tag:kAKLayerPosZInterface];
-    
-    // シールドボタンを作成する
-    self.shieldButton = [interfaceLayer addMenuWithSpriteFrame:kAKShiledButtonNoSelectImage
-                                                         atPos:ccp([AKScreenSize positionFromRightPoint:kAKShieldButtonPosFromRightPoint],
-                                                                   [AKScreenSize positionFromBottomPoint:kAKShieldButtonPosFromBottomPoint])
-                                                        action:@selector(touchShieldButton:)
-                                                             z:0
-                                                           tag:kAKMenuTagPlaying type:kAKMenuTypeMomentary];
-    
-    // スライド入力を画面全体に配置する
-    [interfaceLayer addSlideMenuWithRect:CGRectMake(0.0f, 0.0f, [AKScreenSize screenSize].width, [AKScreenSize screenSize].height)
-                                  action:@selector(movePlayer:)
-                                     tag:kAKMenuTagPlaying];
-    
-    interfaceLayer.enableTag = 0xFFFFFFFF;
-    
+}
+
+/*!
+ @brief 枠レイヤー作成
+ 
+ 枠レイヤーを作成する。
+ */
+- (void)createFrame
+{
     // 左側の枠レイヤーを作成する
     [self addChild:AKCreateColorLayer(kAKColorLittleDark,
                                       CGRectMake(0.0f,
@@ -185,16 +229,7 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
                                                  [AKScreenSize screenSize].width,
                                                  [AKScreenSize screenSize].height - [AKScreenSize stageSize].height))
                  z:kAKLayerPosZFrame
-               tag:kAKLayerPosZFrame];
-    
-    // ゲームデータを生成する
-    self.data = [[[AKPlayData alloc] initWithScene:self] autorelease];
-
-    // 更新処理開始
-    [self scheduleUpdate];
-    
-    AKLog(kAKLogPlayingScene_1, @"end");
-    return self;
+               tag:kAKLayerPosZFrame];    
 }
 
 /*!
@@ -212,8 +247,6 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
     self.chickenGauge = nil;
     [self.life removeFromParentAndCleanup:YES];
     self.life = nil;
-    [self.shieldButton removeFromParentAndCleanup:YES];
-    self.shieldButton = nil;
     
     // 未使用のスプライトフレームを解放する
     [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
@@ -225,25 +258,31 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
 }
 
 /*!
- @brief ゲームプレイの状態取得
- 
- ゲームプレイの状態を取得する。
- @return ゲームプレイの状態
- */
-- (enum AKGameState)state
-{
-    return state_;
-}
-
-/*!
  @brief ゲームプレイの状態設定
  
  ゲームプレイの状態を設定する。
+ インターフェースの有効項目を変更する。
  @param state ゲームプレイの状態
  */
 - (void)setState:(enum AKGameState)state
 {
+    // メンバに設定する
     state_ = state;
+    
+    // インターフェースの有効項目を変更する
+    switch (state) {
+        case kAKGameStatePlaying:   // プレイ中
+            self.interfaceLayer.enableTag = kAKMenuTagPlaying;
+            break;
+            
+        case kAKGameStateGameOver:  // ゲームオーバー
+            self.interfaceLayer.enableTag = kAKMenuTagGameOver;
+            break;
+            
+        default:                    // その他
+            self.interfaceLayer.enableTag = 0;
+            break;
+    }
 }
 
 /*!
@@ -256,6 +295,18 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
 {
     NSAssert([self getChildByTag:kAKLayerPosZCharacter] != nil, @"レイヤーが作成されていない");
     return (CCLayer *)[self getChildByTag:kAKLayerPosZCharacter];
+}
+
+/*!
+ @brief インターフェースレイヤー取得
+ 
+ インターフェースレイヤーを取得する。
+ @return インターフェースレイヤー
+ */
+- (AKPlayingSceneIF *)interfaceLayer
+{
+    NSAssert([self getChildByTag:kAKLayerPosZInterface] != nil, @"レイヤーが作成されていない");
+    return (AKPlayingSceneIF *)[self getChildByTag:kAKLayerPosZInterface];
 }
 
 /*!
@@ -290,6 +341,10 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
             
         case kAKGameStatePlaying:   // プレイ中
             [self updatePlaying:dt];
+            break;
+            
+        case kAKGameStateSleep:     // スリープ中
+            [self updateSleep:dt];
             break;
             
         default:
@@ -329,6 +384,33 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
 }
 
 /*!
+ @brief スリープ処理中の更新処理
+ 
+ スリープ時間が経過したあと、次の状態へ遷移する。
+ ゲームオーバーへの遷移の場合は遷移するまでプレイ中の状態更新を行う。
+ @param dt フレーム更新間隔
+ */
+- (void)updateSleep:(ccTime)dt
+{
+    // スリープ時間をカウントする
+    sleepTime_ -= dt;
+    
+    // スリープ時間が経過した時に次の状態へ遷移する
+    if (sleepTime_ < 0.0f) {
+        
+        self.state = nextState_;
+    }
+    // まだスリープ時間が残っている場合
+    else {
+        
+        // ゲームオーバーへの遷移の場合はプレイ中の状態を更新する
+        if (nextState_ == kAKGameStateGameOver) {
+            [self updatePlaying:dt];
+        }
+    }
+}
+
+/*!
  @brief 自機の移動
  
  スライド入力によって自機を移動する。
@@ -347,7 +429,7 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
     // cocos2dの座標系に変換する
     CGPoint location = [[CCDirector sharedDirector] convertToGL:locationInView];
 
-    AKLog(kAKLogPlayingScene_1, @"prev=(%f, %f) location=(%f, %f)", item.prevPoint.x, item.prevPoint.y, location.x, location.y);
+    AKLog(kAKLogPlayingScene_2, @"prev=(%f, %f) location=(%f, %f)", item.prevPoint.x, item.prevPoint.y, location.x, location.y);
     
     // 自機を移動する
     [self.data movePlayerByDx:(location.x - item.prevPoint.x) * kAKPlayerMoveVal
@@ -394,13 +476,43 @@ static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
  */
 - (void)setShieldButtonSelected:(BOOL)selected
 {
-    // 選択中かどうかで画像を切り替える
-    if (selected) {
-        [self.shieldButton setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:kAKShiledButtonSelectedImage]];
-    }
-    else {
-        [self.shieldButton setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:kAKShiledButtonNoSelectImage]];
-    }
+    [self.interfaceLayer setShieldButtonSelected:selected];
 }
 
+/*!
+ @brief ゲームオーバー
+ 
+ ゲームオーバー時はBGMをOFFにし、一定時間待機する。
+ 待機後はゲームオーバーのラベルとコントロールを有効にする。
+ ここでは状態を待機中、次の状態をゲームオーバーに設定する。
+ */
+- (void)gameOver
+{
+    AKLog(kAKLogPlayingScene_1, @"start");
+    
+    // 状態を待機中へ遷移する
+    self.state = kAKGameStateSleep;
+    
+    // 待機後の状態をゲームオーバーに設定する
+    nextState_ = kAKGameStateGameOver;
+    
+    // 待機時間を設定する
+    sleepTime_ = kAKGameOverWaitTime;
+
+    AKLog(kAKLogPlayingScene_1, @"end");
+}
+
+/*!
+ @brief 終了ボタン選択処理
+ 
+ 終了ボタンが選択された時の処理を行う。
+ 効果音を鳴らし、タイトルシーンへと遷移する。
+ @param object メニュー項目
+ */
+- (void)touchQuitButton:(id)object
+{
+    AKLog(kAKLogPlayingScene_1, @"start");
+
+    // [TODO]タイトルシーンへと遷移する
+}
 @end

@@ -320,19 +320,24 @@ enum AKCharacterPositionZ {
     // クリア後の待機中の場合はスクリプトを実行しない
     if (clearWait_ > 0.0f) {
         
-        // 待機時間をカウントする
-        clearWait_ -= dt;
-        
-        // 待機時間が経過した場合は次のステージへと進める
-        if (clearWait_ < 0.0f) {
+        // 自機が破壊されている場合は復活するまで処理しない
+        // 自機が存在する場合のみ待機時間のカウントとステージクリア処理を行う
+        if (!self.player.isStaged) {
+         
+            // 待機時間をカウントする
+            clearWait_ -= dt;
             
-            AKLog(kAKLogPlayData_1, @"ステージクリア後の待機時間経過");
-            
-            // 次のステージのスクリプトを読み込む
-            [self readScript:stage_ + 1];
-            
-            // 待機時間をリセットする
-            clearWait_ = 0.0f;
+            // 待機時間が経過した場合は次のステージへと進める
+            if (clearWait_ < 0.0f) {
+                
+                AKLog(kAKLogPlayData_1, @"ステージクリア後の待機時間経過");
+                
+                // 次のステージのスクリプトを読み込む
+                [self readScript:stage_ + 1];
+                
+                // 待機時間をリセットする
+                clearWait_ = 0.0f;
+            }
         }
     }
     // ステージ実行中の場合はスクリプトの実行を行う
@@ -347,8 +352,8 @@ enum AKCharacterPositionZ {
         }
     }
     
-    // 自機が破壊されている場合は復活までの時間をカウントする
-    if (!self.player.isStaged) {
+    // 復活待機時間が設定されている場合は時間をカウントする
+    if (rebirthWait_ > 0.0f) {
         
         rebirthWait_ -= dt;
         
@@ -758,9 +763,9 @@ enum AKCharacterPositionZ {
         // 自機復活待機時間を設定する
         rebirthWait_ = kAKRebirthInterval;
     }
-    // [TODO]残機が残っていない場合はゲームオーバーとする
+    // 残機が残っていない場合はゲームオーバーとする
     else {
-        
+        [self.scene gameOver];
     }
 }
 @end

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C2FD94C16BAA59C009DCC2D /* AKEnemyShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */; };
+		0C61A3B416D9FA54008ADA0E /* AKPlayingSceneIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */; };
 		0C7E06CB16C9970C0044BF42 /* AKBack.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7E06CA16C9970C0044BF42 /* AKBack.m */; };
 		0C7E06D216CD81930044BF42 /* stage_2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06CE16CD81930044BF42 /* stage_2.txt */; };
 		0C7E06D316CD81930044BF42 /* stage_3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06CF16CD81930044BF42 /* stage_3.txt */; };
@@ -178,6 +179,8 @@
 /* Begin PBXFileReference section */
 		0C2FD94A16BAA59C009DCC2D /* AKEnemyShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemyShot.h; sourceTree = "<group>"; };
 		0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemyShot.m; sourceTree = "<group>"; };
+		0C61A3B216D9FA54008ADA0E /* AKPlayingSceneIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayingSceneIF.h; sourceTree = "<group>"; };
+		0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayingSceneIF.m; sourceTree = "<group>"; };
 		0C7E06C916C9970C0044BF42 /* AKBack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKBack.h; sourceTree = "<group>"; };
 		0C7E06CA16C9970C0044BF42 /* AKBack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKBack.m; sourceTree = "<group>"; };
 		0C7E06CE16CD81930044BF42 /* stage_2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_2.txt; path = Resources/Script/stage_2.txt; sourceTree = "<group>"; };
@@ -553,6 +556,8 @@
 				0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */,
 				0CCA88411699615D00EB243F /* AKPlayingScene.h */,
 				0CCA88421699615D00EB243F /* AKPlayingScene.m */,
+				0C61A3B216D9FA54008ADA0E /* AKPlayingSceneIF.h */,
+				0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */,
 				0CCA88441699665D00EB243F /* AKPlayData.h */,
 				0CCA88451699665D00EB243F /* AKPlayData.m */,
 				0CCC525A16A4A2B200E9A397 /* AKScript.h */,
@@ -1266,6 +1271,7 @@
 				0C7E06CB16C9970C0044BF42 /* AKBack.m in Sources */,
 				0CE6278F16D41E72008CDCC2 /* AKLogNoDef.m in Sources */,
 				0C90F1D716D88CA9008D2C2E /* AKLife.m in Sources */,
+				0C61A3B416D9FA54008ADA0E /* AKPlayingSceneIF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

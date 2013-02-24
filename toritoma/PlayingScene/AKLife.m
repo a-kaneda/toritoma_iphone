@@ -156,7 +156,7 @@ static const NSInteger kAKLifeMarkSize = 16;
     // ラベルが作成されていない場合
     if (self.numberLabel == nil) {
         
-        AKLog(1, @"ラベル作成:\"%@\"", labelStr);
+        AKLog(kAKLogLife_1, @"ラベル作成:\"%@\"", labelStr);
         
         // 残機数ラベルを作成する
         self.numberLabel = [AKLabel labelWithString:labelStr
@@ -167,7 +167,7 @@ static const NSInteger kAKLifeMarkSize = 16;
     // ラベルが作成されている場合
     else {
 
-        AKLog(1, @"ラベル変更:\"%@\"", labelStr);
+        AKLog(kAKLogLife_1, @"ラベル変更:\"%@\"", labelStr);
 
         // 表示文字列を変更する
         [self.numberLabel setString:labelStr];
