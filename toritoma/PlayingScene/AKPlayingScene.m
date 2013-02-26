@@ -532,6 +532,9 @@ static const float kAKGameOverWaitTime = 1.0f;
 {
     AKLog(kAKLogPlayingScene_1, @"start");
     
+    // ハイスコアをファイルに保存する
+    [self.data writeHiScore];
+    
     // [TODO]タイトルシーンへと遷移する
 }
 

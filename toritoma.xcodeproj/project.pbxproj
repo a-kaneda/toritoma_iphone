@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C2FD94C16BAA59C009DCC2D /* AKEnemyShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */; };
 		0C61A3B416D9FA54008ADA0E /* AKPlayingSceneIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */; };
+		0C61A3B716DD55D9008ADA0E /* AKHiScoreFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C61A3B616DD55D9008ADA0E /* AKHiScoreFile.m */; };
 		0C7E06CB16C9970C0044BF42 /* AKBack.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7E06CA16C9970C0044BF42 /* AKBack.m */; };
 		0C7E06D216CD81930044BF42 /* stage_2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06CE16CD81930044BF42 /* stage_2.txt */; };
 		0C7E06D316CD81930044BF42 /* stage_3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06CF16CD81930044BF42 /* stage_3.txt */; };
@@ -181,6 +182,8 @@
 		0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemyShot.m; sourceTree = "<group>"; };
 		0C61A3B216D9FA54008ADA0E /* AKPlayingSceneIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayingSceneIF.h; sourceTree = "<group>"; };
 		0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayingSceneIF.m; sourceTree = "<group>"; };
+		0C61A3B516DD55D9008ADA0E /* AKHiScoreFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKHiScoreFile.h; sourceTree = "<group>"; };
+		0C61A3B616DD55D9008ADA0E /* AKHiScoreFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKHiScoreFile.m; sourceTree = "<group>"; };
 		0C7E06C916C9970C0044BF42 /* AKBack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKBack.h; sourceTree = "<group>"; };
 		0C7E06CA16C9970C0044BF42 /* AKBack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKBack.m; sourceTree = "<group>"; };
 		0C7E06CE16CD81930044BF42 /* stage_2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_2.txt; path = Resources/Script/stage_2.txt; sourceTree = "<group>"; };
@@ -534,6 +537,8 @@
 		0CCA883F1699603700EB243F /* PlayingScene */ = {
 			isa = PBXGroup;
 			children = (
+				0C61A3B516DD55D9008ADA0E /* AKHiScoreFile.h */,
+				0C61A3B616DD55D9008ADA0E /* AKHiScoreFile.m */,
 				0CCC523516A29BFE00E9A397 /* AKCharacter.h */,
 				0CCC523616A29BFE00E9A397 /* AKCharacter.m */,
 				0CCC523716A29BFE00E9A397 /* AKCharacterPool.h */,
@@ -1272,6 +1277,7 @@
 				0CE6278F16D41E72008CDCC2 /* AKLogNoDef.m in Sources */,
 				0C90F1D716D88CA9008D2C2E /* AKLife.m in Sources */,
 				0C61A3B416D9FA54008ADA0E /* AKPlayingSceneIF.m in Sources */,
+				0C61A3B716DD55D9008ADA0E /* AKHiScoreFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

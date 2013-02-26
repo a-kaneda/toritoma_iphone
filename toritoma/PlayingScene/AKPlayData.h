@@ -129,12 +129,14 @@
 - (void)createMember;
 // 初期値設定処理
 - (void)clearPlayData;
-// 状態更新
-- (void)update:(ccTime)dt;
 // スクリプト読み込み
 - (void)readScript:(NSInteger)stage;
-// スクリプト実行再開
-- (void)resumeScript;
+// ハイスコアファイル読込
+- (void)readHiScore;
+// ハイスコアファイル書込
+- (void)writeHiScore;
+// 状態更新
+- (void)update:(ccTime)dt;
 // 自機の移動
 - (void)movePlayerByDx:(float)dx dy:(float)dy;
 // 自機弾生成

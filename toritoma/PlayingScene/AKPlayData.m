@@ -39,6 +39,7 @@
 #import "AKEffect.h"
 #import "AKBlock.h"
 #import "AKBack.h"
+#import "AKHiScoreFile.h"
 
 /// 自機初期位置x座標
 static const float kAKPlayerDefaultPosX = 50.0f;
@@ -62,6 +63,10 @@ static const float kAKChickenGaugeUseSpeed = 50.0f;
 NSString *kAKTextureAtlasDefFile = @"Character.plist";
 /// キャラクターテクスチャアトラスファイル名
 NSString *kAKTextureAtlasFile = @"Character.png";
+/// ハイスコアファイル名
+static NSString *kAKDataFileName = @"hiscore.dat";
+/// ハイスコアファイルのエンコードキー名
+static NSString *kAKDataFileKey = @"hiScoreData";
 /// ステージクリア後の待機時間
 static const float kAKStageClearWaitTime = 5.0f;
 /// 初期残機
@@ -132,6 +137,8 @@ enum AKCharacterPositionZ {
     NSAssert(NO, @"ゲームプレイ中以外にゲームシーンクラスの取得が行われた");
     return nil;
 }
+
+#pragma mark オブジェクト初期化
 
 /*!
  @brief オブジェクト初期化処理
@@ -237,14 +244,18 @@ enum AKCharacterPositionZ {
     // 残機の初期値を設定する
     self.life = kAKInitialLife;
     
+    // ハイスコアをファイルから読み込む
+    [self readHiScore];
+    
     // その他のメンバを初期化する
     stage_ = 0;
     score_ = 0;
-    hiScore_ = 0;
     clearWait_ = 0.0f;
     rebirthWait_ = 0.0f;
     boss_ = nil;    
 }
+
+#pragma mark オブジェクト解放
 
 /*!
  @brief オブジェクト解放処理
@@ -275,6 +286,8 @@ enum AKCharacterPositionZ {
     
     AKLog(kAKLogPlayData_1, @"end");
 }
+
+#pragma mark アクセサ
 
 /*!
  @brief 残機設定
@@ -312,6 +325,114 @@ enum AKCharacterPositionZ {
     [self.player setShield:shield];
 }
 
+#pragma mark ファイルアクセス
+
+/*!
+ @brief スクリプト読み込み
+ 
+ スクリプトファイルを読み込む。
+ @param stage ステージ番号
+ */
+- (void)readScript:(NSInteger)stage
+{
+    // ステージ番号をメンバに設定する
+    stage_ = stage;
+    
+    // スクリプトファイルを読み込む
+    self.script = [AKScript scriptWithStageNo:stage];
+    
+    // 最初の待機まで命令を実行する
+    [self.script update:0.0f];
+}
+
+/*!
+ @brief ハイスコアファイル読込
+ 
+ ハイスコアファイルを読み込む。
+ */
+- (void)readHiScore
+{
+    AKLog(kAKLogPlayData_1, @"start");
+    
+    // HOMEディレクトリのパスを取得する
+    NSString *homeDir = NSHomeDirectory();
+    
+    // Documentsディレクトリへのパスを作成する
+    NSString *docDir = [homeDir stringByAppendingPathComponent:@"Documents"];
+    
+    // ファイルパスを作成する
+    NSString *filePath = [docDir stringByAppendingPathComponent:kAKDataFileName];
+    
+    // ファイルを読み込む
+    NSData *data = [NSData dataWithContentsOfFile:filePath];
+    
+    AKLog(kAKLogPlayData_1 && data == nil, @"ファイル読み込み失敗");
+    
+    // ファイルが読み込めた場合はデータを取得する
+    if (data != nil) {
+        
+        // ファイルからデコーダーを生成する
+        NSKeyedUnarchiver *decoder = [[[NSKeyedUnarchiver alloc] initForReadingWithData:data] autorelease];
+        
+        // ハイスコアをデコードする
+        AKHiScoreFile *hiScore = [decoder decodeObjectForKey:kAKDataFileKey];
+        
+        // デコードを完了する
+        [decoder finishDecoding];
+        
+        // メンバに読み込む
+        hiScore_ = hiScore.hiscore;
+        
+        AKLog(kAKLogPlayData_1, @"hiScore_=%d", hiScore_);
+        
+        // ハイスコア表示を更新する
+        [self.scene setHiScoreLabel:hiScore_];
+    }
+}
+
+/*!
+ @brief ハイスコアファイル書込
+ 
+ ハイスコアファイルを書き込む。
+ */
+- (void)writeHiScore
+{
+    AKLog(kAKLogPlayData_1, @"start hiScore=%d", hiScore_);
+    
+    // HOMEディレクトリのパスを取得する
+    NSString *homeDir = NSHomeDirectory();
+    
+    // Documentsディレクトリへのパスを作成する
+    NSString *docDir = [homeDir stringByAppendingPathComponent:@"Documents"];
+    
+    // ファイルパスを作成する
+    NSString *filePath = [docDir stringByAppendingPathComponent:kAKDataFileName];
+    
+    // ハイスコアファイルオブジェクトを生成する
+    AKHiScoreFile *hiScore = [[[AKHiScoreFile alloc] init] autorelease];
+    
+    // ハイスコアを設定する
+    hiScore.hiscore = hiScore_;
+    
+    // エンコーダーを生成する
+    NSMutableData *data = [NSMutableData data];
+    NSKeyedArchiver *encoder = [[[NSKeyedArchiver alloc] initForWritingWithMutableData:data] autorelease];
+    
+    // ファイル内容をエンコードする
+    [encoder encodeObject:hiScore forKey:kAKDataFileKey];
+    
+    // エンコードを完了する
+    [encoder finishEncoding];
+    
+    // ファイルを書き込む
+    [data writeToFile:filePath atomically:YES];
+    
+    // [TODO]Game Centerにスコアを送信する
+//    [[AKGameCenterHelper sharedHelper] reportHiScore:score_];
+}
+
+#pragma mark シーンクラスからのデータ操作用
+
 /*!
  @brief 状態更新
  
@@ -327,7 +448,7 @@ enum AKCharacterPositionZ {
         // 自機が破壊されている場合は復活するまで処理しない
         // 自機が存在する場合のみ待機時間のカウントとステージクリア処理を行う
         if (!self.player.isStaged) {
-         
+            
             // 待機時間をカウントする
             clearWait_ -= dt;
             
@@ -403,7 +524,7 @@ enum AKCharacterPositionZ {
     // 敵を更新する
     for (AKEnemy *enemy in [self.enemyPool.pool objectEnumerator]) {
         if (enemy.isStaged) {
-            AKLog(kAKLogPlayData_1, @"enemy move start.");
+            AKLog(kAKLogPlayData_2, @"enemy move start.");
             [enemy move:dt];
         }
     }
@@ -517,35 +638,6 @@ enum AKCharacterPositionZ {
 }
 
 /*!
- @brief スクリプト読み込み
- 
- スクリプトファイルを読み込む。
- @param stage ステージ番号
- */
-- (void)readScript:(NSInteger)stage
-{
-    // ステージ番号をメンバに設定する
-    stage_ = stage;
-    
-    // スクリプトファイルを読み込む
-    self.script = [AKScript scriptWithStageNo:stage];
-    
-    // 最初の待機まで命令を実行する
-    [self.script update:0.0f];
-}
-
-/*!
- @brief スクリプト実行再開
- 
- 停止中のスクリプト実行を再会する。
- ボスを倒した時などに呼び出す。
- */
-- (void)resumeScript
-{
-    [self.script resume];
-}
-
-/*!
  @brief 自機の移動
  
  自機を移動する。
@@ -562,6 +654,8 @@ enum AKCharacterPositionZ {
                                             0.0f,
                                             [AKScreenSize stageSize].height)];
 }
+
+#pragma mark キャラクタークラスからのデータ操作用
 
 /*!
  @brief 自機弾生成
