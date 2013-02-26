@@ -66,8 +66,6 @@ enum AKGameState {
     enum AKGameState nextState_;
     /// スリープ時間
     float sleepTime_;
-    /// チキンゲージ
-    AKChickenGauge *chickenGauge_;
     /// 残機表示
     AKLife *life_;
 }
@@ -76,14 +74,22 @@ enum AKGameState {
 @property (nonatomic, retain)AKPlayData *data;
 /// ゲームプレイの状態
 @property (nonatomic)enum AKGameState state;
-/// チキンゲージ
-@property (nonatomic, retain)AKChickenGauge *chickenGauge;
-/// 残機表示
-@property (nonatomic, retain)AKLife *life;
-// キャラクターレイヤー
+/// キャラクターレイヤー
 @property (nonatomic, readonly)CCLayer *characterLayer;
-// インターフェースレイヤー
+/// 情報レイヤー
+@property (nonatomic, readonly)CCLayer *infoLayer;
+/// インターフェースレイヤー
 @property (nonatomic, readonly)AKPlayingSceneIF *interfaceLayer;
+/// チキンゲージ
+@property (nonatomic, readonly)AKChickenGauge *chickenGauge;
+/// 残機表示
+@property (nonatomic, readonly)AKLife *life;
+/// スコア表示
+@property (nonatomic, readonly)AKLabel *score;
+/// ハイスコア表示
+@property (nonatomic, readonly)AKLabel *hiScore;
+/// ゲームオーバーかどうか
+@property (nonatomic, readonly)BOOL isGameOver;
 
 // 背景レイヤー作成
 - (void)createBackGround;
@@ -95,21 +101,25 @@ enum AKGameState {
 - (void)createInterface;
 // 枠レイヤー作成
 - (void)createFrame;
+// 自機の移動
+- (void)movePlayer:(id)object;
+// シールドボタン選択処理
+- (void)touchShieldButton:(id)object;
+// 終了ボタン選択処理
+- (void)touchQuitButton:(id)object;
 // ゲーム開始時の更新処理
 - (void)updateStart:(ccTime)dt;
 // プレイ中の更新処理
 - (void)updatePlaying:(ccTime)dt;
 // スリープ処理中の更新処理
 - (void)updateSleep:(ccTime)dt;
-// 自機の移動
-- (void)movePlayer:(id)object;
-// シールドボタン選択処理
-- (void)touchShieldButton:(id)object;
 // シールドボタン表示切替
 - (void)setShieldButtonSelected:(BOOL)selected;
+// スコアラベル更新
+- (void)setScoreLabel:(NSInteger)score;
+// ハイスコアラベル更新
+- (void)setHiScoreLabel:(NSInteger)hiScore;
 // ゲームオーバー
 - (void)gameOver;
-// 終了ボタン選択処理
-- (void)touchQuitButton:(id)object;
 
 @end

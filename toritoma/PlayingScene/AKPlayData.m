@@ -68,6 +68,8 @@ static const float kAKStageClearWaitTime = 5.0f;
 static const NSInteger kAKInitialLife = 2;
 /// 自機復活待機時間
 static const float kAKRebirthInterval = 1.0f;
+/// エクステンドするスコア
+static const NSInteger kAKExtendScore = 50000;
 
 /// キャラクター配置のz座標
 enum AKCharacterPositionZ {
@@ -237,6 +239,8 @@ enum AKCharacterPositionZ {
     
     // その他のメンバを初期化する
     stage_ = 0;
+    score_ = 0;
+    hiScore_ = 0;
     clearWait_ = 0.0f;
     rebirthWait_ = 0.0f;
     boss_ = nil;    
@@ -766,6 +770,47 @@ enum AKCharacterPositionZ {
     // 残機が残っていない場合はゲームオーバーとする
     else {
         [self.scene gameOver];
+    }
+}
+
+/*!
+ @brief スコア加算
+ 
+ スコアを加算する。ハイスコアを超えている場合はハイスコアも合わせて更新する。
+ スコア、ハイスコアの表示を更新する。
+ @param score スコア増加量
+ */
+- (void)addScore:(NSInteger)score
+{
+    // エクステンドの判定を行う
+    // ゲームオーバー時にはエクステンドしない(相打ちによってスコアが入った時)
+    if ((int)(score_ / kAKExtendScore) < (int)((score_ + score) / kAKExtendScore) &&
+        !self.scene.isGameOver) {
+        
+        AKLog(kAKLogPlayData_1, @"エクステンド:score_=%d score=%d しきい値=%d", score_, score, kAKExtendScore);
+        
+        // [TODO]エクステンドの効果音を鳴らす
+        
+        // 残機の数を増やす
+        self.life = self.life + 1;
+        
+        // [TODO]実績を解除する
+    }
+    
+    // スコアを加算する
+    score_ += score;
+    
+    // スコア表示を更新する
+    [self.scene setScoreLabel:score_];
+    
+    // ハイスコアを更新している場合はハイスコアを設定する
+    if (score_ > hiScore_) {
+        
+        // ハイスコアにスコアの値を設定する
+        hiScore_ = score_;
+        
+        // ハイスコア表示を更新する
+        [self.scene setHiScoreLabel:hiScore_];
     }
 }
 @end

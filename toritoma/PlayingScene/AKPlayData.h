@@ -54,6 +54,10 @@
     float rebirthWait_;
     /// 残機
     NSInteger life_;
+    /// スコア
+    NSInteger score_;
+    /// ハイスコア
+    NSInteger hiScore_;
     /// スクリプト情報
     AKScript *script_;
     /// 自機
@@ -153,5 +157,7 @@
 - (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 // 失敗時処理
 - (void)miss;
+// スコア加算
+- (void)addScore:(NSInteger)score;
 
 @end

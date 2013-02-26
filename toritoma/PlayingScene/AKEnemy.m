@@ -94,6 +94,9 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     // 破壊時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKHitSE];
     
+    // スコアを加算する
+    [[AKPlayData sharedInstance] addScore:score_];
+    
     // 敵種別ごとの処理を実行
     [self performSelector:destroy_];
     

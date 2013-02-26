@@ -45,16 +45,36 @@ enum {
     kAKLayerPosZInterface   ///< インターフェースレイヤー
 };
 
+/// 情報レイヤーに配置するノードのタグ
+enum {
+    kAKInfoTagChickenGauge = 0, ///< チキンゲージ
+    kAKInfoTagLife,             ///< 残機
+    kAKInfoTagScore,            ///< スコア
+    kAKInfoTagHiScore,          ///< ハイスコア
+};
+
 /// 自機移動をスライド量の何倍にするか
 static const float kAKPlayerMoveVal = 1.8f;
 /// 開始ステージ番号
 static const NSInteger kAKStartStage = 1;
 /// チキンゲージ配置位置、下からの座標
 static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
-/// 残機表示の位置、左からの座標
-static const float kAKLifePosFromLeftPoint = 376.0f;
-/// 残機表示の位置、下からの座標
-static const float kAKLifePosFromBottomPoint = 16.0f;
+/// 残機表示の位置、ステージ座標x座標
+static const float kAKLifePosXOfStage = 376.0f;
+/// 残機表示の位置、ステージ座標y座標
+static const float kAKLifePosYOfStage = 16.0f;
+/// スコアの表示位置、ステージ座標x座標
+static const float kAKScorePosXOfStage = 10.0f;
+/// スコアの表示位置、ステージ座標y座標
+static const float kAKScorePosYOfStage = 16.0f;
+/// スコア表示のフォーマット
+static NSString *kAKScoreFormat = @"SC:%06d";
+/// ハイスコアの表示位置、ステージ座標x座標
+static const float kAKHiScorePosXOfStage = 8.0f;
+/// ハイスコアの表示位置、ステージ座標y座標
+static const float kAKHiScorePosYOfStage = 16.0f;
+/// ハイスコア表示のフォーマット
+static NSString *kAKHiScoreFormat = @"HI:%06d";
 /// コントロールテクスチャアトラス定義ファイル名
 static NSString *kAKTextureAtlasDefFile = @"Control.plist";
 /// コントロールテクスチャアトラスファイル名
@@ -71,7 +91,8 @@ static const float kAKGameOverWaitTime = 1.0f;
 
 @synthesize data = data_;
 @synthesize state = state_;
-@synthesize chickenGauge = chickenGauge_;
+
+#pragma mark オブジェクト初期化
 
 /*!
  @brief オブジェクト初期化処理
@@ -163,24 +184,61 @@ static const float kAKGameOverWaitTime = 1.0f;
     [self addChild:infoLayer z:kAKLayerPosZInfo tag:kAKLayerPosZInfo];
     
     // チキンゲージを作成する
-    self.chickenGauge = [AKChickenGauge node];
+    AKChickenGauge *chickenGauge = [AKChickenGauge node];
     
     // チキンゲージを情報レイヤーに配置する
-    [infoLayer addChild:self.chickenGauge];
+    [infoLayer addChild:chickenGauge z:0 tag:kAKInfoTagChickenGauge];
     
     // チキンゲージの座標を設定する
-    self.chickenGauge.position = ccp([AKScreenSize center].x,
-                                     [AKScreenSize positionFromBottomPoint:kAKChickenGaugePosFromBottomPoint]);
+    chickenGauge.position = ccp([AKScreenSize center].x,
+                                [AKScreenSize positionFromBottomPoint:kAKChickenGaugePosFromBottomPoint]);
     
     // 残機表示を作成する
-    self.life = [AKLife node];
+    AKLife *life = [AKLife node];
     
     // 残機表示を情報レイヤーに配置する
-    [infoLayer addChild:self.life];
+    [infoLayer addChild:life z:0 tag:kAKInfoTagLife];
     
     // 残機表示の座標を設定する
-    self.life.position = ccp([AKScreenSize xOfStage:kAKLifePosFromLeftPoint] - self.life.width / 2,
-                             [AKScreenSize yOfStage:kAKLifePosFromBottomPoint]);    
+    life.position = ccp([AKScreenSize xOfStage:kAKLifePosXOfStage] - self.life.width / 2,
+                        [AKScreenSize yOfStage:kAKLifePosYOfStage]);
+    
+    // スコア表示の文字列を作成する
+    NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, 0];
+    
+    // スコア表示を作成する
+    AKLabel *scoreLabel = [AKLabel labelWithString:scoreString
+                                         maxLength:scoreString.length
+                                           maxLine:1
+                                             frame:kAKLabelFrameNone];
+    
+    // スコア表示を情報レイヤーに配置する
+    [infoLayer addChild:scoreLabel z:0 tag:kAKInfoTagScore];
+    
+    // スコア表示の座標を設定する
+    // スコアラベルは左詰めにするため、x座標は右に幅の半分移動する。
+    scoreLabel.position = ccp([AKScreenSize xOfStage:kAKScorePosXOfStage] + scoreLabel.width / 2,
+                              [AKScreenSize yOfStage:kAKScorePosYOfStage]);
+    
+    AKLog(kAKLogPlayingScene_1, @"scoreLabel.position=(%f, %f)", scoreLabel.position.x, scoreLabel.position.y);
+    
+    // ハイスコア表示の文字列を作成する
+    NSString *hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, 0];
+        
+    // ハイスコア表示を作成する
+    AKLabel *hiScoreLabel = [AKLabel labelWithString:hiScoreString
+                                           maxLength:hiScoreString.length
+                                             maxLine:1
+                                               frame:kAKLabelFrameNone];
+    
+    // ハイスコア表示を情報レイヤーに配置する
+    [infoLayer addChild:hiScoreLabel z:0 tag:kAKInfoTagHiScore];
+
+    // ハイスコアラベルの座標を設定する
+    // ハイスコアラベルは左詰めにし、スコアラベルの右端を原点とする。
+    hiScoreLabel.position = ccp(scoreLabel.position.x + scoreLabel.width / 2 + kAKHiScorePosXOfStage + hiScoreLabel.width / 2,
+                                [AKScreenSize yOfStage:kAKHiScorePosYOfStage]);
+    
 }
 
 /*!
@@ -232,6 +290,8 @@ static const float kAKGameOverWaitTime = 1.0f;
                tag:kAKLayerPosZFrame];    
 }
 
+#pragma mark オブジェクト解放
+
 /*!
  @brief オブジェクト解放処理
  
@@ -243,10 +303,6 @@ static const float kAKGameOverWaitTime = 1.0f;
     
     // メンバを解放する
     self.data = nil;
-    [self.chickenGauge removeFromParentAndCleanup:YES];
-    self.chickenGauge = nil;
-    [self.life removeFromParentAndCleanup:YES];
-    self.life = nil;
     
     // 未使用のスプライトフレームを解放する
     [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
@@ -256,6 +312,8 @@ static const float kAKGameOverWaitTime = 1.0f;
 
     AKLog(kAKLogPlayingScene_1, @"end");
 }
+
+#pragma mark アクセサ
 
 /*!
  @brief ゲームプレイの状態設定
@@ -298,6 +356,18 @@ static const float kAKGameOverWaitTime = 1.0f;
 }
 
 /*!
+ @brief 情報レイヤー取得
+ 
+ 情報レイヤーを取得する。
+ @return 情報レイヤー
+ */
+- (CCLayer *)infoLayer
+{
+    NSAssert([self getChildByTag:kAKLayerPosZInfo] != nil, @"レイヤーが作成されていない");
+    return (CCLayer *)[self getChildByTag:kAKLayerPosZInfo];
+}
+
+/*!
  @brief インターフェースレイヤー取得
  
  インターフェースレイヤーを取得する。
@@ -308,6 +378,74 @@ static const float kAKGameOverWaitTime = 1.0f;
     NSAssert([self getChildByTag:kAKLayerPosZInterface] != nil, @"レイヤーが作成されていない");
     return (AKPlayingSceneIF *)[self getChildByTag:kAKLayerPosZInterface];
 }
+
+/*!
+ @brief チキンゲージ取得
+ 
+ チキンゲージを取得する。
+ @return チキンゲージ
+ */
+- (AKChickenGauge *)chickenGauge
+{
+    NSAssert([self.infoLayer getChildByTag:kAKInfoTagChickenGauge] != nil, @"ノードが作成されていない");
+    return (AKChickenGauge *)[self.infoLayer getChildByTag:kAKInfoTagChickenGauge];
+}
+
+/*!
+ @brief 残機表示取得
+ 
+ 残機表示取得を取得する。
+ @return 残機表示取得
+ */
+- (AKLife *)life
+{
+    NSAssert([self.infoLayer getChildByTag:kAKInfoTagLife] != nil, @"ノードが作成されていない");
+    return (AKLife *)[self.infoLayer getChildByTag:kAKInfoTagLife];
+}
+
+/*!
+ @brief スコア表示取得
+ 
+ スコア表示取得を取得する。
+ @return スコア表示取得
+ */
+- (AKLabel *)score
+{
+    NSAssert([self.infoLayer getChildByTag:kAKInfoTagScore] != nil, @"ノードが作成されていない");
+    return (AKLabel *)[self.infoLayer getChildByTag:kAKInfoTagScore];
+}
+
+/*!
+ @brief ハイスコア表示取得
+ 
+ ハイスコア表示取得を取得する。
+ @return ハイスコア表示取得
+ */
+- (AKLabel *)hiScore
+{
+    NSAssert([self.infoLayer getChildByTag:kAKInfoTagHiScore] != nil, @"ノードが作成されていない");
+    return (AKLabel *)[self.infoLayer getChildByTag:kAKInfoTagHiScore];
+}
+
+/*!
+ @brief ゲームオーバーかどうか
+ 
+ ゲームオーバーかどうかを返す。
+ 現在の状態がゲームオーバー、または次の状態がゲームオーバーの場合はYESを返す。
+ @return ゲームオーバーかどうか
+ */
+- (BOOL)isGameOver
+{
+    // 現在の状態がゲームオーバー、または次の状態がゲームオーバーの場合はYESを返す
+    if (self.state == kAKGameStateGameOver || nextState_ == kAKGameStateGameOver) {
+        return YES;
+    }
+    else {
+        return NO;
+    }
+}
+
+#pragma mark イベント処理
 
 /*!
  @brief トランジション終了時の処理
@@ -323,6 +461,78 @@ static const float kAKGameOverWaitTime = 1.0f;
     
     // スーパークラスの処理を実行する
     [super onEnterTransitionDidFinish];
+}
+
+/*!
+ @brief 自機の移動
+ 
+ スライド入力によって自機を移動する。
+ @param object メニュー項目
+ */
+- (void)movePlayer:(id)object
+{
+    NSAssert([object isKindOfClass:[AKMenuItem class]], @"メニュー項目のクラスが違う");
+    
+    // メニュー項目クラスにキャストする
+    AKMenuItem *item = (AKMenuItem *)object;
+    
+    // 画面上のタッチ位置を取得する
+    CGPoint locationInView = [item.touch locationInView:[item.touch view]];
+    
+    // cocos2dの座標系に変換する
+    CGPoint location = [[CCDirector sharedDirector] convertToGL:locationInView];
+    
+    AKLog(kAKLogPlayingScene_2, @"prev=(%f, %f) location=(%f, %f)", item.prevPoint.x, item.prevPoint.y, location.x, location.y);
+    
+    // 自機を移動する
+    [self.data movePlayerByDx:(location.x - item.prevPoint.x) * kAKPlayerMoveVal
+                           dy:(location.y - item.prevPoint.y) * kAKPlayerMoveVal];
+}
+
+/*!
+ @brief シールドボタン選択処理
+ 
+ シールドボタン選択時にシールドを有効にする。
+ 選択解除時にシールドを解除する。
+ @param object メニュー項目
+ */
+- (void)touchShieldButton:(id)object
+{
+    NSAssert([object isKindOfClass:[AKMenuItem class]], @"メニュー項目のクラスが違う");
+    
+    // メニュー項目クラスにキャストする
+    AKMenuItem *item = (AKMenuItem *)object;
+    
+    // タッチのフェーズによって処理を分ける
+    switch (item.touch.phase) {
+        case UITouchPhaseBegan:     // タッチ開始
+            // シールドモードを有効にする
+            self.data.shield = YES;
+            break;
+            
+        case UITouchPhaseCancelled: // タッチ取り消し
+        case UITouchPhaseEnded:     // タッチ終了
+            // シールドモードを無効にする
+            self.data.shield = NO;
+            break;
+            
+        default:                    // その他は無処理
+            break;
+    }
+}
+
+/*!
+ @brief 終了ボタン選択処理
+ 
+ 終了ボタンが選択された時の処理を行う。
+ 効果音を鳴らし、タイトルシーンへと遷移する。
+ @param object メニュー項目
+ */
+- (void)touchQuitButton:(id)object
+{
+    AKLog(kAKLogPlayingScene_1, @"start");
+    
+    // [TODO]タイトルシーンへと遷移する
 }
 
 /*!
@@ -353,6 +563,8 @@ static const float kAKGameOverWaitTime = 1.0f;
     }
     
 }
+
+#pragma mark 更新処理
 
 /*!
  @brief ゲーム開始時の更新処理
@@ -410,63 +622,7 @@ static const float kAKGameOverWaitTime = 1.0f;
     }
 }
 
-/*!
- @brief 自機の移動
- 
- スライド入力によって自機を移動する。
- @param object メニュー項目
- */
-- (void)movePlayer:(id)object
-{
-    NSAssert([object isKindOfClass:[AKMenuItem class]], @"メニュー項目のクラスが違う");
-    
-    // メニュー項目クラスにキャストする
-    AKMenuItem *item = (AKMenuItem *)object;
-    
-    // 画面上のタッチ位置を取得する
-    CGPoint locationInView = [item.touch locationInView:[item.touch view]];
-    
-    // cocos2dの座標系に変換する
-    CGPoint location = [[CCDirector sharedDirector] convertToGL:locationInView];
-
-    AKLog(kAKLogPlayingScene_2, @"prev=(%f, %f) location=(%f, %f)", item.prevPoint.x, item.prevPoint.y, location.x, location.y);
-    
-    // 自機を移動する
-    [self.data movePlayerByDx:(location.x - item.prevPoint.x) * kAKPlayerMoveVal
-                           dy:(location.y - item.prevPoint.y) * kAKPlayerMoveVal];
-}
-
-/*!
- @brief シールドボタン選択処理
- 
- シールドボタン選択時にシールドを有効にする。
- 選択解除時にシールドを解除する。
- @param object メニュー項目
- */
-- (void)touchShieldButton:(id)object
-{
-    NSAssert([object isKindOfClass:[AKMenuItem class]], @"メニュー項目のクラスが違う");
-    
-    // メニュー項目クラスにキャストする
-    AKMenuItem *item = (AKMenuItem *)object;
-    
-    // タッチのフェーズによって処理を分ける
-    switch (item.touch.phase) {
-        case UITouchPhaseBegan:     // タッチ開始
-            // シールドモードを有効にする
-            self.data.shield = YES;
-            break;
-            
-        case UITouchPhaseCancelled: // タッチ取り消し
-        case UITouchPhaseEnded:     // タッチ終了
-            // シールドモードを無効にする
-            self.data.shield = NO;
-            break;
-            
-        default:                    // その他は無処理
-            break;
-    }
-}
+#pragma mark AKPlayDataからのシーン操作用
 
 /*!
  @brief シールドボタン表示切替
@@ -477,6 +633,36 @@ static const float kAKGameOverWaitTime = 1.0f;
 - (void)setShieldButtonSelected:(BOOL)selected
 {
     [self.interfaceLayer setShieldButtonSelected:selected];
+}
+
+/*!
+ @brief スコアラベル更新
+ 
+ スコアラベルの文字列を更新する。
+ @param score スコア
+ */
+- (void)setScoreLabel:(NSInteger)score
+{
+    // ラベルに設定する文字列を作成する
+    NSString *string = [NSString stringWithFormat:kAKScoreFormat, score];
+    
+    // ラベルの文字列を変更する
+    [self.score setString:string];
+}
+
+/*!
+ @brief ハイスコアラベル更新
+ 
+ ハイスコアラベルの文字列を更新する。
+ @param hiScore ハイスコア
+ */
+- (void)setHiScoreLabel:(NSInteger)hiScore
+{
+    // ラベルに設定する文字列を作成する
+    NSString *string = [NSString stringWithFormat:kAKHiScoreFormat, hiScore];
+    
+    // ラベルの文字列を変更する
+    [self.hiScore setString:string];
 }
 
 /*!
@@ -502,17 +688,4 @@ static const float kAKGameOverWaitTime = 1.0f;
     AKLog(kAKLogPlayingScene_1, @"end");
 }
 
-/*!
- @brief 終了ボタン選択処理
- 
- 終了ボタンが選択された時の処理を行う。
- 効果音を鳴らし、タイトルシーンへと遷移する。
- @param object メニュー項目
- */
-- (void)touchQuitButton:(id)object
-{
-    AKLog(kAKLogPlayingScene_1, @"start");
-
-    // [TODO]タイトルシーンへと遷移する
-}
 @end
