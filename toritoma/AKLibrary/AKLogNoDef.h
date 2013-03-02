@@ -85,4 +85,6 @@ extern BOOL kAKLogScript_1;
 extern BOOL kAKLogScript_2;
 extern BOOL kAKLogScriptData_0;
 extern BOOL kAKLogScriptData_1;
+extern BOOL kAKLogTitleScene_0;
+extern BOOL kAKLogTitleScene_1;
 #endif

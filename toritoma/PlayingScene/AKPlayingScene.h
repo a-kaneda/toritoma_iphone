@@ -38,6 +38,7 @@
 #import "AKPlayData.h"
 #import "AKChickenGauge.h"
 #import "AKLife.h"
+#import "AKTitleScene.h"
 
 @class AKPlayData;
 

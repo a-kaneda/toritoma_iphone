@@ -535,7 +535,11 @@ static const float kAKGameOverWaitTime = 1.0f;
     // ハイスコアをファイルに保存する
     [self.data writeHiScore];
     
-    // [TODO]タイトルシーンへと遷移する
+    // タイトルシーンへの遷移を作成する
+    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKTitleScene node]];
+
+    // タイトルシーンへと遷移する
+    [[CCDirector sharedDirector] replaceScene:transition];
 }
 
 /*!

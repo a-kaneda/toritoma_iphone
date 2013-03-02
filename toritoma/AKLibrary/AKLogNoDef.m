@@ -85,4 +85,6 @@ BOOL kAKLogScript_1 = NO;
 BOOL kAKLogScript_2 = NO;
 BOOL kAKLogScriptData_0 = YES;
 BOOL kAKLogScriptData_1 = NO;
+BOOL kAKLogTitleScene_0 = YES;
+BOOL kAKLogTitleScene_1 = YES;
 #endif

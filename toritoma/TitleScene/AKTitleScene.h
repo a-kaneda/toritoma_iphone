@@ -27,32 +27,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
- @file AppDelegate.h
- @brief Application controller定義
+ @file AKTitleScene.h
+ @brief タイトルシーンクラスの定義
  
- Application controllerを定義する。
+ タイトルシーンを管理するクラスを定義する。
  */
 
-#import <UIKit/UIKit.h>
-#import "cocos2d.h"
 #import "AKLib.h"
 
-// Application controller
-@interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>
-{
-    /// Main window
-	UIWindow *window_;
-    /// Navigation controller
-	AKNavigationController *navController_;
-    /// Director
-	CCDirectorIOS	*director_;							// weak ref
+// タイトルシーンクラス
+@interface AKTitleScene : CCScene {
+    
 }
 
-/// Main window
-@property (nonatomic, retain) UIWindow *window;
-/// Navigation controller
-@property (readonly) UINavigationController *navController;
-/// Director
-@property (readonly) CCDirectorIOS *director;
+// インターフェースレイヤーの取得
+- (AKInterface *)interface;
+// ゲーム開始ボタンタッチ
+- (void)touchGameStartButton;
+// 遊び方ボタンタッチ
+- (void)touchHowToButton;
+// GameCenterボタンタッチ
+- (void)touchGameCenterButton;
+// クレジットボタンタッチ
+- (void)touchCreditButton;
+// ボタン選択エフェクト
+- (void)selectButton:(NSInteger)tag;
 
 @end

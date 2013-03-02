@@ -16,6 +16,7 @@
 		0C7E06D416CD81930044BF42 /* stage_4.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06D016CD81930044BF42 /* stage_4.txt */; };
 		0C7E06D516CD81930044BF42 /* stage_5.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06D116CD81930044BF42 /* stage_5.txt */; };
 		0C83E82F16E1FD5700592207 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C83E82E16E1FD5700592207 /* AppDelegate.m */; };
+		0C83E83216E1FE1800592207 /* AKTitleScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C83E83116E1FE1800592207 /* AKTitleScene.m */; };
 		0C90F1D316D88ACE008D2C2E /* Font.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C90F1D116D88ACE008D2C2E /* Font.plist */; };
 		0C90F1D416D88ACE008D2C2E /* Font.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C90F1D216D88ACE008D2C2E /* Font.png */; };
 		0C90F1D716D88CA9008D2C2E /* AKLife.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C90F1D616D88CA9008D2C2E /* AKLife.m */; };
@@ -192,6 +193,8 @@
 		0C7E06D116CD81930044BF42 /* stage_5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_5.txt; path = Resources/Script/stage_5.txt; sourceTree = "<group>"; };
 		0C83E82D16E1FD5700592207 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0C83E82E16E1FD5700592207 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		0C83E83016E1FE1800592207 /* AKTitleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKTitleScene.h; path = TitleScene/AKTitleScene.h; sourceTree = "<group>"; };
+		0C83E83116E1FE1800592207 /* AKTitleScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKTitleScene.m; path = TitleScene/AKTitleScene.m; sourceTree = "<group>"; };
 		0C90F1D116D88ACE008D2C2E /* Font.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Font.plist; path = Resources/Image/Font.plist; sourceTree = "<group>"; };
 		0C90F1D216D88ACE008D2C2E /* Font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Font.png; path = Resources/Image/Font.png; sourceTree = "<group>"; };
 		0C90F1D516D88CA9008D2C2E /* AKLife.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLife.h; sourceTree = "<group>"; };
@@ -537,6 +540,8 @@
 		0C83E82C16E1FBD900592207 /* TitleScene */ = {
 			isa = PBXGroup;
 			children = (
+				0C83E83016E1FE1800592207 /* AKTitleScene.h */,
+				0C83E83116E1FE1800592207 /* AKTitleScene.m */,
 			);
 			name = TitleScene;
 			sourceTree = "<group>";
@@ -1286,6 +1291,7 @@
 				0C61A3B416D9FA54008ADA0E /* AKPlayingSceneIF.m in Sources */,
 				0C61A3B716DD55D9008ADA0E /* AKHiScoreFile.m in Sources */,
 				0C83E82F16E1FD5700592207 /* AppDelegate.m in Sources */,
+				0C83E83216E1FE1800592207 /* AKTitleScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
