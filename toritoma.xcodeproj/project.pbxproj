@@ -15,6 +15,7 @@
 		0C7E06D316CD81930044BF42 /* stage_3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06CF16CD81930044BF42 /* stage_3.txt */; };
 		0C7E06D416CD81930044BF42 /* stage_4.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06D016CD81930044BF42 /* stage_4.txt */; };
 		0C7E06D516CD81930044BF42 /* stage_5.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06D116CD81930044BF42 /* stage_5.txt */; };
+		0C83E82F16E1FD5700592207 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C83E82E16E1FD5700592207 /* AppDelegate.m */; };
 		0C90F1D316D88ACE008D2C2E /* Font.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C90F1D116D88ACE008D2C2E /* Font.plist */; };
 		0C90F1D416D88ACE008D2C2E /* Font.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C90F1D216D88ACE008D2C2E /* Font.png */; };
 		0C90F1D716D88CA9008D2C2E /* AKLife.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C90F1D616D88CA9008D2C2E /* AKLife.m */; };
@@ -190,6 +191,8 @@
 		0C7E06CF16CD81930044BF42 /* stage_3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_3.txt; path = Resources/Script/stage_3.txt; sourceTree = "<group>"; };
 		0C7E06D016CD81930044BF42 /* stage_4.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_4.txt; path = Resources/Script/stage_4.txt; sourceTree = "<group>"; };
 		0C7E06D116CD81930044BF42 /* stage_5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_5.txt; path = Resources/Script/stage_5.txt; sourceTree = "<group>"; };
+		0C83E82D16E1FD5700592207 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		0C83E82E16E1FD5700592207 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0C90F1D116D88ACE008D2C2E /* Font.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Font.plist; path = Resources/Image/Font.plist; sourceTree = "<group>"; };
 		0C90F1D216D88ACE008D2C2E /* Font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Font.png; path = Resources/Image/Font.png; sourceTree = "<group>"; };
 		0C90F1D516D88CA9008D2C2E /* AKLife.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLife.h; sourceTree = "<group>"; };
@@ -507,8 +510,8 @@
 		0CD2CC81169922B000088557 /* LICENSE_Kazmath.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE_Kazmath.txt; path = libs/LICENSE_Kazmath.txt; sourceTree = "<group>"; };
 		0CD2CC83169922B000088557 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		0CD2CC84169922B000088557 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		0CD2CC86169922B000088557 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		0CD2CC87169922B000088557 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		0CD2CC86169922B000088557 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../AppDelegate.h; sourceTree = "<group>"; };
+		0CD2CC87169922B000088557 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ../AppDelegate.m; sourceTree = "<group>"; };
 		0CD2CC9B169934A000088557 /* AKLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLib.h; sourceTree = "<group>"; };
 		0CE6278D16D2D1CC008CDCC2 /* AKLogNoDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKLogNoDef.h; sourceTree = "<group>"; };
 		0CE6278E16D41E72008CDCC2 /* AKLogNoDef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKLogNoDef.m; sourceTree = "<group>"; };
@@ -534,6 +537,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C83E82C16E1FBD900592207 /* TitleScene */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = TitleScene;
+			sourceTree = "<group>";
+		};
 		0CCA883F1699603700EB243F /* PlayingScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -580,6 +590,10 @@
 		0CCA88401699606500EB243F /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				0CD2CC86169922B000088557 /* AppDelegate.h */,
+				0C83E82D16E1FD5700592207 /* AppDelegate.h */,
+				0C83E82E16E1FD5700592207 /* AppDelegate.m */,
+				0CD2CC87169922B000088557 /* AppDelegate.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -648,10 +662,9 @@
 			isa = PBXGroup;
 			children = (
 				0CD2CC9816992E8500088557 /* AKLibrary */,
-				0CCA88401699606500EB243F /* Common */,
 				0CCA883F1699603700EB243F /* PlayingScene */,
-				0CD2CC86169922B000088557 /* AppDelegate.h */,
-				0CD2CC87169922B000088557 /* AppDelegate.m */,
+				0C83E82C16E1FBD900592207 /* TitleScene */,
+				0CCA88401699606500EB243F /* Common */,
 				0CD2CB00169922AE00088557 /* Resources */,
 				0CD2CB1E169922AE00088557 /* libs */,
 				0CD2CC82169922B000088557 /* Supporting Files */,
@@ -1278,6 +1291,7 @@
 				0C90F1D716D88CA9008D2C2E /* AKLife.m in Sources */,
 				0C61A3B416D9FA54008ADA0E /* AKPlayingSceneIF.m in Sources */,
 				0C61A3B716DD55D9008ADA0E /* AKHiScoreFile.m in Sources */,
+				0C83E82F16E1FD5700592207 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
