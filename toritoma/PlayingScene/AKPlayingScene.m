@@ -62,17 +62,17 @@ static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
 /// 残機表示の位置、ステージ座標x座標
 static const float kAKLifePosXOfStage = 376.0f;
 /// 残機表示の位置、ステージ座標y座標
-static const float kAKLifePosYOfStage = 16.0f;
+static const float kAKLifePosYOfStage = 272.0f;
 /// スコアの表示位置、ステージ座標x座標
-static const float kAKScorePosXOfStage = 10.0f;
+static const float kAKScorePosXOfStage = 4.0f;
 /// スコアの表示位置、ステージ座標y座標
-static const float kAKScorePosYOfStage = 16.0f;
+static const float kAKScorePosYOfStage = 12.0f;
 /// スコア表示のフォーマット
-static NSString *kAKScoreFormat = @"SC:%06d";
+static NSString *kAKScoreFormat = @"SCORE:%06d";
 /// ハイスコアの表示位置、ステージ座標x座標
 static const float kAKHiScorePosXOfStage = 8.0f;
 /// ハイスコアの表示位置、ステージ座標y座標
-static const float kAKHiScorePosYOfStage = 16.0f;
+static const float kAKHiScorePosYOfStage = 12.0f;
 /// ハイスコア表示のフォーマット
 static NSString *kAKHiScoreFormat = @"HI:%06d";
 /// コントロールテクスチャアトラス定義ファイル名
@@ -200,7 +200,7 @@ static const float kAKGameOverWaitTime = 1.0f;
     [infoLayer addChild:life z:0 tag:kAKInfoTagLife];
     
     // 残機表示の座標を設定する
-    life.position = ccp([AKScreenSize xOfStage:kAKLifePosXOfStage] - self.life.width / 2,
+    life.position = ccp([AKScreenSize xOfStage:kAKLifePosXOfStage]   - self.life.width / 2,
                         [AKScreenSize yOfStage:kAKLifePosYOfStage]);
     
     // スコア表示の文字列を作成する
@@ -262,32 +262,67 @@ static const float kAKGameOverWaitTime = 1.0f;
  */
 - (void)createFrame
 {
+    AKLog(kAKLogPlayingScene_1, @"screen=(%f, %f) stage=(%f, %f)",
+          [AKScreenSize screenSize].width,
+          [AKScreenSize screenSize].height,
+          [AKScreenSize stageSize].width,
+          [AKScreenSize stageSize].height);
+    
+    // 左側の枠の座標を作成する
+    float x = 0.0f;
+    float y = 0.0f;
+    float w = ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f;
+    float h = [AKScreenSize screenSize].height;
+    
+    AKLog(kAKLogPlayingScene_1, @"左:(%f, %f, %f, %f)", x, y, w, h);
+    
     // 左側の枠レイヤーを作成する
-    [self addChild:AKCreateColorLayer(kAKColorLittleDark,
-                                      CGRectMake(0.0f,
-                                                 0.0f,
-                                                 ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f,
-                                                 [AKScreenSize screenSize].height))
+    [self addChild:AKCreateColorLayer(kAKColorLittleDark, CGRectMake(x, y, w, h))
                  z:kAKLayerPosZFrame
                tag:kAKLayerPosZFrame];
+    
+
+    // 右側の枠の座標を作成する
+    x = [AKScreenSize center].x + [AKScreenSize stageSize].width / 2.0f;
+    y = 0.0f;
+    w = ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f;
+    h = [AKScreenSize screenSize].height;
+    
+    AKLog(kAKLogPlayingScene_1, @"右:(%f, %f, %f, %f)", x, y, w, h);
     
     // 右側の枠レイヤーを作成する
-    [self addChild:AKCreateColorLayer(kAKColorLittleDark,
-                                      CGRectMake([AKScreenSize positionFromHorizontalCenterPoint:[AKScreenSize stageSize].width / 2.0f],
-                                                 0.0f,
-                                                 ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f,
-                                                 [AKScreenSize screenSize].height))
+    [self addChild:AKCreateColorLayer(kAKColorLittleDark, CGRectMake(x, y, w, h))
                  z:kAKLayerPosZFrame
                tag:kAKLayerPosZFrame];
     
+
+    // 下側の枠の座標を作成する
+    x = ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f;
+    y = 0.0f;
+    w = [AKScreenSize screenSize].width;
+    h = [AKScreenSize yOfStage:0.0f];
+    
+    AKLog(kAKLogPlayingScene_1, @"下:(%f, %f, %f, %f)", x, y, w, h);
+    
     // 下側の枠レイヤーを作成する
-    [self addChild:AKCreateColorLayer(kAKColorLittleDark,
-                                      CGRectMake(([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f,
-                                                 0.0f,
-                                                 [AKScreenSize screenSize].width,
-                                                 [AKScreenSize screenSize].height - [AKScreenSize stageSize].height))
+    [self addChild:AKCreateColorLayer(kAKColorLittleDark, CGRectMake(x, y, w, h))
                  z:kAKLayerPosZFrame
-               tag:kAKLayerPosZFrame];    
+               tag:kAKLayerPosZFrame];
+    
+    // 上側の枠の座標を作成する
+    x = ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f;
+    y = [AKScreenSize yOfStage:0.0f] + [AKScreenSize stageSize].height;
+    w = [AKScreenSize screenSize].width;
+    h = [AKScreenSize yOfStage:0.0f];
+    
+    AKLog(kAKLogPlayingScene_1, @"上:(%f, %f, %f, %f)", x, y, w, h);
+    
+    // 高さがある場合は上側の枠レイヤーを作成する
+    if (h > 0.0f) {
+        [self addChild:AKCreateColorLayer(kAKColorLittleDark, CGRectMake(x, y, w, h))
+                     z:kAKLayerPosZFrame
+                   tag:kAKLayerPosZFrame];
+    }
 }
 
 #pragma mark オブジェクト解放

@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C22363716E5402F000A2738 /* Character-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C22363016E5402F000A2738 /* Character-ipad.plist */; };
+		0C22363816E5402F000A2738 /* Character-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C22363116E5402F000A2738 /* Character-ipad.png */; };
+		0C22363916E5402F000A2738 /* ChickenGauge_01-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C22363216E5402F000A2738 /* ChickenGauge_01-ipad.png */; };
+		0C22363A16E5402F000A2738 /* ChickenGauge_02-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C22363316E5402F000A2738 /* ChickenGauge_02-ipad.png */; };
+		0C22363B16E5402F000A2738 /* Control-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C22363416E5402F000A2738 /* Control-ipad.plist */; };
+		0C22363C16E5402F000A2738 /* Control-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C22363516E5402F000A2738 /* Control-ipad.png */; };
+		0C22363F16E540C4000A2738 /* Font-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C22363E16E540C4000A2738 /* Font-ipad.png */; };
 		0C2FD94C16BAA59C009DCC2D /* AKEnemyShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */; };
 		0C61A3B416D9FA54008ADA0E /* AKPlayingSceneIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */; };
 		0C61A3B716DD55D9008ADA0E /* AKHiScoreFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C61A3B616DD55D9008ADA0E /* AKHiScoreFile.m */; };
@@ -179,6 +186,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0C22363016E5402F000A2738 /* Character-ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Character-ipad.plist"; path = "Resources/Image/Character-ipad.plist"; sourceTree = "<group>"; };
+		0C22363116E5402F000A2738 /* Character-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Character-ipad.png"; path = "Resources/Image/Character-ipad.png"; sourceTree = "<group>"; };
+		0C22363216E5402F000A2738 /* ChickenGauge_01-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChickenGauge_01-ipad.png"; path = "Resources/Image/ChickenGauge_01-ipad.png"; sourceTree = "<group>"; };
+		0C22363316E5402F000A2738 /* ChickenGauge_02-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChickenGauge_02-ipad.png"; path = "Resources/Image/ChickenGauge_02-ipad.png"; sourceTree = "<group>"; };
+		0C22363416E5402F000A2738 /* Control-ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Control-ipad.plist"; path = "Resources/Image/Control-ipad.plist"; sourceTree = "<group>"; };
+		0C22363516E5402F000A2738 /* Control-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Control-ipad.png"; path = "Resources/Image/Control-ipad.png"; sourceTree = "<group>"; };
+		0C22363E16E540C4000A2738 /* Font-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Font-ipad.png"; path = "Resources/Image/Font-ipad.png"; sourceTree = "<group>"; };
 		0C2FD94A16BAA59C009DCC2D /* AKEnemyShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemyShot.h; sourceTree = "<group>"; };
 		0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemyShot.m; sourceTree = "<group>"; };
 		0C61A3B216D9FA54008ADA0E /* AKPlayingSceneIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayingSceneIF.h; sourceTree = "<group>"; };
@@ -621,6 +635,13 @@
 				0CB2ACE416C068190094AFFA /* ChickenGauge_02.png */,
 				0C90F1D116D88ACE008D2C2E /* Font.plist */,
 				0C90F1D216D88ACE008D2C2E /* Font.png */,
+				0C22363016E5402F000A2738 /* Character-ipad.plist */,
+				0C22363116E5402F000A2738 /* Character-ipad.png */,
+				0C22363216E5402F000A2738 /* ChickenGauge_01-ipad.png */,
+				0C22363316E5402F000A2738 /* ChickenGauge_02-ipad.png */,
+				0C22363416E5402F000A2738 /* Control-ipad.plist */,
+				0C22363516E5402F000A2738 /* Control-ipad.png */,
+				0C22363E16E540C4000A2738 /* Font-ipad.png */,
 			);
 			name = Image;
 			sourceTree = "<group>";
@@ -1150,6 +1171,13 @@
 				0C7E06D516CD81930044BF42 /* stage_5.txt in Resources */,
 				0C90F1D316D88ACE008D2C2E /* Font.plist in Resources */,
 				0C90F1D416D88ACE008D2C2E /* Font.png in Resources */,
+				0C22363716E5402F000A2738 /* Character-ipad.plist in Resources */,
+				0C22363816E5402F000A2738 /* Character-ipad.png in Resources */,
+				0C22363916E5402F000A2738 /* ChickenGauge_01-ipad.png in Resources */,
+				0C22363A16E5402F000A2738 /* ChickenGauge_02-ipad.png in Resources */,
+				0C22363B16E5402F000A2738 /* Control-ipad.plist in Resources */,
+				0C22363C16E5402F000A2738 /* Control-ipad.png in Resources */,
+				0C22363F16E540C4000A2738 /* Font-ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

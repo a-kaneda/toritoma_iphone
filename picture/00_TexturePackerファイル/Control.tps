@@ -127,7 +127,7 @@
             <key>scale</key>
             <double>1</double>
             <key>scaleMode</key>
-            <enum type="ScaleMode">Scale2x</enum>
+            <enum type="ScaleMode">Smooth</enum>
             <key>innerPadding</key>
             <uint>0</uint>
             <key>extrude</key>
@@ -141,9 +141,9 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../93_アウトプット加工用/Control/ShieldButton_01.png</filename>
-            <filename>../93_アウトプット加工用/Control/ShieldButton_02.png</filename>
-            <filename>../93_アウトプット加工用/Control/Life.png</filename>
+            <filename>../94_2倍/Control/Life.png</filename>
+            <filename>../94_2倍/Control/ShieldButton_01.png</filename>
+            <filename>../94_2倍/Control/ShieldButton_02.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -244,6 +244,11 @@
  */
 + (NSInteger)xOfStage:(float)stageX
 {
+    // iPadの場合は座標を倍にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        stageX *= 2;
+    }
+    
     return stageX + ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2;
 }
 
@@ -256,7 +261,20 @@
  */
 + (NSInteger)yOfStage:(float)stageY
 {
-    return stageY + [AKScreenSize screenSize].height - [AKScreenSize stageSize].height;
+    // 画面上部の余白は基本的には0とする
+    NSInteger topMargin = 0;
+
+    // iPadの場合
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        
+        // iPadの場合は画面上部に余白を設定する
+        topMargin = 96;
+        
+        // 座標を倍にする
+        stageY *= 2;
+    }
+    
+    return stageY + [AKScreenSize screenSize].height - [AKScreenSize stageSize].height - topMargin;
 }
 
 /*! 

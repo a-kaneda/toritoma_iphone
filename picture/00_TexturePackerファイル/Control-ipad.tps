@@ -22,7 +22,7 @@
         <key>dataFormat</key>
         <string>cocos2d</string>
         <key>textureFileName</key>
-        <filename>../../toritoma/Resources/Image/Character.png</filename>
+        <filename>../../toritoma/Resources/Image/Control-ipad.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -99,7 +99,7 @@
             <key>packageName</key>
             <string>Texture</string>
             <key>javaFileName</key>
-            <filename>Character.java</filename>
+            <filename>Control.java</filename>
             <key>wrap</key>
             <struct type="AndEngineWrap">
                 <key>s</key>
@@ -111,7 +111,7 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>../../toritoma/Resources/Image/Character.plist</filename>
+        <filename>../../toritoma/Resources/Image/Control-ipad.plist</filename>
         <key>mainExtension</key>
         <string></string>
         <key>forceIdenticalLayout</key>
@@ -141,26 +141,9 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../94_2倍/Character/Back_01_01.png</filename>
-            <filename>../94_2倍/Character/Block_01_01.png</filename>
-            <filename>../94_2倍/Character/Effect_01_01.png</filename>
-            <filename>../94_2倍/Character/Effect_01_02.png</filename>
-            <filename>../94_2倍/Character/Effect_01_03.png</filename>
-            <filename>../94_2倍/Character/Effect_01_04.png</filename>
-            <filename>../94_2倍/Character/Effect_01_05.png</filename>
-            <filename>../94_2倍/Character/Effect_01_06.png</filename>
-            <filename>../94_2倍/Character/Effect_01_07.png</filename>
-            <filename>../94_2倍/Character/Effect_01_08.png</filename>
-            <filename>../94_2倍/Character/Effect_02_01.png</filename>
-            <filename>../94_2倍/Character/Enemy_01_01.png</filename>
-            <filename>../94_2倍/Character/Enemy_01_02.png</filename>
-            <filename>../94_2倍/Character/EnemyShot_01_01.png</filename>
-            <filename>../94_2倍/Character/Option_01_01.png</filename>
-            <filename>../94_2倍/Character/Option_01_02.png</filename>
-            <filename>../94_2倍/Character/Option_02_01.png</filename>
-            <filename>../94_2倍/Character/Player_01_01.png</filename>
-            <filename>../94_2倍/Character/Player_01_02.png</filename>
-            <filename>../94_2倍/Character/PlayerShot_01_01.png</filename>
+            <filename>../95_4倍/Control/Life.png</filename>
+            <filename>../95_4倍/Control/ShieldButton_01.png</filename>
+            <filename>../95_4倍/Control/ShieldButton_02.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

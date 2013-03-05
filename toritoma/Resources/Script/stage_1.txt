@@ -1,4 +1,4 @@
 repeat 1 1 1000
-enemy 1 350 200
+enemy 1 400 200
 sleep 100000
 boss 2 50 50

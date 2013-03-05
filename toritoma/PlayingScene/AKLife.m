@@ -92,7 +92,7 @@ static const NSInteger kAKLifeMarkSize = 16;
     self.mark.position = ccp(-self.numberLabel.width / 2, 0.0f);
     
     // 残機数ラベルの座標を設定する
-    self.numberLabel.position = ccp(kAKLifeMarkSize / 2, 0.0f);
+    self.numberLabel.position = ccp([AKScreenSize deviceLength:kAKLifeMarkSize] / 2, 0.0f);
     
     // 自ノードに残機マークを配置する
     [self addChild:self.mark];
