@@ -4,10 +4,23 @@
     <dict>
         <key>frames</key>
         <dict>
+            <key>BackButton.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{68,70},{32,32}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{32,32}}</string>
+                <key>sourceSize</key>
+                <string>{32,32}</string>
+            </dict>
             <key>Life.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{68,2},{16,16}}</string>
+                <string>{{102,2},{16,16}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -16,6 +29,32 @@
                 <string>{{0,0},{16,16}}</string>
                 <key>sourceSize</key>
                 <string>{16,16}</string>
+            </dict>
+            <key>NextButton.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{68,36},{32,32}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{32,32}}</string>
+                <key>sourceSize</key>
+                <string>{32,32}</string>
+            </dict>
+            <key>PrevButton.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{68,2},{32,32}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{32,32}}</string>
+                <key>sourceSize</key>
+                <string>{32,32}</string>
             </dict>
             <key>ShieldButton_01.png</key>
             <dict>
@@ -53,7 +92,7 @@
             <key>size</key>
             <string>{128,256}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:d279e56667358f00c4799ee2bc1514da$</string>
+            <string>$TexturePacker:SmartUpdate:8319b007723f7813910f27227b0b75ca$</string>
             <key>textureFileName</key>
             <string>Control.png</string>
         </dict>

@@ -141,7 +141,13 @@
         </struct>
         <key>fileList</key>
         <array>
+            <filename>../94_2倍/Control/Life.png</filename>
+            <filename>../94_2倍/Control/ShieldButton_01.png</filename>
+            <filename>../94_2倍/Control/ShieldButton_02.png</filename>
+            <filename>../95_4倍/Control/BackButton.png</filename>
             <filename>../95_4倍/Control/Life.png</filename>
+            <filename>../95_4倍/Control/NextButton.png</filename>
+            <filename>../95_4倍/Control/PrevButton.png</filename>
             <filename>../95_4倍/Control/ShieldButton_01.png</filename>
             <filename>../95_4倍/Control/ShieldButton_02.png</filename>
         </array>

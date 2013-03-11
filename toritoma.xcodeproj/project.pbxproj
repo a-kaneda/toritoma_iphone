@@ -15,6 +15,12 @@
 		0C22363C16E5402F000A2738 /* Control-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C22363516E5402F000A2738 /* Control-ipad.png */; };
 		0C22363F16E540C4000A2738 /* Font-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C22363E16E540C4000A2738 /* Font-ipad.png */; };
 		0C2FD94C16BAA59C009DCC2D /* AKEnemyShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */; };
+		0C5AD1F716ED268500F69D63 /* AKHowToPlayScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C5AD1F616ED268500F69D63 /* AKHowToPlayScene.m */; };
+		0C5AD1FC16EE714500F69D63 /* HowTo-ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C5AD1F816EE714500F69D63 /* HowTo-ipad.plist */; };
+		0C5AD1FD16EE714500F69D63 /* HowTo-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C5AD1F916EE714500F69D63 /* HowTo-ipad.png */; };
+		0C5AD1FE16EE714500F69D63 /* HowTo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C5AD1FA16EE714500F69D63 /* HowTo.plist */; };
+		0C5AD1FF16EE714500F69D63 /* HowTo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C5AD1FB16EE714500F69D63 /* HowTo.png */; };
+		0C5AD20216EE73D100F69D63 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0C5AD20416EE73D100F69D63 /* Localizable.strings */; };
 		0C61A3B416D9FA54008ADA0E /* AKPlayingSceneIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */; };
 		0C61A3B716DD55D9008ADA0E /* AKHiScoreFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C61A3B616DD55D9008ADA0E /* AKHiScoreFile.m */; };
 		0C7E06CB16C9970C0044BF42 /* AKBack.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7E06CA16C9970C0044BF42 /* AKBack.m */; };
@@ -203,6 +209,14 @@
 		0C22363E16E540C4000A2738 /* Font-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Font-ipad.png"; path = "Resources/Image/Font-ipad.png"; sourceTree = "<group>"; };
 		0C2FD94A16BAA59C009DCC2D /* AKEnemyShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemyShot.h; sourceTree = "<group>"; };
 		0C2FD94B16BAA59C009DCC2D /* AKEnemyShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemyShot.m; sourceTree = "<group>"; };
+		0C5AD1F516ED268500F69D63 /* AKHowToPlayScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKHowToPlayScene.h; sourceTree = "<group>"; };
+		0C5AD1F616ED268500F69D63 /* AKHowToPlayScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKHowToPlayScene.m; sourceTree = "<group>"; };
+		0C5AD1F816EE714500F69D63 /* HowTo-ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "HowTo-ipad.plist"; path = "Resources/Image/HowTo-ipad.plist"; sourceTree = "<group>"; };
+		0C5AD1F916EE714500F69D63 /* HowTo-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HowTo-ipad.png"; path = "Resources/Image/HowTo-ipad.png"; sourceTree = "<group>"; };
+		0C5AD1FA16EE714500F69D63 /* HowTo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = HowTo.plist; path = Resources/Image/HowTo.plist; sourceTree = "<group>"; };
+		0C5AD1FB16EE714500F69D63 /* HowTo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HowTo.png; path = Resources/Image/HowTo.png; sourceTree = "<group>"; };
+		0C5AD20316EE73D100F69D63 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0C5AD20516EE73E300F69D63 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0C61A3B216D9FA54008ADA0E /* AKPlayingSceneIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayingSceneIF.h; sourceTree = "<group>"; };
 		0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayingSceneIF.m; sourceTree = "<group>"; };
 		0C61A3B516DD55D9008ADA0E /* AKHiScoreFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKHiScoreFile.h; sourceTree = "<group>"; };
@@ -567,6 +581,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C5AD1F216ED25C400F69D63 /* HowToPlayScene */ = {
+			isa = PBXGroup;
+			children = (
+				0C5AD1F516ED268500F69D63 /* AKHowToPlayScene.h */,
+				0C5AD1F616ED268500F69D63 /* AKHowToPlayScene.m */,
+			);
+			path = HowToPlayScene;
+			sourceTree = "<group>";
+		};
+		0C5AD1F316ED261900F69D63 /* GameCenterScene */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = GameCenterScene;
+			sourceTree = "<group>";
+		};
+		0C5AD1F416ED263000F69D63 /* CreditScene */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CreditScene;
+			sourceTree = "<group>";
+		};
 		0C83E82C16E1FBD900592207 /* TitleScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -643,21 +680,25 @@
 		0CCC526316AA9C8C00E9A397 /* Image */ = {
 			isa = PBXGroup;
 			children = (
-				0CCC527216ADF3AE00E9A397 /* Character.plist */,
-				0CCC527316ADF3AE00E9A397 /* Character.png */,
-				0CB2ACEE16C3E3790094AFFA /* Control.plist */,
-				0CB2ACEF16C3E3790094AFFA /* Control.png */,
-				0CB2ACE316C068190094AFFA /* ChickenGauge_01.png */,
-				0CB2ACE416C068190094AFFA /* ChickenGauge_02.png */,
-				0C90F1D116D88ACE008D2C2E /* Font.plist */,
-				0C90F1D216D88ACE008D2C2E /* Font.png */,
 				0C22363016E5402F000A2738 /* Character-ipad.plist */,
 				0C22363116E5402F000A2738 /* Character-ipad.png */,
+				0CCC527216ADF3AE00E9A397 /* Character.plist */,
+				0CCC527316ADF3AE00E9A397 /* Character.png */,
 				0C22363216E5402F000A2738 /* ChickenGauge_01-ipad.png */,
+				0CB2ACE316C068190094AFFA /* ChickenGauge_01.png */,
 				0C22363316E5402F000A2738 /* ChickenGauge_02-ipad.png */,
+				0CB2ACE416C068190094AFFA /* ChickenGauge_02.png */,
 				0C22363416E5402F000A2738 /* Control-ipad.plist */,
 				0C22363516E5402F000A2738 /* Control-ipad.png */,
+				0CB2ACEE16C3E3790094AFFA /* Control.plist */,
+				0CB2ACEF16C3E3790094AFFA /* Control.png */,
 				0C22363E16E540C4000A2738 /* Font-ipad.png */,
+				0C90F1D116D88ACE008D2C2E /* Font.plist */,
+				0C90F1D216D88ACE008D2C2E /* Font.png */,
+				0C5AD1F816EE714500F69D63 /* HowTo-ipad.plist */,
+				0C5AD1F916EE714500F69D63 /* HowTo-ipad.png */,
+				0C5AD1FA16EE714500F69D63 /* HowTo.plist */,
+				0C5AD1FB16EE714500F69D63 /* HowTo.png */,
 			);
 			name = Image;
 			sourceTree = "<group>";
@@ -700,6 +741,9 @@
 			children = (
 				0CD2CC9816992E8500088557 /* AKLibrary */,
 				0CCA88401699606500EB243F /* Common */,
+				0C5AD1F416ED263000F69D63 /* CreditScene */,
+				0C5AD1F316ED261900F69D63 /* GameCenterScene */,
+				0C5AD1F216ED25C400F69D63 /* HowToPlayScene */,
 				0CD2CB1E169922AE00088557 /* libs */,
 				0CCA883F1699603700EB243F /* PlayingScene */,
 				0CD2CB00169922AE00088557 /* Resources */,
@@ -712,10 +756,6 @@
 		0CD2CB00169922AE00088557 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0CCC526316AA9C8C00E9A397 /* Image */,
-				0CCC526016A5F99F00E9A397 /* Script */,
-				0CD2CB01169922AE00088557 /* Default.png */,
-				0CD2CB03169922AE00088557 /* Default@2x.png */,
 				0CD2CB05169922AE00088557 /* Default-568h@2x.png */,
 				0CC71B7F16EC7E3700F8AF07 /* Default-Landscape.png */,
 				0CC71B8016EC7E3700F8AF07 /* Default-Landscape@2x.png */,
@@ -724,19 +764,24 @@
 				0CC71B8316EC7E3700F8AF07 /* Default-Portrait.png */,
 				0CC71B8416EC7E3700F8AF07 /* Default-Portrait@2x.png */,
 				0CC71B8516EC7E3700F8AF07 /* Default-PortraitUpsideDown.png */,
-				0CD2CB09169922AE00088557 /* fps_images.png */,
+				0CD2CB01169922AE00088557 /* Default.png */,
+				0CD2CB03169922AE00088557 /* Default@2x.png */,
 				0CD2CB0B169922AE00088557 /* fps_images-hd.png */,
 				0CD2CB0D169922AE00088557 /* fps_images-ipadhd.png */,
+				0CD2CB09169922AE00088557 /* fps_images.png */,
 				0CD2CB0F169922AE00088557 /* Icon-72.png */,
+				0CC71B7B16EC7A6800F8AF07 /* Icon-72@2x.png */,
 				0CD2CB11169922AE00088557 /* Icon-Small-50.png */,
+				0CC71B7C16EC7A6800F8AF07 /* Icon-Small-50@2x.png */,
 				0CD2CB13169922AE00088557 /* Icon-Small.png */,
 				0CD2CB15169922AE00088557 /* Icon-Small@2x.png */,
 				0CD2CB17169922AE00088557 /* Icon.png */,
 				0CD2CB19169922AE00088557 /* Icon@2x.png */,
-				0CC71B7B16EC7A6800F8AF07 /* Icon-72@2x.png */,
-				0CC71B7C16EC7A6800F8AF07 /* Icon-Small-50@2x.png */,
+				0CCC526316AA9C8C00E9A397 /* Image */,
 				0CD2CB1B169922AE00088557 /* Info.plist */,
 				0CD2CB1C169922AE00088557 /* iTunesArtwork */,
+				0CCC526016A5F99F00E9A397 /* Script */,
+				0C5AD20416EE73D100F69D63 /* Localizable.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1151,6 +1196,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				ja,
 			);
 			mainGroup = 0CD2CADE169922AE00088557;
 			productRefGroup = 0CD2CAEA169922AE00088557 /* Products */;
@@ -1210,6 +1256,11 @@
 				0CC71B8A16EC7E3700F8AF07 /* Default-Portrait.png in Resources */,
 				0CC71B8B16EC7E3700F8AF07 /* Default-Portrait@2x.png in Resources */,
 				0CC71B8C16EC7E3700F8AF07 /* Default-PortraitUpsideDown.png in Resources */,
+				0C5AD1FC16EE714500F69D63 /* HowTo-ipad.plist in Resources */,
+				0C5AD1FD16EE714500F69D63 /* HowTo-ipad.png in Resources */,
+				0C5AD1FE16EE714500F69D63 /* HowTo.plist in Resources */,
+				0C5AD1FF16EE714500F69D63 /* HowTo.png in Resources */,
+				0C5AD20216EE73D100F69D63 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1352,10 +1403,24 @@
 				0C61A3B716DD55D9008ADA0E /* AKHiScoreFile.m in Sources */,
 				0C83E82F16E1FD5700592207 /* AppDelegate.m in Sources */,
 				0C83E83216E1FE1800592207 /* AKTitleScene.m in Sources */,
+				0C5AD1F716ED268500F69D63 /* AKHowToPlayScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		0C5AD20416EE73D100F69D63 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0C5AD20316EE73D100F69D63 /* en */,
+				0C5AD20516EE73E300F69D63 /* ja */,
+			);
+			name = Localizable.strings;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0CD2CC8F169922B000088557 /* Debug */ = {

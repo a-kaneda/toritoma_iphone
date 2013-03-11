@@ -35,6 +35,7 @@
 
 #import "AKTitleScene.h"
 #import "AKPlayingScene.h"
+#import "AKHowToPlayScene.h"
 
 /// メニュー項目のタグ
 enum {
@@ -216,10 +217,10 @@ enum {
     [self selectButton:kAKTitleMenuHowTo];
     
     // [TODO]遊び方シーンへの遷移を作成する
-//    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKHowToPlayScene node]];
+    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKHowToPlayScene node]];
     
     // [TODO]遊び方シーンへ遷移する
-//    [[CCDirector sharedDirector] replaceScene:transition];
+    [[CCDirector sharedDirector] replaceScene:transition];
 }
 
 /*!

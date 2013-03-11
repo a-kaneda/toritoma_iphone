@@ -22,7 +22,7 @@
         <key>dataFormat</key>
         <string>cocos2d</string>
         <key>textureFileName</key>
-        <filename>../../toritoma/Resources/Image/Control.png</filename>
+        <filename>../../toritoma/Resources/Image/HowTo.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -111,7 +111,7 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>../../toritoma/Resources/Image/Control.plist</filename>
+        <filename>../../toritoma/Resources/Image/HowTo.plist</filename>
         <key>mainExtension</key>
         <string></string>
         <key>forceIdenticalLayout</key>
@@ -141,12 +141,10 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../94_2倍/Control/Life.png</filename>
-            <filename>../94_2倍/Control/ShieldButton_01.png</filename>
-            <filename>../94_2倍/Control/ShieldButton_02.png</filename>
-            <filename>../94_2倍/Control/BackButton.png</filename>
-            <filename>../94_2倍/Control/NextButton.png</filename>
-            <filename>../94_2倍/Control/PrevButton.png</filename>
+            <filename>../94_2倍/HowTo/HowTo_1.png</filename>
+            <filename>../94_2倍/HowTo/HowTo_2.png</filename>
+            <filename>../94_2倍/HowTo/HowTo_3.png</filename>
+            <filename>../94_2倍/HowTo/HowTo_4.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

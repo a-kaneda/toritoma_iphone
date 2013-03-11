@@ -54,6 +54,8 @@ extern BOOL kAKLogEnemyShot_0;
 extern BOOL kAKLogEnemyShot_1;
 extern BOOL kAKLogFont_0;
 extern BOOL kAKLogFont_1;
+extern BOOL kAKLogHowToPlayScene_0;
+extern BOOL kAKLogHowToPlayScene_1;
 extern BOOL kAKLogInterface_0;
 extern BOOL kAKLogInterface_1;
 extern BOOL kAKLogLabel_0;
