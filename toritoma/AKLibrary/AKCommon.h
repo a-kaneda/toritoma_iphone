@@ -37,6 +37,7 @@
 #define keigeki_common_h
 
 #import <Foundation/Foundation.h>
+#import <GameKit/GameKit.h>
 #import "cocos2d.h"
 
 /// 色番号
@@ -55,6 +56,20 @@ const ccColor4B kAKColor[kAKColorCount];
 
 /// デバッグフラグ
 extern unsigned long debug_flg;
+
+// ライブラリ用ログ区分
+extern BOOL kAKLogFont_0;
+extern BOOL kAKLogFont_1;
+extern BOOL kAKLogInterface_0;
+extern BOOL kAKLogInterface_1;
+extern BOOL kAKLogLabel_0;
+extern BOOL kAKLogLabel_1;
+extern BOOL kAKLogMenuItem_0;
+extern BOOL kAKLogMenuItem_1;
+extern BOOL kAKLogNavigationController_0;
+extern BOOL kAKLogNavigationController_1;
+extern BOOL kAKLogScreenSize_0;
+extern BOOL kAKLogScreenSize_1;
 
 /*!
  @brief デバッグフラグ取得

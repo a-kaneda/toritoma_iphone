@@ -34,7 +34,6 @@
  */
 
 #import "AKChickenGauge.h"
-#import "AKLib.h"
 
 /// 空ゲージの画像名
 static NSString *kAKEmptyImageName = @"ChickenGauge_01.png";

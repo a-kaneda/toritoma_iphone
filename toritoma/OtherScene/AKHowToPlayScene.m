@@ -51,10 +51,6 @@ enum {
     kAKHowToPageTag             ///< ページ番号のタグ
 };
 
-/// コントロールテクスチャアトラス定義ファイル名
-static NSString *kAKControlTextureAtlasDefFile = @"Control.plist";
-/// コントロールテクスチャアトラスファイル名
-static NSString *kAKControlTextureAtlasFile = @"Control.png";
 /// 遊び方説明画像テクスチャアトラス定義ファイル名
 static NSString *kAKHowToTextureAtlasDefFile = @"HowTo.plist";
 /// 遊び方説明画像テクスチャアトラスファイル名

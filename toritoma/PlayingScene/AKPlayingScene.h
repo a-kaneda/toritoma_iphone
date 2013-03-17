@@ -33,7 +33,7 @@
  プレイシーンクラスを定義する。
  */
 
-#import "AKLib.h"
+#import "AKToritoma.h"
 #import "AKPlayingSceneIF.h"
 #import "AKPlayData.h"
 #import "AKChickenGauge.h"

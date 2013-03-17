@@ -33,8 +33,6 @@
  複数のキャラクターのメモリ管理を行うクラスを定義する。
  */
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import "AKCharacter.h"
 
 // キャラクタープールクラス

@@ -53,6 +53,3 @@
 
 // カスタマイズNavigation Controller
 #import "AKNavigationController.h"
-
-// ログ区分定義
-#import "AKLogNoDef.h"

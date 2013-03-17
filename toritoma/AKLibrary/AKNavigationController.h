@@ -40,7 +40,7 @@
 //#import "GADBannerViewDelegate.h"
 
 // UINavigationControllerのカスタマイズ
-@interface AKNavigationController : UINavigationController {
+@interface AKNavigationController : UINavigationController<GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate> {
 //@interface AKNavigationController : UINavigationController<GKLeaderboardViewControllerDelegate,
 //    GKAchievementViewControllerDelegate, GADBannerViewDelegate> {
 

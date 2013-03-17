@@ -33,8 +33,6 @@
  敵キャラクターのクラスの定義をする。
  */
 
-#import <Foundation/Foundation.h>
-#import "cocos2d.h"
 #import "AKCharacter.h"
 
 /// 敵画像定義

@@ -33,7 +33,7 @@
  プレイ画面シーンのデータを管理するクラスを定義する。
  */
 
-#import "AKLib.h"
+#import "AKToritoma.h"
 #import "AKPlayingScene.h"
 #import "AKPlayer.h"
 #import "AKScript.h"

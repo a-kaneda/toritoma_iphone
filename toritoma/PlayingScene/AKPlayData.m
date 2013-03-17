@@ -427,8 +427,8 @@ enum AKCharacterPositionZ {
     // ファイルを書き込む
     [data writeToFile:filePath atomically:YES];
     
-    // [TODO]Game Centerにスコアを送信する
-//    [[AKGameCenterHelper sharedHelper] reportHiScore:score_];
+    // Game Centerにスコアを送信する
+    [[AKGameCenterHelper sharedHelper] reportHiScore:score_];
 }
 
 #pragma mark シーンクラスからのデータ操作用
@@ -457,8 +457,14 @@ enum AKCharacterPositionZ {
                 
                 AKLog(kAKLogPlayData_1, @"ステージクリア後の待機時間経過");
                 
+                // ステージクリアの実績をGame Centerへ送信する
+                [[AKGameCenterHelper sharedHelper] reportStageClear:stage_];
+                
+                // ステージを進める
+                stage_++;
+                
                 // 次のステージのスクリプトを読み込む
-                [self readScript:stage_ + 1];
+                [self readScript:stage_];
                 
                 // 待機時間をリセットする
                 clearWait_ = 0.0f;

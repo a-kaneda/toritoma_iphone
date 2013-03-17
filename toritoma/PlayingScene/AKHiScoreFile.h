@@ -33,7 +33,7 @@
  ハイスコアのファイル入出力を管理するクラスを定義する。
  */
 
-#import <Foundation/Foundation.h>
+#import "AKToritoma.h"
 
 // ハイスコアファイル管理クラス
 @interface AKHiScoreFile : NSObject <NSCoding> {

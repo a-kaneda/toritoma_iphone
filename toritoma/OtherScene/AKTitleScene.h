@@ -27,29 +27,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
- @file AKChickenGauge.h
- @brief チキンゲージクラス定義
+ @file AKTitleScene.h
+ @brief タイトルシーンクラスの定義
  
- チキンゲージのクラスを定義する。
+ タイトルシーンを管理するクラスを定義する。
  */
 
 #import "AKToritoma.h"
 
-// チキンゲージクラス
-@interface AKChickenGauge : CCNode {
-    /// 空ゲージの画像
-    CCSprite *emptyImage_;
-    /// 満ゲージの画像
-    CCSprite *fullImage_;
-    /// ゲージの溜まっている比率
-    float percent_;
+// タイトルシーンクラス
+@interface AKTitleScene : CCScene {
+    
 }
 
-/// 空ゲージの画像
-@property (nonatomic, retain)CCSprite *emptyImage;
-/// 満ゲージの画像
-@property (nonatomic, retain)CCSprite *fullImage;
-/// ゲージの溜まっている比率
-@property (nonatomic)float percent;
+// インターフェースレイヤーの取得
+- (AKInterface *)interface;
+// ゲーム開始ボタンタッチ
+- (void)touchGameStartButton;
+// 遊び方ボタンタッチ
+- (void)touchHowToButton;
+// オプションボタンタッチ
+- (void)touchOptionButton;
+// クレジットボタンタッチ
+- (void)touchCreditButton;
+// ボタン選択エフェクト
+- (void)selectButton:(NSInteger)tag;
 
 @end

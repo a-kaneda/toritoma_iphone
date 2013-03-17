@@ -33,7 +33,7 @@
  プレイシーンのインターフェースクラスを定義する。
  */
 
-#import "AKLib.h"
+#import "AKToritoma.h"
 
 /// プレイ中メニュー項目のタグ
 extern const NSUInteger kAKMenuTagPlaying;

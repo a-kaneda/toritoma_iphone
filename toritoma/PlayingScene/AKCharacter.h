@@ -33,9 +33,7 @@
  当たり判定を持つオブジェクトの基本クラスを定義する。
  */
 
-#import <Foundation/Foundation.h>
-#import "AKLib.h"
-#import "cocos2d.h"
+#import "AKToritoma.h"
 
 /// 障害物と衝突した時の動作
 enum AKBlockHitAction {

@@ -75,10 +75,6 @@ static const float kAKHiScorePosXOfStage = 8.0f;
 static const float kAKHiScorePosYOfStage = 12.0f;
 /// ハイスコア表示のフォーマット
 static NSString *kAKHiScoreFormat = @"HI:%06d";
-/// コントロールテクスチャアトラス定義ファイル名
-static NSString *kAKTextureAtlasDefFile = @"Control.plist";
-/// コントロールテクスチャアトラスファイル名
-static NSString *kAKTextureAtlasFile = @"Control.png";
 /// ゲームオーバー時の待機時間
 static const float kAKGameOverWaitTime = 1.0f;
 
@@ -112,7 +108,7 @@ static const float kAKGameOverWaitTime = 1.0f;
     }
     
     // テクスチャアトラスを読み込む
-    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kAKTextureAtlasDefFile textureFilename:kAKTextureAtlasFile];
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:kAKControlTextureAtlasDefFile textureFilename:kAKControlTextureAtlasFile];
 
     // 背景レイヤーを作成する
     [self createBackGround];

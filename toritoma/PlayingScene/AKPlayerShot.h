@@ -33,7 +33,6 @@
  自機の発射する弾のクラスを定義する。
  */
 
-#import <Foundation/Foundation.h>
 #import "AKCharacter.h"
 
 @interface AKPlayerShot : AKCharacter {

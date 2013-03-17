@@ -33,9 +33,7 @@
  Application controllerを定義する。
  */
 
-#import <UIKit/UIKit.h>
-#import "cocos2d.h"
-#import "AKLib.h"
+#import "AKToritoma.h"
 
 // Application controller
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>

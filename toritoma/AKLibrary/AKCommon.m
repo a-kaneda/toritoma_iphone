@@ -42,6 +42,19 @@
 /// デバッグフラグ
 unsigned long debug_flg = 0;
 
+// 共通ライブラリ用ログ区分定義
+BOOL kAKLogFont_0 = YES;
+BOOL kAKLogFont_1 = NO;
+BOOL kAKLogInterface_0 = YES;
+BOOL kAKLogInterface_1 = NO;
+BOOL kAKLogLabel_0 = YES;
+BOOL kAKLogLabel_1 = NO;
+BOOL kAKLogMenuItem_0 = YES;
+BOOL kAKLogMenuItem_1 = NO;
+BOOL kAKLogNavigationController_0 = YES;
+BOOL kAKLogNavigationController_1 = NO;
+BOOL kAKLogScreenSize_0 = YES;
+BOOL kAKLogScreenSize_1 = NO;
 #endif
 
 /// 色

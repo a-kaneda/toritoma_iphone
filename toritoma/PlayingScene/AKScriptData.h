@@ -33,8 +33,7 @@
  スクリプト１行分の内容を管理するクラス。
  */
 
-#import <Foundation/Foundation.h>
-#import "AKLib.h"
+#import "AKToritoma.h"
 
 /// パラメータの最大数
 #define kAKMaxParamCount 3

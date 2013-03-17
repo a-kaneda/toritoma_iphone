@@ -33,8 +33,7 @@
  ステージ構成定義のスクリプトファイルを読み込む。
  */
 
-#import <Foundation/Foundation.h>
-#import "AKLib.h"
+#import "AKToritoma.h"
 #import "AKScriptData.h"
 
 // スクリプト読み込みクラス

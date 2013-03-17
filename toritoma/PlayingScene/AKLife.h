@@ -33,7 +33,7 @@
  残機表示のクラスを定義する。
  */
 
-#import "AKLib.h"
+#import "AKToritoma.h"
 
 // 残機表示クラス
 @interface AKLife : CCNode {

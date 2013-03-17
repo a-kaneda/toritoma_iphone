@@ -164,12 +164,10 @@
  Leaderboard終了時にLeaderboardを閉じる。
  @param viewController LeaderboardのView Controller
  */
-/*
 - (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController
 {
     [self dismissModalViewControllerAnimated:YES];
 }
- */
 
 /*!
  @brief Achievements終了処理
@@ -177,12 +175,10 @@
  Achievemets終了時にAchievementsを閉じる。
  @param viewController AchievementsのView Controller
  */
-/*
 - (void)achievementViewControllerDidFinish:(GKAchievementViewController *)viewController
 {
     [self dismissModalViewControllerAnimated:YES];
 }
- */
 
 /*!
  @brief 広告バナーを作成

@@ -27,48 +27,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
- @file AKHowToPlayScene.h
- @brief プレイ方法画面シーンクラスの定義
+ @file AKToritoma.h
+ @brief とりとま共通インクルード
  
- プレイ方法画面シーンクラスを定義する。
+ アプリ全体で共通で使用するヘッダーのインクルードと定数定義を行う。
  */
 
 #import "AKLib.h"
+#import "AKLogNoDef.h"
+#import "AKGameCenterHelper.h"
 
-// プレイ方法画面シーン
-@interface AKHowToPlayScene : CCScene {
-    /// ページ番号
-    NSInteger pageNo_;
-    /// 説明画像
-    CCSprite *image_;
-}
-
-/// 説明画像
-@property (nonatomic, retain)CCSprite *image;
-
-// インターフェース取得
-- (AKInterface *)interface;
-// 前ページボタン取得
-- (CCNode *)prevButton;
-// 次ページボタン取得
-- (CCNode *)nextButton;
-// ページ番号ラベル取得
-- (AKLabel *)pageLabel;
-// メッセージラベルの取得
-- (AKLabel *)messageLabel;
-/// ページ番号取得
-- (NSInteger)pageNo;
-// ページ番号設定
-- (void)setPageNo:(NSInteger)pageNo;
-// 前ページ次ページボタン表示非表示更新
-- (void)updatePageButton;
-// ページ番号表示更新
-- (void)updatePageLabel;
-// 前ページ表示
-- (void)goPrevPage;
-// 次ページ表示
-- (void)goNextPage;
-// タイトルへ戻る
-- (void)backToTitle;
-
-@end
+// コントロールテクスチャアトラス定義ファイル名
+extern NSString *kAKControlTextureAtlasDefFile;
+// コントロールテクスチャアトラスファイル名
+extern NSString *kAKControlTextureAtlasFile;

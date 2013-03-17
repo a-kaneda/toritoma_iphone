@@ -33,8 +33,6 @@
  Application controllerを定義する。
  */
 
-#import "cocos2d.h"
-
 #import "AppDelegate.h"
 #import "AKTitleScene.h"
 
@@ -126,6 +124,9 @@
 	// make main window visible
 	[window_ makeKeyAndVisible];
 	
+    // Game Centerの認証を行う
+    [[AKGameCenterHelper sharedHelper] authenticateLocalPlayer];
+
 	return YES;
 }
 

@@ -36,12 +36,13 @@
 #import "AKTitleScene.h"
 #import "AKPlayingScene.h"
 #import "AKHowToPlayScene.h"
+#import "AKOptionScene.h"
 
 /// メニュー項目のタグ
 enum {
     kAKTitleMenuGame = 1,   ///< ゲーム開始ボタン
     kAKTitleMenuHowTo,      ///< 遊び方ボタン
-    kAKTitleMenuGameCenter, ///< GameCenterボタン
+    kAKTitleMenuOption,     ///< オプションボタン
     kAKTitleMenuCredit,     ///< クレジットボタン
     kAKTitleMenuCount       ///< メニュー項目数
 };
@@ -60,7 +61,7 @@ static NSString *kAKGameStartCaption  = @"GAME START ";
 /// 遊び方画面メニューのキャプション
 static NSString *kAKHowToPlayCaption  = @"HOW TO PLAY";
 /// オプション画面メニューのキャプション
-static NSString *kAKGameCenterCaption = @"GAME CENTER";
+static NSString *kAKOptionCaption     = @"OPTION     ";
 /// クレジット画面メニューのキャプション
 static NSString *kAKCreditCaption     = @"CREDIT     ";
 
@@ -76,8 +77,8 @@ static const float kAKMenuPosRightPoint = 120.0f;
 static const float kAKGameStartMenuPosTopRatio = 0.15f;
 /// 遊び方画面メニューのキャプションの表示位置、上からの比率
 static const float kAKHowToPlayMenuPosTopRatio = 0.35f;
-/// GameCenter画面メニューのキャプションの表示位置、上からの位置
-static const float kAKGameCenterMenuPosTopRatio = 0.55f;
+/// オプション画面メニューのキャプションの表示位置、上からの位置
+static const float kAKOptionMenuPosTopRatio = 0.55f;
 /// クレジット画面メニューのキャプションの表示位置、上からの比率
 static const float kAKCreditMenuPosTopRatio = 0.75f;
 
@@ -149,13 +150,13 @@ enum {
                              tag:kAKTitleMenuHowTo
                        withFrame:YES];
     
-    // GameCenterのメニューを作成する
-    [interface addMenuWithString:kAKGameCenterCaption
+    // オプションのメニューを作成する
+    [interface addMenuWithString:kAKOptionCaption
                            atPos:ccp([AKScreenSize positionFromRightPoint:kAKMenuPosRightPoint],
-                                     [AKScreenSize positionFromTopRatio:kAKGameCenterMenuPosTopRatio])
-                          action:@selector(touchGameCenterButton)
+                                     [AKScreenSize positionFromTopRatio:kAKOptionMenuPosTopRatio])
+                          action:@selector(touchOptionButton)
                                z:0
-                             tag:kAKTitleMenuGameCenter
+                             tag:kAKTitleMenuOption
                        withFrame:YES];
     
     // クレジットのメニューを作成する
@@ -216,30 +217,30 @@ enum {
     // ボタン選択エフェクトを発生させる
     [self selectButton:kAKTitleMenuHowTo];
     
-    // [TODO]遊び方シーンへの遷移を作成する
+    // 遊び方シーンへの遷移を作成する
     CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKHowToPlayScene node]];
     
-    // [TODO]遊び方シーンへ遷移する
+    // 遊び方シーンへ遷移する
     [[CCDirector sharedDirector] replaceScene:transition];
 }
 
 /*!
- @brief GameCenterボタンタッチ
+ @brief オプションボタンタッチ
  
- GameCenter画面へ遷移する。
+ オプション画面へ遷移する。
  */
-- (void)touchGameCenterButton
+- (void)touchOptionButton
 {
     AKLog(kAKLogTitleScene_1, @"start");
 
     // ボタン選択エフェクトを発生させる
-    [self selectButton:kAKTitleMenuGameCenter];
+    [self selectButton:kAKTitleMenuOption];
     
-    // [TODO]オプションシーンへの遷移を作成する
-//    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKGameCenterScene node]];
+    // [オプションシーンへの遷移を作成する
+    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKOptionScene node]];
     
-    // [TODO]オプションシーンへ遷移する
-//    [[CCDirector sharedDirector] replaceScene:transition];
+    // オプションシーンへ遷移する
+    [[CCDirector sharedDirector] replaceScene:transition];
 }
 
 /*!

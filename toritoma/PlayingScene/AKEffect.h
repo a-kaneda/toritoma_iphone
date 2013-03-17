@@ -33,9 +33,6 @@
  爆発等の画面効果を生成するクラスを定義する。
  */
 
-#import <Foundation/Foundation.h>
-#import "cocos2d.h"
-#import "AKLib.h"
 #import "AKCharacter.h"
 
 /// 画面効果定義
