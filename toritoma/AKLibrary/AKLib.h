@@ -51,5 +51,8 @@
 // インターフェースクラス
 #import "AKInterface.h"
 
+// Twitter管理クラス
+#import "AKTwitterHelper.h"
+
 // カスタマイズNavigation Controller
 #import "AKNavigationController.h"

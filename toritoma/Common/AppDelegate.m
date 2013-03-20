@@ -114,7 +114,7 @@
 	// Assume that PVR images have premultiplied alpha
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
 
-	// Create a Navigation Controller with the Director
+    // Create a Navigation Controller with the Director
 	navController_ = [[AKNavigationController alloc] initWithRootViewController:director_];
 	navController_.navigationBarHidden = YES;
 	

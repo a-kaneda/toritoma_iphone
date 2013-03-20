@@ -7,7 +7,7 @@
             <key>BackButton.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{132,134},{64,64}}</string>
+                <string>{{132,200},{64,64}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,7 +33,7 @@
             <key>NextButton.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{132,68},{64,64}}</string>
+                <string>{{132,134},{64,64}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -46,7 +46,7 @@
             <key>PrevButton.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{132,2},{64,64}}</string>
+                <string>{{132,68},{64,64}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -82,6 +82,19 @@
                 <key>sourceSize</key>
                 <string>{128,128}</string>
             </dict>
+            <key>TwitterButton.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{132,2},{64,64}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{64,64}}</string>
+                <key>sourceSize</key>
+                <string>{64,64}</string>
+            </dict>
         </dict>
         <key>metadata</key>
         <dict>
@@ -92,7 +105,7 @@
             <key>size</key>
             <string>{256,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:e4d2a286bfc9cad8b93a75516992bdde$</string>
+            <string>$TexturePacker:SmartUpdate:80541da25f55b37461ed98a951e1e9ec$</string>
             <key>textureFileName</key>
             <string>Control-ipad.png</string>
         </dict>

@@ -55,6 +55,8 @@ BOOL kAKLogNavigationController_0 = YES;
 BOOL kAKLogNavigationController_1 = NO;
 BOOL kAKLogScreenSize_0 = YES;
 BOOL kAKLogScreenSize_1 = NO;
+BOOL kAKLogTwitterHelper_0 = YES;
+BOOL kAKLogTwitterHelper_1 = NO;
 #endif
 
 /// 色

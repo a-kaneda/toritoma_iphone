@@ -70,6 +70,8 @@ extern BOOL kAKLogNavigationController_0;
 extern BOOL kAKLogNavigationController_1;
 extern BOOL kAKLogScreenSize_0;
 extern BOOL kAKLogScreenSize_1;
+extern BOOL kAKLogTwitterHelper_0;
+extern BOOL kAKLogTwitterHelper_1;
 
 /*!
  @brief デバッグフラグ取得

@@ -39,7 +39,7 @@
 #import "AKLogNoDef.h"
 
 /// アプリのURL
-//static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/qing-ji/id569653828?l=ja&ls=1&mt=8";
+static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837983?l=ja&ls=1&mt=8";
 /// AdMobパブリッシャーID
 //static NSString *kAKAdMobID = @"0fc25f9edb6a4772";
 
@@ -246,7 +246,6 @@
  
  Twitter Viewを表示する。
  */
-/*
 - (void)viewTwitterWithInitialString:(NSString *)string
 {
     // Twitter Viewを生成する
@@ -275,7 +274,6 @@
     // Twitter Viewを表示する
     [self presentModalViewController:viewController animated:YES];
 }
- */
 
 /*!
  @brief リクエスト成功時処理

@@ -2,3 +2,5 @@
 "HowToPlay_2" = "HowToPlay_2";
 "HowToPlay_3" = "HowToPlay_3";
 "HowToPlay_4" = "HowToPlay_4";
+"GameClearTweet" = "Toritoma, Clear all stages. I earned %d points score. #toritoma";
+"GameOverTweet" = "Toritoma, Advanced to stage %d. I earned %d points the score. #toritoma";

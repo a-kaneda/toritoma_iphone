@@ -75,6 +75,12 @@ static const NSInteger kAKInitialLife = 2;
 static const float kAKRebirthInterval = 1.0f;
 /// エクステンドするスコア
 static const NSInteger kAKExtendScore = 50000;
+/// ステージの数
+static const NSInteger kAKStageCount = 5;
+/// ゲームクリア時のツイートのフォーマットのキー
+static NSString *kAKGameClearTweetKey = @"GameClearTweet";
+/// ゲームオーバー時のツイートのフォーマットのキー
+static NSString *kAKGameOverTweetKey = @"GameOverTweet";
 
 /// キャラクター配置のz座標
 enum AKCharacterPositionZ {
@@ -659,6 +665,36 @@ enum AKCharacterPositionZ {
                             y:AKRangeCheckF(self.player.positionY + dy,
                                             0.0f,
                                             [AKScreenSize stageSize].height)];
+}
+
+/*!
+ @brief ツイートメッセージの作成
+ 
+ ツイートメッセージを作成する。
+ 進行したステージ数と獲得したスコアから文字列を作成する。
+ @return ツイートメッセージ
+ */
+- (NSString *)makeTweet
+{
+    NSString *tweet = nil;
+    
+    // 全ステージクリアの場合と途中でゲームオーバーになった時でツイート内容を変更する。
+    if (stage_ > kAKStageCount) {
+        NSString *format = NSLocalizedString(kAKGameClearTweetKey, @"ゲームクリア時のツイート");
+        tweet = [NSString stringWithFormat:format, score_];
+    }
+    else {
+        NSString *format = NSLocalizedString(kAKGameOverTweetKey, @"ゲームオーバー時のツイート");
+        tweet = [NSString stringWithFormat:format, stage_, score_];
+    }
+    
+    // Twitterでは同じ内容のツイートは連続して投稿できない。
+    // テスト時はこれを回避するため、末尾に現在日時を付加して同じ内容にならないようにする。
+#ifdef DEBUG
+    return [NSString stringWithFormat:@"%@ %@", tweet, [[NSDate date] description]];
+#else
+    return tweet;
+#endif
 }
 
 #pragma mark キャラクタークラスからのデータ操作用

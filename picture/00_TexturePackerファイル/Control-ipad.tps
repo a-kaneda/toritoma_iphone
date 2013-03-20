@@ -99,7 +99,7 @@
             <key>packageName</key>
             <string>Texture</string>
             <key>javaFileName</key>
-            <filename>Control.java</filename>
+            <filename>Control-ipad.java</filename>
             <key>wrap</key>
             <struct type="AndEngineWrap">
                 <key>s</key>
@@ -141,15 +141,13 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../94_2倍/Control/Life.png</filename>
-            <filename>../94_2倍/Control/ShieldButton_01.png</filename>
-            <filename>../94_2倍/Control/ShieldButton_02.png</filename>
             <filename>../95_4倍/Control/BackButton.png</filename>
             <filename>../95_4倍/Control/Life.png</filename>
             <filename>../95_4倍/Control/NextButton.png</filename>
             <filename>../95_4倍/Control/PrevButton.png</filename>
             <filename>../95_4倍/Control/ShieldButton_01.png</filename>
             <filename>../95_4倍/Control/ShieldButton_02.png</filename>
+            <filename>../95_4倍/Control/TwitterButton.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

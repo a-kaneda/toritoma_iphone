@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Akihiro Kaneda.
+ * Copyright (c) 2012-2013 Akihiro Kaneda.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,35 +27,45 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
- @file AKNavigationController.h
- @brief UINavigationControllerのカスタマイズ
+ @file AKTwitterHelper.h
+ @brief Twitter管理
  
- UINavigationControllerのカスタマイズクラスを定義する。
+ Twitterのツイートを管理するクラスを定義する。
  */
 
-#import <UIKit/UIKit.h>
-#import <GameKit/GameKit.h>
+#import <Foundation/Foundation.h>
+#import <Accounts/Accounts.h>
+#import <Twitter/Twitter.h>
 #import "AKLib.h"
-//#import "GADBannerView.h"
-//#import "GADBannerViewDelegate.h"
 
-// UINavigationControllerのカスタマイズ
-@interface AKNavigationController : UINavigationController<GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate> {
-//@interface AKNavigationController : UINavigationController<GKLeaderboardViewControllerDelegate,
-//    GKAchievementViewControllerDelegate, GADBannerViewDelegate> {
+/// Twitter設定
+enum AKTwitterMode {
+    kAKTwitterModeOff = 0,  ///< Twitter連携Off
+    kAKTwitterModeManual,   ///< 手動ツイート
+    kAKTwitterModeAuto      ///< 自動ツイート
+};
 
-    /// 広告バナー
-//    GADBannerView *bannerView_;
+/// Twitter管理
+@interface AKTwitterHelper : NSObject {
+    /// Twitter設定
+    enum AKTwitterMode mode_;
+    /// Twitterアカウント
+    ACAccount *twitterAccount_;    
 }
-/*
-/// 広告バナー
-@property (nonatomic, retain)GADBannerView *bannerView;
 
-// 広告バナーを作成
-- (void)createAdBanner;
-// 広告バナーを削除
-- (void)deleteAdBanner;
- */
-// Twitter Viewの表示
+/// Twitterアカウント
+@property (nonatomic, retain)ACAccount *twitterAccount;
+
+// シングルトンオブジェクト取得
++ (AKTwitterHelper *)sharedHelper;
+// Twitter設定取得
+- (enum AKTwitterMode)mode;
+// Twitter設定変更
+- (void)setMode:(enum AKTwitterMode)mode;
+// Twitterアカウント取得
+- (void)requestAccount;
+// Twitter View表示
 - (void)viewTwitterWithInitialString:(NSString *)string;
+// 自動ツイート
+- (void)tweet:(NSString *)string;
 @end

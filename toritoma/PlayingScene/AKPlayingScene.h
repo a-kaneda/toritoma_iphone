@@ -108,6 +108,8 @@ enum AKGameState {
 - (void)touchShieldButton:(id)object;
 // 終了ボタン選択処理
 - (void)touchQuitButton:(id)object;
+// ツイートボタン選択処理
+- (void)touchTweetButton:(id)object;
 // ゲーム開始時の更新処理
 - (void)updateStart:(ccTime)dt;
 // プレイ中の更新処理

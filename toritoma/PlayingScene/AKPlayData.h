@@ -139,6 +139,8 @@
 - (void)update:(ccTime)dt;
 // 自機の移動
 - (void)movePlayerByDx:(float)dx dy:(float)dy;
+// ツイートメッセージの作成
+- (NSString *)makeTweet;
 // 自機弾生成
 - (void)createPlayerShotAtX:(NSInteger)x y:(NSInteger)y;
 // 反射弾生成

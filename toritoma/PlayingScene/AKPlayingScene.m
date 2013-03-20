@@ -574,6 +574,21 @@ static const float kAKGameOverWaitTime = 1.0f;
 }
 
 /*!
+ @brief ツイートボタン選択処理
+ 
+ ツイートボタンが選択された時の処理を行う。
+ 
+ */
+- (void)touchTweetButton:(id)object
+{
+    // [TODO]メニュー選択時の効果音を鳴らす
+//    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
+    
+    // ツイートビューを表示する
+    [[AKTwitterHelper sharedHelper] viewTwitterWithInitialString:[data_ makeTweet]];
+}
+
+/*!
  @brief 更新処理
  
  ゲームの状態によって、更新処理を行う。

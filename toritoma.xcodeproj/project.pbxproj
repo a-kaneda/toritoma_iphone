@@ -199,6 +199,9 @@
 		0CD2CC7E169922B000088557 /* vec3.c in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2CC7D169922B000088557 /* vec3.c */; };
 		0CD2CC80169922B000088557 /* vec4.c in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2CC7F169922B000088557 /* vec4.c */; };
 		0CD2CC85169922B000088557 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD2CC84169922B000088557 /* main.m */; };
+		0CE092C916F672D800EE4CD6 /* AKTwitterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE092C816F672D800EE4CD6 /* AKTwitterHelper.m */; };
+		0CE092D216F675B200EE4CD6 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE092CE16F6757700EE4CD6 /* Accounts.framework */; };
+		0CE092D316F675BD00EE4CD6 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE092D016F6758100EE4CD6 /* Twitter.framework */; };
 		0CE6278F16D41E72008CDCC2 /* AKLogNoDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE6278E16D41E72008CDCC2 /* AKLogNoDef.m */; };
 /* End PBXBuildFile section */
 
@@ -566,6 +569,10 @@
 		0CD2CC83169922B000088557 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		0CD2CC84169922B000088557 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0CD2CC9B169934A000088557 /* AKLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLib.h; sourceTree = "<group>"; };
+		0CE092C716F672D800EE4CD6 /* AKTwitterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTwitterHelper.h; sourceTree = "<group>"; };
+		0CE092C816F672D800EE4CD6 /* AKTwitterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTwitterHelper.m; sourceTree = "<group>"; };
+		0CE092CE16F6757700EE4CD6 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		0CE092D016F6758100EE4CD6 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		0CE6278D16D2D1CC008CDCC2 /* AKLogNoDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKLogNoDef.h; sourceTree = "<group>"; };
 		0CE6278E16D41E72008CDCC2 /* AKLogNoDef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKLogNoDef.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -575,6 +582,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CE092D316F675BD00EE4CD6 /* Twitter.framework in Frameworks */,
+				0CE092D216F675B200EE4CD6 /* Accounts.framework in Frameworks */,
 				0CD2CAEE169922AE00088557 /* QuartzCore.framework in Frameworks */,
 				0CD2CAF0169922AE00088557 /* OpenGLES.framework in Frameworks */,
 				0CD2CAF2169922AE00088557 /* OpenAL.framework in Frameworks */,
@@ -719,6 +728,8 @@
 		0CD2CAEC169922AE00088557 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0CE092D016F6758100EE4CD6 /* Twitter.framework */,
+				0CE092CE16F6757700EE4CD6 /* Accounts.framework */,
 				0CD2CAED169922AE00088557 /* QuartzCore.framework */,
 				0CD2CAEF169922AE00088557 /* OpenGLES.framework */,
 				0CD2CAF1169922AE00088557 /* OpenAL.framework */,
@@ -1148,6 +1159,8 @@
 				0CCA883C1699580B00EB243F /* AKNavigationController.m */,
 				0CCC523D16A2A27000E9A397 /* AKScreenSize.h */,
 				0CCC523E16A2A27000E9A397 /* AKScreenSize.m */,
+				0CE092C716F672D800EE4CD6 /* AKTwitterHelper.h */,
+				0CE092C816F672D800EE4CD6 /* AKTwitterHelper.m */,
 			);
 			path = AKLibrary;
 			sourceTree = "<group>";
@@ -1398,6 +1411,7 @@
 				0CB7A09016EE8A7D00C019C2 /* AKGameCenterHelper.m in Sources */,
 				0CB7A09516F1278F00C019C2 /* AKOptionScene.m in Sources */,
 				0CB7A09816F56FDC00C019C2 /* AKToritoma.m in Sources */,
+				0CE092C916F672D800EE4CD6 /* AKTwitterHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

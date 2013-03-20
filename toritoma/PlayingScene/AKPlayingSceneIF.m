@@ -54,7 +54,7 @@ static NSString *kAKGameOverString = @"GAME OVER";
 /// タイトルへ戻るボタンのキャプション
 static NSString *kAKGameOverQuitButtonCaption = @"QUIT";
 /// Twitterボタンの画像ファイル名
-//static NSString *kAKTwitterButtonImageFile = @"Twitter.png";
+static NSString *kAKTwitterButtonImageFile = @"TwitterButton.png";
 /// ゲームオーバーキャプションの表示位置、下からの比率
 static const float kAKGameOverCaptionPosBottomRatio = 0.6f;
 /// タイトルへ戻るボタンの位置、下からの比率
@@ -167,13 +167,14 @@ static const float kAKTwitterButtonPosBottomRatio = 0.6f;
                                        tag:kAKMenuTagGameOver
                                  withFrame:YES];
     
-    // [TODO]Twitter設定が手動の場合はTwitterボタンを作成する
-    //    [self addMenuWithFile:kAKTwitterButtonImageFile
-    //                                   atPos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKTwitterButtonPosHorizontalCenterPoint],
-    //                                             [AKScreenSize positionFromBottomRatio:kAKTwitterButtonPosBottomRatio])
-    //                                  action:@selector(touchTweetButton:)
-    //                                       z:0
-    //                                     tag:kAKMenuTagGameOver];
+    // Twitterボタンを作成する
+    [self addMenuWithSpriteFrame:kAKTwitterButtonImageFile
+                           atPos:ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKTwitterButtonPosHorizontalCenterPoint],
+                                     [AKScreenSize positionFromBottomRatio:kAKTwitterButtonPosBottomRatio])
+                          action:@selector(touchTweetButton:)
+                               z:0
+                             tag:kAKMenuTagGameOver
+                            type:kAKMenuTypeButton];
 }
 
 /*!
