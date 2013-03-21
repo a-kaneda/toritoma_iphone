@@ -35,13 +35,6 @@
 
 #import <Twitter/TWTweetComposeViewController.h>
 #import "AKNavigationController.h"
-#import "SimpleAudioEngine.h"
-#import "AKLogNoDef.h"
-
-/// アプリのURL
-static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837983?l=ja&ls=1&mt=8";
-/// AdMobパブリッシャーID
-//static NSString *kAKAdMobID = @"0fc25f9edb6a4772";
 
 /*!
  @brief UINavigationControllerのカスタマイズ
@@ -51,7 +44,7 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837
  */
 @implementation AKNavigationController
 
-//@synthesize bannerView = bannerView_;
+@synthesize bannerView = bannerView_;
 
 /*!
  @brief 初期化処理
@@ -99,10 +92,8 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837
     // スーパークラスの処理を実行する
     [super viewDidLoad];
 
-    // 広告解除が無効の場合は広告を作成する
-//    if (![[AKInAppPurchaseHelper sharedHelper] isRemoveAd]) {
-//        [self createAdBanner];
-//    }
+    // 広告を作成する
+    [self createAdBanner];
     
     AKLog(kAKLogNavigationController_1, @"end");
 }
@@ -116,7 +107,7 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837
 - (void)viewDidUnload
 {
     // 広告バナーを解放する
-//    [self deleteAdBanner];
+    [self deleteAdBanner];
     
     // スーパークラスの処理を実行する
     [super viewDidUnload];
@@ -185,14 +176,13 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837
  
  広告バナーを作成する。
  */
-/*
 - (void)createAdBanner
 {
     AKLog(kAKLogNavigationController_1, @"start");
     
-    // 画面下部に標準サイズのビューを作成する
-    self.bannerView = [[[GADBannerView alloc] initWithFrame:CGRectMake(0.0,
-                                                                       self.view.bounds.size.height - GAD_SIZE_320x50.height,
+    // 標準サイズのビューを作成する
+    self.bannerView = [[[GADBannerView alloc] initWithFrame:CGRectMake([self bannerPosX],
+                                                                       [self bannerPosY],
                                                                        GAD_SIZE_320x50.width,
                                                                        GAD_SIZE_320x50.height)]
                        autorelease];
@@ -216,14 +206,12 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837
     
     AKLog(kAKLogNavigationController_1, @"end");
 }
- */
 
 /*!
  @brief 広告バナーを削除
  
  広告バナーを削除する。
  */
-/*
 - (void)deleteAdBanner
 {
     AKLog(kAKLogNavigationController_1, @"start");
@@ -239,7 +227,55 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837
     
     AKLog(kAKLogNavigationController_1, @"end");
 }
+
+/*!
+ @brief 広告バナー位置x座標取得
+ 
+ 広告バナー位置のx座標をアプリケーション側で定義された定数を元に取得する。
+ @return 広告バナー位置x座標
  */
+- (float)bannerPosX
+{
+    // アプリケーション側で定義された定数によって分岐する
+    switch (kAKBannerPosX) {
+        case kAKBannerPosXLeft:     // 左寄せ
+            return 0.0f;
+            
+        case kAKBannerPosXCenter:   // 中央揃え
+            return (self.view.bounds.size.width - GAD_SIZE_320x50.width) / 2.0f;
+            
+        case kAKBannerPosXRight:    // 右寄せ
+            return self.view.bounds.size.width - GAD_SIZE_320x50.width;
+            
+        default:                    // その他の場合は異常
+            AKLog(kAKLogNavigationController_0, @"広告バナーx方向の位置が異常:%d", kAKBannerPosX);
+            NSAssert(NO, @"広告バナーx方向の位置が異常");
+            return 0.0f;
+    }
+}
+
+/*!
+ @brief 広告バナー位置y座標取得
+
+ 広告バナー位置のy座標をアプリケーション側で定義された定数を元に取得する。
+ @return 広告バナー位置y座標
+ */
+- (float)bannerPosY
+{
+    // アプリケーション側で定義された定数によって分岐する
+    switch (kAKBannerPosY) {
+        case kAKBannerPosYTop:      // 上寄せ
+            return 0.0f;
+
+        case kAKBannerPosYBottom:   // 下寄せ
+            return self.view.bounds.size.height - GAD_SIZE_320x50.height;
+            
+        default:                    // その他の場合は異常
+            AKLog(kAKLogNavigationController_0, @"広告バナーy方向の位置が異常:%d", kAKBannerPosY);
+            NSAssert(NO, @"広告バナーy方向の位置が異常");
+            return 0.0f;
+    }
+}
 
 /*!
  @brief Twitter Viewの表示
@@ -282,20 +318,18 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837
  画面内に広告バナーを表示する。
  @param bannerView 広告バナー
  */
-/*
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView
 {
     AKLog(kAKLogNavigationController_1, @"start");
     
     // 画面内に広告を表示する
-    bannerView.frame = CGRectMake(0.0,
-                                  self.view.bounds.size.height - GAD_SIZE_320x50.height,
+    bannerView.frame = CGRectMake([self bannerPosX],
+                                  [self bannerPosY],
                                   bannerView.frame.size.width,
                                   bannerView.frame.size.height);
     
     AKLog(kAKLogNavigationController_1, @"end");
 }
- */
 
 /*!
  @brief リクエスト失敗時処理
@@ -305,56 +339,31 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837
  @param bannerView 広告バナー
  @param error エラー内容
  */
-/*
 - (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error
 {
     AKLog(kAKLogNavigationController_1, @"start");
     
     // ビューの位置を画面外に設定する
-    bannerView.frame = CGRectMake(0.0,
+    bannerView.frame = CGRectMake(-bannerView.frame.size.width,
                                   -bannerView.frame.size.height,
                                   bannerView.frame.size.width,
                                   bannerView.frame.size.height);
     
     AKLog(kAKLogNavigationController_1, @"end");
 }
- */
 
 /*!
  @brief 広告フルスクリーン表示時処理
  
  広告がフルスクリーン表示される前に行う処理。
- ゲームプレイ中の場合は一時停止状態にする。
  @param bannerView 広告バナー
  */
-/*
 - (void)adViewWillPresentScreen:(GADBannerView *)bannerView
 {
     AKLog(kAKLogNavigationController_1, @"start");
     
-    // 実行中のシーンを取得する
-    CCScene *scene = [[CCDirector sharedDirector] runningScene];
-    
-    // ゲームプレイシーンでゲームプレイ中の場合は一時停止状態にする
-    if ([scene isKindOfClass:[AKGameScene class]]) {
-        
-        // ゲームプレイシーンにキャストする
-        AKGameScene *gameScene = (AKGameScene *)scene;
-        
-        // ゲームプレイ中の場合は一時停止状態にする
-        if (gameScene.state == kAKGameStatePlaying) {
-            
-            // 一時停止する
-            [gameScene pause:NO];
-            
-            // BGMは停止させる
-            [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
-        }
-    }
-    
     AKLog(kAKLogNavigationController_1, @"end");
 }
- */
 
 /*!
  @brief 広告フルスクリーン終了時処理
@@ -362,12 +371,10 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837
  フルスクリーン広告が閉じられる時に行う処理。
  @param bannerView 広告バナー
  */
-/*
 - (void)adViewDidDismissScreen:(GADBannerView *)bannerView
 {
     AKLog(kAKLogNavigationController_1, @"start");
 }
- */
 
 /*!
  @brief 広告表示によるバックグラウンド移行時処理
@@ -375,10 +382,8 @@ static NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837
  広告表示によってアプリケーションがバックグラウンドに移行するときの処理。
  @param bannerView 広告バナー
  */
-/*
 - (void)adViewWillLeaveApplication:(GADBannerView *)bannerView
 {
     AKLog(kAKLogNavigationController_1, @"start");
 }
- */
 @end

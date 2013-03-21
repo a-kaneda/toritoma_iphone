@@ -36,18 +36,42 @@
 #import <UIKit/UIKit.h>
 #import <GameKit/GameKit.h>
 #import "AKLib.h"
-//#import "GADBannerView.h"
-//#import "GADBannerViewDelegate.h"
+#import "GADBannerView.h"
+#import "GADBannerViewDelegate.h"
+
+/// 広告バナーx方向の位置
+enum AKBannerPosX {
+    kAKBannerPosXLeft = 0,  ///< 左寄せ
+    kAKBannerPosXCenter,    ///< 中央揃え
+    kAKBannerPosXRight      ///< 右寄せ
+};
+
+/// 広告バナーy方向の位置
+enum AKBannerPosY {
+    kAKBannerPosYTop = 0,   ///< 上寄せ
+    kAKBannerPosYBottom     ///< 下寄せ
+};
+
+// アプリのURL(アプリケーションで個別に定義する)
+extern NSString *kAKAplUrl;
+// AdMobパブリッシャーID(アプリケーションで個別に定義する)
+extern NSString *kAKAdMobID;
+// 広告バナーx方向の位置(アプリケーションで個別に定義する)
+extern enum AKBannerPosX kAKBannerPosX;
+// 広告バナーy方向の位置(アプリケーションで個別に定義する)
+extern enum AKBannerPosY kAKBannerPosY;
+
+// 広告表示位置取得処理(アプリケーションで個別に定義する)
+CGRect bannerRect(void);
 
 // UINavigationControllerのカスタマイズ
-@interface AKNavigationController : UINavigationController<GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate> {
-//@interface AKNavigationController : UINavigationController<GKLeaderboardViewControllerDelegate,
-//    GKAchievementViewControllerDelegate, GADBannerViewDelegate> {
+@interface AKNavigationController : UINavigationController
+<GKLeaderboardViewControllerDelegate, GKAchievementViewControllerDelegate, GADBannerViewDelegate> {
 
     /// 広告バナー
-//    GADBannerView *bannerView_;
+    GADBannerView *bannerView_;
 }
-/*
+
 /// 広告バナー
 @property (nonatomic, retain)GADBannerView *bannerView;
 
@@ -55,7 +79,10 @@
 - (void)createAdBanner;
 // 広告バナーを削除
 - (void)deleteAdBanner;
- */
+// 広告バナー位置x座標取得
+- (float)bannerPosX;
+// 広告バナー位置y座標取得
+- (float)bannerPosY;
 // Twitter Viewの表示
 - (void)viewTwitterWithInitialString:(NSString *)string;
 @end

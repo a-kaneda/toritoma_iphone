@@ -33,6 +33,16 @@
 		0C90F1D316D88ACE008D2C2E /* Font.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C90F1D116D88ACE008D2C2E /* Font.plist */; };
 		0C90F1D416D88ACE008D2C2E /* Font.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C90F1D216D88ACE008D2C2E /* Font.png */; };
 		0C90F1D716D88CA9008D2C2E /* AKLife.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C90F1D616D88CA9008D2C2E /* AKLife.m */; };
+		0CA41FB716F9B7AE00087979 /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA41FB516F9B7AE00087979 /* libGoogleAdMobAds.a */; };
+		0CA41FB816F9B7AE00087979 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0CA41FB616F9B7AE00087979 /* README.txt */; };
+		0CA41FBC16F9B7C900087979 /* libNendAd_readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0CA41FB916F9B7C900087979 /* libNendAd_readme.txt */; };
+		0CA41FBD16F9B7C900087979 /* libNendAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA41FBA16F9B7C900087979 /* libNendAd.a */; };
+		0CA41FC316F9BD2D00087979 /* AKAppBankNetworkBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA41FC216F9BD2D00087979 /* AKAppBankNetworkBanner.m */; };
+		0CA41FCC16F9BF0400087979 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA41FCB16F9BF0400087979 /* Security.framework */; };
+		0CA41FD116F9C16000087979 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA41FCF16F9C12700087979 /* SystemConfiguration.framework */; };
+		0CA41FD216F9C16800087979 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA41FCD16F9C11100087979 /* MessageUI.framework */; };
+		0CA41FD716F9C23400087979 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA41FD316F9C21800087979 /* AdSupport.framework */; };
+		0CA41FD816F9C23900087979 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA41FD516F9C22400087979 /* StoreKit.framework */; };
 		0CABC16716BE41CC00AFFE1B /* AKPlayerShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */; };
 		0CB2ACE216BF14600094AFFA /* AKChickenGauge.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE116BF14600094AFFA /* AKChickenGauge.m */; };
 		0CB2ACE516C068190094AFFA /* ChickenGauge_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE316C068190094AFFA /* ChickenGauge_01.png */; };
@@ -241,6 +251,33 @@
 		0C90F1D216D88ACE008D2C2E /* Font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Font.png; path = Resources/Image/Font.png; sourceTree = "<group>"; };
 		0C90F1D516D88CA9008D2C2E /* AKLife.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLife.h; sourceTree = "<group>"; };
 		0C90F1D616D88CA9008D2C2E /* AKLife.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKLife.m; sourceTree = "<group>"; };
+		0CA41FAC16F9B7AE00087979 /* GADAdMobExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdMobExtras.h; sourceTree = "<group>"; };
+		0CA41FAD16F9B7AE00087979 /* GADAdNetworkExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdNetworkExtras.h; sourceTree = "<group>"; };
+		0CA41FAE16F9B7AE00087979 /* GADAdSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdSize.h; sourceTree = "<group>"; };
+		0CA41FAF16F9B7AE00087979 /* GADBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerView.h; sourceTree = "<group>"; };
+		0CA41FB016F9B7AE00087979 /* GADBannerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerViewDelegate.h; sourceTree = "<group>"; };
+		0CA41FB116F9B7AE00087979 /* GADInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitial.h; sourceTree = "<group>"; };
+		0CA41FB216F9B7AE00087979 /* GADInterstitialDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitialDelegate.h; sourceTree = "<group>"; };
+		0CA41FB316F9B7AE00087979 /* GADRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequest.h; sourceTree = "<group>"; };
+		0CA41FB416F9B7AE00087979 /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
+		0CA41FB516F9B7AE00087979 /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
+		0CA41FB616F9B7AE00087979 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		0CA41FB916F9B7C900087979 /* libNendAd_readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libNendAd_readme.txt; sourceTree = "<group>"; };
+		0CA41FBA16F9B7C900087979 /* libNendAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNendAd.a; sourceTree = "<group>"; };
+		0CA41FBB16F9B7C900087979 /* NADView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NADView.h; sourceTree = "<group>"; };
+		0CA41FC116F9BD2D00087979 /* AKAppBankNetworkBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAppBankNetworkBanner.h; sourceTree = "<group>"; };
+		0CA41FC216F9BD2D00087979 /* AKAppBankNetworkBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAppBankNetworkBanner.m; sourceTree = "<group>"; };
+		0CA41FC516F9BD9800087979 /* GADCustomEventBanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADCustomEventBanner.h; sourceTree = "<group>"; };
+		0CA41FC616F9BD9800087979 /* GADCustomEventBannerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADCustomEventBannerDelegate.h; sourceTree = "<group>"; };
+		0CA41FC716F9BD9800087979 /* GADCustomEventExtras.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADCustomEventExtras.h; sourceTree = "<group>"; };
+		0CA41FC816F9BD9800087979 /* GADCustomEventInterstitial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADCustomEventInterstitial.h; sourceTree = "<group>"; };
+		0CA41FC916F9BD9800087979 /* GADCustomEventInterstitialDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADCustomEventInterstitialDelegate.h; sourceTree = "<group>"; };
+		0CA41FCA16F9BD9800087979 /* GADCustomEventRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GADCustomEventRequest.h; sourceTree = "<group>"; };
+		0CA41FCB16F9BF0400087979 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		0CA41FCD16F9C11100087979 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		0CA41FCF16F9C12700087979 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0CA41FD316F9C21800087979 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		0CA41FD516F9C22400087979 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0CABC16516BE41CC00AFFE1B /* AKPlayerShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayerShot.h; sourceTree = "<group>"; };
 		0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayerShot.m; sourceTree = "<group>"; };
 		0CB2ACE016BF14600094AFFA /* AKChickenGauge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKChickenGauge.h; sourceTree = "<group>"; };
@@ -582,6 +619,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CA41FD816F9C23900087979 /* StoreKit.framework in Frameworks */,
+				0CA41FD716F9C23400087979 /* AdSupport.framework in Frameworks */,
+				0CA41FD216F9C16800087979 /* MessageUI.framework in Frameworks */,
+				0CA41FD116F9C16000087979 /* SystemConfiguration.framework in Frameworks */,
+				0CA41FCC16F9BF0400087979 /* Security.framework in Frameworks */,
 				0CE092D316F675BD00EE4CD6 /* Twitter.framework in Frameworks */,
 				0CE092D216F675B200EE4CD6 /* Accounts.framework in Frameworks */,
 				0CD2CAEE169922AE00088557 /* QuartzCore.framework in Frameworks */,
@@ -593,12 +635,58 @@
 				0CD2CAFA169922AE00088557 /* Foundation.framework in Frameworks */,
 				0CD2CAFC169922AE00088557 /* CoreGraphics.framework in Frameworks */,
 				0CD2CAFE169922AE00088557 /* GameKit.framework in Frameworks */,
+				0CA41FB716F9B7AE00087979 /* libGoogleAdMobAds.a in Frameworks */,
+				0CA41FBD16F9B7C900087979 /* libNendAd.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0CA41FAA16F9B62F00087979 /* AdMob */ = {
+			isa = PBXGroup;
+			children = (
+				0CA41FC416F9BD6900087979 /* Mediation */,
+				0CA41FAC16F9B7AE00087979 /* GADAdMobExtras.h */,
+				0CA41FAD16F9B7AE00087979 /* GADAdNetworkExtras.h */,
+				0CA41FAE16F9B7AE00087979 /* GADAdSize.h */,
+				0CA41FAF16F9B7AE00087979 /* GADBannerView.h */,
+				0CA41FB016F9B7AE00087979 /* GADBannerViewDelegate.h */,
+				0CA41FB116F9B7AE00087979 /* GADInterstitial.h */,
+				0CA41FB216F9B7AE00087979 /* GADInterstitialDelegate.h */,
+				0CA41FB316F9B7AE00087979 /* GADRequest.h */,
+				0CA41FB416F9B7AE00087979 /* GADRequestError.h */,
+				0CA41FB516F9B7AE00087979 /* libGoogleAdMobAds.a */,
+				0CA41FB616F9B7AE00087979 /* README.txt */,
+			);
+			name = AdMob;
+			path = libs/AdMob;
+			sourceTree = "<group>";
+		};
+		0CA41FAB16F9B63600087979 /* NendAd */ = {
+			isa = PBXGroup;
+			children = (
+				0CA41FB916F9B7C900087979 /* libNendAd_readme.txt */,
+				0CA41FBA16F9B7C900087979 /* libNendAd.a */,
+				0CA41FBB16F9B7C900087979 /* NADView.h */,
+			);
+			name = NendAd;
+			path = libs/NendAd;
+			sourceTree = "<group>";
+		};
+		0CA41FC416F9BD6900087979 /* Mediation */ = {
+			isa = PBXGroup;
+			children = (
+				0CA41FC516F9BD9800087979 /* GADCustomEventBanner.h */,
+				0CA41FC616F9BD9800087979 /* GADCustomEventBannerDelegate.h */,
+				0CA41FC716F9BD9800087979 /* GADCustomEventExtras.h */,
+				0CA41FC816F9BD9800087979 /* GADCustomEventInterstitial.h */,
+				0CA41FC916F9BD9800087979 /* GADCustomEventInterstitialDelegate.h */,
+				0CA41FCA16F9BD9800087979 /* GADCustomEventRequest.h */,
+			);
+			path = Mediation;
+			sourceTree = "<group>";
+		};
 		0CB7A09216F124F600C019C2 /* OtherScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -728,6 +816,11 @@
 		0CD2CAEC169922AE00088557 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0CA41FD516F9C22400087979 /* StoreKit.framework */,
+				0CA41FD316F9C21800087979 /* AdSupport.framework */,
+				0CA41FCF16F9C12700087979 /* SystemConfiguration.framework */,
+				0CA41FCD16F9C11100087979 /* MessageUI.framework */,
+				0CA41FCB16F9BF0400087979 /* Security.framework */,
 				0CE092D016F6758100EE4CD6 /* Twitter.framework */,
 				0CE092CE16F6757700EE4CD6 /* Accounts.framework */,
 				0CD2CAED169922AE00088557 /* QuartzCore.framework */,
@@ -793,12 +886,14 @@
 		0CD2CB1E169922AE00088557 /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				0CD2CC40169922AF00088557 /* LICENSE_cocos2d.txt */,
-				0CD2CC4F169922AF00088557 /* LICENSE_CocosDenshion.txt */,
-				0CD2CC81169922B000088557 /* LICENSE_Kazmath.txt */,
+				0CA41FAA16F9B62F00087979 /* AdMob */,
 				0CD2CB1F169922AE00088557 /* cocos2d */,
 				0CD2CC41169922AF00088557 /* CocosDenshion */,
 				0CD2CC50169922AF00088557 /* kazmath */,
+				0CD2CC40169922AF00088557 /* LICENSE_cocos2d.txt */,
+				0CD2CC4F169922AF00088557 /* LICENSE_CocosDenshion.txt */,
+				0CD2CC81169922B000088557 /* LICENSE_Kazmath.txt */,
+				0CA41FAB16F9B63600087979 /* NendAd */,
 			);
 			name = libs;
 			sourceTree = "<group>";
@@ -1144,6 +1239,8 @@
 		0CD2CC9816992E8500088557 /* AKLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				0CA41FC116F9BD2D00087979 /* AKAppBankNetworkBanner.h */,
+				0CA41FC216F9BD2D00087979 /* AKAppBankNetworkBanner.m */,
 				0CCC525716A38E8F00E9A397 /* AKCommon.h */,
 				0CCC525816A38E8F00E9A397 /* AKCommon.m */,
 				0CCC524D16A3838300E9A397 /* AKFont.h */,
@@ -1265,6 +1362,8 @@
 				0C5AD1FE16EE714500F69D63 /* HowTo.plist in Resources */,
 				0C5AD1FF16EE714500F69D63 /* HowTo.png in Resources */,
 				0C5AD20216EE73D100F69D63 /* Localizable.strings in Resources */,
+				0CA41FB816F9B7AE00087979 /* README.txt in Resources */,
+				0CA41FBC16F9B7C900087979 /* libNendAd_readme.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1412,6 +1511,7 @@
 				0CB7A09516F1278F00C019C2 /* AKOptionScene.m in Sources */,
 				0CB7A09816F56FDC00C019C2 /* AKToritoma.m in Sources */,
 				0CE092C916F672D800EE4CD6 /* AKTwitterHelper.m in Sources */,
+				0CA41FC316F9BD2D00087979 /* AKAppBankNetworkBanner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1492,6 +1592,11 @@
 				GCC_PREFIX_HEADER = toritoma/Prefix.pch;
 				HEADER_SEARCH_PATHS = "\"toritoma/libs/kazmath/include\"";
 				INFOPLIST_FILE = toritoma/Resources/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/toritoma/libs/AdMob\"",
+					"\"$(SRCROOT)/toritoma/libs/NendAd\"",
+				);
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-ObjC",
@@ -1512,6 +1617,11 @@
 				GCC_PREFIX_HEADER = toritoma/Prefix.pch;
 				HEADER_SEARCH_PATHS = "\"toritoma/libs/kazmath/include\"";
 				INFOPLIST_FILE = toritoma/Resources/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/toritoma/libs/AdMob\"",
+					"\"$(SRCROOT)/toritoma/libs/NendAd\"",
+				);
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-ObjC",

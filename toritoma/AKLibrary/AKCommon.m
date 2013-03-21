@@ -43,6 +43,8 @@
 unsigned long debug_flg = 0;
 
 // 共通ライブラリ用ログ区分定義
+BOOL kAKLogAppBankNetworkBanner_0 = YES;
+BOOL kAKLogAppBankNetworkBanner_1 = NO;
 BOOL kAKLogFont_0 = YES;
 BOOL kAKLogFont_1 = NO;
 BOOL kAKLogInterface_0 = YES;

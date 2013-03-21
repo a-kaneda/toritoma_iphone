@@ -58,6 +58,8 @@ const ccColor4B kAKColor[kAKColorCount];
 extern unsigned long debug_flg;
 
 // ライブラリ用ログ区分
+extern BOOL kAKLogAppBankNetworkBanner_0;
+extern BOOL kAKLogAppBankNetworkBanner_1;
 extern BOOL kAKLogFont_0;
 extern BOOL kAKLogFont_1;
 extern BOOL kAKLogInterface_0;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Akihiro Kaneda.
+ * Copyright (c) 2012-2013 Akihiro Kaneda.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,31 +27,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
- @file AKToritoma.m
- @brief とりとま共通インクルード
+ @file AKAppBankNetworkBanner.h
+ @brief AppBankNetworkの広告バナー
  
- アプリ全体で共通で使用するヘッダーのインクルードと定数定義を行う。
+ AppBankNetworkの広告バナーを管理するクラスを定義する。
  */
 
-#import "AKToritoma.h"
+#import <Foundation/Foundation.h>
+#import "GADCustomEventBanner.h"
+#import "NADView.h"
 
-/// アプリのURL
-NSString *kAKAplUrl = @"https://itunes.apple.com/us/app/toritoma/id614837983?l=ja&ls=1&mt=8";
-/// AdMobパブリッシャーID
-NSString *kAKAdMobID = @"f894d395a3f5431b";
-/// 広告バナーx方向の位置
-enum AKBannerPosX kAKBannerPosX = kAKBannerPosXLeft;
-/// 広告バナーy方向の位置
-enum AKBannerPosY kAKBannerPosY = kAKBannerPosYTop;
-/// AppBankNetworkのapiKey
-NSString *kAKAPIKey = @"f7d5cc28b8f5c709cf980e6ffbe5fb50d82e4313";
-/// AppBankNetworkのspotID
-NSString *kAKSpotID = @"24847";
+// AppBankNetworkのapiKey(アプリケーションで個別に定義する)
+extern NSString *kAKAPIKey;
+// AppBankNetworkのspotID(アプリケーションで個別に定義する)
+extern NSString *kAKSpotID;
 
-/// コントロールテクスチャアトラス定義ファイル名
-NSString *kAKControlTextureAtlasDefFile = @"Control.plist";
-/// コントロールテクスチャアトラスファイル名
-NSString *kAKControlTextureAtlasFile = @"Control.png";
+// AppBankNetworkの広告バナー
+@interface AKAppBankNetworkBanner : NSObject <NADViewDelegate, GADCustomEventBanner> {
+    /// デリゲート
+    id<GADCustomEventBannerDelegate> delegate_;
+    /// 広告バナー
+    NADView *nadView_;
+}
 
+/// デリゲート
+@property (nonatomic, assign)id<GADCustomEventBannerDelegate> delegate;
+/// 広告バナー
+@property (nonatomic, retain)NADView *nadView;
 
-
+@end
