@@ -79,6 +79,10 @@ CGRect bannerRect(void);
 - (void)createAdBanner;
 // 広告バナーを削除
 - (void)deleteAdBanner;
+// 広告バナー表示
+- (void)viewAdBanner;
+// 広告バナー非表示
+- (void)hiddenAdBanner;
 // 広告バナー位置x座標取得
 - (float)bannerPosX;
 // 広告バナー位置y座標取得

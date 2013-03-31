@@ -23,6 +23,8 @@
 		0C5AD20216EE73D100F69D63 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0C5AD20416EE73D100F69D63 /* Localizable.strings */; };
 		0C61A3B416D9FA54008ADA0E /* AKPlayingSceneIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */; };
 		0C61A3B716DD55D9008ADA0E /* AKHiScoreFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C61A3B616DD55D9008ADA0E /* AKHiScoreFile.m */; };
+		0C7B9E8D16FF23ED00DABA55 /* libAdapterIAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C7B9E8C16FF23ED00DABA55 /* libAdapterIAd.a */; };
+		0C7B9E9016FF243500DABA55 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C7B9E8E16FF241A00DABA55 /* iAd.framework */; };
 		0C7E06CB16C9970C0044BF42 /* AKBack.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7E06CA16C9970C0044BF42 /* AKBack.m */; };
 		0C7E06D216CD81930044BF42 /* stage_2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06CE16CD81930044BF42 /* stage_2.txt */; };
 		0C7E06D316CD81930044BF42 /* stage_3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06CF16CD81930044BF42 /* stage_3.txt */; };
@@ -237,6 +239,8 @@
 		0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayingSceneIF.m; sourceTree = "<group>"; };
 		0C61A3B516DD55D9008ADA0E /* AKHiScoreFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKHiScoreFile.h; sourceTree = "<group>"; };
 		0C61A3B616DD55D9008ADA0E /* AKHiScoreFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKHiScoreFile.m; sourceTree = "<group>"; };
+		0C7B9E8C16FF23ED00DABA55 /* libAdapterIAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdapterIAd.a; sourceTree = "<group>"; };
+		0C7B9E8E16FF241A00DABA55 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		0C7E06C916C9970C0044BF42 /* AKBack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKBack.h; sourceTree = "<group>"; };
 		0C7E06CA16C9970C0044BF42 /* AKBack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKBack.m; sourceTree = "<group>"; };
 		0C7E06CE16CD81930044BF42 /* stage_2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_2.txt; path = Resources/Script/stage_2.txt; sourceTree = "<group>"; };
@@ -619,6 +623,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C7B9E9016FF243500DABA55 /* iAd.framework in Frameworks */,
 				0CA41FD816F9C23900087979 /* StoreKit.framework in Frameworks */,
 				0CA41FD716F9C23400087979 /* AdSupport.framework in Frameworks */,
 				0CA41FD216F9C16800087979 /* MessageUI.framework in Frameworks */,
@@ -637,6 +642,7 @@
 				0CD2CAFE169922AE00088557 /* GameKit.framework in Frameworks */,
 				0CA41FB716F9B7AE00087979 /* libGoogleAdMobAds.a in Frameworks */,
 				0CA41FBD16F9B7C900087979 /* libNendAd.a in Frameworks */,
+				0C7B9E8D16FF23ED00DABA55 /* libAdapterIAd.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -657,6 +663,7 @@
 				0CA41FB316F9B7AE00087979 /* GADRequest.h */,
 				0CA41FB416F9B7AE00087979 /* GADRequestError.h */,
 				0CA41FB516F9B7AE00087979 /* libGoogleAdMobAds.a */,
+				0C7B9E8C16FF23ED00DABA55 /* libAdapterIAd.a */,
 				0CA41FB616F9B7AE00087979 /* README.txt */,
 			);
 			name = AdMob;
@@ -816,6 +823,7 @@
 		0CD2CAEC169922AE00088557 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0C7B9E8E16FF241A00DABA55 /* iAd.framework */,
 				0CA41FD516F9C22400087979 /* StoreKit.framework */,
 				0CA41FD316F9C21800087979 /* AdSupport.framework */,
 				0CA41FCF16F9C12700087979 /* SystemConfiguration.framework */,

@@ -60,21 +60,13 @@ static const NSInteger kAKStartStage = 1;
 /// チキンゲージ配置位置、下からの座標
 static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
 /// 残機表示の位置、ステージ座標x座標
-static const float kAKLifePosXOfStage = 376.0f;
+static const float kAKLifePosXOfStage = 4.0f;
 /// 残機表示の位置、ステージ座標y座標
-static const float kAKLifePosYOfStage = 272.0f;
-/// スコアの表示位置、ステージ座標x座標
-static const float kAKScorePosXOfStage = 4.0f;
+static const float kAKLifePosYOfStage = 12.0f;
 /// スコアの表示位置、ステージ座標y座標
 static const float kAKScorePosYOfStage = 12.0f;
 /// スコア表示のフォーマット
 static NSString *kAKScoreFormat = @"SCORE:%06d";
-/// ハイスコアの表示位置、ステージ座標x座標
-static const float kAKHiScorePosXOfStage = 8.0f;
-/// ハイスコアの表示位置、ステージ座標y座標
-static const float kAKHiScorePosYOfStage = 12.0f;
-/// ハイスコア表示のフォーマット
-static NSString *kAKHiScoreFormat = @"HI:%06d";
 /// ゲームオーバー時の待機時間
 static const float kAKGameOverWaitTime = 1.0f;
 
@@ -196,7 +188,7 @@ static const float kAKGameOverWaitTime = 1.0f;
     [infoLayer addChild:life z:0 tag:kAKInfoTagLife];
     
     // 残機表示の座標を設定する
-    life.position = ccp([AKScreenSize xOfStage:kAKLifePosXOfStage]   - self.life.width / 2,
+    life.position = ccp([AKScreenSize xOfStage:kAKLifePosXOfStage] + self.life.width / 2,
                         [AKScreenSize yOfStage:kAKLifePosYOfStage]);
     
     // スコア表示の文字列を作成する
@@ -212,29 +204,10 @@ static const float kAKGameOverWaitTime = 1.0f;
     [infoLayer addChild:scoreLabel z:0 tag:kAKInfoTagScore];
     
     // スコア表示の座標を設定する
-    // スコアラベルは左詰めにするため、x座標は右に幅の半分移動する。
-    scoreLabel.position = ccp([AKScreenSize xOfStage:kAKScorePosXOfStage] + scoreLabel.width / 2,
+    scoreLabel.position = ccp([AKScreenSize center].x,
                               [AKScreenSize yOfStage:kAKScorePosYOfStage]);
     
     AKLog(kAKLogPlayingScene_1, @"scoreLabel.position=(%f, %f)", scoreLabel.position.x, scoreLabel.position.y);
-    
-    // ハイスコア表示の文字列を作成する
-    NSString *hiScoreString = [NSString stringWithFormat:kAKHiScoreFormat, 0];
-        
-    // ハイスコア表示を作成する
-    AKLabel *hiScoreLabel = [AKLabel labelWithString:hiScoreString
-                                           maxLength:hiScoreString.length
-                                             maxLine:1
-                                               frame:kAKLabelFrameNone];
-    
-    // ハイスコア表示を情報レイヤーに配置する
-    [infoLayer addChild:hiScoreLabel z:0 tag:kAKInfoTagHiScore];
-
-    // ハイスコアラベルの座標を設定する
-    // ハイスコアラベルは左詰めにし、スコアラベルの右端を原点とする。
-    hiScoreLabel.position = ccp(scoreLabel.position.x + scoreLabel.width / 2 + kAKHiScorePosXOfStage + hiScoreLabel.width / 2,
-                                [AKScreenSize yOfStage:kAKHiScorePosYOfStage]);
-    
 }
 
 /*!
@@ -372,6 +345,27 @@ static const float kAKGameOverWaitTime = 1.0f;
             self.interfaceLayer.enableTag = 0;
             break;
     }
+    
+    // Root Viewを取得する
+    AKNavigationController *viewController = (AKNavigationController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+
+    // 広告バナーの表示・非表示を切り替える
+    switch (state) {
+        case kAKGameStatePreLoad:   // ゲームシーン読み込み前
+        case kAKGameStatePlaying:   // プレイ中
+            // プレイ中は広告バナーを非表示にする
+            [viewController hiddenAdBanner];
+            break;
+            
+        case kAKGameStateSleep:     // スリープ処理中
+            // 現在の状態を維持する
+            break;
+            
+        default:                    // その他
+            // 広告バナーを表示する
+            [viewController viewAdBanner];
+            break;
+    }
 }
 
 /*!
@@ -444,18 +438,6 @@ static const float kAKGameOverWaitTime = 1.0f;
 {
     NSAssert([self.infoLayer getChildByTag:kAKInfoTagScore] != nil, @"ノードが作成されていない");
     return (AKLabel *)[self.infoLayer getChildByTag:kAKInfoTagScore];
-}
-
-/*!
- @brief ハイスコア表示取得
- 
- ハイスコア表示取得を取得する。
- @return ハイスコア表示取得
- */
-- (AKLabel *)hiScore
-{
-    NSAssert([self.infoLayer getChildByTag:kAKInfoTagHiScore] != nil, @"ノードが作成されていない");
-    return (AKLabel *)[self.infoLayer getChildByTag:kAKInfoTagHiScore];
 }
 
 /*!
@@ -701,21 +683,6 @@ static const float kAKGameOverWaitTime = 1.0f;
     
     // ラベルの文字列を変更する
     [self.score setString:string];
-}
-
-/*!
- @brief ハイスコアラベル更新
- 
- ハイスコアラベルの文字列を更新する。
- @param hiScore ハイスコア
- */
-- (void)setHiScoreLabel:(NSInteger)hiScore
-{
-    // ラベルに設定する文字列を作成する
-    NSString *string = [NSString stringWithFormat:kAKHiScoreFormat, hiScore];
-    
-    // ラベルの文字列を変更する
-    [self.hiScore setString:string];
 }
 
 /*!

@@ -229,6 +229,34 @@
 }
 
 /*!
+ @brief 広告バナー表示
+ 
+ 広告バナーを表示する。表示位置を画面内に設定する。
+ */
+- (void)viewAdBanner
+{
+    // 画面内に広告を表示する
+    self.bannerView.frame = CGRectMake([self bannerPosX],
+                                       [self bannerPosY],
+                                       self.bannerView.frame.size.width,
+                                       self.bannerView.frame.size.height);
+}
+
+/*!
+ @brief 広告バナー非表示
+ 
+ 広告バナーを非表示にする。表示位置を画面外に設定する。
+ */
+- (void)hiddenAdBanner
+{
+    // ビューの位置を画面外に設定する
+    self.bannerView.frame = CGRectMake(-self.bannerView.frame.size.width,
+                                       -self.bannerView.frame.size.height,
+                                       self.bannerView.frame.size.width,
+                                       self.bannerView.frame.size.height);
+}
+
+/*!
  @brief 広告バナー位置x座標取得
  
  広告バナー位置のx座標をアプリケーション側で定義された定数を元に取得する。

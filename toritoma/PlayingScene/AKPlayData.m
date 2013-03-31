@@ -390,9 +390,6 @@ enum AKCharacterPositionZ {
         hiScore_ = hiScore.hiscore;
         
         AKLog(kAKLogPlayData_1, @"hiScore_=%d", hiScore_);
-        
-        // ハイスコア表示を更新する
-        [self.scene setHiScoreLabel:hiScore_];
     }
 }
 
@@ -944,9 +941,6 @@ enum AKCharacterPositionZ {
         
         // ハイスコアにスコアの値を設定する
         hiScore_ = score_;
-        
-        // ハイスコア表示を更新する
-        [self.scene setHiScoreLabel:hiScore_];
     }
 }
 @end

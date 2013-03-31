@@ -87,8 +87,6 @@ enum AKGameState {
 @property (nonatomic, readonly)AKLife *life;
 /// スコア表示
 @property (nonatomic, readonly)AKLabel *score;
-/// ハイスコア表示
-@property (nonatomic, readonly)AKLabel *hiScore;
 /// ゲームオーバーかどうか
 @property (nonatomic, readonly)BOOL isGameOver;
 
@@ -120,8 +118,6 @@ enum AKGameState {
 - (void)setShieldButtonSelected:(BOOL)selected;
 // スコアラベル更新
 - (void)setScoreLabel:(NSInteger)score;
-// ハイスコアラベル更新
-- (void)setHiScoreLabel:(NSInteger)hiScore;
 // ゲームオーバー
 - (void)gameOver;
 
