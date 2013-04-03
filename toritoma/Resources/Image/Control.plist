@@ -7,7 +7,7 @@
             <key>BackButton.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{68,104},{32,32}}</string>
+                <string>{{2,134},{32,32}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -31,6 +31,19 @@
                 <string>{16,16}</string>
             </dict>
             <key>NextButton.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{68,104},{32,32}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{32,32}}</string>
+                <key>sourceSize</key>
+                <string>{32,32}</string>
+            </dict>
+            <key>PauseButton.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{68,70},{32,32}}</string>
@@ -105,7 +118,7 @@
             <key>size</key>
             <string>{128,256}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:066d1686a40985f97ea6e00150767fd3$</string>
+            <string>$TexturePacker:SmartUpdate:02edbbb17c5a40bf5669911d35a269df$</string>
             <key>textureFileName</key>
             <string>Control.png</string>
         </dict>

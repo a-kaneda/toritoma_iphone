@@ -148,6 +148,7 @@
             <filename>../94_2倍/Control/NextButton.png</filename>
             <filename>../94_2倍/Control/PrevButton.png</filename>
             <filename>../94_2倍/Control/TwitterButton.png</filename>
+            <filename>../94_2倍/Control/PauseButton.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

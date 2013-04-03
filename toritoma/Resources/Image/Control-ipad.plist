@@ -7,7 +7,7 @@
             <key>BackButton.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{132,200},{64,64}}</string>
+                <string>{{2,262},{64,64}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -31,6 +31,19 @@
                 <string>{32,32}</string>
             </dict>
             <key>NextButton.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{132,200},{64,64}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{64,64}}</string>
+                <key>sourceSize</key>
+                <string>{64,64}</string>
+            </dict>
+            <key>PauseButton.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{132,134},{64,64}}</string>
@@ -105,7 +118,7 @@
             <key>size</key>
             <string>{256,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:80541da25f55b37461ed98a951e1e9ec$</string>
+            <string>$TexturePacker:SmartUpdate:43fc73a9e6ae59ab5132cdd36ca0c0c3$</string>
             <key>textureFileName</key>
             <string>Control-ipad.png</string>
         </dict>

@@ -693,6 +693,69 @@ enum AKCharacterPositionZ {
     return tweet;
 #endif
 }
+/*!
+ @brief ゲーム再開
+ 
+ 一時停止中の状態からゲームを再会する。
+ */
+- (void)resume
+{
+    // すべてのキャラクターのアニメーションを再開する
+    // 自機
+    [self.player.image resumeSchedulerAndActions];
+    
+    // 自機弾
+    for (AKCharacter *character in self.playerShotPool.pool.objectEnumerator) {
+        [character.image resumeSchedulerAndActions];
+    }
+    
+    // 敵
+    for (AKCharacter *character in self.enemyPool.pool.objectEnumerator) {
+        [character.image resumeSchedulerAndActions];
+    }
+    
+    // 敵弾
+    for (AKCharacter *character in self.enemyShotPool.pool.objectEnumerator) {
+        [character.image resumeSchedulerAndActions];
+    }
+    
+    // 画面効果
+    for (AKCharacter *character in self.effectPool.pool.objectEnumerator) {
+        [character.image resumeSchedulerAndActions];
+    }
+}
+
+/*!
+ @brief ポーズ
+ 
+ プレイ中の状態からゲームを一時停止する。
+ */
+- (void)pause
+{
+    // すべてのキャラクターのアニメーションを停止する
+    // 自機
+    [self.player.image pauseSchedulerAndActions];
+    
+    // 自機弾
+    for (AKCharacter *character in [self.playerShotPool.pool objectEnumerator]) {
+        [character.image pauseSchedulerAndActions];
+    }
+    
+    // 敵
+    for (AKCharacter *character in [self.enemyPool.pool objectEnumerator]) {
+        [character.image pauseSchedulerAndActions];
+    }
+    
+    // 敵弾
+    for (AKCharacter *character in [self.enemyShotPool.pool objectEnumerator]) {
+        [character.image pauseSchedulerAndActions];
+    }
+    
+    // 画面効果
+    for (AKCharacter *character in [self.effectPool.pool objectEnumerator]) {
+        [character.image pauseSchedulerAndActions];
+    }
+}
 
 #pragma mark キャラクタークラスからのデータ操作用
 

@@ -37,9 +37,16 @@
 
 /// プレイ中メニュー項目のタグ
 const NSUInteger kAKMenuTagPlaying = 0x01;
+/// ポーズ中メニュー項目のタグ
+const NSUInteger kAKMenuTagPause = 0x02;
+/// 終了メニュー項目のタグ
+const NSUInteger kAKMenuTagQuit = 0x04;
 /// ゲームオーバー時メニュー項目のタグ
-const NSUInteger kAKMenuTagGameOver = 0x02;
+const NSUInteger kAKMenuTagGameOver = 0x08;
 
+//======================================================================
+// プレイ中のメニュー項目
+//======================================================================
 /// シールドボタン配置位置、右からの座標
 static const float kAKShieldButtonPosFromRightPoint = 50.0f;
 /// シールドボタン配置位置、下からの座標
@@ -48,7 +55,52 @@ static const float kAKShieldButtonPosFromBottomPoint = 50.0f;
 static NSString *kAKShiledButtonNoSelectImage = @"ShieldButton_01.png";
 /// シールドボタン選択時の画像名
 static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
+/// ポーズボタンの配置位置、右からの位置
+static const float kAKPauseButtonPosRightPoint = 26.0f;
+/// ポーズボタンの配置位置、上からの位置
+static const float kAKPauseButtonPosTopPoint = 26.0f;
+/// ポーズボタンの画像ファイル名
+static NSString *kAKPauseButtonImage = @"PauseButton.png";
 
+//======================================================================
+// ポーズ時のメニュー項目
+//======================================================================
+/// 一時停止中の表示文字列
+NSString *kAKPauseString = @"  PAUSE  ";
+/// 一時停止解除のボタンの文字列
+NSString *kAKResumeString = @"RESUME";
+/// 終了ボタンの文字列
+NSString *kAKQuitButtonString = @" QUIT ";
+/// 一時停止メッセージの表示位置、下からの比率
+const float kAKPauseMessagePosBottomRatio = 0.6f;
+/// 一時停止メニュー項目の表示位置、下からの比率
+const float kAKPauseMenuPosBottomRatio = 0.4f;
+/// レジュームボタンの表示位置、左からの比率
+const float kAKResumeButtonPosLeftRatio = 0.3f;
+/// 終了ボタンの表示位置、右からの比率
+const float kAKQuitButtonPosRightRatio = 0.3f;
+
+//======================================================================
+// 終了メニューのメニュー項目
+//======================================================================
+/// 終了確認メッセージ
+static NSString *kAKQuitMessageString = @"QUIT GAME?";
+/// YESボタンの文字列
+static NSString *kAKQuitYesString = @" YES ";
+/// NOボタンの文字列
+static NSString *kAKQuitNoString = @" N O ";
+/// 終了メニューキャプションの表示位置、下からの比率
+static const float kAKQuitMessagePosBottomRatio = 0.6f;
+/// 終了メニューボタンの表示位置、下からの比率
+static const float kAKQuitButtonPosBottomRatio = 0.4f;
+/// 終了メニューYESボタンの表示位置、左からの比率
+static const float kAKQuitYesButtonPosLeftRatio = 0.3f;
+/// 終了メニューNOボタンの表示位置、右からの比率
+static const float kAKQuitNoButtonPosRightRatio = 0.3f;
+
+//======================================================================
+// ゲームオーバー時のメニュー項目
+//======================================================================
 /// ゲームオーバー時の表示文字列
 static NSString *kAKGameOverString = @"GAME OVER";
 /// タイトルへ戻るボタンのキャプション
@@ -72,6 +124,9 @@ static const float kAKTwitterButtonPosBottomRatio = 0.6f;
 @implementation AKPlayingSceneIF
 
 @synthesize shieldButton = shieldButton_;
+@synthesize resumeButton = resumeButton_;
+@synthesize quitButton = quitButton_;
+@synthesize quitNoButton = quitNoButton_;
 
 /*!
  @brief オブジェクト初期化処理
@@ -91,6 +146,12 @@ static const float kAKTwitterButtonPosBottomRatio = 0.6f;
     // プレイ中のメニュー項目を作成する
     [self createPlayingMenu];
     
+    // ポーズ時のメニュー項目を作成する
+    [self createPauseMenu];
+    
+    // 終了メニューを作成する
+    [self createQuitMenu];
+    
     // ゲームオーバー時のメニュー項目を作成する
     [self createGameOverMenu];
     
@@ -109,6 +170,9 @@ static const float kAKTwitterButtonPosBottomRatio = 0.6f;
     // メンバを解放する
     [self.shieldButton removeFromParentAndCleanup:YES];
     self.shieldButton = nil;
+    self.resumeButton = nil;
+    self.quitButton = nil;
+    self.quitNoButton = nil;
     
     // スーパークラスの処理を行う
     [super dealloc];
@@ -132,10 +196,91 @@ static const float kAKTwitterButtonPosBottomRatio = 0.6f;
                                                  tag:kAKMenuTagPlaying
                                                 type:kAKMenuTypeMomentary];
     
+    // ポーズボタンを追加する
+    [self addMenuWithSpriteFrame:kAKPauseButtonImage
+                           atPos:ccp([AKScreenSize positionFromRightPoint:kAKPauseButtonPosRightPoint],
+                                     [AKScreenSize positionFromTopPoint:kAKPauseButtonPosTopPoint])
+                          action:@selector(touchPauseButton:)
+                               z:0
+                             tag:kAKMenuTagPlaying
+                            type:kAKMenuTypeButton];
+    
     // スライド入力を画面全体に配置する
     [self addSlideMenuWithRect:CGRectMake(0.0f, 0.0f, [AKScreenSize screenSize].width, [AKScreenSize screenSize].height)
                         action:@selector(movePlayer:)
                            tag:kAKMenuTagPlaying];
+}
+
+/*!
+ @brief ポーズ時のメニュー項目作成
+ 
+ ポーズ時のメニュー項目を作成する。
+ */
+- (void)createPauseMenu
+{
+    // ゲームオーバーラベルを生成する
+    AKLabel *label = [AKLabel labelWithString:kAKPauseString maxLength:kAKPauseString.length maxLine:1 frame:kAKLabelFrameMessage];
+    
+    // ゲームオーバーラベルの位置を設定する
+    label.position = ccp([AKScreenSize center].x, [AKScreenSize positionFromBottomRatio:kAKPauseMessagePosBottomRatio]);
+    
+    // ゲームオーバーラベルをレイヤーに配置する
+    [self addChild:label z:0 tag:kAKMenuTagPause];
+    
+    // ポーズ解除ボタンを作成する
+    self.resumeButton = [self addMenuWithString:kAKResumeString
+                                          atPos:ccp([AKScreenSize positionFromLeftRatio:kAKResumeButtonPosLeftRatio],
+                                                    [AKScreenSize positionFromBottomRatio:kAKPauseMenuPosBottomRatio])
+                                         action:@selector(touchResumeButton:)
+                                              z:0
+                                            tag:kAKMenuTagPause
+                                      withFrame:YES];
+    
+    
+    // 終了ボタンを作成する
+    self.quitButton = [self addMenuWithString:kAKQuitButtonString
+                                        atPos:ccp([AKScreenSize positionFromRightRatio:kAKQuitButtonPosRightRatio],
+                                                  [AKScreenSize positionFromBottomRatio:kAKPauseMenuPosBottomRatio])
+                                       action:@selector(touchQuitButton:)
+                                            z:0
+                                          tag:kAKMenuTagPause
+                                    withFrame:YES];
+}
+
+/*!
+ @brief 終了メニュー項目作成
+ 
+ 終了メニューを作成する。
+ */
+- (void)createQuitMenu
+{
+    // 終了確認メッセージラベルを生成する
+    AKLabel *label = [AKLabel labelWithString:kAKQuitMessageString maxLength:kAKQuitMessageString.length maxLine:1 frame:kAKLabelFrameMessage];
+    
+    // 終了確認メッセージラベルの位置を設定する
+    label.position = ccp([AKScreenSize center].x, [AKScreenSize positionFromBottomRatio:kAKQuitMessagePosBottomRatio]);
+    
+    // 終了確認メッセージラベルをレイヤーに配置する
+    [self addChild:label z:0 tag:kAKMenuTagQuit];
+    
+    // YESボタンを作成する
+    [self addMenuWithString:kAKQuitYesString
+                      atPos:ccp([AKScreenSize positionFromLeftRatio:kAKQuitYesButtonPosLeftRatio],
+                                [AKScreenSize positionFromBottomRatio:kAKQuitButtonPosBottomRatio])
+                     action:@selector(touchQuitYesButton:)
+                          z:0
+                        tag:kAKMenuTagQuit
+                  withFrame:YES];
+    
+    
+    // NOボタンを作成する
+    self.quitNoButton = [self addMenuWithString:kAKQuitNoString
+                                          atPos:ccp([AKScreenSize positionFromRightRatio:kAKQuitNoButtonPosRightRatio],
+                                                    [AKScreenSize positionFromBottomRatio:kAKQuitButtonPosBottomRatio])
+                                         action:@selector(touchQuitNoButton:)
+                                              z:0
+                                            tag:kAKMenuTagQuit
+                                      withFrame:YES];
 }
 
 /*!

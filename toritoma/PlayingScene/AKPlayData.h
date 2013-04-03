@@ -141,6 +141,10 @@
 - (void)movePlayerByDx:(float)dx dy:(float)dy;
 // ツイートメッセージの作成
 - (NSString *)makeTweet;
+// ポーズ
+- (void)pause;
+// ゲーム再開
+- (void)resume;
 // 自機弾生成
 - (void)createPlayerShotAtX:(NSInteger)x y:(NSInteger)y;
 // 反射弾生成

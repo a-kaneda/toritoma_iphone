@@ -37,6 +37,10 @@
 
 /// プレイ中メニュー項目のタグ
 extern const NSUInteger kAKMenuTagPlaying;
+/// ポーズ中メニュー項目のタグ
+extern const NSUInteger kAKMenuTagPause;
+/// 終了メニュー項目のタグ
+extern const NSUInteger kAKMenuTagQuit;
 /// ゲームオーバー時メニュー項目のタグ
 extern const NSUInteger kAKMenuTagGameOver;
 
@@ -44,14 +48,29 @@ extern const NSUInteger kAKMenuTagGameOver;
 @interface AKPlayingSceneIF : AKInterface {
     /// シールドボタン
     CCSprite *shieldButton_;
+    /// ポーズ解除ボタン
+    AKLabel *resumeButton_;
+    /// 終了ボタン
+    AKLabel *quitButton_;
+    /// 終了メニューNoボタン
+    AKLabel *quitNoButton_;
 }
 
 /// シールドボタン
 @property (nonatomic, retain)CCSprite *shieldButton;
-
+/// ポーズ解除ボタン
+@property (nonatomic, retain)AKLabel *resumeButton;
+/// 終了ボタン
+@property (nonatomic, retain)AKLabel *quitButton;
+/// 終了メニューNoボタン
+@property (nonatomic, retain)AKLabel *quitNoButton;
 
 // プレイ中のメニュー項目作成
 - (void)createPlayingMenu;
+// ポーズ時のメニュー項目作成
+- (void)createPauseMenu;
+// 終了メニュー項目作成
+- (void)createQuitMenu;
 // ゲームオーバー時のメニュー項目作成
 - (void)createGameOverMenu;
 // シールドボタン表示切替

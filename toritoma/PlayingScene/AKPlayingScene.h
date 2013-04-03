@@ -48,11 +48,11 @@ enum AKGameState {
     kAKGameStateStart,          ///< ゲーム開始時
     kAKGameStatePlaying,        ///< プレイ中
     kAKGameStateStageClear,     ///< ステージクリア後
-    kAKGameStateResult,         ///< リザルト画面表示中
-    kAKGameStateGameOver,       ///< ゲームオーバーの表示中
+    kAKGameStateResult,         ///< リザルト画面
+    kAKGameStateGameOver,       ///< ゲームオーバー
     kAKGameStateGameClear,      ///< ゲームクリア時
     kAKGameStatePause,          ///< 一時停止中
-    kAKGameStateQuitMenu,       ///< 終了メニュー表示中
+    kAKGameStateQuitMenu,       ///< 終了メニュー
     kAKGameStateWait,           ///< アクション終了待機中
     kAKGameStateSleep           ///< スリープ処理中
 };
@@ -104,8 +104,16 @@ enum AKGameState {
 - (void)movePlayer:(id)object;
 // シールドボタン選択処理
 - (void)touchShieldButton:(id)object;
+// ポーズボタン選択処理
+- (void)touchPauseButton:(id)object;
+// 再開ボタン選択処理
+- (void)touchResumeButton:(id)object;
 // 終了ボタン選択処理
 - (void)touchQuitButton:(id)object;
+// 終了メニューYESボタン選択処理
+- (void)touchQuitYesButton:(id)object;
+// 終了メニューNOボタン選択処理
+- (void)touchQuitNoButton:(id)object;
 // ツイートボタン選択処理
 - (void)touchTweetButton:(id)object;
 // ゲーム開始時の更新処理

@@ -62,13 +62,23 @@ static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
 /// 残機表示の位置、ステージ座標x座標
 static const float kAKLifePosXOfStage = 4.0f;
 /// 残機表示の位置、ステージ座標y座標
-static const float kAKLifePosYOfStage = 12.0f;
+static const float kAKLifePosYOfStage = 272.0f;
 /// スコアの表示位置、ステージ座標y座標
-static const float kAKScorePosYOfStage = 12.0f;
+static const float kAKScorePosYOfStage = 272.0f;
 /// スコア表示のフォーマット
 static NSString *kAKScoreFormat = @"SCORE:%06d";
 /// ゲームオーバー時の待機時間
 static const float kAKGameOverWaitTime = 1.0f;
+
+// プライベートメソッド宣言
+@interface AKPlayingScene ()
+// ゲーム再開
+- (void)resume;
+// 終了メニュー表示
+- (void)viewQuitMenu;
+// 一時停止メニュー表示
+- (void)viewPauseMenu;
+@end
 
 /*!
  @brief プレイシーンクラス
@@ -337,6 +347,14 @@ static const float kAKGameOverWaitTime = 1.0f;
             self.interfaceLayer.enableTag = kAKMenuTagPlaying;
             break;
             
+        case kAKGameStatePause:     // 一時停止中
+            self.interfaceLayer.enableTag = kAKMenuTagPause;
+            break;
+            
+        case kAKGameStateQuitMenu:  // 終了メニュー
+            self.interfaceLayer.enableTag = kAKMenuTagQuit;
+            break;
+            
         case kAKGameStateGameOver:  // ゲームオーバー
             self.interfaceLayer.enableTag = kAKMenuTagGameOver;
             break;
@@ -353,15 +371,19 @@ static const float kAKGameOverWaitTime = 1.0f;
     switch (state) {
         case kAKGameStatePreLoad:   // ゲームシーン読み込み前
         case kAKGameStatePlaying:   // プレイ中
+            AKLog(kAKLogPlayingScene_1, @"広告バナーを非表示にする。:state=%d", state);
             // プレイ中は広告バナーを非表示にする
             [viewController hiddenAdBanner];
             break;
             
+        case kAKGameStateStart:     // ゲーム開始時
+        case kAKGameStateWait:      // アクション待機中
         case kAKGameStateSleep:     // スリープ処理中
             // 現在の状態を維持する
             break;
             
         default:                    // その他
+            AKLog(kAKLogPlayingScene_1, @"広告バナーを表示する。:state=%d", state);
             // 広告バナーを表示する
             [viewController viewAdBanner];
             break;
@@ -535,13 +557,86 @@ static const float kAKGameOverWaitTime = 1.0f;
 }
 
 /*!
+ @brief ポーズボタン選択処理
+ 
+ ポーズボタン選択時の処理。一時停止メニューを表示し、ゲームの状態を一時停止状態に遷移する。
+ @param object メニュー項目
+ */
+- (void)touchPauseButton:(id)object
+{
+    // [TODO]BGMを一時停止する
+//    [[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];    
+
+    // [TODO]一時停止効果音を鳴らす
+//    [[SimpleAudioEngine sharedEngine] playEffect:kAKPauseSE];
+
+    // ゲーム状態を一時停止に変更する
+    self.state = kAKGameStatePause;
+    
+    // プレイデータのポーズ処理を行う
+    [self.data pause];
+}
+
+/*!
+ @brief 再開ボタン選択処理
+ 
+ 再開ボタン選択時の処理。再開ボタンをブリンクし、アクション完了時にゲーム再開処理が呼ばれるようにする。
+ */
+- (void)touchResumeButton:(id)object
+{
+    // 他の処理が動作しないように待機状態にする
+    self.state = kAKGameStateWait;
+    
+    // ボタンのブリンクアクションを作成する
+    CCBlink *blink = [CCBlink actionWithDuration:0.2f blinks:2];
+    CCCallFunc *callFunc = [CCCallFunc actionWithTarget:self selector:@selector(resume)];
+    CCSequence *action = [CCSequence actions:blink, callFunc, nil];
+    
+    // ボタンを取得する
+    CCNode *button = self.interfaceLayer.resumeButton;
+    
+    // ブリンクアクションを開始する
+    [button runAction:action];
+    
+    // [TODO]一時停止効果音を鳴らす
+//    [[SimpleAudioEngine sharedEngine] playEffect:kAKPauseSE];
+}
+
+/*!
  @brief 終了ボタン選択処理
  
  終了ボタンが選択された時の処理を行う。
- 効果音を鳴らし、タイトルシーンへと遷移する。
+ 効果音を鳴らし、終了ボタンをブリンクし、アクション完了時に終了メニュー表示処理が呼ばれるようにする。
  @param object メニュー項目
  */
 - (void)touchQuitButton:(id)object
+{
+    // 他の処理が動作しないように待機状態にする
+    self.state = kAKGameStateWait;
+    
+    // ボタンのブリンクアクションを作成する
+    CCBlink *blink = [CCBlink actionWithDuration:0.2f blinks:2];
+    CCCallFunc *callFunc = [CCCallFunc actionWithTarget:self selector:@selector(viewQuitMenu)];
+    CCSequence *action = [CCSequence actions:blink, callFunc, nil];
+    
+    // ボタンを取得する
+    CCNode *button = self.interfaceLayer.quitButton;
+    
+    // ブリンクアクションを開始する
+    [button runAction:action];
+    
+    // [TODO]メニュー選択時の効果音を鳴らす
+//    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
+}
+
+/*!
+ @brief 終了メニューYESボタン選択処理
+ 
+ 終了メニューでYESボタンが選択された時の処理を行う。
+ 効果音を鳴らし、タイトルシーンへと遷移する。
+ @param object メニュー項目
+ */
+- (void)touchQuitYesButton:(id)object
 {
     AKLog(kAKLogPlayingScene_1, @"start");
     
@@ -550,9 +645,35 @@ static const float kAKGameOverWaitTime = 1.0f;
     
     // タイトルシーンへの遷移を作成する
     CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKTitleScene node]];
-
+    
     // タイトルシーンへと遷移する
-    [[CCDirector sharedDirector] replaceScene:transition];
+    [[CCDirector sharedDirector] replaceScene:transition];    
+}
+
+/*!
+ @brief 終了メニューNOボタン選択
+ 
+ 終了メニューのNOボタン選択時の処理。
+ NOボタンをブリンクし、アクション完了時に一時停止メニュー表示処理が呼ばれるようにする。
+ */
+- (void)touchQuitNoButton:(id)object
+{
+    // 他の処理が動作しないように待機状態にする
+    self.state = kAKGameStateWait;
+    
+    // ボタンのブリンクアクションを作成する
+    CCBlink *blink = [CCBlink actionWithDuration:0.2f blinks:2];
+    CCCallFunc *callFunc = [CCCallFunc actionWithTarget:self selector:@selector(viewPauseMenu)];
+    CCSequence *action = [CCSequence actions:blink, callFunc, nil];
+    
+    // ボタンを取得する
+    CCNode *button = self.interfaceLayer.quitNoButton;
+    
+    // ブリンクアクションを開始する
+    [button runAction:action];
+    
+    // [TODO]メニュー選択時の効果音を鳴らす
+//    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
 }
 
 /*!
@@ -708,4 +829,47 @@ static const float kAKGameOverWaitTime = 1.0f;
     AKLog(kAKLogPlayingScene_1, @"end");
 }
 
+#pragma mark プライベートメソッド 
+
+/*!
+ @brief ゲーム再開
+ 
+ 一時停止中の状態からゲームを再会する。
+ */
+- (void)resume
+{
+    // 一時停止中から以外の変更の場合はエラー
+    NSAssert(self.state == kAKGameStateWait, @"状態遷移異常");
+    
+    // [TODO]一時停止したBGMを再開する
+//    [[SimpleAudioEngine sharedEngine] resumeBackgroundMusic];
+    
+    // ゲーム状態をプレイ中に変更する
+    self.state = kAKGameStatePlaying;
+    
+    // プレイデータのゲーム再開処理を行う
+    [self.data resume];
+}
+
+/*!
+ @brief 終了メニュー表示
+ 
+ ゲームの状態を終了メニュー表示中に遷移する。
+ */
+- (void)viewQuitMenu
+{
+    // ゲーム状態を終了メニュー表示中に遷移する
+    self.state = kAKGameStateQuitMenu;
+}
+
+/*!
+ @brief 一時停止メニュー表示
+ 
+ ゲームの状態を一時停止中に遷移する。
+ */
+- (void)viewPauseMenu
+{
+    // ゲーム状態を一時停止中に遷移する
+    self.state = kAKGameStatePause;
+}
 @end

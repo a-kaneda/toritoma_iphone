@@ -148,6 +148,7 @@
             <filename>../95_4倍/Control/ShieldButton_01.png</filename>
             <filename>../95_4倍/Control/ShieldButton_02.png</filename>
             <filename>../95_4倍/Control/TwitterButton.png</filename>
+            <filename>../95_4倍/Control/PauseButton.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
