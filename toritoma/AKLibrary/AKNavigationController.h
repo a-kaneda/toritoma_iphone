@@ -70,6 +70,8 @@ CGRect bannerRect(void);
 
     /// 広告バナー
     GADBannerView *bannerView_;
+    /// 広告表示
+    BOOL isViewBanner_;
 }
 
 /// 広告バナー

@@ -235,6 +235,9 @@
  */
 - (void)viewAdBanner
 {
+    // 広告表示ありにする
+    isViewBanner_ = YES;
+    
     // 画面内に広告を表示する
     self.bannerView.frame = CGRectMake([self bannerPosX],
                                        [self bannerPosY],
@@ -249,6 +252,9 @@
  */
 - (void)hiddenAdBanner
 {
+    // 広告表示なしにする
+    isViewBanner_ = NO;
+    
     // ビューの位置を画面外に設定する
     self.bannerView.frame = CGRectMake(-self.bannerView.frame.size.width,
                                        -self.bannerView.frame.size.height,
@@ -264,6 +270,11 @@
  */
 - (float)bannerPosX
 {
+    // 非表示状態の場合は範囲外を返す
+    if (!isViewBanner_) {
+        return -self.bannerView.frame.size.width;
+    }
+    
     // アプリケーション側で定義された定数によって分岐する
     switch (kAKBannerPosX) {
         case kAKBannerPosXLeft:     // 左寄せ
@@ -290,6 +301,11 @@
  */
 - (float)bannerPosY
 {
+    // 非表示状態の場合は範囲外を返す
+    if (!isViewBanner_) {
+        return -self.bannerView.frame.size.height;
+    }
+
     // アプリケーション側で定義された定数によって分岐する
     switch (kAKBannerPosY) {
         case kAKBannerPosYTop:      // 上寄せ
