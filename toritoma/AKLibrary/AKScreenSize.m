@@ -36,6 +36,9 @@
 #import "AKScreenSize.h"
 #import "AKLogNoDef.h"
 
+/// ゲーム画面のステージサイズ
+const CGSize kAKStageSize = {384, 288};
+
 /*!
  @brief 画面サイズ管理クラス
  
@@ -64,9 +67,9 @@
  */
 + (CGSize)stageSize
 {
-    // ステージサイズは384x288とする
-    NSInteger width = 384;
-    NSInteger height = 288;
+    // ステージサイズを取得する
+    NSInteger width = kAKStageSize.width;
+    NSInteger height = kAKStageSize.height;
     
     // iPadの場合は倍にする
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

@@ -65,6 +65,7 @@ BOOL kAKLogOptionScene_1 = NO;
 BOOL kAKLogPlayData_0 = YES;
 BOOL kAKLogPlayData_1 = NO;
 BOOL kAKLogPlayData_2 = NO;
+BOOL kAKLogPlayData_3 = NO;
 BOOL kAKLogPlayer_0 = YES;
 BOOL kAKLogPlayer_1 = NO;
 BOOL kAKLogPlayerShot_0 = YES;

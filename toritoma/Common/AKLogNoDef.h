@@ -65,6 +65,7 @@ extern BOOL kAKLogOptionScene_1;
 extern BOOL kAKLogPlayData_0;
 extern BOOL kAKLogPlayData_1;
 extern BOOL kAKLogPlayData_2;
+extern BOOL kAKLogPlayData_3;
 extern BOOL kAKLogPlayer_0;
 extern BOOL kAKLogPlayer_1;
 extern BOOL kAKLogPlayerShot_0;

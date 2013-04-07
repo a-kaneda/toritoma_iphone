@@ -655,13 +655,17 @@ enum AKCharacterPositionZ {
  */
 - (void)movePlayerByDx:(float)dx dy:(float)dy
 {
+    AKLog(kAKLogPlayData_3, @"x=%f dx=%f width=%f y=%f dy=%f height=%f",
+          self.player.positionX, dx, kAKStageSize.width,
+          self.player.positionY, dy, kAKStageSize.height);
+    
     // 移動先の座標を設定する
     [self.player setPositionX:AKRangeCheckF(self.player.positionX + dx,
                                             0.0f,
-                                            [AKScreenSize stageSize].width)
+                                            kAKStageSize.width)
                             y:AKRangeCheckF(self.player.positionY + dy,
                                             0.0f,
-                                            [AKScreenSize stageSize].height)];
+                                            kAKStageSize.height)];
 }
 
 /*!

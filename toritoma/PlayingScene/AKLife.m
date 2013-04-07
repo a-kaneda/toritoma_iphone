@@ -185,6 +185,6 @@ static const NSInteger kAKLifeMarkSize = 16;
  */
 - (NSInteger)width
 {
-    return (kAKLifeMarkSize + self.numberLabel.width);
+    return [AKScreenSize deviceLength:kAKLifeMarkSize] + self.numberLabel.width;
 }
 @end

@@ -36,6 +36,9 @@
 #import <Foundation/Foundation.h>
 #import "AKCommon.h"
 
+// ステージサイズ
+extern const CGSize kAKStageSize;
+
 // 画面サイズ管理クラス
 @interface AKScreenSize : NSObject
 
