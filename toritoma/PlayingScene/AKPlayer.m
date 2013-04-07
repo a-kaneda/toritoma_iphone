@@ -159,7 +159,7 @@ static const NSInteger kAKMaxOptionCount = 3;
  */
 - (void)destroy
 {
-    // [TODO]破壊時の効果音を鳴らす
+    // TODO:破壊時の効果音を鳴らす
 
     // 画面効果を生成する
     [[AKPlayData sharedInstance] createEffect:2 x:self.positionX y:self.positionY];

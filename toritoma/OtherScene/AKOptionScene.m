@@ -166,7 +166,7 @@ static const float kAKPurchasedCaptionPosTopRatio = 0.3f;
     // 通信中フラグはオフにする
     isConnecting_ = NO;
     
-    // [TODO]アプリ課金が有効な場合は全ページを表示できるようにする
+    // TODO:アプリ課金が有効な場合は全ページを表示できるようにする
 //    if ([[AKInAppPurchaseHelper sharedHelper] canMakePayments]) {
 //        maxPage_ = kAKMenuPageCount;
 //    }
@@ -406,7 +406,7 @@ static const float kAKPurchasedCaptionPosTopRatio = 0.3f;
  */
 - (void)selectLeaerboard
 {
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
     // ボタンのブリンクアクションを作成する。
@@ -428,7 +428,7 @@ static const float kAKPurchasedCaptionPosTopRatio = 0.3f;
  */
 - (void)selectAchievements
 {
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
     // ボタンのブリンクアクションを作成する
@@ -455,7 +455,7 @@ static const float kAKPurchasedCaptionPosTopRatio = 0.3f;
         return;
     }
     
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
     self.pageNo = self.pageNo - 1;
@@ -474,7 +474,7 @@ static const float kAKPurchasedCaptionPosTopRatio = 0.3f;
         return;
     }
     
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
     self.pageNo = self.pageNo + 1;
@@ -493,7 +493,7 @@ static const float kAKPurchasedCaptionPosTopRatio = 0.3f;
         return;
     }
     
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
     // タイトルシーンへの遷移を作成する
@@ -547,7 +547,7 @@ static const float kAKPurchasedCaptionPosTopRatio = 0.3f;
         return;
     }
     
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
     // ボタンのブリンクアクションを作成する
@@ -559,7 +559,7 @@ static const float kAKPurchasedCaptionPosTopRatio = 0.3f;
     // 通信ビューを表示する
     [self startConnect];
     
-    // [TODO]購入処理を行う
+    // TODO:購入処理を行う
 //    [[AKInAppPurchaseHelper sharedHelper] buy];
 }
 
@@ -577,7 +577,7 @@ static const float kAKPurchasedCaptionPosTopRatio = 0.3f;
         return;
     }
     
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
     // ボタンのブリンクアクションを作成する
@@ -589,7 +589,7 @@ static const float kAKPurchasedCaptionPosTopRatio = 0.3f;
     // 通信ビューを表示する
     [self startConnect];
 
-    // [TODO]リストア処理を行う
+    // TODO:リストア処理を行う
 //    [[AKInAppPurchaseHelper sharedHelper] restore];
 }
 
@@ -671,7 +671,7 @@ static const float kAKPurchasedCaptionPosTopRatio = 0.3f;
             
         case kAKPageStore:          // Storeのページ
             
-            // [TODO]購入済みかどうかで有効化する項目を変える
+            // TODO:購入済みかどうかで有効化する項目を変える
             /*
             if ([AKInAppPurchaseHelper sharedHelper].isEnableContinue) {
                 return kAKMenuStore | kAKMenuStoreAfterPurcase;

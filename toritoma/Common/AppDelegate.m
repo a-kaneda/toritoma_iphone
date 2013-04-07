@@ -195,6 +195,8 @@
 {
 	if( [navController_ visibleViewController] == director_ )
 		[director_ stopAnimation];
+    
+    // TODO:ゲームプレイ中にバックグラウンドに移行したときは一時停止する
 }
 
 /*!

@@ -989,12 +989,12 @@ enum AKCharacterPositionZ {
         
         AKLog(kAKLogPlayData_1, @"エクステンド:score_=%d score=%d しきい値=%d", score_, score, kAKExtendScore);
         
-        // [TODO]エクステンドの効果音を鳴らす
+        // TODO:エクステンドの効果音を鳴らす
         
         // 残機の数を増やす
         self.life = self.life + 1;
         
-        // [TODO]実績を解除する
+        // TODO:実績を解除する
     }
     
     // スコアを加算する

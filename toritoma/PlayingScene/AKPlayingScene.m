@@ -459,10 +459,10 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
  */
 - (void)touchPauseButton:(id)object
 {
-    // [TODO]BGMを一時停止する
+    // TODO:BGMを一時停止する
 //    [[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];    
 
-    // [TODO]一時停止効果音を鳴らす
+    // TODO:一時停止効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKPauseSE];
 
     // ゲーム状態を一時停止に変更する
@@ -493,7 +493,7 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
     // ブリンクアクションを開始する
     [button runAction:action];
     
-    // [TODO]一時停止効果音を鳴らす
+    // TODO:一時停止効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKPauseSE];
 }
 
@@ -520,7 +520,7 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
     // ブリンクアクションを開始する
     [button runAction:action];
     
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
 }
 
@@ -567,7 +567,7 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
     // ブリンクアクションを開始する
     [button runAction:action];
     
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
 }
 
@@ -579,7 +579,7 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
  */
 - (void)touchTweetButton:(id)object
 {
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
     // ツイートビューを表示する
@@ -1053,7 +1053,7 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
     // 一時停止中から以外の変更の場合はエラー
     NSAssert(self.state == kAKGameStateWait, @"状態遷移異常");
     
-    // [TODO]一時停止したBGMを再開する
+    // TODO:一時停止したBGMを再開する
 //    [[SimpleAudioEngine sharedEngine] resumeBackgroundMusic];
     
     // ゲーム状態をプレイ中に変更する

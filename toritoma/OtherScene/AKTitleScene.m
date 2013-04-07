@@ -53,7 +53,7 @@ enum {
     kAKTitleInterface           ///< インターフェースレイヤー
 };
 
-// [TODO]タイトル画像のファイル名
+// TODO:タイトル画像のファイル名
 //static NSString *kAKTitleImage = @"Title.png";
 
 /// ゲーム開始メニューのキャプション
@@ -121,15 +121,15 @@ enum {
     // インターフェースをシーンに配置する
     [self addChild:interface z:kAKTitleInterface tag:kAKTitleInterface];
         
-    // [TODO]タイトル画像を読み込む
+    // TODO:タイトル画像を読み込む
 //    CCSprite *image = [CCSprite spriteWithFile:kAKTitleImage];
 //    NSAssert(image != nil, @"can not open title image : %@", kAKTitleImage);
     
-    // [TODO]配置位置を設定する
+    // TODO:配置位置を設定する
 //    image.position = ccp([AKScreenSize positionFromHorizontalCenterPoint:kAKTitlePosFromHorizontalCenterPoint],
 //                         [AKScreenSize positionFromTopRatio:kAKTitlePosFromTopRatio]);
     
-    // [TODO]タイトル画像をシーンに配置する
+    // TODO:タイトル画像をシーンに配置する
 //    [self addChild:image z:kAKTitleLogoPosZ];
     
     // ゲームスタートのメニューを作成する
@@ -255,10 +255,10 @@ enum {
     // ボタン選択エフェクトを発生させる
     [self selectButton:kAKTitleMenuCredit];
     
-    // [TODO]クレジット画面シーンへの遷移を作成する
+    // TODO:クレジット画面シーンへの遷移を作成する
 //    CCTransitionFade *transition = [CCTransitionFade transitionWithDuration:0.5f scene:[AKCreditScene node]];
     
-    // [TODO]クレジット画面シーンへ遷移する
+    // TODO:クレジット画面シーンへ遷移する
 //    [[CCDirector sharedDirector] replaceScene:transition];
 }
 
@@ -271,7 +271,7 @@ enum {
  */
 - (void)selectButton:(NSInteger)tag
 {
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
     
     // ボタンのブリンクアクションを作成する

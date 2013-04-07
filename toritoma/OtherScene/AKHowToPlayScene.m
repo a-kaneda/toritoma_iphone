@@ -386,7 +386,7 @@ static const NSUInteger kAKHowToBackTag = 0x03;
 {
     AKLog(kAKLogHowToPlayScene_1, @"goPrevPage開始");
     
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
 
     self.pageNo = self.pageNo - 1;
@@ -401,7 +401,7 @@ static const NSUInteger kAKHowToBackTag = 0x03;
 {
     AKLog(kAKLogHowToPlayScene_1, @"goNextPage開始");
     
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
 
     self.pageNo = self.pageNo + 1;
@@ -416,7 +416,7 @@ static const NSUInteger kAKHowToBackTag = 0x03;
 {
     AKLog(kAKLogHowToPlayScene_1, @"backToTitle開始");
 
-    // [TODO]メニュー選択時の効果音を鳴らす
+    // TODO:メニュー選択時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKMenuSelectSE];
 
     // タイトルシーンへの遷移を作成する
