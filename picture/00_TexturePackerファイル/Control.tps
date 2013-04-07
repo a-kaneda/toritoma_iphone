@@ -149,6 +149,15 @@
             <filename>../94_2倍/Control/PrevButton.png</filename>
             <filename>../94_2倍/Control/TwitterButton.png</filename>
             <filename>../94_2倍/Control/PauseButton.png</filename>
+            <filename>../94_2倍/Control/FrameBack.png</filename>
+            <filename>../94_2倍/Control/FrameBottom.png</filename>
+            <filename>../94_2倍/Control/FrameLeft.png</filename>
+            <filename>../94_2倍/Control/FrameLeftBottom.png</filename>
+            <filename>../94_2倍/Control/FrameLeftTop.png</filename>
+            <filename>../94_2倍/Control/FrameRight.png</filename>
+            <filename>../94_2倍/Control/FrameRightBottom.png</filename>
+            <filename>../94_2倍/Control/FrameRightTop.png</filename>
+            <filename>../94_2倍/Control/FrameTop.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

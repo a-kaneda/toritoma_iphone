@@ -56,9 +56,9 @@ static NSString *kAKShiledButtonNoSelectImage = @"ShieldButton_01.png";
 /// シールドボタン選択時の画像名
 static NSString *kAKShiledButtonSelectedImage = @"ShieldButton_02.png";
 /// ポーズボタンの配置位置、右からの位置
-static const float kAKPauseButtonPosRightPoint = 26.0f;
+static const float kAKPauseButtonPosRightPoint = 22.0f;
 /// ポーズボタンの配置位置、上からの位置
-static const float kAKPauseButtonPosTopPoint = 26.0f;
+static const float kAKPauseButtonPosTopPoint = 22.0f;
 /// ポーズボタンの画像ファイル名
 static NSString *kAKPauseButtonImage = @"PauseButton.png";
 

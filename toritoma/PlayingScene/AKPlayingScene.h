@@ -90,16 +90,6 @@ enum AKGameState {
 /// ゲームオーバーかどうか
 @property (nonatomic, readonly)BOOL isGameOver;
 
-// 背景レイヤー作成
-- (void)createBackGround;
-// キャラクターレイヤー作成
-- (void)createCharacterLayer;
-// 情報レイヤー作成
-- (void)createInfoLayer;
-// インターフェースレイヤー作成
-- (void)createInterface;
-// 枠レイヤー作成
-- (void)createFrame;
 // 自機の移動
 - (void)movePlayer:(id)object;
 // シールドボタン選択処理
@@ -114,14 +104,6 @@ enum AKGameState {
 - (void)touchQuitYesButton:(id)object;
 // 終了メニューNOボタン選択処理
 - (void)touchQuitNoButton:(id)object;
-// ツイートボタン選択処理
-- (void)touchTweetButton:(id)object;
-// ゲーム開始時の更新処理
-- (void)updateStart:(ccTime)dt;
-// プレイ中の更新処理
-- (void)updatePlaying:(ccTime)dt;
-// スリープ処理中の更新処理
-- (void)updateSleep:(ccTime)dt;
 // シールドボタン表示切替
 - (void)setShieldButtonSelected:(BOOL)selected;
 // スコアラベル更新

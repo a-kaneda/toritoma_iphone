@@ -149,6 +149,15 @@
             <filename>../95_4倍/Control/ShieldButton_02.png</filename>
             <filename>../95_4倍/Control/TwitterButton.png</filename>
             <filename>../95_4倍/Control/PauseButton.png</filename>
+            <filename>../95_4倍/Control/FrameBack.png</filename>
+            <filename>../95_4倍/Control/FrameBottom.png</filename>
+            <filename>../95_4倍/Control/FrameLeft.png</filename>
+            <filename>../95_4倍/Control/FrameLeftBottom.png</filename>
+            <filename>../95_4倍/Control/FrameLeftTop.png</filename>
+            <filename>../95_4倍/Control/FrameRight.png</filename>
+            <filename>../95_4倍/Control/FrameRightBottom.png</filename>
+            <filename>../95_4倍/Control/FrameRightTop.png</filename>
+            <filename>../95_4倍/Control/FrameTop.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

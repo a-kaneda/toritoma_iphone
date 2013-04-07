@@ -39,7 +39,8 @@
 enum {
     kAKLayerPosZBack = 0,   ///< 背景レイヤー
     kAKLayerPosZCharacter,  ///< キャラクターレイヤー
-    kAKLayerPosZFrame,      ///< 枠レイヤー
+    kAKLayerPosZFrameBack,  ///< 枠背景レイヤー
+    kAKLayerPosZFrameBar,   ///< 枠棒レイヤー
     kAKLayerPosZInfo,       ///< 情報レイヤー
     kAKLayerPosZResult,     ///< ステージクリアレイヤー
     kAKLayerPosZInterface   ///< インターフェースレイヤー
@@ -53,12 +54,21 @@ enum {
     kAKInfoTagHiScore,          ///< ハイスコア
 };
 
+//======================================================================
+// 動作に関する定数
+//======================================================================
 /// 自機移動をスライド量の何倍にするか
 static const float kAKPlayerMoveVal = 1.8f;
 /// 開始ステージ番号
 static const NSInteger kAKStartStage = 1;
+/// ゲームオーバー時の待機時間
+static const float kAKGameOverWaitTime = 1.0f;
+
+//======================================================================
+// コントロールの表示に関する定数
+//======================================================================
 /// チキンゲージ配置位置、下からの座標
-static const float kAKChickenGaugePosFromBottomPoint = 18.0f;
+static const float kAKChickenGaugePosFromBottomPoint = 12.0f;
 /// 残機表示の位置、ステージ座標x座標
 static const float kAKLifePosXOfStage = 4.0f;
 /// 残機表示の位置、ステージ座標y座標
@@ -67,11 +77,59 @@ static const float kAKLifePosYOfStage = 272.0f;
 static const float kAKScorePosYOfStage = 272.0f;
 /// スコア表示のフォーマット
 static NSString *kAKScoreFormat = @"SCORE:%06d";
-/// ゲームオーバー時の待機時間
-static const float kAKGameOverWaitTime = 1.0f;
+
+//======================================================================
+// 枠の表示に関する定数
+//======================================================================
+/// 枠背景1ブロックのサイズ
+static const NSInteger kAKFrameBackSize = 32;
+/// 枠棒1ブロックのサイズ
+static const NSInteger kAKFrameBarSize = 8;
+/// 枠背景の画像名
+static NSString *kAKFrameBackName = @"FrameBack.png";
+/// 枠棒左の画像名
+static NSString *kAKFrameBarLeft = @"FrameLeft.png";
+/// 枠棒右の画像名
+static NSString *kAKFrameBarRight = @"FrameRight.png";
+/// 枠棒上の画像名
+static NSString *kAKFrameBarTop = @"FrameTop.png";
+/// 枠棒下の画像名
+static NSString *kAKFrameBarBottom = @"FrameBottom.png";
+/// 枠棒左上の画像名
+static NSString *kAKFrameBarLeftTop = @"FrameLeftTop.png";
+/// 枠棒左下の画像名
+static NSString *kAKFrameBarLeftBottom = @"FrameLeftBottom.png";
+/// 枠棒右上の画像名
+static NSString *kAKFrameBarRightTop = @"FrameRightTop.png";
+/// 枠棒右下の画像名
+static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
 
 // プライベートメソッド宣言
 @interface AKPlayingScene ()
+// 背景レイヤー作成
+- (void)createBackGround;
+// キャラクターレイヤー作成
+- (void)createCharacterLayer;
+// 情報レイヤー作成
+- (void)createInfoLayer;
+// インターフェースレイヤー作成
+- (void)createInterface;
+// 枠レイヤー作成
+- (void)createFrame;
+// 枠背景作成
+- (void)createFrameBack;
+// 枠の棒作成
+- (void)createFrameBar;
+// 枠ブロック配置
+- (void)createFrameBlockAtNode:(CCNode *)node name:(NSString *)name size:(NSInteger)size rect:(CGRect)rect;
+// ツイートボタン選択処理
+- (void)touchTweetButton:(id)object;
+// ゲーム開始時の更新処理
+- (void)updateStart:(ccTime)dt;
+// プレイ中の更新処理
+- (void)updatePlaying:(ccTime)dt;
+// スリープ処理中の更新処理
+- (void)updateSleep:(ccTime)dt;
 // ゲーム再開
 - (void)resume;
 // 終了メニュー表示
@@ -90,7 +148,7 @@ static const float kAKGameOverWaitTime = 1.0f;
 @synthesize data = data_;
 @synthesize state = state_;
 
-#pragma mark オブジェクト初期化
+#pragma mark オブジェクト生成/解放
 
 /*!
  @brief オブジェクト初期化処理
@@ -142,169 +200,6 @@ static const float kAKGameOverWaitTime = 1.0f;
     AKLog(kAKLogPlayingScene_1, @"end");
     return self;
 }
-
-/*!
- @brief 背景レイヤー作成
- 
- 背景レイヤーを作成する。
- */
-- (void)createBackGround
-{
-    // 背景レイヤーを作成する
-    [self addChild:AKCreateBackColorLayer() z:kAKLayerPosZBack tag:kAKLayerPosZBack];    
-}
-
-/*!
- @brief キャラクターレイヤー作成
- 
- キャラクターレイヤーを作成する。
- */
-- (void)createCharacterLayer
-{
-    // キャラクターを配置するレイヤーを作成する
-    CCLayer *characterLayer = [CCLayer node];
-    
-    // キャラクターレイヤーを画面に配置する
-    [self addChild:characterLayer z:kAKLayerPosZCharacter tag:kAKLayerPosZCharacter];
-}
-
-/*!
- @brief 情報レイヤー作成
- 
- 情報レイヤーを作成する。レイヤーに配置するものも作成する。
- */
-- (void)createInfoLayer
-{
-    // 情報レイヤーを作成する
-    CCLayer *infoLayer = [CCLayer node];
-    
-    // 情報レイヤーを画面に配置する
-    [self addChild:infoLayer z:kAKLayerPosZInfo tag:kAKLayerPosZInfo];
-    
-    // チキンゲージを作成する
-    AKChickenGauge *chickenGauge = [AKChickenGauge node];
-    
-    // チキンゲージを情報レイヤーに配置する
-    [infoLayer addChild:chickenGauge z:0 tag:kAKInfoTagChickenGauge];
-    
-    // チキンゲージの座標を設定する
-    chickenGauge.position = ccp([AKScreenSize center].x,
-                                [AKScreenSize positionFromBottomPoint:kAKChickenGaugePosFromBottomPoint]);
-    
-    // 残機表示を作成する
-    AKLife *life = [AKLife node];
-    
-    // 残機表示を情報レイヤーに配置する
-    [infoLayer addChild:life z:0 tag:kAKInfoTagLife];
-    
-    // 残機表示の座標を設定する
-    life.position = ccp([AKScreenSize xOfStage:kAKLifePosXOfStage] + self.life.width / 2,
-                        [AKScreenSize yOfStage:kAKLifePosYOfStage]);
-    
-    // スコア表示の文字列を作成する
-    NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, 0];
-    
-    // スコア表示を作成する
-    AKLabel *scoreLabel = [AKLabel labelWithString:scoreString
-                                         maxLength:scoreString.length
-                                           maxLine:1
-                                             frame:kAKLabelFrameNone];
-    
-    // スコア表示を情報レイヤーに配置する
-    [infoLayer addChild:scoreLabel z:0 tag:kAKInfoTagScore];
-    
-    // スコア表示の座標を設定する
-    scoreLabel.position = ccp([AKScreenSize center].x,
-                              [AKScreenSize yOfStage:kAKScorePosYOfStage]);
-    
-    AKLog(kAKLogPlayingScene_1, @"scoreLabel.position=(%f, %f)", scoreLabel.position.x, scoreLabel.position.y);
-}
-
-/*!
- @brief インターフェースレイヤー作成
- 
- インターフェースレイヤーを作成する。レイヤーに配置するものも作成する。
- */
-- (void)createInterface
-{
-    // インターフェースレイヤーを作成する
-    AKPlayingSceneIF *interfaceLayer = [AKPlayingSceneIF node];
-    
-    // インターフェースレイヤーを画面に配置する
-    [self addChild:interfaceLayer z:kAKLayerPosZInterface tag:kAKLayerPosZInterface];
-}
-
-/*!
- @brief 枠レイヤー作成
- 
- 枠レイヤーを作成する。
- */
-- (void)createFrame
-{
-    AKLog(kAKLogPlayingScene_1, @"screen=(%f, %f) stage=(%f, %f)",
-          [AKScreenSize screenSize].width,
-          [AKScreenSize screenSize].height,
-          [AKScreenSize stageSize].width,
-          [AKScreenSize stageSize].height);
-    
-    // 左側の枠の座標を作成する
-    float x = 0.0f;
-    float y = 0.0f;
-    float w = ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f;
-    float h = [AKScreenSize screenSize].height;
-    
-    AKLog(kAKLogPlayingScene_1, @"左:(%f, %f, %f, %f)", x, y, w, h);
-    
-    // 左側の枠レイヤーを作成する
-    [self addChild:AKCreateColorLayer(kAKColorLittleDark, CGRectMake(x, y, w, h))
-                 z:kAKLayerPosZFrame
-               tag:kAKLayerPosZFrame];
-    
-
-    // 右側の枠の座標を作成する
-    x = [AKScreenSize center].x + [AKScreenSize stageSize].width / 2.0f;
-    y = 0.0f;
-    w = ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f;
-    h = [AKScreenSize screenSize].height;
-    
-    AKLog(kAKLogPlayingScene_1, @"右:(%f, %f, %f, %f)", x, y, w, h);
-    
-    // 右側の枠レイヤーを作成する
-    [self addChild:AKCreateColorLayer(kAKColorLittleDark, CGRectMake(x, y, w, h))
-                 z:kAKLayerPosZFrame
-               tag:kAKLayerPosZFrame];
-    
-
-    // 下側の枠の座標を作成する
-    x = ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f;
-    y = 0.0f;
-    w = [AKScreenSize screenSize].width;
-    h = [AKScreenSize yOfStage:0.0f];
-    
-    AKLog(kAKLogPlayingScene_1, @"下:(%f, %f, %f, %f)", x, y, w, h);
-    
-    // 下側の枠レイヤーを作成する
-    [self addChild:AKCreateColorLayer(kAKColorLittleDark, CGRectMake(x, y, w, h))
-                 z:kAKLayerPosZFrame
-               tag:kAKLayerPosZFrame];
-    
-    // 上側の枠の座標を作成する
-    x = ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f;
-    y = [AKScreenSize yOfStage:0.0f] + [AKScreenSize stageSize].height;
-    w = [AKScreenSize screenSize].width;
-    h = [AKScreenSize yOfStage:0.0f];
-    
-    AKLog(kAKLogPlayingScene_1, @"上:(%f, %f, %f, %f)", x, y, w, h);
-    
-    // 高さがある場合は上側の枠レイヤーを作成する
-    if (h > 0.0f) {
-        [self addChild:AKCreateColorLayer(kAKColorLittleDark, CGRectMake(x, y, w, h))
-                     z:kAKLayerPosZFrame
-                   tag:kAKLayerPosZFrame];
-    }
-}
-
-#pragma mark オブジェクト解放
 
 /*!
  @brief オブジェクト解放処理
@@ -720,7 +615,375 @@ static const float kAKGameOverWaitTime = 1.0f;
     
 }
 
-#pragma mark 更新処理
+#pragma mark AKPlayDataからのシーン操作用
+
+/*!
+ @brief シールドボタン表示切替
+ 
+ シールドボタンの表示を選択・非選択状態で切り替えを行う。
+ @param seleted 選択状態かどうか
+ */
+- (void)setShieldButtonSelected:(BOOL)selected
+{
+    [self.interfaceLayer setShieldButtonSelected:selected];
+}
+
+/*!
+ @brief スコアラベル更新
+ 
+ スコアラベルの文字列を更新する。
+ @param score スコア
+ */
+- (void)setScoreLabel:(NSInteger)score
+{
+    // ラベルに設定する文字列を作成する
+    NSString *string = [NSString stringWithFormat:kAKScoreFormat, score];
+    
+    // ラベルの文字列を変更する
+    [self.score setString:string];
+}
+
+/*!
+ @brief ゲームオーバー
+ 
+ ゲームオーバー時はBGMをOFFにし、一定時間待機する。
+ 待機後はゲームオーバーのラベルとコントロールを有効にする。
+ ここでは状態を待機中、次の状態をゲームオーバーに設定する。
+ */
+- (void)gameOver
+{
+    AKLog(kAKLogPlayingScene_1, @"start");
+    
+    // 状態を待機中へ遷移する
+    self.state = kAKGameStateSleep;
+    
+    // 待機後の状態をゲームオーバーに設定する
+    nextState_ = kAKGameStateGameOver;
+    
+    // 待機時間を設定する
+    sleepTime_ = kAKGameOverWaitTime;
+
+    AKLog(kAKLogPlayingScene_1, @"end");
+}
+
+#pragma mark プライベートメソッド_インスタンス初期化
+
+/*!
+ @brief 背景レイヤー作成
+ 
+ 背景レイヤーを作成する。
+ */
+- (void)createBackGround
+{
+    // 背景レイヤーを作成する
+    [self addChild:AKCreateBackColorLayer() z:kAKLayerPosZBack tag:kAKLayerPosZBack];
+}
+
+/*!
+ @brief キャラクターレイヤー作成
+ 
+ キャラクターレイヤーを作成する。
+ */
+- (void)createCharacterLayer
+{
+    // キャラクターを配置するレイヤーを作成する
+    CCLayer *characterLayer = [CCLayer node];
+    
+    // キャラクターレイヤーを画面に配置する
+    [self addChild:characterLayer z:kAKLayerPosZCharacter tag:kAKLayerPosZCharacter];
+}
+
+/*!
+ @brief 情報レイヤー作成
+ 
+ 情報レイヤーを作成する。レイヤーに配置するものも作成する。
+ */
+- (void)createInfoLayer
+{
+    // 情報レイヤーを作成する
+    CCLayer *infoLayer = [CCLayer node];
+    
+    // 情報レイヤーを画面に配置する
+    [self addChild:infoLayer z:kAKLayerPosZInfo tag:kAKLayerPosZInfo];
+    
+    // チキンゲージを作成する
+    AKChickenGauge *chickenGauge = [AKChickenGauge node];
+    
+    // チキンゲージを情報レイヤーに配置する
+    [infoLayer addChild:chickenGauge z:0 tag:kAKInfoTagChickenGauge];
+    
+    // チキンゲージの座標を設定する
+    chickenGauge.position = ccp([AKScreenSize center].x,
+                                [AKScreenSize positionFromBottomPoint:kAKChickenGaugePosFromBottomPoint]);
+    
+    // 残機表示を作成する
+    AKLife *life = [AKLife node];
+    
+    // 残機表示を情報レイヤーに配置する
+    [infoLayer addChild:life z:0 tag:kAKInfoTagLife];
+    
+    // 残機表示の座標を設定する
+    life.position = ccp([AKScreenSize xOfStage:kAKLifePosXOfStage] + self.life.width / 2,
+                        [AKScreenSize yOfStage:kAKLifePosYOfStage]);
+    
+    // スコア表示の文字列を作成する
+    NSString *scoreString = [NSString stringWithFormat:kAKScoreFormat, 0];
+    
+    // スコア表示を作成する
+    AKLabel *scoreLabel = [AKLabel labelWithString:scoreString
+                                         maxLength:scoreString.length
+                                           maxLine:1
+                                             frame:kAKLabelFrameNone];
+    
+    // スコア表示を情報レイヤーに配置する
+    [infoLayer addChild:scoreLabel z:0 tag:kAKInfoTagScore];
+    
+    // スコア表示の座標を設定する
+    scoreLabel.position = ccp([AKScreenSize center].x,
+                              [AKScreenSize yOfStage:kAKScorePosYOfStage]);
+    
+    AKLog(kAKLogPlayingScene_1, @"scoreLabel.position=(%f, %f)", scoreLabel.position.x, scoreLabel.position.y);
+}
+
+/*!
+ @brief インターフェースレイヤー作成
+ 
+ インターフェースレイヤーを作成する。レイヤーに配置するものも作成する。
+ */
+- (void)createInterface
+{
+    // インターフェースレイヤーを作成する
+    AKPlayingSceneIF *interfaceLayer = [AKPlayingSceneIF node];
+    
+    // インターフェースレイヤーを画面に配置する
+    [self addChild:interfaceLayer z:kAKLayerPosZInterface tag:kAKLayerPosZInterface];
+}
+
+/*!
+ @brief 枠レイヤー作成
+ 
+ 枠レイヤーを作成する。
+ */
+- (void)createFrame
+{
+    AKLog(kAKLogPlayingScene_1, @"screen=(%f, %f) stage=(%f, %f)",
+          [AKScreenSize screenSize].width,
+          [AKScreenSize screenSize].height,
+          [AKScreenSize stageSize].width,
+          [AKScreenSize stageSize].height);
+    
+    // 枠の背景を作成する
+    [self createFrameBack];
+    
+    // 枠の棒を作成する
+    [self createFrameBar];
+}
+
+/*!
+ @brief 枠背景作成
+ 
+ 枠の背景部分を作成する。
+ */
+- (void)createFrameBack
+{
+    // 枠の背景用バッチノードを作成する
+    CCSpriteBatchNode *frameBackBatch = [CCSpriteBatchNode batchNodeWithFile:kAKControlTextureAtlasFile];
+    
+    // ブロックサイズをデバイスに合わせて計算する
+    NSInteger frameBackSize = [AKScreenSize deviceLength:kAKFrameBackSize];
+    
+    // 左側の枠の座標を作成する
+    CGRect rect = CGRectMake(0.0f,
+                             0.0f,
+                             ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f,
+                             [AKScreenSize screenSize].height);
+    
+    // 右端揃えにするため、ブロックのはみ出している分だけ左にずらす
+    if ((NSInteger)rect.size.width % frameBackSize > 0) {
+        rect.origin.x -= frameBackSize - (NSInteger)rect.size.width % frameBackSize;
+        rect.size.width += frameBackSize - (NSInteger)rect.size.width % frameBackSize;
+    }
+    
+    // ステージの下端に揃えるため、ブロックのはみ出している分だけ下にずらす
+    if ((NSInteger)[AKScreenSize yOfStage:0.0f] % frameBackSize > 0) {
+        rect.origin.y -= frameBackSize - (NSInteger)[AKScreenSize yOfStage:0.0f] % frameBackSize;
+        rect.size.height += frameBackSize - (NSInteger)[AKScreenSize yOfStage:0.0f] % frameBackSize;
+    }
+    
+    // 枠背景のブロックを配置する
+    [self createFrameBlockAtNode:frameBackBatch name:kAKFrameBackName size:frameBackSize rect:rect];
+    
+    // 右側の枠の座標を作成する
+    rect = CGRectMake([AKScreenSize center].x + [AKScreenSize stageSize].width / 2,
+                      0.0f,
+                      ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2,
+                      [AKScreenSize screenSize].height);
+    
+    // ステージの下端に揃えるため、ブロックのはみ出している分だけ下にずらす
+    if ((NSInteger)[AKScreenSize yOfStage:0.0f] % frameBackSize > 0) {
+        rect.origin.y -= frameBackSize - (NSInteger)[AKScreenSize yOfStage:0.0f] % frameBackSize;
+        rect.size.height += frameBackSize - (NSInteger)[AKScreenSize yOfStage:0.0f] % frameBackSize;
+    }
+
+    // 枠背景のブロックを配置する
+    [self createFrameBlockAtNode:frameBackBatch name:kAKFrameBackName size:frameBackSize rect:rect];
+    
+    // 下側の枠の座標を作成する
+    rect = CGRectMake(([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f,
+                      0.0f,
+                      [AKScreenSize screenSize].width,
+                      [AKScreenSize yOfStage:0.0f]);
+    
+    // 上端揃えにするため、ブロックのはみ出している分だけ下にずらす
+    if ((NSInteger)rect.size.height % frameBackSize > 0) {
+        rect.origin.y -= frameBackSize - (NSInteger)rect.size.height % frameBackSize;
+        rect.size.height += frameBackSize - (NSInteger)rect.size.height % frameBackSize;
+    }
+    
+    // 枠背景のブロックを配置する
+    [self createFrameBlockAtNode:frameBackBatch name:kAKFrameBackName size:frameBackSize rect:rect];
+    
+    // 上側の枠の座標を作成する
+    rect = CGRectMake(([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2.0f,
+                      [AKScreenSize yOfStage:0.0f] + [AKScreenSize stageSize].height,
+                      [AKScreenSize screenSize].width,
+                      [AKScreenSize screenSize].height - [AKScreenSize stageSize].height - [AKScreenSize yOfStage:0.0f]);
+    
+    // 高さがある場合は上側の枠レイヤーを作成する
+    if (rect.size.height > 0.0f) {
+        [self createFrameBlockAtNode:frameBackBatch name:kAKFrameBackName size:frameBackSize rect:rect];
+    }
+    
+    // 枠の背景用バッチノードをシーンに配置する
+    [self addChild:frameBackBatch z:kAKLayerPosZFrameBack tag:kAKLayerPosZFrameBack];
+}
+
+/*!
+ @brief 枠棒作成
+ 
+ 枠の棒の部分を作成する。
+ */
+- (void)createFrameBar
+{
+    // 枠の棒用バッチノードを作成する
+    CCSpriteBatchNode *frameBarBatch = [CCSpriteBatchNode batchNodeWithFile:kAKControlTextureAtlasFile];
+    
+    // ブロックサイズをデバイスに合わせて計算する
+    NSInteger frameBarSize = [AKScreenSize deviceLength:kAKFrameBarSize];
+    
+    // 左側の棒の位置を決定する
+    CGRect rect = CGRectMake([AKScreenSize xOfStage:0.0f] - frameBarSize,
+                             [AKScreenSize yOfStage:0.0f],
+                             frameBarSize,
+                             [AKScreenSize stageSize].height);
+    
+    // 左側の棒を配置する
+    [self createFrameBlockAtNode:frameBarBatch name:kAKFrameBarLeft size:frameBarSize rect:rect];
+    
+    // 右側の棒の位置を決定する
+    rect = CGRectMake([AKScreenSize xOfStage:0.0f] + [AKScreenSize stageSize].width,
+                      [AKScreenSize yOfStage:0.0f],
+                      frameBarSize,
+                      [AKScreenSize stageSize].height);
+    
+    // 右側の棒を配置する
+    [self createFrameBlockAtNode:frameBarBatch name:kAKFrameBarRight size:frameBarSize rect:rect];
+    
+    // 下側の棒の位置を決定する
+    rect = CGRectMake([AKScreenSize xOfStage:0.0f],
+                      [AKScreenSize yOfStage:0.0f] - frameBarSize,
+                      [AKScreenSize stageSize].width,
+                      frameBarSize);
+    
+    // 下側の棒を配置する
+    [self createFrameBlockAtNode:frameBarBatch name:kAKFrameBarBottom size:frameBarSize rect:rect];
+    
+    // 左下の棒の位置を決定する
+    rect = CGRectMake([AKScreenSize xOfStage:0.0f] - frameBarSize,
+                      [AKScreenSize yOfStage:0.0f] - frameBarSize,
+                      frameBarSize,
+                      frameBarSize);
+    
+    // 左下の棒を配置する
+    [self createFrameBlockAtNode:frameBarBatch name:kAKFrameBarLeftBottom size:frameBarSize rect:rect];
+    
+    // 右下の棒の位置を決定する
+    rect = CGRectMake([AKScreenSize xOfStage:0.0f] + [AKScreenSize stageSize].width,
+                      [AKScreenSize yOfStage:0.0f] - frameBarSize,
+                      frameBarSize,
+                      frameBarSize);
+    
+    // 右下の棒を配置する
+    [self createFrameBlockAtNode:frameBarBatch name:kAKFrameBarRightBottom size:frameBarSize rect:rect];
+
+    // 上側の棒の位置を決定する
+    rect = CGRectMake([AKScreenSize xOfStage:0.0f],
+                      [AKScreenSize yOfStage:0.0f] + [AKScreenSize stageSize].height,
+                      [AKScreenSize stageSize].width,
+                      frameBarSize);
+
+    // 上側に棒を配置する隙間がある場合
+    if (rect.origin.y < [AKScreenSize screenSize].height) {
+        
+        // 上側の棒を配置する
+        [self createFrameBlockAtNode:frameBarBatch name:kAKFrameBarTop size:frameBarSize rect:rect];
+
+        // 左上の棒の位置を決定する
+        rect = CGRectMake([AKScreenSize xOfStage:0.0f] - frameBarSize,
+                          [AKScreenSize yOfStage:0.0f] + [AKScreenSize stageSize].height,
+                          frameBarSize,
+                          frameBarSize);
+        
+        // 左上の棒を配置する
+        [self createFrameBlockAtNode:frameBarBatch name:kAKFrameBarLeftTop size:frameBarSize rect:rect];
+        
+        // 右上の棒の位置を決定する
+        rect = CGRectMake([AKScreenSize xOfStage:0.0f] + [AKScreenSize stageSize].width,
+                          [AKScreenSize yOfStage:0.0f] + [AKScreenSize stageSize].height,
+                          frameBarSize,
+                          frameBarSize);
+        
+        // 右上の棒を配置する
+        [self createFrameBlockAtNode:frameBarBatch name:kAKFrameBarRightTop size:frameBarSize rect:rect];
+    }
+    
+    // 枠の棒用バッチノードをシーンに配置する
+    [self addChild:frameBarBatch z:kAKLayerPosZFrameBar tag:kAKLayerPosZFrameBar];
+}
+
+/*!
+ @brief 枠背景ブロック配置
+ 
+ 指定された範囲に枠背景のブロックを配置する。
+ @param node 配置先のノード
+ @param name ブロックの画像名
+ @param size 1ブロックのサイズ
+ @param rect 配置先の範囲
+ */
+- (void)createFrameBlockAtNode:(CCNode *)node name:(NSString *)name size:(NSInteger)size rect:(CGRect)rect
+{
+    AKLog(kAKLogPlayingScene_3, @"w=%f, h=%f", rect.size.width, rect.size.height);
+        
+    // 枠の背景ブロックを指定範囲に敷き詰める
+    for (int y = rect.origin.y; y < rect.origin.y + rect.size.height; y += size) {
+        for (int x = rect.origin.x; x < rect.origin.x + rect.size.width; x += size) {
+            
+            AKLog(kAKLogPlayingScene_3, @"x=%d, y=%d", x, y);
+            
+            // 背景ブロック画像のスプライトを作成する
+            CCSprite *sprite = [CCSprite spriteWithSpriteFrameName:name];
+            
+            // 位置を設定する
+            // 左下を(0, 0)に合うようにするため、サイズの半分ずらす
+            sprite.position = ccp(x + size / 2, y + size / 2);
+            
+            // 背景ブロックをノードに配置する
+            [node addChild:sprite];
+        }
+    }
+}
+
+#pragma mark プライベートメソッド_更新処理
 
 /*!
  @brief ゲーム開始時の更新処理
@@ -778,58 +1041,7 @@ static const float kAKGameOverWaitTime = 1.0f;
     }
 }
 
-#pragma mark AKPlayDataからのシーン操作用
-
-/*!
- @brief シールドボタン表示切替
- 
- シールドボタンの表示を選択・非選択状態で切り替えを行う。
- @param seleted 選択状態かどうか
- */
-- (void)setShieldButtonSelected:(BOOL)selected
-{
-    [self.interfaceLayer setShieldButtonSelected:selected];
-}
-
-/*!
- @brief スコアラベル更新
- 
- スコアラベルの文字列を更新する。
- @param score スコア
- */
-- (void)setScoreLabel:(NSInteger)score
-{
-    // ラベルに設定する文字列を作成する
-    NSString *string = [NSString stringWithFormat:kAKScoreFormat, score];
-    
-    // ラベルの文字列を変更する
-    [self.score setString:string];
-}
-
-/*!
- @brief ゲームオーバー
- 
- ゲームオーバー時はBGMをOFFにし、一定時間待機する。
- 待機後はゲームオーバーのラベルとコントロールを有効にする。
- ここでは状態を待機中、次の状態をゲームオーバーに設定する。
- */
-- (void)gameOver
-{
-    AKLog(kAKLogPlayingScene_1, @"start");
-    
-    // 状態を待機中へ遷移する
-    self.state = kAKGameStateSleep;
-    
-    // 待機後の状態をゲームオーバーに設定する
-    nextState_ = kAKGameStateGameOver;
-    
-    // 待機時間を設定する
-    sleepTime_ = kAKGameOverWaitTime;
-
-    AKLog(kAKLogPlayingScene_1, @"end");
-}
-
-#pragma mark プライベートメソッド 
+#pragma mark プライベートメソッド_状態遷移
 
 /*!
  @brief ゲーム再開

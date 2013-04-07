@@ -7,6 +7,19 @@
             <key>BackButton.png</key>
             <dict>
                 <key>frame</key>
+                <string>{{2,168},{32,32}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{32,32}}</string>
+                <key>sourceSize</key>
+                <string>{32,32}</string>
+            </dict>
+            <key>FrameBack.png</key>
+            <dict>
+                <key>frame</key>
                 <string>{{2,134},{32,32}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
@@ -16,6 +29,110 @@
                 <string>{{0,0},{32,32}}</string>
                 <key>sourceSize</key>
                 <string>{32,32}</string>
+            </dict>
+            <key>FrameBottom.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{112,50},{8,8}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{8,8}}</string>
+                <key>sourceSize</key>
+                <string>{8,8}</string>
+            </dict>
+            <key>FrameLeft.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{102,50},{8,8}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{8,8}}</string>
+                <key>sourceSize</key>
+                <string>{8,8}</string>
+            </dict>
+            <key>FrameLeftBottom.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{112,40},{8,8}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{8,8}}</string>
+                <key>sourceSize</key>
+                <string>{8,8}</string>
+            </dict>
+            <key>FrameLeftTop.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{102,40},{8,8}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{8,8}}</string>
+                <key>sourceSize</key>
+                <string>{8,8}</string>
+            </dict>
+            <key>FrameRight.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{112,30},{8,8}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{8,8}}</string>
+                <key>sourceSize</key>
+                <string>{8,8}</string>
+            </dict>
+            <key>FrameRightBottom.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{102,30},{8,8}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{8,8}}</string>
+                <key>sourceSize</key>
+                <string>{8,8}</string>
+            </dict>
+            <key>FrameRightTop.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{112,20},{8,8}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{8,8}}</string>
+                <key>sourceSize</key>
+                <string>{8,8}</string>
+            </dict>
+            <key>FrameTop.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{102,20},{8,8}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{8,8}}</string>
+                <key>sourceSize</key>
+                <string>{8,8}</string>
             </dict>
             <key>Life.png</key>
             <dict>
@@ -118,7 +235,7 @@
             <key>size</key>
             <string>{128,256}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:02edbbb17c5a40bf5669911d35a269df$</string>
+            <string>$TexturePacker:SmartUpdate:24195e16a8812627754a14dad9340c45$</string>
             <key>textureFileName</key>
             <string>Control.png</string>
         </dict>

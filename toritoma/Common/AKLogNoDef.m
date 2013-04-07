@@ -72,6 +72,7 @@ BOOL kAKLogPlayerShot_1 = NO;
 BOOL kAKLogPlayingScene_0 = YES;
 BOOL kAKLogPlayingScene_1 = YES;
 BOOL kAKLogPlayingScene_2 = NO;
+BOOL kAKLogPlayingScene_3 = YES;
 BOOL kAKLogPlayingSceneIF_0 = YES;
 BOOL kAKLogPlayingSceneIF_1 = YES;
 BOOL kAKLogScript_0 = YES;
