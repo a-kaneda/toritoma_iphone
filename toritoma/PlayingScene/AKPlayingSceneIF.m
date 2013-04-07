@@ -307,7 +307,7 @@ static const float kAKTwitterButtonPosBottomRatio = 0.6f;
     [self addMenuWithString:kAKGameOverQuitButtonCaption
                                      atPos:ccp([AKScreenSize center].x,
                                                [AKScreenSize positionFromBottomRatio:kAKGameOverQuitButtonPosBottomRatio])
-                                    action:@selector(touchQuitButton:)
+                                    action:@selector(touchQuitYesButton:)
                                          z:0
                                        tag:kAKMenuTagGameOver
                                  withFrame:YES];
