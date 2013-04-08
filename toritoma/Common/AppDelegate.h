@@ -44,6 +44,8 @@
 	AKNavigationController *navController_;
     /// Director
 	CCDirectorIOS	*director_;							// weak ref
+    /// アプリがバックグラウンドで実行中かどうか
+    BOOL isBackGround_;
 }
 
 /// Main window
@@ -52,5 +54,7 @@
 @property (readonly) UINavigationController *navController;
 /// Director
 @property (readonly) CCDirectorIOS *director;
+/// アプリがバックグラウンドで実行中かどうか
+@property (readonly) BOOL isBackGround;
 
 @end

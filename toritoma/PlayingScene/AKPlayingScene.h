@@ -90,6 +90,8 @@ enum AKGameState {
 /// ゲームオーバーかどうか
 @property (nonatomic, readonly)BOOL isGameOver;
 
+// バックグラウンド移行処理
+- (void)onDidEnterBackground;
 // 自機の移動
 - (void)movePlayer:(id)object;
 // シールドボタン選択処理

@@ -35,6 +35,7 @@
 
 #import "AppDelegate.h"
 #import "AKTitleScene.h"
+#import "AKPlayingScene.h"
 
 /*!
  @brief Application controller
@@ -44,6 +45,7 @@
 @implementation AppController
 
 @synthesize window=window_, navController=navController_, director=director_;
+@synthesize isBackGround = isBackGround_;
 
 /*!
  @brief アプリケーション生成処理
@@ -126,6 +128,9 @@
 	
     // Game Centerの認証を行う
     [[AKGameCenterHelper sharedHelper] authenticateLocalPlayer];
+    
+    // 起動時はバックグラウンドフラグを落としておく
+    isBackGround_ = NO;
 
 	return YES;
 }
@@ -189,14 +194,30 @@
  @brief バックグラウンドに移行したときの処理
  
  バックグラウンドに移行したときの処理を行う。
+ ゲームプレイ中にバックグラウンドに移行したときは一時停止する。
  @param application アプリケーションクラス
  */
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	if( [navController_ visibleViewController] == director_ )
+	if( [navController_ visibleViewController] == director_ ) {
 		[director_ stopAnimation];
+        
+        // 実行中のシーンを取得する
+        CCScene *scene = [[CCDirector sharedDirector] runningScene];
+        
+        // ゲームプレイシーンでゲームプレイ中の場合は一時停止状態にする
+        if ([scene isKindOfClass:[AKPlayingScene class]]) {
+            
+            // ゲームプレイシーンにキャストする
+            AKPlayingScene *playingScene = (AKPlayingScene *)scene;
+            
+            // バックグラウンド移行処理を行う
+            [playingScene onDidEnterBackground];            
+        }
+    }
     
-    // TODO:ゲームプレイ中にバックグラウンドに移行したときは一時停止する
+    // バックグラウンドフラグを立てる
+    isBackGround_ = YES;
 }
 
 /*!
@@ -209,6 +230,9 @@
 {
 	if( [navController_ visibleViewController] == director_ )
 		[director_ startAnimation];
+    
+    // バックグラウンドフラグを落とす
+    isBackGround_ = NO;
 }
 
 /*!

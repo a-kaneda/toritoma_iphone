@@ -34,6 +34,7 @@
  */
 
 #import "AKPlayingScene.h"
+#import "AppDelegate.h"
 
 /// レイヤーのz座標、タグの値にも使用する
 enum {
@@ -283,6 +284,16 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
             [viewController viewAdBanner];
             break;
     }
+    
+    // AppDelegateを取得する
+    NSAssert([[[UIApplication sharedApplication] delegate] isKindOfClass:[AppController class]], @"");
+    AppController *app = (AppController *)[[UIApplication sharedApplication] delegate];
+    
+    // バックグラウンドで実行中にプレイ中に遷移した場合はバックグラウンド移行処理を行う
+    if (app.isBackGround && state == kAKGameStatePlaying) {
+        AKLog(kAKLogPlayingScene_0, @"バックグラウンドで実行中にプレイ中に遷移した");
+        [self onDidEnterBackground];
+    }
 }
 
 /*!
@@ -391,6 +402,29 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
     
     // スーパークラスの処理を実行する
     [super onEnterTransitionDidFinish];
+}
+
+/*!
+ @brief バックグラウンド移行処理
+ 
+ バックグラウンドに移行したときの処理を行う。
+ ゲームプレイ中にバックグラウンドに移行したときは一時停止する。
+ */
+- (void)onDidEnterBackground
+{
+    // ゲームプレイ中の場合は一時停止状態にする
+    if (self.state == kAKGameStatePlaying) {
+        
+        // TODO:BGMを一時停止する
+//    [[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];
+        
+        // ゲーム状態を一時停止に変更する
+        self.state = kAKGameStatePause;
+        
+        // プレイデータのポーズ処理を行う
+        [self.data pause];
+    }
+    
 }
 
 /*!
