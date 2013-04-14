@@ -44,9 +44,9 @@ enum AKBannerPosX kAKBannerPosX = kAKBannerPosXLeft;
 /// 広告バナーy方向の位置
 enum AKBannerPosY kAKBannerPosY = kAKBannerPosYTop;
 /// AppBankNetworkのapiKey
-NSString *kAKAPIKey = @"f7d5cc28b8f5c709cf980e6ffbe5fb50d82e4313";
+NSString *kAKAPIKey = @"660d880534668e872da444c003e25ba41b3f44b7";
 /// AppBankNetworkのspotID
-NSString *kAKSpotID = @"24847";
+NSString *kAKSpotID = @"40141";
 
 /// コントロールテクスチャアトラス定義ファイル名
 NSString *kAKControlTextureAtlasDefFile = @"Control.plist";

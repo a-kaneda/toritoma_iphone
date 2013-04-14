@@ -37,7 +37,6 @@
 		0C90F1D716D88CA9008D2C2E /* AKLife.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C90F1D616D88CA9008D2C2E /* AKLife.m */; };
 		0CA41FB716F9B7AE00087979 /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA41FB516F9B7AE00087979 /* libGoogleAdMobAds.a */; };
 		0CA41FB816F9B7AE00087979 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0CA41FB616F9B7AE00087979 /* README.txt */; };
-		0CA41FBC16F9B7C900087979 /* libNendAd_readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0CA41FB916F9B7C900087979 /* libNendAd_readme.txt */; };
 		0CA41FBD16F9B7C900087979 /* libNendAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA41FBA16F9B7C900087979 /* libNendAd.a */; };
 		0CA41FC316F9BD2D00087979 /* AKAppBankNetworkBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA41FC216F9BD2D00087979 /* AKAppBankNetworkBanner.m */; };
 		0CA41FCC16F9BF0400087979 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA41FCB16F9BF0400087979 /* Security.framework */; };
@@ -266,7 +265,6 @@
 		0CA41FB416F9B7AE00087979 /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
 		0CA41FB516F9B7AE00087979 /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		0CA41FB616F9B7AE00087979 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-		0CA41FB916F9B7C900087979 /* libNendAd_readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libNendAd_readme.txt; sourceTree = "<group>"; };
 		0CA41FBA16F9B7C900087979 /* libNendAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNendAd.a; sourceTree = "<group>"; };
 		0CA41FBB16F9B7C900087979 /* NADView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NADView.h; sourceTree = "<group>"; };
 		0CA41FC116F9BD2D00087979 /* AKAppBankNetworkBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAppBankNetworkBanner.h; sourceTree = "<group>"; };
@@ -673,7 +671,6 @@
 		0CA41FAB16F9B63600087979 /* NendAd */ = {
 			isa = PBXGroup;
 			children = (
-				0CA41FB916F9B7C900087979 /* libNendAd_readme.txt */,
 				0CA41FBA16F9B7C900087979 /* libNendAd.a */,
 				0CA41FBB16F9B7C900087979 /* NADView.h */,
 			);
@@ -1371,7 +1368,6 @@
 				0C5AD1FF16EE714500F69D63 /* HowTo.png in Resources */,
 				0C5AD20216EE73D100F69D63 /* Localizable.strings in Resources */,
 				0CA41FB816F9B7AE00087979 /* README.txt in Resources */,
-				0CA41FBC16F9B7C900087979 /* libNendAd_readme.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

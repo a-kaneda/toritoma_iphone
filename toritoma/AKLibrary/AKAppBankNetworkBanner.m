@@ -89,14 +89,19 @@
     // 広告バナーを生成する
     self.nadView = [[[NADView alloc] initWithFrame:CGRectMake(0, 0, adSize.size.width, adSize.size.height)] autorelease];
     
+    // ログ出力を設定する
+#ifdef DEBUG
+    AKLog(kAKLogAppBankNetworkBanner_1, @"ログ有効化");
+    [self.nadView setIsOutputLog:YES];
+#else
+    [self.nadView setIsOutputLog:NO];
+#endif
+    
     // apiKeyとspotIDを設定する
     [self.nadView setNendID:kAKAPIKey spotID:kAKSpotID];
     
     // デリゲートを設定する
     self.nadView.delegate = self;
-    
-    // RootViewControllerを設定する
-    self.nadView.rootViewController = [[[UIViewController alloc] init] autorelease];
     
     // 広告を読み込む
     [self.nadView load];

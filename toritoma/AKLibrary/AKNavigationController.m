@@ -35,6 +35,7 @@
 
 #import <Twitter/TWTweetComposeViewController.h>
 #import "AKNavigationController.h"
+#import "AKAppBankNetworkBanner.h"
 
 /*!
  @brief UINavigationControllerのカスタマイズ
@@ -60,6 +61,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
+        // 広告バナーを表示ありとする
+        [self viewAdBanner];
     }
     return self;
 }
@@ -200,7 +204,7 @@
     
     // 広告リクエストを作成する
     GADRequest *request = [GADRequest request];
-    
+        
     // リクエストを行って広告を読み込む
     [self.bannerView loadRequest:request];
     
@@ -235,6 +239,8 @@
  */
 - (void)viewAdBanner
 {
+    AKLog(kAKLogNavigationController_1, @"広告表示");
+
     // 広告表示ありにする
     isViewBanner_ = YES;
     
@@ -252,6 +258,8 @@
  */
 - (void)hiddenAdBanner
 {
+    AKLog(kAKLogNavigationController_1, @"広告非表示");
+
     // 広告表示なしにする
     isViewBanner_ = NO;
     
@@ -272,6 +280,7 @@
 {
     // 非表示状態の場合は範囲外を返す
     if (!isViewBanner_) {
+        AKLog(kAKLogNavigationController_1, @"バナー非表示");
         return -self.bannerView.frame.size.width;
     }
     
@@ -303,6 +312,7 @@
 {
     // 非表示状態の場合は範囲外を返す
     if (!isViewBanner_) {
+        AKLog(kAKLogNavigationController_1, @"バナー非表示");
         return -self.bannerView.frame.size.height;
     }
 
