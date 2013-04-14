@@ -161,6 +161,7 @@
             <filename>../94_2倍/Character/Player_01_01.png</filename>
             <filename>../94_2倍/Character/Player_01_02.png</filename>
             <filename>../94_2倍/Character/PlayerShot_01_01.png</filename>
+            <filename>../94_2倍/Character/Block_02_01.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

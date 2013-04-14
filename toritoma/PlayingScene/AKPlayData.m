@@ -85,13 +85,13 @@ static NSString *kAKGameOverTweetKey = @"GameOverTweet";
 /// キャラクター配置のz座標
 enum AKCharacterPositionZ {
     kAKCharaPosZBack = 0,   ///< 背景
+    kAKCharaPosZBlock,      ///< 障害物
     kAKCharaPosZPlayerShot, ///< 自機弾
     kAKCharaPosZOption,     ///< オプション
     kAKCharaPosZPlayer,     ///< 自機
     kAKCharaPosZEnemy,      ///< 敵
     kAKCharaPosZEffect,     ///< 爆発効果
     kAKCharaPosZEnemyShot,  ///< 敵弾
-    kAKCharaPosZBlock,      ///< 障害物
     kAKCharaPosZCount       ///< z座標種別の数
 };
 
@@ -117,6 +117,7 @@ enum AKCharacterPositionZ {
 @synthesize shield = shield_;
 @synthesize scrollSpeedX = scrollSpeedX_;
 @synthesize scrollSpeedY = scrollSpeedY_;
+@synthesize lastBackCharacter = lastBackCharacter_;
 @synthesize boss = boss_;
 
 /*!
@@ -243,7 +244,7 @@ enum AKCharacterPositionZ {
     // シールドは無効状態で初期化する
     self.shield = NO;
     
-    // スクロールスピードは0で初期化する
+    // スクロールスピード・位置は0で初期化する
     self.scrollSpeedX = 0.0f;
     self.scrollSpeedY = 0.0f;
     
@@ -258,7 +259,8 @@ enum AKCharacterPositionZ {
     score_ = 0;
     clearWait_ = 0.0f;
     rebirthWait_ = 0.0f;
-    boss_ = nil;    
+    self.boss = nil;
+    self.lastBackCharacter = nil;
 }
 
 #pragma mark オブジェクト解放
@@ -275,6 +277,7 @@ enum AKCharacterPositionZ {
     // メンバを解放する
     self.player = nil;
     self.boss = nil;
+    self.lastBackCharacter = nil;
     self.playerShotPool = nil;
     self.refrectedShotPool = nil;
     self.enemyPool = nil;
@@ -444,7 +447,7 @@ enum AKCharacterPositionZ {
  @param dt フレーム更新間隔
  */
 - (void)update:(ccTime)dt
-{
+{    
     // クリア後の待機中の場合はスクリプトを実行しない
     if (clearWait_ > 0.0f) {
         
@@ -901,8 +904,8 @@ enum AKCharacterPositionZ {
  
  障害物を生成する。
  @param type 障害物種別
- @param x x座標
- @param y y座標
+ @param x 前回作成した背景/障害物からのx方向の距離
+ @param y 前回作成した背景/障害物からのy方向の距離
  */
 - (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
 {
@@ -915,11 +918,35 @@ enum AKCharacterPositionZ {
         return;
     }
     
+    //======================================================================
+    // キャラクター作成時のタイミングによって隙間が生じることを防ぐため、
+    // 配置は前回配置したものからの相対位置とする。
+    // 例えば、毎秒32ドットのスピードでスクロールしている時、
+    // 1秒後に32ドットずらした位置に配置すれば隙間なくキャラクターが作成できそうだが、
+    // スクロールとキャラクター配置の処理のタイミングにずれがあるため、隙間が生じてしまう。
+    // 通常のキャラクターであれば気にならない程度であるが、
+    // 背景の場合は隙間が敷き詰められていることを前提としているので隙間が生じると目立ってしまう。
+    // これを防ぐために背景や障害物は前回作成したキャラクターを保持しておき、
+    // 前回作成したものからの相対位置で位置を決める。
+    // これにより、タイミングのずれによる位置のズレを防ぐ事ができる。
+    //======================================================================
+    
+    // 配置する絶対座標を作成する
+    float absx = x;
+    float absy = y;
+    if (self.lastBackCharacter != nil) {
+        absx += self.lastBackCharacter.positionX;
+        absy += self.lastBackCharacter.positionY;
+    }
+    
     // 障害物を生成する
     [block createBlockType:type
-                         x:x
-                         y:y
+                         x:absx
+                         y:absy
                     parent:[self.batches objectAtIndex:kAKCharaPosZBlock]];
+    
+    // 最後に生成した障害物として記憶する
+    self.lastBackCharacter = block;
 }
 
 /*!
@@ -927,8 +954,8 @@ enum AKCharacterPositionZ {
  
  背景物を生成する。
  @param type 障害物種別
- @param x x座標
- @param y y座標
+ @param x 前回作成した背景/障害物からのx方向の距離
+ @param y 前回作成した背景/障害物からのy方向の距離
  */
 - (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
 {
@@ -941,11 +968,35 @@ enum AKCharacterPositionZ {
         return;
     }
     
+    //======================================================================
+    // キャラクター作成時のタイミングによって隙間が生じることを防ぐため、
+    // 配置は前回配置したものからの相対位置とする。
+    // 例えば、毎秒32ドットのスピードでスクロールしている時、
+    // 1秒後に32ドットずらした位置に配置すれば隙間なくキャラクターが作成できそうだが、
+    // スクロールとキャラクター配置の処理のタイミングにずれがあるため、隙間が生じてしまう。
+    // 通常のキャラクターであれば気にならない程度であるが、
+    // 背景の場合は隙間が敷き詰められていることを前提としているので隙間が生じると目立ってしまう。
+    // これを防ぐために背景や障害物は前回作成したキャラクターを保持しておき、
+    // 前回作成したものからの相対位置で位置を決める。
+    // これにより、タイミングのずれによる位置のズレを防ぐ事ができる。
+    //======================================================================
+
+    // 配置する絶対座標を作成する
+    float absx = x;
+    float absy = y;
+    if (self.lastBackCharacter != nil) {
+        absx += self.lastBackCharacter.positionX;
+        absy += self.lastBackCharacter.positionY;
+    }
+
     // 背景を生成する
     [back createBackType:type
-                       x:x
-                       y:y
+                       x:absx
+                       y:absy
                   parent:[self.batches objectAtIndex:kAKCharaPosZBack]];
+    
+    // 最後に生成した背景として記憶する
+    self.lastBackCharacter = back;
 }
 
 /*!

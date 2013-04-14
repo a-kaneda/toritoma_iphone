@@ -306,9 +306,9 @@ static NSString *kAKScriptFileName = @"stage_%d";
             
         case kAKScriptOpeScroll:    // スクロールスピード変更
             // スクロールスピードを変更する
-            AKLog(kAKLogScript_1, @"スクロールスピード変更:(%d, %d)", data.positionX, data.positionY);
-            [AKPlayData sharedInstance].scrollSpeedX = data.positionX;
-            [AKPlayData sharedInstance].scrollSpeedY = data.positionY;
+            AKLog(kAKLogScript_1, @"スクロールスピード変更:(%d, %d)", data.speedX, data.speedY);
+            [AKPlayData sharedInstance].scrollSpeedX = data.speedX;
+            [AKPlayData sharedInstance].scrollSpeedY = data.speedY;
             break;
             
         case kAKScriptOpeBGM:       // BGM変更

@@ -203,6 +203,8 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     // 移動前の座標を記憶する
     self.prevPositionX = self.positionX;
     self.prevPositionY = self.positionY;
+    
+    AKLog(kAKLogCharacter_1, @"scroll=(%f, %f)", [AKPlayData sharedInstance].scrollSpeedX, [AKPlayData sharedInstance].scrollSpeedY);
             
     // 座標の移動
     // 画面スクロールの影響を受ける場合は画面スクロール分も移動する

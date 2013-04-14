@@ -39,11 +39,12 @@
 /// 画像名のフォーマット
 static NSString *kAKImageNameFormat = @"Block_%02d";
 /// 障害物の種類の数
-static const NSInteger kAKBlockDefCount = 1;
+static const NSInteger kAKBlockDefCount = 2;
 
 /// 障害物定義
 static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
-    {1, 1, 0.0f, 32, 32}
+    {1, 1, 0.0f, 32, 32},
+    {2, 1, 0.0f, 32, 32}
 };
 
 /*!
@@ -62,14 +63,14 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
  @param y 生成位置y座標
  @param parent 配置する親ノード
  */
-- (void)createBlockType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y parent:(CCNode *)parent
+- (void)createBlockType:(NSInteger)type x:(float)x y:(float)y parent:(CCNode *)parent
 {
     AKLog(kAKLogBlock_1, @"障害物生成");
     
     // パラメータの内容をメンバに設定する
     self.positionX = x;
     self.positionY = y;
-    
+        
     // 配置フラグを立てる
     self.isStaged = YES;
 

@@ -48,6 +48,6 @@ struct AKBackDef {
 }
 
 // 背景生成処理
-- (void)createBackType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y parent:(CCNode *)parent;
+- (void)createBackType:(NSInteger)type x:(float)x y:(float)y parent:(CCNode *)parent;
 
 @end

@@ -61,7 +61,7 @@ static const struct AKBackDef kAKBackDef[kAKBackDefCount] = {
  @param y 生成位置y座標
  @param parent 配置する親ノード
  */
-- (void)createBackType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y parent:(CCNode *)parent
+- (void)createBackType:(NSInteger)type x:(float)x y:(float)y parent:(CCNode *)parent
 {
     AKLog(kAKLogBack_1, @"背景生成");
     

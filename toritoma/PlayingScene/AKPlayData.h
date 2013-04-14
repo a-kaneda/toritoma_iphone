@@ -84,6 +84,8 @@
     float scrollSpeedX_;
     /// y軸方向のスクロールスピード
     float scrollSpeedY_;
+    /// 最後に配置した背景またはブロック
+    AKCharacter *lastBackCharacter_;
     /// ボスキャラ
     AKCharacter *boss_;
 }
@@ -118,6 +120,8 @@
 @property (nonatomic)float scrollSpeedX;
 /// y軸方向のスクロールスピード
 @property (nonatomic)float scrollSpeedY;
+/// 最後に配置した背景またはブロック
+@property (nonatomic, retain)AKCharacter *lastBackCharacter;
 /// ボスキャラ
 @property (nonatomic, retain)AKCharacter *boss;
 
