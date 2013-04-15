@@ -904,8 +904,8 @@ enum AKCharacterPositionZ {
  
  障害物を生成する。
  @param type 障害物種別
- @param x 前回作成した背景/障害物からのx方向の距離
- @param y 前回作成した背景/障害物からのy方向の距離
+ @param x 前回作成した背景/障害物からのx方向の距離、または生成位置x座標
+ @param y 前回作成した背景/障害物からのy方向の距離、または生成位置y座標
  */
 - (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
 {
@@ -935,8 +935,16 @@ enum AKCharacterPositionZ {
     float absx = x;
     float absy = y;
     if (self.lastBackCharacter != nil) {
-        absx += self.lastBackCharacter.positionX;
-        absy += self.lastBackCharacter.positionY;
+        
+        // x軸方向にスクロールしている場合は、x座標を相対座標として扱う
+        if (self.scrollSpeedX > 0.0f) {
+            absx += self.lastBackCharacter.positionX;
+        }
+        
+        // y軸方向にスクロールしている場合は、y座標を相対座標として扱う
+        if (self.scrollSpeedY > 0.0f) {
+            absy += self.lastBackCharacter.positionY;
+        }
     }
     
     // 障害物を生成する
@@ -954,8 +962,8 @@ enum AKCharacterPositionZ {
  
  背景物を生成する。
  @param type 障害物種別
- @param x 前回作成した背景/障害物からのx方向の距離
- @param y 前回作成した背景/障害物からのy方向の距離
+ @param x 前回作成した背景/障害物からのx方向の距離、または生成位置x座標
+ @param y 前回作成した背景/障害物からのy方向の距離、または生成位置y座標
  */
 - (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
 {
@@ -985,8 +993,16 @@ enum AKCharacterPositionZ {
     float absx = x;
     float absy = y;
     if (self.lastBackCharacter != nil) {
-        absx += self.lastBackCharacter.positionX;
-        absy += self.lastBackCharacter.positionY;
+        
+        // x軸方向にスクロールしている場合は、x座標を相対座標として扱う
+        if (self.scrollSpeedX > 0.0f) {
+            absx += self.lastBackCharacter.positionX;
+        }
+        
+        // y軸方向にスクロールしている場合は、y座標を相対座標として扱う
+        if (self.scrollSpeedY > 0.0f) {
+            absy += self.lastBackCharacter.positionY;
+        }
     }
 
     // 背景を生成する
