@@ -38,11 +38,12 @@
 /// 画像名のフォーマット
 static NSString *kAKImageNameFormat = @"Back_%02d";
 /// 障害物の種類の数
-static const NSInteger kAKBackDefCount = 1;
+static const NSInteger kAKBackDefCount = 2;
 
 /// 障害物定義
 static const struct AKBackDef kAKBackDef[kAKBackDefCount] = {
-    {1, 1, 0.0f}
+    {1, 1, 0.0f},
+    {2, 1, 0.0f}
 };
 
 /*!
@@ -86,8 +87,8 @@ static const struct AKBackDef kAKBackDef[kAKBackDefCount] = {
     // アニメーションフレーム間隔を設定する
     self.animationInterval = kAKBackDef[type - 1].animationInterval;
     
-    // 背景は画面スクロールの半分の速度で移動する
-    self.scrollSpeed = 0.5f;
+    // 背景は基本的に画面スクロールに応じて移動する
+    self.scrollSpeed = 1.0f;
     
     // レイヤーに配置する
     [parent addChild:self.image];

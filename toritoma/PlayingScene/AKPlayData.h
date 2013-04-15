@@ -164,9 +164,9 @@
 // 画面効果生成
 - (void)createEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 // 障害物生成
-- (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
+- (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBase:(BOOL)isBase;
 // 背景生成
-- (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
+- (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBase:(BOOL)isBase;
 // 失敗時処理
 - (void)miss;
 // スコア加算

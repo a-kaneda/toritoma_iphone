@@ -906,8 +906,9 @@ enum AKCharacterPositionZ {
  @param type 障害物種別
  @param x 前回作成した背景/障害物からのx方向の距離
  @param y 前回作成した背景/障害物からのy方向の距離
+ @param isBase 次に作成する背景/障害物の配置位置のベースとするかどうか
  */
-- (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
+- (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBase:(BOOL)isBase
 {
     // プールから未使用のメモリを取得する
     AKBlock *block = [self.blockPool getNext];
@@ -945,8 +946,10 @@ enum AKCharacterPositionZ {
                          y:absy
                     parent:[self.batches objectAtIndex:kAKCharaPosZBlock]];
     
-    // 最後に生成した障害物として記憶する
-    self.lastBackCharacter = block;
+    // ベースとなる障害物の場合は最後に生成した障害物として記憶する
+    if (isBase) {
+        self.lastBackCharacter = block;        
+    }
 }
 
 /*!
@@ -956,8 +959,9 @@ enum AKCharacterPositionZ {
  @param type 障害物種別
  @param x 前回作成した背景/障害物からのx方向の距離
  @param y 前回作成した背景/障害物からのy方向の距離
+ @param isBase 次に作成する背景/障害物の配置位置のベースとするかどうか
  */
-- (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
+- (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBase:(BOOL)isBase
 {
     // プールから未使用のメモリを取得する
     AKBack *back = [self.backPool getNext];
@@ -995,8 +999,10 @@ enum AKCharacterPositionZ {
                        y:absy
                   parent:[self.batches objectAtIndex:kAKCharaPosZBack]];
     
-    // 最後に生成した背景として記憶する
-    self.lastBackCharacter = back;
+    // ベースとなる背景の場合は最後に生成した背景として記憶する
+    if (isBase) {
+        self.lastBackCharacter = back;
+    }
 }
 
 /*!

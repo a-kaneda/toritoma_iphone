@@ -293,7 +293,8 @@ static NSString *kAKScriptFileName = @"stage_%d";
             AKLog(kAKLogScript_1, @"背景の生成:%d pos=(%d, %d)", data.characterNo, data.positionX, data.positionY);
             [[AKPlayData sharedInstance] createBack:data.characterNo
                                                   x:data.positionX
-                                                  y:data.positionY];
+                                                  y:data.positionY
+                                             isBase:data.isBase];
             break;
             
         case kAKScriptOpeWall:      // 障害物の生成
@@ -301,7 +302,8 @@ static NSString *kAKScriptFileName = @"stage_%d";
             AKLog(kAKLogScript_1, @"障害物の生成:%d pos=(%d, %d)", data.characterNo, data.positionX, data.positionY);
             [[AKPlayData sharedInstance] createBlock:data.characterNo
                                                    x:data.positionX
-                                                   y:data.positionY];
+                                                   y:data.positionY
+                                              isBase:data.isBase];
             break;
             
         case kAKScriptOpeScroll:    // スクロールスピード変更

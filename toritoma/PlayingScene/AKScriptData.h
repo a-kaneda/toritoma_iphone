@@ -36,7 +36,7 @@
 #import "AKToritoma.h"
 
 /// パラメータの最大数
-#define kAKMaxParamCount 3
+#define kAKMaxParamCount 4
 
 /// スクリプト命令種別
 enum AKScriptOpeType {
@@ -74,6 +74,8 @@ enum AKScriptOpeType {
 @property (nonatomic, readonly)NSInteger positionX;
 /// 生成位置y座標
 @property (nonatomic, readonly)NSInteger positionY;
+/// ベース背景/障害物
+@property (nonatomic, readonly)BOOL isBase;
 /// スクロールスピードx座標
 @property (nonatomic, readonly)NSInteger speedX;
 /// スクロールスピードy座標
