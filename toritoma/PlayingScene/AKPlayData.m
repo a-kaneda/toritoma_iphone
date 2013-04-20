@@ -57,6 +57,8 @@ static const NSInteger kAKMaxEffectCount = 64;
 static const NSInteger kAKMaxBlockCount = 64;
 /// 背景の同時出現最大数
 static const NSInteger kAKMaxBackCount = 128;
+/// 背景レイヤーの個数
+static const NSInteger kAKBackLayerCount = 2;
 /// シールドによるゲージ消費率
 static const float kAKChickenGaugeUseSpeed = 50.0f;
 /// キャラクターテクスチャアトラス定義ファイル名
@@ -84,7 +86,8 @@ static NSString *kAKGameOverTweetKey = @"GameOverTweet";
 
 /// キャラクター配置のz座標
 enum AKCharacterPositionZ {
-    kAKCharaPosZBack = 0,   ///< 背景
+    kAKCharaPosZBack1 = 0,  ///< 背景1
+    kAKCharaPosZBack2,      ///< 背景2
     kAKCharaPosZBlock,      ///< 障害物
     kAKCharaPosZPlayerShot, ///< 自機弾
     kAKCharaPosZOption,     ///< オプション
@@ -93,6 +96,12 @@ enum AKCharacterPositionZ {
     kAKCharaPosZEffect,     ///< 爆発効果
     kAKCharaPosZEnemyShot,  ///< 敵弾
     kAKCharaPosZCount       ///< z座標種別の数
+};
+
+// 背景配置のz座標配列
+static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
+    kAKCharaPosZBack1,
+    kAKCharaPosZBack2
 };
 
 /*!
@@ -112,7 +121,7 @@ enum AKCharacterPositionZ {
 @synthesize enemyShotPool = enemyShotPool_;
 @synthesize effectPool = effectPool_;
 @synthesize blockPool = blockPool_;
-@synthesize backPool = backPool_;
+@synthesize backPools = backPools_;
 @synthesize batches = batches_;
 @synthesize shield = shield_;
 @synthesize scrollSpeedX = scrollSpeedX_;
@@ -227,7 +236,10 @@ enum AKCharacterPositionZ {
     self.blockPool = [[[AKCharacterPool alloc] initWithClass:[AKBlock class] Size:kAKMaxBlockCount] autorelease];
     
     // 背景プールを作成する
-    self.backPool = [[[AKCharacterPool alloc] initWithClass:[AKBack class] Size:kAKMaxBackCount] autorelease];    
+    self.backPools = [NSMutableArray arrayWithCapacity:kAKBackLayerCount];
+    for (int i = 0; i < kAKBackLayerCount; i++) {
+        [self.backPools addObject:[[[AKCharacterPool alloc] initWithClass:[AKBack class] Size:kAKMaxBackCount] autorelease]];
+    }
 }
 
 /*!
@@ -284,7 +296,8 @@ enum AKCharacterPositionZ {
     self.enemyShotPool = nil;
     self.effectPool = nil;
     self.blockPool = nil;
-    self.backPool = nil;
+    [self.backPools removeAllObjects];
+    self.backPools = nil;
     for (CCNode *node in [self.batches objectEnumerator]) {
         [node removeFromParentAndCleanup:YES];
     }
@@ -503,9 +516,11 @@ enum AKCharacterPositionZ {
     }
     
     // 背景を更新する
-    for (AKBack *back in [self.backPool.pool objectEnumerator]) {
-        if (back.isStaged) {
-            [back move:dt];
+    for (AKCharacterPool *pool in [self.backPools objectEnumerator]) {
+        for (AKBack *back in [pool.pool objectEnumerator]) {
+            if (back.isStaged) {
+                [back move:dt];
+            }
         }
     }
     
@@ -959,12 +974,15 @@ enum AKCharacterPositionZ {
  @param type 障害物種別
  @param x 前回作成した背景/障害物からのx方向の距離
  @param y 前回作成した背景/障害物からのy方向の距離
+ @param priority 描画優先順、数字が大きいほど手前に描画する
  @param isBase 次に作成する背景/障害物の配置位置のベースとするかどうか
  */
-- (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBase:(BOOL)isBase
+- (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y priority:(NSInteger)priority isBase:(BOOL)isBase
 {
+    NSAssert(priority >= 0 && priority < kAKBackLayerCount, @"priority is out of range.");
+    
     // プールから未使用のメモリを取得する
-    AKBack *back = [self.backPool getNext];
+    AKBack *back = [[self.backPools objectAtIndex:priority] getNext];
     if (back == nil) {
         // 空きがない場合は処理終了する
         AKLog(kAKLogPlayData_0, @"背景プールに空きなし");
@@ -997,7 +1015,7 @@ enum AKCharacterPositionZ {
     [back createBackType:type
                        x:absx
                        y:absy
-                  parent:[self.batches objectAtIndex:kAKCharaPosZBack]];
+                  parent:[self.batches objectAtIndex:kAKCharaPosZBack[priority]]];
     
     // ベースとなる背景の場合は最後に生成した背景として記憶する
     if (isBase) {

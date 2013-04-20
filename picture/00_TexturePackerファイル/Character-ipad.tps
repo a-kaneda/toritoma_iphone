@@ -164,6 +164,9 @@
             <filename>../95_4倍/Character/Block_02_01.png</filename>
             <filename>../95_4倍/Character/Back_02_01.png</filename>
             <filename>../95_4倍/Character/Back_03_01.png</filename>
+            <filename>../95_4倍/Character/Back_04_01.png</filename>
+            <filename>../95_4倍/Character/Back_05_01.png</filename>
+            <filename>../95_4倍/Character/Back_06_01.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

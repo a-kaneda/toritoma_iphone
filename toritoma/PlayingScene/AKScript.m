@@ -267,8 +267,10 @@ static NSString *kAKScriptFileName = @"stage_%d";
     switch (data.type) {
             
         case kAKScriptOpeEnemy:     // 敵の生成
-            // 敵を生成する
+
             AKLog(kAKLogScript_1, @"敵の生成:%d pos=(%d, %d)", data.characterNo, data.positionX, data.positionY);
+            
+            // 敵を生成する
             [[AKPlayData sharedInstance] createEnemy:data.characterNo
                                                    x:data.positionX
                                                    y:data.positionY
@@ -276,8 +278,10 @@ static NSString *kAKScriptFileName = @"stage_%d";
             break;
             
         case kAKScriptOpeBoss:      // ボスの生成
-            // ボスを生成する
+
             AKLog(kAKLogScript_1, @"ボスの生成:%d pos=(%d, %d)", data.characterNo, data.positionX, data.positionY);
+            
+            // ボスを生成する
             [[AKPlayData sharedInstance] createEnemy:data.characterNo
                                                    x:data.positionX
                                                    y:data.positionY
@@ -289,17 +293,24 @@ static NSString *kAKScriptFileName = @"stage_%d";
             break;
             
         case kAKScriptOpeBack:      // 背景の生成
+            
+            AKLog(kAKLogScript_1, @"背景の生成:%d pos=(%d, %d) priority=%d isBase=%d",
+                  data.characterNo, data.positionX, data.positionY, data.priority, data.isBase);
+            
             // 背景を生成する
-            AKLog(kAKLogScript_1, @"背景の生成:%d pos=(%d, %d)", data.characterNo, data.positionX, data.positionY);
             [[AKPlayData sharedInstance] createBack:data.characterNo
                                                   x:data.positionX
                                                   y:data.positionY
+                                           priority:data.priority
                                              isBase:data.isBase];
             break;
             
         case kAKScriptOpeWall:      // 障害物の生成
+            
+            AKLog(kAKLogScript_1, @"障害物の生成:%d pos=(%d, %d) isBase=%d",
+                  data.characterNo, data.positionX, data.positionY, data.isBase);
+            
             // 障害物を生成する
-            AKLog(kAKLogScript_1, @"障害物の生成:%d pos=(%d, %d)", data.characterNo, data.positionX, data.positionY);
             [[AKPlayData sharedInstance] createBlock:data.characterNo
                                                    x:data.positionX
                                                    y:data.positionY
@@ -307,8 +318,10 @@ static NSString *kAKScriptFileName = @"stage_%d";
             break;
             
         case kAKScriptOpeScroll:    // スクロールスピード変更
-            // スクロールスピードを変更する
+
             AKLog(kAKLogScript_1, @"スクロールスピード変更:(%d, %d)", data.speedX, data.speedY);
+            
+            // スクロールスピードを変更する
             [AKPlayData sharedInstance].scrollSpeedX = data.speedX;
             [AKPlayData sharedInstance].scrollSpeedY = data.speedY;
             break;

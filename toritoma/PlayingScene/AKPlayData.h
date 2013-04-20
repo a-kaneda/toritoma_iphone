@@ -75,7 +75,7 @@
     /// 障害物プール
     AKCharacterPool *blockPool_;
     /// 背景プール
-    AKCharacterPool *backPool_;
+    NSMutableArray *backPools_;
     /// キャラクター配置バッチノード
     NSMutableArray *batches_;
     /// シールドモード
@@ -111,7 +111,7 @@
 /// 障害物プール
 @property (nonatomic, retain)AKCharacterPool *blockPool;
 /// 背景プール
-@property (nonatomic, retain)AKCharacterPool *backPool;
+@property (nonatomic, retain)NSMutableArray *backPools;
 /// キャラクター配置バッチノード
 @property (nonatomic, retain)NSMutableArray *batches;
 /// シールドモード
@@ -166,7 +166,7 @@
 // 障害物生成
 - (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBase:(BOOL)isBase;
 // 背景生成
-- (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBase:(BOOL)isBase;
+- (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y priority:(NSInteger)priority isBase:(BOOL)isBase;
 // 失敗時処理
 - (void)miss;
 // スコア加算
