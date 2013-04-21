@@ -40,6 +40,11 @@
 static const float kAKDefaultAnimationInterval = 0.2f;
 /// 画像ファイル名のフォーマット
 static NSString *kAKImageFileFormat = @"%@_%02d.png";
+/// 画像ファイル名の最大文字数
+static const NSUInteger kAKMaxImageFileName = 64;
+
+/// アニメーションパターンに応じた画像名
+static NSMutableString *imageFileName_ = nil;
 
 /*!
  @brief キャラクタークラス
@@ -107,6 +112,14 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     
     // アニメーション繰り返し回数は0(無限)とする
     self.animationRepeat = 0;
+    
+    // アニメーションパターンに応じた画像名を格納するためのグローバル変数を作成する。
+    // 処理の都度NSStringのアロケートを行うと処理が重くなる。
+    // 高速化のため、最初に1個作っておいて全キャラクターで使い回しを行う。
+    if (imageFileName_ == nil) {
+        imageFileName_ = [[NSMutableString alloc] initWithCapacity:kAKMaxImageFileName];
+        AKLog(kAKLogCharacter_1, @"imageFileName_=%p", imageFileName_);
+    }
     
     return self;
 }
@@ -275,15 +288,17 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
                 }
             }
         }
+        
+        AKLog(kAKLogCharacter_1, @"pattern=%d time=%f interval=%f", pattern, self.animationTime, self.animationInterval);
+        
+        // アニメーションパターンに応じて画像ファイル名を作成する
+        NSRange range = {0, imageFileName_.length};
+        [imageFileName_ deleteCharactersInRange:range];
+        [imageFileName_ appendFormat:kAKImageFileFormat, self.imageName, pattern];
+        
+        // 表示スプライトを変更する
+        [self.image setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:imageFileName_]];
     }
-    
-    AKLog(kAKLogCharacter_1, @"pattern=%d time=%f interval=%f", pattern, self.animationTime, self.animationInterval);
-    
-    // アニメーションパターンに応じて画像ファイル名を作成する
-    NSString *imageFileName = [NSString stringWithFormat:kAKImageFileFormat, self.imageName, pattern];
-    
-    // 表示スプライトを変更する
-    [self.image setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:imageFileName]];
     
     // キャラクター固有の動作を行う
     [self action:dt];
