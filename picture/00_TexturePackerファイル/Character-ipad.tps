@@ -118,6 +118,11 @@
         <false/>
         <key>outputFormat</key>
         <enum type="SettingsBase::OutputFormat">RGBA8888</enum>
+        <key>contentProtection</key>
+        <struct type="ContentProtection">
+            <key>key</key>
+            <string></string>
+        </struct>
         <key>autoAliasEnabled</key>
         <true/>
         <key>trimSpriteNames</key>
@@ -167,10 +172,17 @@
             <filename>../95_4倍/Character/Back_04_01.png</filename>
             <filename>../95_4倍/Character/Back_05_01.png</filename>
             <filename>../95_4倍/Character/Back_06_01.png</filename>
+            <filename>../95_4倍/Character/Back_07_01.png</filename>
+            <filename>../95_4倍/Character/Back_08_01.png</filename>
+            <filename>../95_4倍/Character/Back_09_01.png</filename>
+            <filename>../95_4倍/Character/Back_10_01.png</filename>
+            <filename>../95_4倍/Character/Back_11_01.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
         <key>replaceList</key>
+        <array/>
+        <key>ignoredWarnings</key>
         <array/>
         <key>commonDivisorX</key>
         <uint>1</uint>

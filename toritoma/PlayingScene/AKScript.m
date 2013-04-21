@@ -107,16 +107,17 @@ static NSString *kAKScriptFileName = @"stage_%d";
         
         // 1行の文字列を取得する
         NSString *line = [stageScript substringWithRange:lineRange];
-        AKLog(kAKLogScript_2, @"%@", line);
+        AKLog(kAKLogScript_2, @"%@:", line);
         
         // 1文字目が"#"の場合は処理を飛ばす
         if ([[line substringToIndex:1] isEqualToString:@"#"]) {
-            AKLog(kAKLogScript_0, @"コメント:%@", line);
+            AKLog(kAKLogScript_1, @"コメント:%@", line);
             continue;
         }
         
         // 空行は処理を飛ばす
-        if ([line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length <= 0) {
+        if ([line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length <= 0) {
+            AKLog(kAKLogScript_1, @"空行");
             continue;
         }
         

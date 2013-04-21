@@ -498,6 +498,8 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
  @brief 画面外配置判定
  
  キャラクターが画面範囲外に配置されているか調べる。
+ 座標が範囲外で、外側に向かって移動している場合は範囲外とみなす。
+ 範囲内に向かって移動している場合は範囲内とみなす。
  @return 範囲外に出ている場合はTRUE、範囲内にある場合はFALSE
  */
 - (BOOL)isOutOfStage
@@ -505,10 +507,10 @@ static NSString *kAKImageFileFormat = @"%@_%02d.png";
     // 表示範囲外でキャラクターを残す範囲
     const float kAKBorder = 50.0f;
     
-    if (self.positionX < -kAKBorder ||
-        self.positionX > [AKScreenSize stageSize].width + kAKBorder ||
-        self.positionY < -kAKBorder ||
-        self.positionY > [AKScreenSize stageSize].height + kAKBorder) {
+    if ((self.positionX < -kAKBorder && self.speedX < 0.0f) ||
+        (self.positionX > [AKScreenSize stageSize].width + kAKBorder && self.speedX > 0.0f) ||
+        (self.positionY < -kAKBorder && self.speedY < 0.0f) ||
+        (self.positionY > [AKScreenSize stageSize].height + kAKBorder && self.speedY > 0.0f)) {
         
         return TRUE;
     }

@@ -38,7 +38,7 @@
 /// 画像名のフォーマット
 static NSString *kAKImageNameFormat = @"Back_%02d";
 /// 障害物の種類の数
-static const NSInteger kAKBackDefCount = 6;
+static const NSInteger kAKBackDefCount = 11;
 
 /// 障害物定義
 static const struct AKBackDef kAKBackDef[kAKBackDefCount] = {
@@ -47,7 +47,12 @@ static const struct AKBackDef kAKBackDef[kAKBackDefCount] = {
     {3, 1, 0.0f},
     {4, 1, 0.0f},
     {5, 1, 0.0f},
-    {6, 1, 0.0f}
+    {6, 1, 0.0f},
+    {7, 1, 0.0f},
+    {8, 1, 0.0f},
+    {9, 1, 0.0f},
+    {10, 1, 0.0f},
+    {11, 1, 0.0f}
 };
 
 /*!
