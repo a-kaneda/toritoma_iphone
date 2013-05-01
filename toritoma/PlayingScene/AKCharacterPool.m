@@ -110,7 +110,7 @@
     AKCharacter *ret = nil;   // 戻り値
     AKCharacter *work = nil;  // ワーク変数
     
-    AKLog(kAKLogCharacterPool_1, @"m_size=%d", size_);
+    AKLog(kAKLogCharacterPool_1, @"size_=%d", size_);
     
     // 未使用のキャラクターを検索する
     for (i = 0; i < size_; i++) {
@@ -118,10 +118,10 @@
         // キャラクターを取得する
         work = [pool_ objectAtIndex:next_];
         
+        AKLog(kAKLogCharacterPool_1, @"next_=%d work.isStaged=%d", next_, work.isStaged);
+        
         // インデックスを進める
         next_ = (next_ + 1) % size_;
-        
-        AKLog(kAKLogCharacterPool_1, @"i=%d work.isStaged=%d", i, work.isStaged);
         
         // 使用中かどうか調べる
         if (!work.isStaged) {

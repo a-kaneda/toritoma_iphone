@@ -217,7 +217,7 @@ static NSMutableString *imageFileName_ = nil;
     self.prevPositionX = self.positionX;
     self.prevPositionY = self.positionY;
     
-    AKLog(kAKLogCharacter_1, @"scroll=(%f, %f)", [AKPlayData sharedInstance].scrollSpeedX, [AKPlayData sharedInstance].scrollSpeedY);
+    AKLog(kAKLogCharacter_2, @"scroll=(%f, %f)", [AKPlayData sharedInstance].scrollSpeedX, [AKPlayData sharedInstance].scrollSpeedY);
             
     // 座標の移動
     // 画面スクロールの影響を受ける場合は画面スクロール分も移動する
@@ -244,7 +244,7 @@ static NSMutableString *imageFileName_ = nil;
             break;
     }
     
-    AKLog(kAKLogCharacter_1, @"pos=(%.0f, %.0f) scr=(%d, %d)",
+    AKLog(kAKLogCharacter_2, @"pos=(%.0f, %.0f) scr=(%d, %d)",
           self.positionX, self.positionY,
           [AKScreenSize xOfStage:self.positionX], [AKScreenSize yOfStage:self.positionY]);
         
@@ -289,7 +289,7 @@ static NSMutableString *imageFileName_ = nil;
             }
         }
         
-        AKLog(kAKLogCharacter_1, @"pattern=%d time=%f interval=%f", pattern, self.animationTime, self.animationInterval);
+        AKLog(kAKLogCharacter_2, @"pattern=%d time=%f interval=%f", pattern, self.animationTime, self.animationInterval);
         
         // アニメーションパターンに応じて画像ファイル名を作成する
         NSRange range = {0, imageFileName_.length};
@@ -351,7 +351,7 @@ static NSMutableString *imageFileName_ = nil;
     float mytop = self.positionY + self.height / 2.0f;
     float mybottom = self.positionY - self.height / 2.0f;
     
-    AKLog(kAKLogCharacter_1, @"my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
+    AKLog(kAKLogCharacter_3, @"my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
     
     // 衝突したかどうかを記憶する
     BOOL isHit = NO;
@@ -370,7 +370,7 @@ static NSMutableString *imageFileName_ = nil;
         float targettop = target.positionY + target.height / 2.0f;
         float targetbottom = target.positionY - target.height / 2.0f;
         
-        AKLog(kAKLogCharacter_1, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
+        AKLog(kAKLogCharacter_3, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
         
         // 以下のすべての条件を満たしている時、衝突していると判断する。
         //   ・相手の右端が自キャラの左端よりも右側にある
@@ -387,7 +387,7 @@ static NSMutableString *imageFileName_ = nil;
                 [self performSelector:func withObject:target];
             }
             
-            AKLog(kAKLogCharacter_1, @"self.hitPoint=%d, target.hitPoint=%d", self.hitPoint, target.hitPoint);
+            AKLog(kAKLogCharacter_3, @"self.hitPoint=%d, target.hitPoint=%d", self.hitPoint, target.hitPoint);
             
             // 衝突したかどうかを記憶する
             isHit = YES;
@@ -522,10 +522,16 @@ static NSMutableString *imageFileName_ = nil;
     // 表示範囲外でキャラクターを残す範囲
     const float kAKBorder = 50.0f;
     
-    if ((self.positionX < -kAKBorder && self.speedX < 0.0f) ||
-        (self.positionX > [AKScreenSize stageSize].width + kAKBorder && self.speedX > 0.0f) ||
-        (self.positionY < -kAKBorder && self.speedY < 0.0f) ||
-        (self.positionY > [AKScreenSize stageSize].height + kAKBorder && self.speedY > 0.0f)) {
+    if ((self.positionX < -kAKBorder &&
+         (self.speedX - [AKPlayData sharedInstance].scrollSpeedX * self.scrollSpeed) < 0.0f) ||
+        (self.positionX > [AKScreenSize stageSize].width + kAKBorder &&
+         (self.speedX - [AKPlayData sharedInstance].scrollSpeedX * self.scrollSpeed) > 0.0f) ||
+        (self.positionY < -kAKBorder &&
+         (self.speedY - [AKPlayData sharedInstance].scrollSpeedY * self.scrollSpeed) < 0.0f) ||
+        (self.positionY > [AKScreenSize stageSize].height + kAKBorder &&
+         (self.speedY - [AKPlayData sharedInstance].scrollSpeedY * self.scrollSpeed) > 0.0f)) {
+        
+        AKLog(kAKLogCharacter_1, @"画面外に出たため削除");
         
         return TRUE;
     }

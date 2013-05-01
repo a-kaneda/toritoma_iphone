@@ -54,7 +54,7 @@ static const NSInteger kAKMaxEnemyShotCount = 256;
 /// 画面効果の同時出現最大数
 static const NSInteger kAKMaxEffectCount = 64;
 /// 障害物の同時出現最大数
-static const NSInteger kAKMaxBlockCount = 64;
+static const NSInteger kAKMaxBlockCount = 128;
 /// 背景の同時出現最大数
 static const NSInteger kAKMaxBackCount = 128;
 /// 背景レイヤーの個数
@@ -790,6 +790,8 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
  */
 - (void)createPlayerShotAtX:(NSInteger)x y:(NSInteger)y
 {
+    AKLog(kAKLogPlayData_1, @"自機弾生成");
+    
     // プールから未使用のメモリを取得する
     AKPlayerShot *playerShot = [self.playerShotPool getNext];
     if (playerShot == nil) {
@@ -836,6 +838,8 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
  */
 - (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBoss:(BOOL)isBoss
 {
+    AKLog(kAKLogPlayData_1, @"敵生成");
+
     // プールから未使用のメモリを取得する
     AKEnemy *enemy = [self.enemyPool getNext];
     if (enemy == nil) {
@@ -870,6 +874,8 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
                       angle:(float)angle
                       speed:(float)speed
 {
+    AKLog(kAKLogPlayData_1, @"敵弾生成");
+
     // プールから未使用のメモリを取得する
     AKEnemyShot *enemyShot = [self.enemyShotPool getNext];
     if (enemyShot == nil) {
@@ -897,7 +903,9 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
  @param y y座標
  */
 - (void)createEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y
-{    
+{
+    AKLog(kAKLogPlayData_1, @"画面効果生成");
+
     // プールから未使用のメモリを取得する
     AKEffect *effect = [self.effectPool getNext];
     if (effect == nil) {
@@ -925,6 +933,8 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
  */
 - (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBase:(BOOL)isBase
 {
+    AKLog(kAKLogPlayData_1, @"障害物生成");
+
     // プールから未使用のメモリを取得する
     AKBlock *block = [self.blockPool getNext];
     if (block == nil) {
@@ -979,6 +989,8 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
  */
 - (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y priority:(NSInteger)priority isBase:(BOOL)isBase
 {
+    AKLog(kAKLogPlayData_1, @"背景生成");
+
     NSAssert(priority >= 0 && priority < kAKBackLayerCount, @"priority is out of range.");
     
     // プールから未使用のメモリを取得する

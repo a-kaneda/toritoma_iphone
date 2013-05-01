@@ -39,12 +39,13 @@
 /// 画像名のフォーマット
 static NSString *kAKImageNameFormat = @"Block_%02d";
 /// 障害物の種類の数
-static const NSInteger kAKBlockDefCount = 2;
+static const NSInteger kAKBlockDefCount = 3;
 
 /// 障害物定義
 static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
     {1, 1, 0.0f, 32, 32},
-    {2, 1, 0.0f, 32, 32}
+    {2, 1, 0.0f, 32, 32},
+    {3, 1, 0.0f, 32, 32}
 };
 
 /*!

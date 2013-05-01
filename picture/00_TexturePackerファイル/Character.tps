@@ -177,6 +177,8 @@
             <filename>../94_2倍/Character/Back_09_01.png</filename>
             <filename>../94_2倍/Character/Back_10_01.png</filename>
             <filename>../94_2倍/Character/Back_11_01.png</filename>
+            <filename>../94_2倍/Character/Back_12_01.png</filename>
+            <filename>../94_2倍/Character/Block_03_01.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
