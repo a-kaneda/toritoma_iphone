@@ -297,6 +297,18 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
 }
 
 /*!
+ @brief 背景レイヤー取得
+ 
+ 背景レイヤーを取得する。
+ @return 背景レイヤー
+ */
+- (CCLayer *)backgroundLayer
+{
+    NSAssert([self getChildByTag:kAKLayerPosZBack] != nil, @"レイヤーが作成されていない");
+    return (CCLayer *)[self getChildByTag:kAKLayerPosZBack];
+}
+
+/*!
  @brief キャラクターレイヤー取得
  
  キャラクターレイヤーを取得する。

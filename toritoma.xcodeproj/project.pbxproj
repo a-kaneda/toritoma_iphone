@@ -23,6 +23,8 @@
 		0C5AD20216EE73D100F69D63 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0C5AD20416EE73D100F69D63 /* Localizable.strings */; };
 		0C61A3B416D9FA54008ADA0E /* AKPlayingSceneIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */; };
 		0C61A3B716DD55D9008ADA0E /* AKHiScoreFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C61A3B616DD55D9008ADA0E /* AKHiScoreFile.m */; };
+		0C6FCE5817800E6100D9D343 /* Stage_01.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 0C6FCE5717800E6100D9D343 /* Stage_01.tmx */; };
+		0C6FCE5B17800EA000D9D343 /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C6FCE5917800EA000D9D343 /* Back.png */; };
 		0C7B9E8D16FF23ED00DABA55 /* libAdapterIAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C7B9E8C16FF23ED00DABA55 /* libAdapterIAd.a */; };
 		0C7B9E9016FF243500DABA55 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C7B9E8E16FF241A00DABA55 /* iAd.framework */; };
 		0C7E06CB16C9970C0044BF42 /* AKBack.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7E06CA16C9970C0044BF42 /* AKBack.m */; };
@@ -238,6 +240,8 @@
 		0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayingSceneIF.m; sourceTree = "<group>"; };
 		0C61A3B516DD55D9008ADA0E /* AKHiScoreFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKHiScoreFile.h; sourceTree = "<group>"; };
 		0C61A3B616DD55D9008ADA0E /* AKHiScoreFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKHiScoreFile.m; sourceTree = "<group>"; };
+		0C6FCE5717800E6100D9D343 /* Stage_01.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Stage_01.tmx; path = Resources/Image/Stage_01.tmx; sourceTree = "<group>"; };
+		0C6FCE5917800EA000D9D343 /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Back.png; path = Resources/Image/Back.png; sourceTree = "<group>"; };
 		0C7B9E8C16FF23ED00DABA55 /* libAdapterIAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdapterIAd.a; sourceTree = "<group>"; };
 		0C7B9E8E16FF241A00DABA55 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		0C7E06C916C9970C0044BF42 /* AKBack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKBack.h; sourceTree = "<group>"; };
@@ -777,6 +781,8 @@
 		0CCC526316AA9C8C00E9A397 /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				0C6FCE5917800EA000D9D343 /* Back.png */,
+				0C6FCE5717800E6100D9D343 /* Stage_01.tmx */,
 				0C22363016E5402F000A2738 /* Character-ipad.plist */,
 				0C22363116E5402F000A2738 /* Character-ipad.png */,
 				0CCC527216ADF3AE00E9A397 /* Character.plist */,
@@ -1368,6 +1374,8 @@
 				0C5AD1FF16EE714500F69D63 /* HowTo.png in Resources */,
 				0C5AD20216EE73D100F69D63 /* Localizable.strings in Resources */,
 				0CA41FB816F9B7AE00087979 /* README.txt in Resources */,
+				0C6FCE5817800E6100D9D343 /* Stage_01.tmx in Resources */,
+				0C6FCE5B17800EA000D9D343 /* Back.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

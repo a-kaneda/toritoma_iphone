@@ -75,6 +75,8 @@ enum AKGameState {
 @property (nonatomic, retain)AKPlayData *data;
 /// ゲームプレイの状態
 @property (nonatomic)enum AKGameState state;
+/// 背景レイヤー
+@property (nonatomic, readonly)CCLayer *backgroundLayer;
 /// キャラクターレイヤー
 @property (nonatomic, readonly)CCLayer *characterLayer;
 /// 情報レイヤー

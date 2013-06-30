@@ -280,6 +280,48 @@ const CGSize kAKStageSize = {384, 288};
     return stageY + [AKScreenSize screenSize].height - [AKScreenSize stageSize].height - topMargin;
 }
 
+/*!
+ @brief デバイススクリーン座標x座標からステージ座標の取得
+ 
+ デバイススクリーン座標からステージ座標へ変換する。x座標を取得する
+ @param deviceX デバイススクリーン座標x座標
+ @return ステージ座標
+ */
++ (NSInteger)xOfDevice:(float)deviceX
+{
+    // iPadの場合は座標を半分にする
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        deviceX /= 2;
+    }
+    
+    return deviceX - ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2;
+}
+
+/*!
+ @brief デバイススクリーン座標y座標からステージ座標の取得
+ 
+ デバイススクリーン座標からステージ座標へ変換する。y座標を取得する
+ @param deviceY デバイススクリーン座標x座標
+ @return ステージ座標
+ */
++ (NSInteger)yOfDevice:(float)deviceY
+{
+    // 画面上部の余白は基本的には0とする
+    NSInteger topMargin = 0;
+    
+    // iPadの場合
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        
+        // iPadの場合は画面上部に余白を設定する
+        topMargin = 96;
+        
+        // 座標を半分にする
+        deviceY /= 2;
+    }
+    
+    return deviceY - [AKScreenSize screenSize].height - [AKScreenSize stageSize].height - topMargin;
+}
+
 /*! 
  @brief 矩形のデバイス補正、x座標、y座標、幅、高さ指定
  

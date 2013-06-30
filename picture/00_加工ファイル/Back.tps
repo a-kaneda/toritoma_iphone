@@ -22,7 +22,7 @@
         <key>dataFormat</key>
         <string>cocos2d</string>
         <key>textureFileName</key>
-        <filename>../../toritoma/Resources/Image/Character-ipad.png</filename>
+        <filename>Back.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -40,7 +40,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>2</uint>
+        <uint>1</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -50,7 +50,7 @@
         <key>textureFormat</key>
         <enum type="SettingsBase::TextureFormat">png</enum>
         <key>borderPadding</key>
-        <uint>2</uint>
+        <uint>1</uint>
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
@@ -70,7 +70,7 @@
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
-            <enum type="AlgorithmSettings::AlgorithmId">MaxRects</enum>
+            <enum type="AlgorithmSettings::AlgorithmId">Basic</enum>
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
@@ -87,7 +87,7 @@
             <key>basic</key>
             <struct type="AlgorithmBasicSettings">
                 <key>sortBy</key>
-                <enum type="AlgorithmBasicSettings::SortBy">Best</enum>
+                <enum type="AlgorithmBasicSettings::SortBy">Name</enum>
                 <key>order</key>
                 <enum type="AlgorithmBasicSettings::Order">Ascending</enum>
             </struct>
@@ -111,7 +111,7 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>../../toritoma/Resources/Image/Character-ipad.plist</filename>
+        <filename>Back.plist</filename>
         <key>mainExtension</key>
         <string></string>
         <key>forceIdenticalLayout</key>
@@ -146,39 +146,29 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../95_4倍/Character/Back_01_01.png</filename>
-            <filename>../95_4倍/Character/Block_01_01.png</filename>
-            <filename>../95_4倍/Character/Effect_01_01.png</filename>
-            <filename>../95_4倍/Character/Effect_01_02.png</filename>
-            <filename>../95_4倍/Character/Effect_01_03.png</filename>
-            <filename>../95_4倍/Character/Effect_01_04.png</filename>
-            <filename>../95_4倍/Character/Effect_01_05.png</filename>
-            <filename>../95_4倍/Character/Effect_01_06.png</filename>
-            <filename>../95_4倍/Character/Effect_01_07.png</filename>
-            <filename>../95_4倍/Character/Effect_01_08.png</filename>
-            <filename>../95_4倍/Character/Effect_02_01.png</filename>
-            <filename>../95_4倍/Character/Enemy_01_01.png</filename>
-            <filename>../95_4倍/Character/Enemy_01_02.png</filename>
-            <filename>../95_4倍/Character/EnemyShot_01_01.png</filename>
-            <filename>../95_4倍/Character/Option_01_01.png</filename>
-            <filename>../95_4倍/Character/Option_01_02.png</filename>
-            <filename>../95_4倍/Character/Option_02_01.png</filename>
-            <filename>../95_4倍/Character/Player_01_01.png</filename>
-            <filename>../95_4倍/Character/Player_01_02.png</filename>
-            <filename>../95_4倍/Character/PlayerShot_01_01.png</filename>
-            <filename>../95_4倍/Character/Block_02_01.png</filename>
-            <filename>../95_4倍/Character/Back_02_01.png</filename>
-            <filename>../95_4倍/Character/Back_03_01.png</filename>
-            <filename>../95_4倍/Character/Back_04_01.png</filename>
-            <filename>../95_4倍/Character/Back_05_01.png</filename>
-            <filename>../95_4倍/Character/Back_06_01.png</filename>
-            <filename>../95_4倍/Character/Back_07_01.png</filename>
-            <filename>../95_4倍/Character/Back_08_01.png</filename>
-            <filename>../95_4倍/Character/Back_09_01.png</filename>
-            <filename>../95_4倍/Character/Back_10_01.png</filename>
-            <filename>../95_4倍/Character/Back_11_01.png</filename>
-            <filename>../95_4倍/Character/Back_12_01.png</filename>
-            <filename>../95_4倍/Character/Block_03_01.png</filename>
+            <filename>../94_2倍/Back/Back_01_01.png</filename>
+            <filename>../94_2倍/Back/Back_02_01.png</filename>
+            <filename>../94_2倍/Back/Back_03_01.png</filename>
+            <filename>../94_2倍/Back/Back_04_01.png</filename>
+            <filename>../94_2倍/Back/Back_04_02.png</filename>
+            <filename>../94_2倍/Back/Back_04_03.png</filename>
+            <filename>../94_2倍/Back/Back_04_04.png</filename>
+            <filename>../94_2倍/Back/Back_05_01.png</filename>
+            <filename>../94_2倍/Back/Back_06_01.png</filename>
+            <filename>../94_2倍/Back/Back_06_02.png</filename>
+            <filename>../94_2倍/Back/Back_06_03.png</filename>
+            <filename>../94_2倍/Back/Back_06_05.png</filename>
+            <filename>../94_2倍/Back/Back_06_06.png</filename>
+            <filename>../94_2倍/Back/Back_06_07.png</filename>
+            <filename>../94_2倍/Back/Back_06_08.png</filename>
+            <filename>../94_2倍/Back/Back_07_01.png</filename>
+            <filename>../94_2倍/Back/Back_08_01.png</filename>
+            <filename>../94_2倍/Back/Back_09_01.png</filename>
+            <filename>../94_2倍/Back/Back_09_02.png</filename>
+            <filename>../94_2倍/Back/Back_10_01.png</filename>
+            <filename>../94_2倍/Back/Back_11_01.png</filename>
+            <filename>../94_2倍/Back/Back_12_01.png</filename>
+            <filename>../94_2倍/Back/Back_06_04.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
@@ -187,8 +177,8 @@
         <key>ignoredWarnings</key>
         <array/>
         <key>commonDivisorX</key>
-        <uint>1</uint>
+        <uint>32</uint>
         <key>commonDivisorY</key>
-        <uint>1</uint>
+        <uint>32</uint>
     </struct>
 </data>

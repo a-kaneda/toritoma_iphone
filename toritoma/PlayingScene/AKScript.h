@@ -48,12 +48,28 @@
     float sleepTime_;
     /// 停止中かどうか
     BOOL isPause_;
+    /// タイルマップ
+    CCTMXTiledMap *tileMap_;
+    /// 背景レイヤー
+    CCTMXLayer *background_;
+    /// 前景レイヤー
+    CCTMXLayer *foreground_;
+    /// 障害物レイヤー
+    CCTMXLayer *block_;
 }
 
 /// 読み込んだ内容
 @property (nonatomic, retain)NSMutableArray *dataList;
 /// 繰り返し命令
 @property (nonatomic, retain)NSMutableArray *repeatList;
+/// タイルマップ
+@property (nonatomic, retain)CCTMXTiledMap *tileMap;
+/// 背景レイヤー
+@property (nonatomic, retain)CCTMXLayer *background;
+/// 前景レイヤー
+@property (nonatomic, retain)CCTMXLayer *foreground;
+/// 障害物レイヤー
+@property (nonatomic, retain)CCTMXLayer *block;
 
 // 初期化処理
 - (id)initWithStageNo:(NSInteger)stage;

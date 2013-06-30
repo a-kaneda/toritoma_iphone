@@ -38,6 +38,8 @@
 
 /// ステージ構成定義のスクリプトファイル名
 static NSString *kAKScriptFileName = @"stage_%d";
+/// タイルマップのファイル名
+static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
 
 /*!
  @brief スクリプト読み込みクラス
@@ -48,6 +50,10 @@ static NSString *kAKScriptFileName = @"stage_%d";
 
 @synthesize dataList = dataList_;
 @synthesize repeatList = repeatList_;
+@synthesize tileMap = tileMap_;
+@synthesize background = background_;
+@synthesize foreground = foreground_;
+@synthesize block = block_;
 
 /*!
  @brief 初期化処理
@@ -69,6 +75,33 @@ static NSString *kAKScriptFileName = @"stage_%d";
     isPause_ = NO;
     currentLine_ = 0;
     sleepTime_ = 0.0f;
+    
+    // ステージ番号からタイルマップのファイル名を決定する
+    NSString *fileName = [NSString stringWithFormat:kAKTileMapFileName, stage];
+    
+    // タイルマップファイルを開く
+    self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:fileName];
+    
+    NSAssert(self.tileMap != nil, @"タイルマップ読み込みに失敗");
+    
+    // 各レイヤーを取得する
+    self.background = [self.tileMap layerNamed:@"Background"];
+    self.foreground = [self.tileMap layerNamed:@"Foreground"];
+    self.block = [self.tileMap layerNamed:@"Block"];
+    
+    NSAssert(self.background != nil, @"背景レイヤーの取得に失敗");
+    NSAssert(self.foreground != nil, @"前景レイヤーの取得に失敗");
+    NSAssert(self.block != nil, @"障害物レイヤーの取得に失敗");
+    
+    // 背景・前景以外は非表示とする
+    self.block.visible = NO;
+    
+    // シーンの背景レイヤーに配置する
+    CCLayer *sceneLayer = [AKPlayData sharedInstance].scene.backgroundLayer;
+    [sceneLayer addChild:self.tileMap z:1];
+    
+    // 左端に初期位置を移動する
+    self.tileMap.position = ccp([AKScreenSize xOfStage:0], [AKScreenSize yOfStage:0]);
     
     // ステージ番号からスクリプトファイル名を決定する
     NSString *file = [NSString stringWithFormat:kAKScriptFileName, stage];
@@ -198,6 +231,10 @@ static NSString *kAKScriptFileName = @"stage_%d";
     if (isPause_) {
         return NO;
     }
+    
+    // 背景をスクロールする
+    self.tileMap.position = ccp(self.tileMap.position.x - [AKPlayData sharedInstance].scrollSpeedX * dt,
+                                self.tileMap.position.y);
     
     // 現在の待機時間をカウントする
     sleepTime_ += dt;

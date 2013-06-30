@@ -41,7 +41,7 @@ static NSString *kAKImageNameFormat = @"Enemy_%02d";
 /// 画像の種類の数
 static const NSInteger kAKEnemyImageDefCount = 1;
 /// 敵の種類の数
-static const NSInteger kAKEnemyDefCount = 2;
+static const NSInteger kAKEnemyDefCount = 40;
 
 /// 敵画像の定義
 static const struct AKEnemyImageDef kAKEnemyImageDef[kAKEnemyImageDefCount] = {
@@ -50,8 +50,47 @@ static const struct AKEnemyImageDef kAKEnemyImageDef[kAKEnemyImageDefCount] = {
 
 /// 敵の定義
 static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
+    //動作,破壊,画像,幅,高さ,HP,スコア
     {1, 1, 1, 32, 32, 3, 100},  // トンボ
-    {2, 1, 1, 32, 32, 3, 100}   // テスト用
+    {2, 1, 2, 32, 16, 3, 100},  // アリ
+    {0, 0, 0, 0, 0, 0, 0},      // チョウ
+    {0, 0, 0, 0, 0, 0, 0},      // テントウムシ
+    {0, 0, 0, 0, 0, 0, 0},      // 予備5
+    {0, 0, 0, 0, 0, 0, 0},      // 予備6
+    {0, 0, 0, 0, 0, 0, 0},      // 予備7
+    {0, 0, 0, 0, 0, 0, 0},      // 予備8
+    {0, 0, 0, 0, 0, 0, 0},      // 予備9
+    {0, 0, 0, 0, 0, 0, 0},      // 予備10
+    {0, 0, 0, 0, 0, 0, 0},      // ミノムシ
+    {0, 0, 0, 0, 0, 0, 0},      // セミ
+    {0, 0, 0, 0, 0, 0, 0},      // バッタ
+    {0, 0, 0, 0, 0, 0, 0},      // ハチ
+    {0, 0, 0, 0, 0, 0, 0},      // 予備15
+    {0, 0, 0, 0, 0, 0, 0},      // 予備16
+    {0, 0, 0, 0, 0, 0, 0},      // 予備17
+    {0, 0, 0, 0, 0, 0, 0},      // 予備18
+    {0, 0, 0, 0, 0, 0, 0},      // 予備19
+    {0, 0, 0, 0, 0, 0, 0},      // 予備20
+    {0, 0, 0, 0, 0, 0, 0},      // ゴキブリ
+    {0, 0, 0, 0, 0, 0, 0},      // カタツムリ
+    {0, 0, 0, 0, 0, 0, 0},      // クワガタ
+    {0, 0, 0, 0, 0, 0, 0},      // 予備24
+    {0, 0, 0, 0, 0, 0, 0},      // 予備25
+    {0, 0, 0, 0, 0, 0, 0},      // 予備26
+    {0, 0, 0, 0, 0, 0, 0},      // 予備27
+    {0, 0, 0, 0, 0, 0, 0},      // 予備28
+    {0, 0, 0, 0, 0, 0, 0},      // 予備29
+    {0, 0, 0, 0, 0, 0, 0},      // 予備30
+    {0, 0, 0, 0, 0, 0, 0},      // カブトムシ
+    {0, 0, 0, 0, 0, 0, 0},      // カマキリ
+    {0, 0, 0, 0, 0, 0, 0},      // ハチの巣
+    {0, 0, 0, 0, 0, 0, 0},      // クモ
+    {0, 0, 0, 0, 0, 0, 0},      // ムカデ（頭）
+    {0, 0, 0, 0, 0, 0, 0},      // ムカデ（胴体）
+    {0, 0, 0, 0, 0, 0, 0},      // ムカデ（尾）
+    {0, 0, 0, 0, 0, 0, 0},      // ウジ
+    {0, 0, 0, 0, 0, 0, 0},      // ハエ
+    {0, 0, 0, 0, 0, 0, 0}       // 予備40
 };
 
 /// 標準弾の種別
@@ -133,7 +172,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     state_ = 0;
     
     NSAssert(type > 0 && type <= kAKEnemyDefCount, @"敵の種類の値が範囲外");
-    NSAssert(kAKEnemyDef[type - 1].image <= kAKEnemyImageDefCount, @"敵の画像の種類の値が範囲外");
+    NSAssert(kAKEnemyDef[type - 1].image > 0 && kAKEnemyDef[type - 1].image <= kAKEnemyImageDefCount, @"敵の画像の種類の値が範囲外");
     
     // 動作処理を設定する
     action_ = [self actionSelector:kAKEnemyDef[type - 1].action];
@@ -216,9 +255,6 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  */
 - (void)action_01:(ccTime)dt
 {
-    // 弾のスピード
-    const float kAKShotSpeed = 150.f;
-    
     // 左へ直進する
     self.speedX = -120.0f;
     self.speedY = 0.0f;
@@ -227,7 +263,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     if (time_ > 1.0f) {
         
         // 弾を発射する
-        [self fireNWay:1 interval:0.0f speed:kAKShotSpeed];
+        [self fireNWay:1 interval:0.0f speed:150.f];
         
         // 動作時間の初期化を行う
         time_ = 0.0f;
@@ -240,7 +276,30 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
 /*!
  @brief 動作処理2
  
- 停止。一定間隔で自機を狙う1-way弾発射。
+ 天井または地面に張り付いて歩く。
+ 
+ 状態0:初期状態。上下どちらに張り付くか判定する。距離の近い方に張り付く。
+ 地面に張り付く場合は状態1に、天井に張り付く場合は状態2に遷移する。
+ 天井に張り付く場合は画像を上下反転する。
+ 
+ 状態1:地面左方向への移動。移動後に地面の上まで移動する。
+ 一定時間経過後に状態3に遷移する。
+ 
+ 状態2:天井左方向への移動。移動後に天井の下まで移動する。
+ 一定時間経過後に状態4に遷移する。
+ 
+ 状態3:停止して弾の発射。自機に向かって1-wayを一定数発射する。
+ 一定時間経過後に状態5に遷移する。
+ 
+ 状態4:停止して弾の発射。自機に向かって1-wayを一定数発射する。
+ 一定時間経過後に状態6に遷移する。
+
+ 状態5:地面右方向への移動。移動後に地面の上まで移動する。
+ 一定時間経過後に状態3に遷移する。
+ 
+ 状態6:天井右方向への移動。移動後に天井の下まで移動する。
+ 一定時間経過後に状態4に遷移する。
+
  @param dt フレーム更新間隔
  */
 - (void)action_02:(ccTime)dt
