@@ -234,7 +234,10 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
     
     // 背景をスクロールする
     self.tileMap.position = ccp(self.tileMap.position.x - [AKPlayData sharedInstance].scrollSpeedX * dt,
-                                self.tileMap.position.y);
+                                self.tileMap.position.y - [AKPlayData sharedInstance].scrollSpeedY * dt);
+    
+    // マップのイベントを実行する
+    [self execEvent];
     
     // 現在の待機時間をカウントする
     sleepTime_ += dt;
@@ -419,5 +422,119 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
 - (void)resume
 {
     isPause_ = NO;
+}
+
+/*!
+ @brief 現在のスクロール位置までイベント実行
+ 
+ 現在のスクロール位置までイベントを実行する。
+ 現在処理済みの列から表示中の一番右側の列+2列分までのタイルのイベントを処理する。
+ */
+- (void)execEvent
+{
+    // 表示中の一番右側の列+2列目までを処理対象とする
+    NSInteger maxCol = ([AKScreenSize stageSize].width - [AKScreenSize xOfDevice:self.tileMap.position.x]) / self.tileMap.tileSize.width + 2;
+    
+    AKLog(kAKLogScript_2, @"currentCol_=%d maxCol=%d", currentCol_, maxCol);
+    
+    // 現在処理済みの列から最終列まで処理する
+    for (; currentCol_ <= maxCol; currentCol_++) {
+        
+        [self execEventByCol:currentCol_];
+    }
+}
+
+/*!
+ @brief 列単位のイベント実行
+ 
+ 指定した列番号のタイルのイベントを実行する。
+ @param col 列番号
+ */
+- (void)execEventByCol:(NSInteger)col
+{
+    // x座標はマップの左端 + タイルサイズ * 列番号 (列番号は左から0,1,2,…)
+    // タイルの真ん中を指定するために列番号には+0.5する
+    float x = [AKScreenSize xOfDevice:self.tileMap.position.x] + self.tileMap.tileSize.width * (col + 0.5);
+    
+    AKLog(kAKLogScript_4, @"position=%f x=%f", self.tileMap.position.x, x);    
+    
+    // 障害物レイヤーの一番上の行から一番下の行まで処理を行う
+    for (int i = 0; i < self.tileMap.mapSize.height; i++) {
+        
+        // 処理対象のタイルの座標を作成する
+        CGPoint tilePos = ccp(col, i);
+        
+        // タイルのGIDを取得する
+        int tileGid = [self.block tileGIDAt:tilePos];
+        
+        AKLog(kAKLogScript_2, @"i=%d tileGid=%d", i, tileGid);
+        
+        // タイルが存在する場合
+        if (tileGid > 0) {
+            
+            // プロパティを取得する
+            NSDictionary *properties = [self.tileMap propertiesForGID:tileGid];
+            
+            AKLog(kAKLogScript_2, @"properties=%p", properties);
+            
+            // プロパティが取得できた場合
+            if (properties) {
+                
+                // y座標はマップの下端 + (マップの行数 - 行番号) * タイルサイズ (行番号は上から0,1,2…)
+                // タイルの真ん中を指定するために行番号には+0.5する
+                float y = [AKScreenSize yOfDevice:self.tileMap.position.y] + (self.tileMap.mapSize.height - (i + 0.5)) * self.tileMap.tileSize.height;
+                
+                // 種別を取得する
+                NSString *typeString = [properties objectForKey:@"Type"];
+                NSInteger type = [typeString integerValue];
+                
+                AKLog(kAKLogScript_3, @"position.x=%f position.y=%f mapsSize.height=%f i=%d", self.tileMap.position.x, self.tileMap.position.y, self.tileMap.mapSize.height, i);
+                AKLog(kAKLogScript_3, @"type=%d x=%f y=%f", type, x, y);
+                
+                // 障害物を生成する
+                [[AKPlayData sharedInstance] createBlock:type x:x y:y];
+            }
+        }
+    }
+}
+
+/*!
+ @brief デバイス座標からマップ座標の取得
+ 
+ デバイススクリーン座標からタイルマップ上の行列番号を取得する。
+ 左上を(0,0)として扱う。
+ @param devicePosition デバイススクリーン座標
+ @return マップ座標
+ */
+- (CGPoint)mapPositionFromDevicePosition:(CGPoint)devicePosition
+{
+    // タイルマップの左端からの距離をタイル幅で割った値を列番号とする
+    NSInteger col = (devicePosition.x - self.tileMap.position.x) / self.tileMap.tileSize.width;
+    
+    // タイルマップの下端からの距離をタイル高さで割り、上下を反転させた値を行番号とする
+    NSInteger row = self.tileMap.mapSize.height - (devicePosition.y - self.tileMap.position.y) / self.tileMap.tileSize.height;
+    
+    return ccp(col, row);
+}
+
+/*!
+ @brief タイルの座標取得
+ 
+ マップの行列番号からその位置のタイルのデバイススクリーン座標を取得する。
+ タイルマップのデバイススクリーン座標の端数を四捨五入した上で計算を行う。
+ @param mapPosition マップ座標
+ @return タイルの座標
+ */
+- (CGPoint)tilePositionFromMapPosition:(CGPoint)mapPosition
+{
+    // x座標はマップの左端 + タイルサイズ * 列番号 (列番号は左から0,1,2,…)
+    // タイルの真ん中を指定するために列番号には+0.5する
+    NSInteger x = round(self.tileMap.position.x) + self.tileMap.tileSize.width * (mapPosition.x + 0.5);
+
+    // y座標はマップの下端 + (マップの行数 - 行番号) * タイルサイズ (行番号は上から0,1,2…)
+    // タイルの真ん中を指定するために行番号には+0.5する
+    NSInteger y = round(self.tileMap.position.y) + self.tileMap.tileSize.height * (self.tileMap.mapSize.height - (mapPosition.y + 0.5));
+    
+    return ccp(x, y);
 }
 @end

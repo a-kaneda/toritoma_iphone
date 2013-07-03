@@ -460,7 +460,7 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
  @param dt フレーム更新間隔
  */
 - (void)update:(ccTime)dt
-{    
+{
     // クリア後の待機中の場合はスクリプトを実行しない
     if (clearWait_ > 0.0f) {
         
@@ -931,6 +931,7 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
  @param y 前回作成した背景/障害物からのy方向の距離
  @param isBase 次に作成する背景/障害物の配置位置のベースとするかどうか
  */
+// TODO:スクリプト用のメソッドを削除する
 - (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBase:(BOOL)isBase
 {
     AKLog(kAKLogPlayData_1, @"障害物生成");
@@ -976,6 +977,24 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
         self.lastBackCharacter = block;        
     }
 }
+- (void)createBlock:(NSInteger)type x:(float)x y:(float)y
+{
+    AKLog(kAKLogPlayData_1, @"障害物生成");
+    
+    // プールから未使用のメモリを取得する
+    AKBlock *block = [self.blockPool getNext];
+    if (block == nil) {
+        // 空きがない場合は処理終了する
+        AKLog(kAKLogPlayData_0, @"障害物プールに空きなし");
+        NSAssert(NO, @"障害物プールに空きなし");
+        return;
+    }
+    
+    // 障害物を生成する
+    [block createBlockType:type
+                         x:x
+                         y:y
+                    parent:[self.batches objectAtIndex:kAKCharaPosZBlock]];}
 
 /*!
  @brief 背景生成

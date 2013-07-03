@@ -56,6 +56,8 @@
     CCTMXLayer *foreground_;
     /// 障害物レイヤー
     CCTMXLayer *block_;
+    /// 実行した列番号
+    NSInteger currentCol_;
 }
 
 /// 読み込んだ内容
@@ -81,5 +83,13 @@
 - (void)execScriptData:(AKScriptData *)data;
 // 停止解除
 - (void)resume;
+// 現在のスクロール位置までイベント実行
+- (void)execEvent;
+// 列単位のイベント実行
+- (void)execEventByCol:(NSInteger)col;
+// デバイス座標からマップ座標の取得
+- (CGPoint)mapPositionFromDevicePosition:(CGPoint)devicePosition;
+// タイルの座標取得
+- (CGPoint)tilePositionFromMapPosition:(CGPoint)mapPosition;
 
 @end

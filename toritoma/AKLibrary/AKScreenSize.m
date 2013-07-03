@@ -277,7 +277,7 @@ const CGSize kAKStageSize = {384, 288};
         stageY *= 2;
     }
     
-    return stageY + [AKScreenSize screenSize].height - [AKScreenSize stageSize].height - topMargin;
+    return stageY + ([AKScreenSize screenSize].height - [AKScreenSize stageSize].height - topMargin);
 }
 
 /*!
@@ -287,14 +287,14 @@ const CGSize kAKStageSize = {384, 288};
  @param deviceX デバイススクリーン座標x座標
  @return ステージ座標
  */
-+ (NSInteger)xOfDevice:(float)deviceX
++ (float)xOfDevice:(float)deviceX
 {
     // iPadの場合は座標を半分にする
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         deviceX /= 2;
     }
     
-    return deviceX - ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2;
+    return (double)deviceX - ([AKScreenSize screenSize].width - [AKScreenSize stageSize].width) / 2;
 }
 
 /*!
@@ -304,7 +304,7 @@ const CGSize kAKStageSize = {384, 288};
  @param deviceY デバイススクリーン座標x座標
  @return ステージ座標
  */
-+ (NSInteger)yOfDevice:(float)deviceY
++ (float)yOfDevice:(float)deviceY
 {
     // 画面上部の余白は基本的には0とする
     NSInteger topMargin = 0;
@@ -319,7 +319,7 @@ const CGSize kAKStageSize = {384, 288};
         deviceY /= 2;
     }
     
-    return deviceY - [AKScreenSize screenSize].height - [AKScreenSize stageSize].height - topMargin;
+    return (double)deviceY - ([AKScreenSize screenSize].height - [AKScreenSize stageSize].height - topMargin);
 }
 
 /*! 

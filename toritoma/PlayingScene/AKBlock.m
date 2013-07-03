@@ -279,4 +279,20 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
     character.hitPoint = 0;
 }
 
+/*!
+ @brief キャラクター固有の動作
+ 
+ キャラクター種別ごとの動作を行う。
+ 実数計算誤差によるタイル間の隙間の発生を防止するため、
+ タイルマップの位置を基準として画像表示位置を設定し直す。
+ @param dt フレーム更新間隔
+ */
+- (void)action:(ccTime)dt
+{
+    // タイルマップを取得する
+    AKScript *tileMap = [AKPlayData sharedInstance].script;
+    
+    // デバイススクリーン座標からマップ座標へ、マップ座標からタイルの座標へ変換する
+    self.image.position = [tileMap tilePositionFromMapPosition:[tileMap mapPositionFromDevicePosition:self.image.position]];
+}
 @end

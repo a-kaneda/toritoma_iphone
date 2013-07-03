@@ -165,6 +165,7 @@
 - (void)createEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 // 障害物生成
 - (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBase:(BOOL)isBase;
+- (void)createBlock:(NSInteger)type x:(float)x y:(float)y;
 // 背景生成
 - (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y priority:(NSInteger)priority isBase:(BOOL)isBase;
 // 失敗時処理

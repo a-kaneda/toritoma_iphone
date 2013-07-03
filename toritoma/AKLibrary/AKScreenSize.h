@@ -73,9 +73,9 @@ extern const CGSize kAKStageSize;
 // ステージ座標y座標からデバイススクリーン座標の取得
 + (NSInteger)yOfStage:(float)stageY;
 // デバイススクリーン座標x座標からステージ座標の取得
-+ (NSInteger)xOfDevice:(float)deviceX;
++ (float)xOfDevice:(float)deviceX;
 // デバイススクリーン座標y座標からステージ座標の取得
-+ (NSInteger)yOfDevice:(float)deviceY;
++ (float)yOfDevice:(float)deviceY;
 // 矩形のデバイス補正、x座標、y座標、幅、高さ指定
 + (CGRect)deviceRectByX:(float)x y:(float)y width:(float)w height:(float)h;
 // 句形のデバイス補正、座標、サイズ指定
