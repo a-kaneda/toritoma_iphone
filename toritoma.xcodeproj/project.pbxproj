@@ -34,6 +34,9 @@
 		0C7E06D516CD81930044BF42 /* stage_5.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06D116CD81930044BF42 /* stage_5.txt */; };
 		0C83E82F16E1FD5700592207 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C83E82E16E1FD5700592207 /* AppDelegate.m */; };
 		0C83E83216E1FE1800592207 /* AKTitleScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C83E83116E1FE1800592207 /* AKTitleScene.m */; };
+		0C853D30178809DF00A723B3 /* Block.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C853D2E178809DE00A723B3 /* Block.png */; };
+		0C853D31178809DF00A723B3 /* Event.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C853D2F178809DF00A723B3 /* Event.png */; };
+		0C853D3317881F5E00A723B3 /* EnemyTile.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C853D3217881F5E00A723B3 /* EnemyTile.png */; };
 		0C90F1D316D88ACE008D2C2E /* Font.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C90F1D116D88ACE008D2C2E /* Font.plist */; };
 		0C90F1D416D88ACE008D2C2E /* Font.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C90F1D216D88ACE008D2C2E /* Font.png */; };
 		0C90F1D716D88CA9008D2C2E /* AKLife.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C90F1D616D88CA9008D2C2E /* AKLife.m */; };
@@ -254,6 +257,9 @@
 		0C83E82E16E1FD5700592207 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0C83E83016E1FE1800592207 /* AKTitleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTitleScene.h; sourceTree = "<group>"; };
 		0C83E83116E1FE1800592207 /* AKTitleScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTitleScene.m; sourceTree = "<group>"; };
+		0C853D2E178809DE00A723B3 /* Block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Block.png; path = Resources/Image/Block.png; sourceTree = "<group>"; };
+		0C853D2F178809DF00A723B3 /* Event.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Event.png; path = Resources/Image/Event.png; sourceTree = "<group>"; };
+		0C853D3217881F5E00A723B3 /* EnemyTile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EnemyTile.png; path = Resources/Image/EnemyTile.png; sourceTree = "<group>"; };
 		0C90F1D116D88ACE008D2C2E /* Font.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Font.plist; path = Resources/Image/Font.plist; sourceTree = "<group>"; };
 		0C90F1D216D88ACE008D2C2E /* Font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Font.png; path = Resources/Image/Font.png; sourceTree = "<group>"; };
 		0C90F1D516D88CA9008D2C2E /* AKLife.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKLife.h; sourceTree = "<group>"; };
@@ -784,6 +790,9 @@
 				0C6FCE5917800EA000D9D343 /* Back.png */,
 				0C6FCE5717800E6100D9D343 /* Stage_01.tmx */,
 				0C22363016E5402F000A2738 /* Character-ipad.plist */,
+				0C853D2E178809DE00A723B3 /* Block.png */,
+				0C853D2F178809DF00A723B3 /* Event.png */,
+				0C853D3217881F5E00A723B3 /* EnemyTile.png */,
 				0C22363116E5402F000A2738 /* Character-ipad.png */,
 				0CCC527216ADF3AE00E9A397 /* Character.plist */,
 				0CCC527316ADF3AE00E9A397 /* Character.png */,
@@ -1376,6 +1385,9 @@
 				0CA41FB816F9B7AE00087979 /* README.txt in Resources */,
 				0C6FCE5817800E6100D9D343 /* Stage_01.tmx in Resources */,
 				0C6FCE5B17800EA000D9D343 /* Back.png in Resources */,
+				0C853D30178809DF00A723B3 /* Block.png in Resources */,
+				0C853D31178809DF00A723B3 /* Event.png in Resources */,
+				0C853D3317881F5E00A723B3 /* EnemyTile.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -490,17 +490,8 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
             }
         }
     }
-    // ステージ実行中の場合はスクリプトの実行を行う
-    else {
-        // スクリプトを実行する
-        if ([self.script update:dt]) {
-            
-            AKLog(kAKLogPlayData_1, @"ステージ%dクリア", stage_);
-            
-            // スクリプトをすべて実行した場合はクリア後の待機時間を設定する
-            clearWait_ = kAKStageClearWaitTime;
-        }
-    }
+    
+    // TODO:クリア時の処理を作成する
     
     // 復活待機時間が設定されている場合は時間をカウントする
     if (rebirthWait_ > 0.0f) {
@@ -515,6 +506,9 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
         }
     }
     
+    // マップを更新する
+    [self.script update:dt];
+
     // 背景を更新する
     for (AKCharacterPool *pool in [self.backPools objectEnumerator]) {
         for (AKBack *back in [pool.pool objectEnumerator]) {

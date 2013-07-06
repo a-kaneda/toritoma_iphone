@@ -36,10 +36,16 @@
 #import "AKScript.h"
 #import "AKPlayData.h"
 
-/// ステージ構成定義のスクリプトファイル名
-static NSString *kAKScriptFileName = @"stage_%d";
+/// 進行待ち待機イベント初期配列数
+static const NSUInteger kAKWaitEventsInitCapacity = 5;
+
 /// タイルマップのファイル名
 static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
+
+// 障害物生成
+static void createBlock(float x, float y, NSDictionary *properties, AKScript *selfptr);
+// イベント実行
+static void execEvent(float x, float y, NSDictionary *properties, AKScript *selfptr);
 
 /*!
  @brief スクリプト読み込みクラス
@@ -54,6 +60,9 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
 @synthesize background = background_;
 @synthesize foreground = foreground_;
 @synthesize block = block_;
+@synthesize event = event_;
+@synthesize progress = progress_;
+@synthesize waitEvents = waitEvents_;
 
 /*!
  @brief 初期化処理
@@ -75,6 +84,8 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
     isPause_ = NO;
     currentLine_ = 0;
     sleepTime_ = 0.0f;
+    progress_ = 0;
+    waitEvents_ = [NSMutableArray arrayWithCapacity:kAKWaitEventsInitCapacity];
     
     // ステージ番号からタイルマップのファイル名を決定する
     NSString *fileName = [NSString stringWithFormat:kAKTileMapFileName, stage];
@@ -88,13 +99,16 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
     self.background = [self.tileMap layerNamed:@"Background"];
     self.foreground = [self.tileMap layerNamed:@"Foreground"];
     self.block = [self.tileMap layerNamed:@"Block"];
+    self.event = [self.tileMap layerNamed:@"Event"];
     
     NSAssert(self.background != nil, @"背景レイヤーの取得に失敗");
     NSAssert(self.foreground != nil, @"前景レイヤーの取得に失敗");
     NSAssert(self.block != nil, @"障害物レイヤーの取得に失敗");
+    NSAssert(self.event != nil, @"イベントレイヤーの取得に失敗");
     
     // 背景・前景以外は非表示とする
     self.block.visible = NO;
+    self.event.visible = NO;
     
     // シーンの背景レイヤーに配置する
     CCLayer *sceneLayer = [AKPlayData sharedInstance].scene.backgroundLayer;
@@ -102,89 +116,6 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
     
     // 左端に初期位置を移動する
     self.tileMap.position = ccp([AKScreenSize xOfStage:0], [AKScreenSize yOfStage:0]);
-    
-    // ステージ番号からスクリプトファイル名を決定する
-    NSString *file = [NSString stringWithFormat:kAKScriptFileName, stage];
-    
-    // ファイルパスをバンドルから取得する
-    NSBundle *bundle = [NSBundle mainBundle];
-    NSString *filePath = [bundle pathForResource:file ofType:@"txt"];
-    AKLog(kAKLogScript_1, @"filePath=%@", filePath);
-    
-    // ステージ定義ファイルを読み込む
-    NSError *error = nil;
-    NSString *stageScript = [NSString stringWithContentsOfFile:filePath
-                                                      encoding:NSUTF8StringEncoding
-                                                         error:&error];
-    // ファイル読み込みエラー
-    if (stageScript == nil && error != nil) {
-        AKLog(kAKLogScript_0, @"%@", [error localizedDescription]);
-    }
-    
-    // スクリプトデータ保存用の配列を作成する
-    self.dataList = [NSMutableArray array];
-    
-    // 繰り返し命令保存用の配列を作成する
-    self.repeatList = [NSMutableArray array];
-    
-    // 前回のループで作成した命令オブジェクト
-    AKScriptData *prevData = nil;
-    
-    // ステージ定義ファイルの範囲の間は処理を続ける
-    for (NSRange lineRange = {0};
-         lineRange.location < stageScript.length;
-         lineRange.location = lineRange.location + lineRange.length, lineRange.length = 0) {
-        
-        // 1行の範囲を取得する
-        lineRange = [stageScript lineRangeForRange:lineRange];
-        
-        // 1行の文字列を取得する
-        NSString *line = [stageScript substringWithRange:lineRange];
-        AKLog(kAKLogScript_2, @"%@:", line);
-        
-        // 1文字目が"#"の場合は処理を飛ばす
-        if ([[line substringToIndex:1] isEqualToString:@"#"]) {
-            AKLog(kAKLogScript_1, @"コメント:%@", line);
-            continue;
-        }
-        
-        // 空行は処理を飛ばす
-        if ([line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length <= 0) {
-            AKLog(kAKLogScript_1, @"空行");
-            continue;
-        }
-        
-        // 空白区切りでトークンを分割する
-        NSArray *params = [line componentsSeparatedByString:@" "];
-        
-        // スクリプトデータを作成する
-        AKScriptData *scriptData = [AKScriptData scriptDataWithParams:params];
-        
-        // 前回作成したデータが繰り返し命令の場合は繰り返し命令のメンバに設定する
-        if (prevData != nil && prevData.type == kAKScriptOpeRepeat) {
-            
-            AKLog(kAKLogScript_1, @"繰り返し命令の登録");
-            
-            // 繰り返し命令のあとに繰り返し命令、待機命令が出てきた場合はエラーとして無視する
-            if (scriptData.type == kAKScriptOpeRepeat ||
-                scriptData.type == kAKScriptOpeSleep) {
-                
-                AKLog(kAKLogScript_0, @"繰り返し対象の命令が不正:%d", scriptData.type);
-                NSAssert(NO, @"繰り返し対象の命令が不正");
-                continue;
-            }
-            
-            // 繰り返し命令のメンバに設定する
-            prevData.repeatOpe = scriptData;
-        }
-        // その他の場合は自分のメンバに設定する
-        else {
-            [self.dataList addObject:scriptData];
-        }
-        
-        // 今回作成したデータを前回分として保存する
-        prevData = scriptData;
-    }
     
     return self;
 }
@@ -211,6 +142,12 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
     // メンバを解放する
     self.dataList = nil;
     self.repeatList = nil;
+    self.background = nil;
+    self.foreground = nil;
+    self.block = nil;
+    self.event = nil;
+    self.tileMap = nil;
+    self.waitEvents = nil;
     
     // スーパークラスの処理を行う
     [super dealloc];
@@ -219,82 +156,27 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
 /*!
  @brief 更新処理
  
- スクリプトデータの実行を行う。
- 待機命令を見つけるまで命令を実行する。
- 待機命令を見つけたら指定された時間経過するまで待機する。
+ マップをスクロールスピードに応じてスクロールする。
+ 現在のスクロール位置までイベントを実行する。
+ 現在処理済みの列から表示中の一番右側の列+2列分までのタイルのイベントを処理する。
  @param dt フレーム更新間隔
- @return すべてのスクリプトを実行し終わったかどうか
  */
-- (BOOL)update:(float)dt
+- (void)update:(float)dt
 {
-    // 停止中の場合は処理を終了する
-    if (isPause_) {
-        return NO;
-    }
-    
     // 背景をスクロールする
     self.tileMap.position = ccp(self.tileMap.position.x - [AKPlayData sharedInstance].scrollSpeedX * dt,
                                 self.tileMap.position.y - [AKPlayData sharedInstance].scrollSpeedY * dt);
     
-    // マップのイベントを実行する
-    [self execEvent];
+    // 表示中の一番右側の列+2列目までを処理対象とする
+    NSInteger maxCol = ([AKScreenSize stageSize].width - [AKScreenSize xOfDevice:self.tileMap.position.x]) / self.tileMap.tileSize.width + 2;
     
-    // 現在の待機時間をカウントする
-    sleepTime_ += dt;
+    AKLog(kAKLogScript_2, @"currentCol_=%d maxCol=%d", currentCol_, maxCol);
     
-    // 繰り返し命令を実行する
-    for (AKScriptData *data in [self.repeatList objectEnumerator]) {
+    // 現在処理済みの列から最終列まで処理する
+    for (; currentCol_ <= maxCol; currentCol_++) {
         
-        // 繰り返し待機時間をカウントする
-        data.repeatWaitTime += dt;
-        
-        // 繰り返し間隔を経過している場合は命令を実行する
-        // 繰り返し間隔はミリ秒で指定しているので桁合わせを行う
-        if (data.repeatWaitTime > data.repeatInterval / 1000.0f) {
-            
-            // 繰り返し命令を実行する
-            [self execScriptData:data.repeatOpe];
-            
-            // 繰り返し待機時間をリセットする
-            data.repeatWaitTime = 0.0f;
-        }
+        [self execEventByCol:currentCol_];
     }
-    
-    // 各命令を実行する
-    for (; currentLine_ < self.dataList.count; currentLine_++) {
-        
-        // 命令を取得する
-        AKScriptData *data = [self.dataList objectAtIndex:currentLine_];
-        
-        // 待機の場合は指定待機時間経過しているかチェックする
-        if (data.type == kAKScriptOpeSleep) {
-            
-            AKLog(kAKLogScript_2, @"待機:%d 現在の待機時間:%f", data.sleepTime, sleepTime_);
-
-            // 待機時間が経過していない場合は処理を終了する
-            // 待機時間はミリ秒で指定しているので桁合わせを行う
-            if (sleepTime_ < data.sleepTime / 1000.0f) {
-                break;
-            }
-            // 待機時間が経過している場合は指定された時間分だけ
-            // 現在の待機時間からマイナスして次の命令を実行する
-            else {
-                sleepTime_ -= data.sleepTime / 1000.0f;
-                continue;
-            }
-        }
-        
-        // スクリプトの処理を実行する
-        [self execScriptData:data];
-    }
-    
-    // すべての行を実行した場合は終了を呼び出し元に返す
-    if (currentLine_ >= self.dataList.count) {
-        AKLog(kAKLogScript_1, @"すべての行を実行完了");
-        return YES;
-    }
-    
-    return NO;
 }
 
 /*!
@@ -425,26 +307,6 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
 }
 
 /*!
- @brief 現在のスクロール位置までイベント実行
- 
- 現在のスクロール位置までイベントを実行する。
- 現在処理済みの列から表示中の一番右側の列+2列分までのタイルのイベントを処理する。
- */
-- (void)execEvent
-{
-    // 表示中の一番右側の列+2列目までを処理対象とする
-    NSInteger maxCol = ([AKScreenSize stageSize].width - [AKScreenSize xOfDevice:self.tileMap.position.x]) / self.tileMap.tileSize.width + 2;
-    
-    AKLog(kAKLogScript_2, @"currentCol_=%d maxCol=%d", currentCol_, maxCol);
-    
-    // 現在処理済みの列から最終列まで処理する
-    for (; currentCol_ <= maxCol; currentCol_++) {
-        
-        [self execEventByCol:currentCol_];
-    }
-}
-
-/*!
  @brief 列単位のイベント実行
  
  指定した列番号のタイルのイベントを実行する。
@@ -456,16 +318,35 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
     // タイルの真ん中を指定するために列番号には+0.5する
     float x = [AKScreenSize xOfDevice:self.tileMap.position.x] + self.tileMap.tileSize.width * (col + 0.5);
     
-    AKLog(kAKLogScript_4, @"position=%f x=%f", self.tileMap.position.x, x);    
+    AKLog(kAKLogScript_4, @"position=%f x=%f", self.tileMap.position.x, x);
     
-    // 障害物レイヤーの一番上の行から一番下の行まで処理を行う
+    // イベントレイヤーの処理を行う
+    [self execEventLayer:self.event col:col x:x execFunc:execEvent];
+    
+    // 障害物レイヤーの処理を行う
+    [self execEventLayer:self.block col:col x:x execFunc:createBlock];
+}
+
+/*!
+ @brief レイヤーごとのイベント実行
+ 
+ レイヤーごとにイベントを実行する。
+ 指定されたレイヤーの1列分のイベントを実行する。
+ @param layer レイヤー
+ @param col 列番号
+ @param x x座標
+ @param execFunc イベント処理関数
+ */
+- (void)execEventLayer:(CCTMXLayer *)layer col:(NSInteger)col x:(float)x execFunc:(ExecFunc)execFunc
+{
+    // レイヤーの一番上の行から一番下の行まで処理を行う
     for (int i = 0; i < self.tileMap.mapSize.height; i++) {
         
         // 処理対象のタイルの座標を作成する
         CGPoint tilePos = ccp(col, i);
         
         // タイルのGIDを取得する
-        int tileGid = [self.block tileGIDAt:tilePos];
+        int tileGid = [layer tileGIDAt:tilePos];
         
         AKLog(kAKLogScript_2, @"i=%d tileGid=%d", i, tileGid);
         
@@ -484,15 +365,8 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
                 // タイルの真ん中を指定するために行番号には+0.5する
                 float y = [AKScreenSize yOfDevice:self.tileMap.position.y] + (self.tileMap.mapSize.height - (i + 0.5)) * self.tileMap.tileSize.height;
                 
-                // 種別を取得する
-                NSString *typeString = [properties objectForKey:@"Type"];
-                NSInteger type = [typeString integerValue];
-                
-                AKLog(kAKLogScript_3, @"position.x=%f position.y=%f mapsSize.height=%f i=%d", self.tileMap.position.x, self.tileMap.position.y, self.tileMap.mapSize.height, i);
-                AKLog(kAKLogScript_3, @"type=%d x=%f y=%f", type, x, y);
-                
-                // 障害物を生成する
-                [[AKPlayData sharedInstance] createBlock:type x:x y:y];
+                // イベントを実行する
+                execFunc(x, y, properties, self);
             }
         }
     }
@@ -538,3 +412,82 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
     return ccp(x, y);
 }
 @end
+
+/*!
+ @brief 障害物作成
+ 
+ 障害物を作成する。
+ 障害物レイヤーのプロパティから以下の項目を取得し、障害物の生成を行う。
+ Type:障害物の種別
+ @property x 生成位置x座標
+ @property y 生成位置y座標
+ @property properties タイルのプロパティ
+ @property selfptr 自インスタンスへのポインタ
+ */
+static void createBlock(float x, float y, NSDictionary *properties, AKScript *selfptr)
+{
+    // 種別を取得する
+    NSString *typeString = [properties objectForKey:@"Type"];
+    NSInteger type = [typeString integerValue];
+    
+    // 障害物を生成する
+    [[AKPlayData sharedInstance] createBlock:type x:x y:y];
+}
+
+/*!
+ @brief イベント実行
+ 
+ イベントを実行する。
+ イベントレイヤーのプロパティから以下の項目を取得し、イベントを実行する。
+ Type:イベントの種類
+ Value:イベント実行で使用する値
+ Progress:ステージ進行状況がこの値以上のときにイベント実行する
+ 
+ イベントの種類は以下のとおり、
+ hspeed:水平方向のスクロールスピードを変更する
+ clear:ステージクリアのフラグを立てる
+ @property x 生成位置x座標(0以上の場合はマップからの実行、マイナスの場合は進行待ちイベントの実行)
+ @property y 生成位置y座標(0以上の場合はマップからの実行、マイナスの場合は進行待ちイベントの実行)
+ @property properties タイルのプロパティ
+ @property selfptr 自インスタンスへのポインタ
+ */
+static void execEvent(float x, float y, NSDictionary *properties, AKScript *selfptr)
+{
+    // 実行する進行状況の値を取得する
+    NSString *progressString = [properties objectForKey:@"progress"];
+    NSInteger progress = [progressString integerValue];
+    
+    // 実行する進行状況に到達していない場合は待機イベントの配列に入れて処理を終了する
+    if (progress < selfptr.progress) {
+        
+        // 座標が0以上の場合はマップからの呼び出しと判断する。
+        // マップ読み込みからの実行時は待機イベント配列へ入れる。
+        if (!(x < 0.0f && y < 0.0f)) {
+            
+            [selfptr.waitEvents addObject:properties];
+        }
+        
+        return;
+    }
+    
+    // 種別を取得する
+    NSString *type = [properties objectForKey:@"Type"];
+    
+    // 値を取得する
+    NSString *valueString = [properties objectForKey:@"Value"];
+    NSInteger value = [valueString integerValue];
+    
+    // 水平方向のスクロールスピード変更の場合
+    if ([type isEqualToString:@"hspeed"]) {
+        [AKPlayData sharedInstance].scrollSpeedX = value;
+    }
+    // ステージクリアの場合
+    else if ([type isEqualToString:@"clear"]) {
+        // TODO:ステージクリアフラグを立てる
+    }
+    // 不明な種別の場合
+    else {
+        AKLog(kAKLogScript_0, @"不明な種別:%@", type);
+        assert(0);
+    }
+}

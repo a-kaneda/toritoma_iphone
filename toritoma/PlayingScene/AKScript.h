@@ -36,6 +36,11 @@
 #import "AKToritoma.h"
 #import "AKScriptData.h"
 
+@class AKScript;
+
+/// マップタイルイベント実行関数
+typedef void (*ExecFunc)(float, float, NSDictionary *, AKScript *);
+
 // スクリプト読み込みクラス
 @interface AKScript : NSObject {
     /// 読み込んだ内容
@@ -56,8 +61,16 @@
     CCTMXLayer *foreground_;
     /// 障害物レイヤー
     CCTMXLayer *block_;
+    /// イベントレイヤー
+    CCTMXLayer *event_;
+    /// 敵レイヤー
+    CCTMXLayer *enemy_;
     /// 実行した列番号
     NSInteger currentCol_;
+    /// ステージ進行状況
+    NSInteger progress_;
+    /// 進行待ちのイベント
+    NSMutableArray *waitEvents_;
 }
 
 /// 読み込んだ内容
@@ -72,21 +85,29 @@
 @property (nonatomic, retain)CCTMXLayer *foreground;
 /// 障害物レイヤー
 @property (nonatomic, retain)CCTMXLayer *block;
+/// イベントレイヤー
+@property (nonatomic, retain)CCTMXLayer *event;
+/// 敵レイヤー
+@property (nonatomic, retain)CCTMXLayer *enemy;
+/// ステージ進行状況
+@property (nonatomic, readonly)NSInteger progress;
+/// 進行待ちのイベント
+@property (nonatomic, retain)NSMutableArray *waitEvents;
 
 // 初期化処理
 - (id)initWithStageNo:(NSInteger)stage;
 // コンビニエンスコンストラクタ
 + (id)scriptWithStageNo:(NSInteger)stage;
 // 更新処理
-- (BOOL)update:(float)dt;
+- (void)update:(float)dt;
 // 命令実行
 - (void)execScriptData:(AKScriptData *)data;
 // 停止解除
 - (void)resume;
-// 現在のスクロール位置までイベント実行
-- (void)execEvent;
 // 列単位のイベント実行
 - (void)execEventByCol:(NSInteger)col;
+// レイヤーごとのイベント実行
+- (void)execEventLayer:(CCTMXLayer *)layer col:(NSInteger)col x:(float)x execFunc:(ExecFunc)execFunc;
 // デバイス座標からマップ座標の取得
 - (CGPoint)mapPositionFromDevicePosition:(CGPoint)devicePosition;
 // タイルの座標取得
