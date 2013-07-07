@@ -74,8 +74,6 @@
     AKCharacterPool *effectPool_;
     /// 障害物プール
     AKCharacterPool *blockPool_;
-    /// 背景プール
-    NSMutableArray *backPools_;
     /// キャラクター配置バッチノード
     NSMutableArray *batches_;
     /// シールドモード
@@ -84,10 +82,6 @@
     float scrollSpeedX_;
     /// y軸方向のスクロールスピード
     float scrollSpeedY_;
-    /// 最後に配置した背景またはブロック
-    AKCharacter *lastBackCharacter_;
-    /// ボスキャラ
-    AKCharacter *boss_;
 }
 
 /// シーンクラス(弱い参照)
@@ -110,8 +104,6 @@
 @property (nonatomic, retain)AKCharacterPool *effectPool;
 /// 障害物プール
 @property (nonatomic, retain)AKCharacterPool *blockPool;
-/// 背景プール
-@property (nonatomic, retain)NSMutableArray *backPools;
 /// キャラクター配置バッチノード
 @property (nonatomic, retain)NSMutableArray *batches;
 /// シールドモード
@@ -120,10 +112,6 @@
 @property (nonatomic)float scrollSpeedX;
 /// y軸方向のスクロールスピード
 @property (nonatomic)float scrollSpeedY;
-/// 最後に配置した背景またはブロック
-@property (nonatomic, retain)AKCharacter *lastBackCharacter;
-/// ボスキャラ
-@property (nonatomic, retain)AKCharacter *boss;
 
 // インスタンス取得
 + (AKPlayData *)sharedInstance;
@@ -154,7 +142,7 @@
 // 反射弾生成
 - (void)createReflectiedShot:(AKEnemyShot *)enemyShot;
 // 敵生成
-- (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBoss:(BOOL)isBoss;
+- (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y progress:(NSInteger)progress;
 // 敵弾生成
 - (void)createEnemyShotType:(NSInteger)type
                           x:(NSInteger)x
@@ -164,10 +152,7 @@
 // 画面効果生成
 - (void)createEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 // 障害物生成
-- (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBase:(BOOL)isBase;
 - (void)createBlock:(NSInteger)type x:(float)x y:(float)y;
-// 背景生成
-- (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y priority:(NSInteger)priority isBase:(BOOL)isBase;
 // 失敗時処理
 - (void)miss;
 // スコア加算

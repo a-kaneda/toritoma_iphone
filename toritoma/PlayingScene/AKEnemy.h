@@ -65,10 +65,12 @@ struct AKEnemyDef {
     SEL destroy_;
     /// スコア
     NSInteger score_;
+    /// 倒した時に進む進行度
+    NSInteger progress_;
 }
 
 // 生成処理
-- (void)createEnemyType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y parent:(CCNode*)parent;
+- (void)createEnemyType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y progress:(NSInteger)progress parent:(CCNode*)parent;
 // 動作処理取得
 - (SEL)actionSelector:(NSInteger)type;
 // 破壊処理取得

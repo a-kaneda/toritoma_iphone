@@ -55,10 +55,6 @@ static const NSInteger kAKMaxEnemyShotCount = 256;
 static const NSInteger kAKMaxEffectCount = 64;
 /// 障害物の同時出現最大数
 static const NSInteger kAKMaxBlockCount = 128;
-/// 背景の同時出現最大数
-static const NSInteger kAKMaxBackCount = 128;
-/// 背景レイヤーの個数
-static const NSInteger kAKBackLayerCount = 2;
 /// シールドによるゲージ消費率
 static const float kAKChickenGaugeUseSpeed = 50.0f;
 /// キャラクターテクスチャアトラス定義ファイル名
@@ -86,9 +82,7 @@ static NSString *kAKGameOverTweetKey = @"GameOverTweet";
 
 /// キャラクター配置のz座標
 enum AKCharacterPositionZ {
-    kAKCharaPosZBack1 = 0,  ///< 背景1
-    kAKCharaPosZBack2,      ///< 背景2
-    kAKCharaPosZBlock,      ///< 障害物
+    kAKCharaPosZBlock = 0,  ///< 障害物
     kAKCharaPosZPlayerShot, ///< 自機弾
     kAKCharaPosZOption,     ///< オプション
     kAKCharaPosZPlayer,     ///< 自機
@@ -96,12 +90,6 @@ enum AKCharacterPositionZ {
     kAKCharaPosZEffect,     ///< 爆発効果
     kAKCharaPosZEnemyShot,  ///< 敵弾
     kAKCharaPosZCount       ///< z座標種別の数
-};
-
-// 背景配置のz座標配列
-static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
-    kAKCharaPosZBack1,
-    kAKCharaPosZBack2
 };
 
 /*!
@@ -121,13 +109,10 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
 @synthesize enemyShotPool = enemyShotPool_;
 @synthesize effectPool = effectPool_;
 @synthesize blockPool = blockPool_;
-@synthesize backPools = backPools_;
 @synthesize batches = batches_;
 @synthesize shield = shield_;
 @synthesize scrollSpeedX = scrollSpeedX_;
 @synthesize scrollSpeedY = scrollSpeedY_;
-@synthesize lastBackCharacter = lastBackCharacter_;
-@synthesize boss = boss_;
 
 /*!
  @brief インスタンス取得
@@ -234,12 +219,6 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
     
     // 障害物プールを作成する
     self.blockPool = [[[AKCharacterPool alloc] initWithClass:[AKBlock class] Size:kAKMaxBlockCount] autorelease];
-    
-    // 背景プールを作成する
-    self.backPools = [NSMutableArray arrayWithCapacity:kAKBackLayerCount];
-    for (int i = 0; i < kAKBackLayerCount; i++) {
-        [self.backPools addObject:[[[AKCharacterPool alloc] initWithClass:[AKBack class] Size:kAKMaxBackCount] autorelease]];
-    }
 }
 
 /*!
@@ -271,8 +250,6 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
     score_ = 0;
     clearWait_ = 0.0f;
     rebirthWait_ = 0.0f;
-    self.boss = nil;
-    self.lastBackCharacter = nil;
 }
 
 #pragma mark オブジェクト解放
@@ -288,16 +265,12 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
     
     // メンバを解放する
     self.player = nil;
-    self.boss = nil;
-    self.lastBackCharacter = nil;
     self.playerShotPool = nil;
     self.refrectedShotPool = nil;
     self.enemyPool = nil;
     self.enemyShotPool = nil;
     self.effectPool = nil;
     self.blockPool = nil;
-    [self.backPools removeAllObjects];
-    self.backPools = nil;
     for (CCNode *node in [self.batches objectEnumerator]) {
         [node removeFromParentAndCleanup:YES];
     }
@@ -508,15 +481,6 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
     
     // マップを更新する
     [self.script update:dt];
-
-    // 背景を更新する
-    for (AKCharacterPool *pool in [self.backPools objectEnumerator]) {
-        for (AKBack *back in [pool.pool objectEnumerator]) {
-            if (back.isStaged) {
-                [back move:dt];
-            }
-        }
-    }
     
     // 障害物を更新する
     for (AKBlock *block in [self.blockPool.pool objectEnumerator]) {
@@ -622,22 +586,6 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
         
         // 自機と敵弾の当たり判定処理を行う
         [self.player checkHit:[self.enemyShotPool.pool objectEnumerator]];
-    }
-    
-    // ボスが登場している場合
-    if (self.boss != nil) {
-        
-        // ボスが倒された(いなくなった)場合、スクリプトの読み込みを再開する
-        if (!self.boss.isStaged) {
-            
-            AKLog(kAKLogPlayData_1, @"ボス撃破");
-            
-            // スクリプトの読み込みを再開する
-            [self.script resume];
-            
-            // ボスを削除する
-            self.boss = nil;
-        }
     }
     
     // シールドが有効な場合はチキンゲージを減少させる
@@ -829,8 +777,9 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
  @param type 敵種別
  @param x x座標
  @param y y座標
+ @param progress 倒した時に進む進行度
  */
-- (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBoss:(BOOL)isBoss
+- (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y progress:(NSInteger)progress
 {
     AKLog(kAKLogPlayData_1, @"敵生成");
 
@@ -843,13 +792,8 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
         return;
     }
     
-    // ボスキャラの場合はメンバに設定する
-    if (isBoss) {
-        self.boss = enemy;
-    }
-    
     // 敵を生成する
-    [enemy createEnemyType:type x:x y:y parent:[self.batches objectAtIndex:kAKCharaPosZEnemy]];
+    [enemy createEnemyType:type x:x y:y progress:progress parent:[self.batches objectAtIndex:kAKCharaPosZEnemy]];
 }
 
 /*!
@@ -923,54 +867,7 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
  @param type 障害物種別
  @param x 前回作成した背景/障害物からのx方向の距離
  @param y 前回作成した背景/障害物からのy方向の距離
- @param isBase 次に作成する背景/障害物の配置位置のベースとするかどうか
  */
-// TODO:スクリプト用のメソッドを削除する
-- (void)createBlock:(NSInteger)type x:(NSInteger)x y:(NSInteger)y isBase:(BOOL)isBase
-{
-    AKLog(kAKLogPlayData_1, @"障害物生成");
-
-    // プールから未使用のメモリを取得する
-    AKBlock *block = [self.blockPool getNext];
-    if (block == nil) {
-        // 空きがない場合は処理終了する
-        AKLog(kAKLogPlayData_0, @"障害物プールに空きなし");
-        NSAssert(NO, @"障害物プールに空きなし");
-        return;
-    }
-    
-    //======================================================================
-    // キャラクター作成時のタイミングによって隙間が生じることを防ぐため、
-    // 配置は前回配置したものからの相対位置とする。
-    // 例えば、毎秒32ドットのスピードでスクロールしている時、
-    // 1秒後に32ドットずらした位置に配置すれば隙間なくキャラクターが作成できそうだが、
-    // スクロールとキャラクター配置の処理のタイミングにずれがあるため、隙間が生じてしまう。
-    // 通常のキャラクターであれば気にならない程度であるが、
-    // 背景の場合は隙間が敷き詰められていることを前提としているので隙間が生じると目立ってしまう。
-    // これを防ぐために背景や障害物は前回作成したキャラクターを保持しておき、
-    // 前回作成したものからの相対位置で位置を決める。
-    // これにより、タイミングのずれによる位置のズレを防ぐ事ができる。
-    //======================================================================
-    
-    // 配置する絶対座標を作成する
-    float absx = x;
-    float absy = y;
-    if (self.lastBackCharacter != nil) {
-        absx += self.lastBackCharacter.positionX;
-        absy += self.lastBackCharacter.positionY;
-    }
-    
-    // 障害物を生成する
-    [block createBlockType:type
-                         x:absx
-                         y:absy
-                    parent:[self.batches objectAtIndex:kAKCharaPosZBlock]];
-    
-    // ベースとなる障害物の場合は最後に生成した障害物として記憶する
-    if (isBase) {
-        self.lastBackCharacter = block;        
-    }
-}
 - (void)createBlock:(NSInteger)type x:(float)x y:(float)y
 {
     AKLog(kAKLogPlayData_1, @"障害物生成");
@@ -988,64 +885,7 @@ static const enum AKCharacterPositionZ kAKCharaPosZBack[kAKBackLayerCount] = {
     [block createBlockType:type
                          x:x
                          y:y
-                    parent:[self.batches objectAtIndex:kAKCharaPosZBlock]];}
-
-/*!
- @brief 背景生成
- 
- 背景物を生成する。
- @param type 障害物種別
- @param x 前回作成した背景/障害物からのx方向の距離
- @param y 前回作成した背景/障害物からのy方向の距離
- @param priority 描画優先順、数字が大きいほど手前に描画する
- @param isBase 次に作成する背景/障害物の配置位置のベースとするかどうか
- */
-- (void)createBack:(NSInteger)type x:(NSInteger)x y:(NSInteger)y priority:(NSInteger)priority isBase:(BOOL)isBase
-{
-    AKLog(kAKLogPlayData_1, @"背景生成");
-
-    NSAssert(priority >= 0 && priority < kAKBackLayerCount, @"priority is out of range.");
-    
-    // プールから未使用のメモリを取得する
-    AKBack *back = [[self.backPools objectAtIndex:priority] getNext];
-    if (back == nil) {
-        // 空きがない場合は処理終了する
-        AKLog(kAKLogPlayData_0, @"背景プールに空きなし");
-        NSAssert(NO, @"背景プールに空きなし");
-        return;
-    }
-    
-    //======================================================================
-    // キャラクター作成時のタイミングによって隙間が生じることを防ぐため、
-    // 配置は前回配置したものからの相対位置とする。
-    // 例えば、毎秒32ドットのスピードでスクロールしている時、
-    // 1秒後に32ドットずらした位置に配置すれば隙間なくキャラクターが作成できそうだが、
-    // スクロールとキャラクター配置の処理のタイミングにずれがあるため、隙間が生じてしまう。
-    // 通常のキャラクターであれば気にならない程度であるが、
-    // 背景の場合は隙間が敷き詰められていることを前提としているので隙間が生じると目立ってしまう。
-    // これを防ぐために背景や障害物は前回作成したキャラクターを保持しておき、
-    // 前回作成したものからの相対位置で位置を決める。
-    // これにより、タイミングのずれによる位置のズレを防ぐ事ができる。
-    //======================================================================
-
-    // 配置する絶対座標を作成する
-    float absx = x;
-    float absy = y;
-    if (self.lastBackCharacter != nil) {
-        absx += self.lastBackCharacter.positionX;
-        absy += self.lastBackCharacter.positionY;
-    }
-
-    // 背景を生成する
-    [back createBackType:type
-                       x:absx
-                       y:absy
-                  parent:[self.batches objectAtIndex:kAKCharaPosZBack[priority]]];
-    
-    // ベースとなる背景の場合は最後に生成した背景として記憶する
-    if (isBase) {
-        self.lastBackCharacter = back;
-    }
+                    parent:[self.batches objectAtIndex:kAKCharaPosZBlock]];
 }
 
 /*!

@@ -34,7 +34,6 @@
  */
 
 #import "AKToritoma.h"
-#import "AKScriptData.h"
 
 @class AKScript;
 
@@ -43,16 +42,6 @@ typedef void (*ExecFunc)(float, float, NSDictionary *, AKScript *);
 
 // スクリプト読み込みクラス
 @interface AKScript : NSObject {
-    /// 読み込んだ内容
-    NSMutableArray *dataList_;
-    /// 繰り返し命令
-    NSMutableArray *repeatList_;
-    /// 実行した行番号
-    NSInteger currentLine_;
-    /// 待機時間
-    float sleepTime_;
-    /// 停止中かどうか
-    BOOL isPause_;
     /// タイルマップ
     CCTMXTiledMap *tileMap_;
     /// 背景レイヤー
@@ -67,16 +56,12 @@ typedef void (*ExecFunc)(float, float, NSDictionary *, AKScript *);
     CCTMXLayer *enemy_;
     /// 実行した列番号
     NSInteger currentCol_;
-    /// ステージ進行状況
+    /// ステージ進行度
     NSInteger progress_;
     /// 進行待ちのイベント
     NSMutableArray *waitEvents_;
 }
 
-/// 読み込んだ内容
-@property (nonatomic, retain)NSMutableArray *dataList;
-/// 繰り返し命令
-@property (nonatomic, retain)NSMutableArray *repeatList;
 /// タイルマップ
 @property (nonatomic, retain)CCTMXTiledMap *tileMap;
 /// 背景レイヤー
@@ -90,7 +75,7 @@ typedef void (*ExecFunc)(float, float, NSDictionary *, AKScript *);
 /// 敵レイヤー
 @property (nonatomic, retain)CCTMXLayer *enemy;
 /// ステージ進行状況
-@property (nonatomic, readonly)NSInteger progress;
+@property (nonatomic)NSInteger progress;
 /// 進行待ちのイベント
 @property (nonatomic, retain)NSMutableArray *waitEvents;
 
@@ -100,10 +85,6 @@ typedef void (*ExecFunc)(float, float, NSDictionary *, AKScript *);
 + (id)scriptWithStageNo:(NSInteger)stage;
 // 更新処理
 - (void)update:(float)dt;
-// 命令実行
-- (void)execScriptData:(AKScriptData *)data;
-// 停止解除
-- (void)resume;
 // 列単位のイベント実行
 - (void)execEventByCol:(NSInteger)col;
 // レイヤーごとのイベント実行

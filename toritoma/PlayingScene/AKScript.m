@@ -42,8 +42,10 @@ static const NSUInteger kAKWaitEventsInitCapacity = 5;
 /// タイルマップのファイル名
 static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
 
-// 障害物生成
+// 障害物作成
 static void createBlock(float x, float y, NSDictionary *properties, AKScript *selfptr);
+// 敵作成
+static void createEnemy(float x, float y, NSDictionary *propertyies, AKScript *selfptr);
 // イベント実行
 static void execEvent(float x, float y, NSDictionary *properties, AKScript *selfptr);
 
@@ -54,8 +56,6 @@ static void execEvent(float x, float y, NSDictionary *properties, AKScript *self
  */
 @implementation AKScript
 
-@synthesize dataList = dataList_;
-@synthesize repeatList = repeatList_;
 @synthesize tileMap = tileMap_;
 @synthesize background = background_;
 @synthesize foreground = foreground_;
@@ -81,9 +81,6 @@ static void execEvent(float x, float y, NSDictionary *properties, AKScript *self
     }
     
     // メンバ変数を初期化する
-    isPause_ = NO;
-    currentLine_ = 0;
-    sleepTime_ = 0.0f;
     progress_ = 0;
     waitEvents_ = [NSMutableArray arrayWithCapacity:kAKWaitEventsInitCapacity];
     
@@ -100,6 +97,7 @@ static void execEvent(float x, float y, NSDictionary *properties, AKScript *self
     self.foreground = [self.tileMap layerNamed:@"Foreground"];
     self.block = [self.tileMap layerNamed:@"Block"];
     self.event = [self.tileMap layerNamed:@"Event"];
+    self.enemy = [self.tileMap layerNamed:@"Enemy"];
     
     NSAssert(self.background != nil, @"背景レイヤーの取得に失敗");
     NSAssert(self.foreground != nil, @"前景レイヤーの取得に失敗");
@@ -108,6 +106,7 @@ static void execEvent(float x, float y, NSDictionary *properties, AKScript *self
     
     // 背景・前景以外は非表示とする
     self.block.visible = NO;
+    self.enemy.visible = NO;
     self.event.visible = NO;
     
     // シーンの背景レイヤーに配置する
@@ -140,12 +139,11 @@ static void execEvent(float x, float y, NSDictionary *properties, AKScript *self
 - (void)dealloc
 {
     // メンバを解放する
-    self.dataList = nil;
-    self.repeatList = nil;
     self.background = nil;
     self.foreground = nil;
     self.block = nil;
     self.event = nil;
+    self.enemy = nil;
     self.tileMap = nil;
     self.waitEvents = nil;
     
@@ -180,133 +178,6 @@ static void execEvent(float x, float y, NSDictionary *properties, AKScript *self
 }
 
 /*!
- @brief 命令実行
- 
- スクリプトデータの命令を実行する。
- */
-- (void)execScriptData:(AKScriptData *)data
-{
-    // 命令の種別に応じて処理を実行する
-    switch (data.type) {
-            
-        case kAKScriptOpeEnemy:     // 敵の生成
-
-            AKLog(kAKLogScript_1, @"敵の生成:%d pos=(%d, %d)", data.characterNo, data.positionX, data.positionY);
-            
-            // 敵を生成する
-            [[AKPlayData sharedInstance] createEnemy:data.characterNo
-                                                   x:data.positionX
-                                                   y:data.positionY
-                                              isBoss:NO];
-            break;
-            
-        case kAKScriptOpeBoss:      // ボスの生成
-
-            AKLog(kAKLogScript_1, @"ボスの生成:%d pos=(%d, %d)", data.characterNo, data.positionX, data.positionY);
-            
-            // ボスを生成する
-            [[AKPlayData sharedInstance] createEnemy:data.characterNo
-                                                   x:data.positionX
-                                                   y:data.positionY
-                                              isBoss:YES];
-            
-            // ボスが倒されるまでスクリプトの実行を停止する
-            isPause_ = YES;
-            
-            break;
-            
-        case kAKScriptOpeBack:      // 背景の生成
-            
-            AKLog(kAKLogScript_1, @"背景の生成:%d pos=(%d, %d) priority=%d isBase=%d",
-                  data.characterNo, data.positionX, data.positionY, data.priority, data.isBase);
-            
-            // 背景を生成する
-            [[AKPlayData sharedInstance] createBack:data.characterNo
-                                                  x:data.positionX
-                                                  y:data.positionY
-                                           priority:data.priority
-                                             isBase:data.isBase];
-            break;
-            
-        case kAKScriptOpeWall:      // 障害物の生成
-            
-            AKLog(kAKLogScript_1, @"障害物の生成:%d pos=(%d, %d) isBase=%d",
-                  data.characterNo, data.positionX, data.positionY, data.isBase);
-            
-            // 障害物を生成する
-            [[AKPlayData sharedInstance] createBlock:data.characterNo
-                                                   x:data.positionX
-                                                   y:data.positionY
-                                              isBase:data.isBase];
-            break;
-            
-        case kAKScriptOpeScroll:    // スクロールスピード変更
-
-            AKLog(kAKLogScript_1, @"スクロールスピード変更:(%d, %d)", data.speedX, data.speedY);
-            
-            // スクロールスピードを変更する
-            [AKPlayData sharedInstance].scrollSpeedX = data.speedX;
-            [AKPlayData sharedInstance].scrollSpeedY = data.speedY;
-            break;
-            
-        case kAKScriptOpeBGM:       // BGM変更
-            // BGMを変更する
-            AKLog(kAKLogScript_1, @"BGM変更:%d", data.bgmNo);
-            break;
-            
-        case kAKScriptOpeRepeat:    // 繰り返し命令
-            // 繰り返し命令を実行する
-            AKLog(kAKLogScript_1, @"");
-            
-            // 繰り返しの開始の場合は命令を実行後、繰り返し命令配列に登録する
-            if (data.enableRepeat) {
-                
-                // 繰り返し命令を実行する
-                [self execScriptData:data.repeatOpe];
-                
-                // 繰り返し命令配列に登録する
-                [self.repeatList addObject:data];
-                
-            }
-            // 繰り返しの停止の場合は繰り返し命令配列から削除する
-            else {
-                
-                // 削除対象の命令の配列を作成する
-                NSMutableArray *removeDatas = [NSMutableArray arrayWithCapacity:self.repeatList.count];
-                
-                // 繰り返し命令配列からIDが一致するものを削除配列に登録する
-                for (AKScriptData *repeatData in [self.repeatList objectEnumerator]) {
-                    
-                    if (repeatData.repeatID == data.repeatID) {
-                        [removeDatas addObject:repeatData];
-                    }
-                }
-                
-                // 繰り返し命令配列から削除対象の命令を削除する
-                [self.repeatList removeObjectsInArray:removeDatas];
-            }
-            break;
-            
-        default:                    // その他
-            // 不明な命令種別のため、エラー
-            AKLog(kAKLogScript_0, @"不明な命令種別:%d", data.type);
-            NSAssert(NO, @"不明な命令種別");
-            break;
-    }
-}
-
-/*!
- @brief 停止解除
- 
- 停止中フラグを落とす。
- ボスを倒した時などに呼び出す。
- */
-- (void)resume
-{
-    isPause_ = NO;
-}
-
-/*!
  @brief 列単位のイベント実行
  
  指定した列番号のタイルのイベントを実行する。
@@ -325,6 +196,9 @@ static void execEvent(float x, float y, NSDictionary *properties, AKScript *self
     
     // 障害物レイヤーの処理を行う
     [self execEventLayer:self.block col:col x:x execFunc:createBlock];
+    
+    // 敵レイヤーの処理を行う
+    [self execEventLayer:self.enemy col:col x:x execFunc:createEnemy];
 }
 
 /*!
@@ -417,7 +291,7 @@ static void execEvent(float x, float y, NSDictionary *properties, AKScript *self
  @brief 障害物作成
  
  障害物を作成する。
- 障害物レイヤーのプロパティから以下の項目を取得し、障害物の生成を行う。
+ 障害物レイヤーのプロパティから以下の項目を取得し、障害物の作成を行う。
  Type:障害物の種別
  @property x 生成位置x座標
  @property y 生成位置y座標
@@ -430,8 +304,34 @@ static void createBlock(float x, float y, NSDictionary *properties, AKScript *se
     NSString *typeString = [properties objectForKey:@"Type"];
     NSInteger type = [typeString integerValue];
     
-    // 障害物を生成する
+    // 障害物を作成する
     [[AKPlayData sharedInstance] createBlock:type x:x y:y];
+}
+
+/*!
+ @brief 敵作成
+ 
+ 敵を作成する。
+ 障害物レイヤーのプロパティから以下の項目を取得し、敵の作成を行う。
+ Type:敵の種別
+ Progress:倒した時に進む進行度
+ @property x 生成位置x座標
+ @property y 生成位置y座標
+ @property properties タイルのプロパティ
+ @property selfptr 自インスタンスへのポインタ
+ */
+static void createEnemy(float x, float y, NSDictionary *properties, AKScript *selfptr)
+{
+    // 種別を取得する
+    NSString *typeString = [properties objectForKey:@"Type"];
+    NSInteger type = [typeString integerValue];
+    
+    // 倒した時に進む進行度を取得する
+    NSString *progressString = [properties objectForKey:@"Progress"];
+    NSInteger progress = [progressString integerValue];
+    
+    // 敵を作成する
+    [[AKPlayData sharedInstance] createEnemy:type x:x y:y progress:progress];
 }
 
 /*!
@@ -441,9 +341,10 @@ static void createBlock(float x, float y, NSDictionary *properties, AKScript *se
  イベントレイヤーのプロパティから以下の項目を取得し、イベントを実行する。
  Type:イベントの種類
  Value:イベント実行で使用する値
- Progress:ステージ進行状況がこの値以上のときにイベント実行する
+ Progress:ステージ進行度がこの値以上のときにイベント実行する
  
  イベントの種類は以下のとおり、
+ bgm:BGMを変更する
  hspeed:水平方向のスクロールスピードを変更する
  clear:ステージクリアのフラグを立てる
  @property x 生成位置x座標(0以上の場合はマップからの実行、マイナスの場合は進行待ちイベントの実行)
@@ -457,7 +358,7 @@ static void execEvent(float x, float y, NSDictionary *properties, AKScript *self
     NSString *progressString = [properties objectForKey:@"progress"];
     NSInteger progress = [progressString integerValue];
     
-    // 実行する進行状況に到達していない場合は待機イベントの配列に入れて処理を終了する
+    // 実行する進行度に到達していない場合は待機イベントの配列に入れて処理を終了する
     if (progress < selfptr.progress) {
         
         // 座標が0以上の場合はマップからの呼び出しと判断する。
@@ -480,6 +381,9 @@ static void execEvent(float x, float y, NSDictionary *properties, AKScript *self
     // 水平方向のスクロールスピード変更の場合
     if ([type isEqualToString:@"hspeed"]) {
         [AKPlayData sharedInstance].scrollSpeedX = value;
+    }
+    else if ([type isEqualToString:@"bgm"]) {
+        // TODO:BGM変更処理を作成する
     }
     // ステージクリアの場合
     else if ([type isEqualToString:@"clear"]) {

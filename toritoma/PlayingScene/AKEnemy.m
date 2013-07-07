@@ -136,6 +136,12 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     // スコアを加算する
     [[AKPlayData sharedInstance] addScore:score_];
     
+    // タイルマップを取得する
+    AKScript *tileMap = [AKPlayData sharedInstance].script;
+    
+    // 進行度を進める
+    tileMap.progress += progress_;
+    
     // 敵種別ごとの処理を実行
     [self performSelector:destroy_];
     
@@ -154,13 +160,15 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  @param type 敵キャラの種別
  @param x 生成位置x座標
  @param y 生成位置y座標
+ @param progress 倒した時に進む進行度
  @param parent 敵キャラを配置する親ノード
  */
-- (void)createEnemyType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y parent:(CCNode*)parent;
+- (void)createEnemyType:(NSInteger)type x:(NSInteger)x y:(NSInteger)y progress:(NSInteger)progress parent:(CCNode *)parent
 {
     // パラメータの内容をメンバに設定する
     self.positionX = x;
     self.positionY = y;
+    progress_ = progress;
     
     // 配置フラグを立てる
     isStaged_ = YES;
