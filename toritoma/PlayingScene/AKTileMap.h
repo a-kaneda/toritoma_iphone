@@ -27,21 +27,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
- @file AKScript.h
- @brief スクリプト読み込みクラス
+ @file AKTileMap.h
+ @brief タイルマップ管理クラス
  
- ステージ構成定義のスクリプトファイルを読み込む。
+ ステージ構成定義のタイルマップファイルを読み込む。
  */
 
 #import "AKToritoma.h"
 
-@class AKScript;
+@class AKTileMap;
 
 /// マップタイルイベント実行関数
-typedef void (*ExecFunc)(float, float, NSDictionary *, AKScript *);
+typedef void (*ExecFunc)(float, float, NSDictionary *, AKTileMap *);
 
-// スクリプト読み込みクラス
-@interface AKScript : NSObject {
+// タイルマップ管理クラス
+@interface AKTileMap : NSObject {
     /// タイルマップ
     CCTMXTiledMap *tileMap_;
     /// 背景レイヤー

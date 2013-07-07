@@ -137,7 +137,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     [[AKPlayData sharedInstance] addScore:score_];
     
     // タイルマップを取得する
-    AKScript *tileMap = [AKPlayData sharedInstance].script;
+    AKTileMap *tileMap = [AKPlayData sharedInstance].tileMap;
     
     // 進行度を進める
     tileMap.progress += progress_;

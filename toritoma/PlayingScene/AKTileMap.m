@@ -27,13 +27,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
- @file AKScript.m
- @brief スクリプト読み込みクラス
+ @file AKTileMap.m
+ @brief タイルマップ管理クラス
  
- ステージ構成定義のスクリプトファイルを読み込む。
+ ステージ構成定義のタイルマップファイルを読み込む。
  */
 
-#import "AKScript.h"
+#import "AKTileMap.h"
 #import "AKPlayData.h"
 
 /// 進行待ち待機イベント初期配列数
@@ -43,18 +43,18 @@ static const NSUInteger kAKWaitEventsInitCapacity = 5;
 static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
 
 // 障害物作成
-static void createBlock(float x, float y, NSDictionary *properties, AKScript *selfptr);
+static void createBlock(float x, float y, NSDictionary *properties, AKTileMap *selfptr);
 // 敵作成
-static void createEnemy(float x, float y, NSDictionary *propertyies, AKScript *selfptr);
+static void createEnemy(float x, float y, NSDictionary *propertyies, AKTileMap *selfptr);
 // イベント実行
-static void execEvent(float x, float y, NSDictionary *properties, AKScript *selfptr);
+static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *selfptr);
 
 /*!
- @brief スクリプト読み込みクラス
+ @brief タイルマップ管理クラス
  
- ステージ構成定義のスクリプトファイルを読み込む。
+ ステージ構成定義のタイルマップファイルを読み込む。
  */
-@implementation AKScript
+@implementation AKTileMap
 
 @synthesize tileMap = tileMap_;
 @synthesize background = background_;
@@ -128,7 +128,7 @@ static void execEvent(float x, float y, NSDictionary *properties, AKScript *self
  */
 + (id)scriptWithStageNo:(NSInteger)stage
 {
-    return [[[AKScript alloc] initWithStageNo:stage] autorelease];
+    return [[[AKTileMap alloc] initWithStageNo:stage] autorelease];
 }
 
 /*!
@@ -298,7 +298,7 @@ static void execEvent(float x, float y, NSDictionary *properties, AKScript *self
  @property properties タイルのプロパティ
  @property selfptr 自インスタンスへのポインタ
  */
-static void createBlock(float x, float y, NSDictionary *properties, AKScript *selfptr)
+static void createBlock(float x, float y, NSDictionary *properties, AKTileMap *selfptr)
 {
     // 種別を取得する
     NSString *typeString = [properties objectForKey:@"Type"];
@@ -320,7 +320,7 @@ static void createBlock(float x, float y, NSDictionary *properties, AKScript *se
  @property properties タイルのプロパティ
  @property selfptr 自インスタンスへのポインタ
  */
-static void createEnemy(float x, float y, NSDictionary *properties, AKScript *selfptr)
+static void createEnemy(float x, float y, NSDictionary *properties, AKTileMap *selfptr)
 {
     // 種別を取得する
     NSString *typeString = [properties objectForKey:@"Type"];
@@ -352,7 +352,7 @@ static void createEnemy(float x, float y, NSDictionary *properties, AKScript *se
  @property properties タイルのプロパティ
  @property selfptr 自インスタンスへのポインタ
  */
-static void execEvent(float x, float y, NSDictionary *properties, AKScript *selfptr)
+static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *selfptr)
 {
     // 実行する進行状況の値を取得する
     NSString *progressString = [properties objectForKey:@"progress"];

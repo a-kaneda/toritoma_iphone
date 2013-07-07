@@ -36,7 +36,7 @@
 #import "AKToritoma.h"
 #import "AKPlayingScene.h"
 #import "AKPlayer.h"
-#import "AKScript.h"
+#import "AKTileMap.h"
 #import "AKCharacterPool.h"
 #import "AKEnemyShot.h"
 
@@ -59,7 +59,7 @@
     /// ハイスコア
     NSInteger hiScore_;
     /// スクリプト情報
-    AKScript *script_;
+    AKTileMap *tileMap_;
     /// 自機
     AKPlayer *player_;
     /// 自機弾プール
@@ -89,7 +89,7 @@
 /// 残機
 @property (nonatomic)NSInteger life;
 /// スクリプト情報
-@property (nonatomic, retain)AKScript *script;
+@property (nonatomic, retain)AKTileMap *tileMap;
 /// 自機
 @property (nonatomic, retain)AKPlayer *player;
 /// 自機弾プール

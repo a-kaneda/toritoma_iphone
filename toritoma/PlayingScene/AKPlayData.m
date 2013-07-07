@@ -101,7 +101,7 @@ enum AKCharacterPositionZ {
 
 @synthesize scene = scene_;
 @synthesize life = life_;
-@synthesize script = script_;
+@synthesize tileMap = tileMap_;
 @synthesize player = player_;
 @synthesize playerShotPool = playerShotPool_;
 @synthesize refrectedShotPool = reflectedShotPool_;
@@ -334,10 +334,10 @@ enum AKCharacterPositionZ {
     stage_ = stage;
     
     // スクリプトファイルを読み込む
-    self.script = [AKScript scriptWithStageNo:stage];
+    self.tileMap = [AKTileMap scriptWithStageNo:stage];
     
-    // 最初の待機まで命令を実行する
-    [self.script update:0.0f];
+    // 初期表示の1画面分の処理を行う
+    [self.tileMap update:0.0f];
 }
 
 /*!
@@ -480,7 +480,7 @@ enum AKCharacterPositionZ {
     }
     
     // マップを更新する
-    [self.script update:dt];
+    [self.tileMap update:dt];
     
     // 障害物を更新する
     for (AKBlock *block in [self.blockPool.pool objectEnumerator]) {

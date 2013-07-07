@@ -290,7 +290,7 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
 - (void)action:(ccTime)dt
 {
     // タイルマップを取得する
-    AKScript *tileMap = [AKPlayData sharedInstance].script;
+    AKTileMap *tileMap = [AKPlayData sharedInstance].tileMap;
     
     // デバイススクリーン座標からマップ座標へ、マップ座標からタイルの座標へ変換する
     self.image.position = [tileMap tilePositionFromMapPosition:[tileMap mapPositionFromDevicePosition:self.image.position]];
