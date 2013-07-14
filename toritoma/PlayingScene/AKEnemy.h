@@ -35,22 +35,17 @@
 
 #import "AKCharacter.h"
 
-/// 敵画像定義
-struct AKEnemyImageDef {
-    NSInteger fileNo;           ///< ファイル名の番号
-    NSInteger animationFrame;   ///< アニメーションフレーム数
-    float animationInterval;    ///< アニメーション更新間隔
-};
-
 /// 敵種別定義
 struct AKEnemyDef {
-    NSInteger action;       ///< 動作処理の種別
-    NSInteger destroy;      ///< 破壊処理の種別
-    NSInteger image;        ///< 画像ID
-    NSInteger hitWidth;     ///< 当たり判定の幅
-    NSInteger hitHeight;    ///< 当たり判定の高さ
-    NSInteger hitPoint;     ///< ヒットポイント
-    NSInteger score;        ///< スコア
+    NSInteger action;           ///< 動作処理の種別
+    NSInteger destroy;          ///< 破壊処理の種別
+    NSInteger image;            ///< 画像ID
+    NSInteger animationFrame;   ///< アニメーションフレーム数
+    float animationInterval;    ///< アニメーション更新間隔
+    NSInteger hitWidth;         ///< 当たり判定の幅
+    NSInteger hitHeight;        ///< 当たり判定の高さ
+    NSInteger hitPoint;         ///< ヒットポイント
+    NSInteger score;            ///< スコア
 };
 
 // 敵クラス
@@ -59,6 +54,8 @@ struct AKEnemyDef {
     ccTime time_;
     /// 動作状態(各敵種別で使用)
     NSInteger state_;
+    /// 作業領域(各敵種別で使用)
+    NSInteger work_;
     /// 動作処理のセレクタ
     SEL action_;
     /// 破壊処理のセレクタ
@@ -83,4 +80,10 @@ struct AKEnemyDef {
 - (void)destroy_01;
 // n-Way弾発射
 - (void)fireNWay:(NSInteger)way interval:(float)interval speed:(float)speed;
+// 逆さま判定
+- (void)checkReverse;
+// 障害物との衝突判定
+- (void)checkBlockPosition;
+// 足元の障害物を取得する
++ (AKCharacter *)getBlockAtFeetAtX:(float)x from:(float)top isReverse:(BOOL)isReverse;
 @end

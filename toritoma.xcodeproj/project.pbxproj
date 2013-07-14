@@ -783,11 +783,8 @@
 			isa = PBXGroup;
 			children = (
 				0C6FCE5917800EA000D9D343 /* Back.png */,
-				0C6FCE5717800E6100D9D343 /* Stage_01.tmx */,
-				0C22363016E5402F000A2738 /* Character-ipad.plist */,
 				0C853D2E178809DE00A723B3 /* Block.png */,
-				0C853D2F178809DF00A723B3 /* Event.png */,
-				0C853D3217881F5E00A723B3 /* EnemyTile.png */,
+				0C22363016E5402F000A2738 /* Character-ipad.plist */,
 				0C22363116E5402F000A2738 /* Character-ipad.png */,
 				0CCC527216ADF3AE00E9A397 /* Character.plist */,
 				0CCC527316ADF3AE00E9A397 /* Character.png */,
@@ -799,6 +796,8 @@
 				0C22363516E5402F000A2738 /* Control-ipad.png */,
 				0CB2ACEE16C3E3790094AFFA /* Control.plist */,
 				0CB2ACEF16C3E3790094AFFA /* Control.png */,
+				0C853D3217881F5E00A723B3 /* EnemyTile.png */,
+				0C853D2F178809DF00A723B3 /* Event.png */,
 				0C22363E16E540C4000A2738 /* Font-ipad.png */,
 				0C90F1D116D88ACE008D2C2E /* Font.plist */,
 				0C90F1D216D88ACE008D2C2E /* Font.png */,
@@ -806,6 +805,7 @@
 				0C5AD1F916EE714500F69D63 /* HowTo-ipad.png */,
 				0C5AD1FA16EE714500F69D63 /* HowTo.plist */,
 				0C5AD1FB16EE714500F69D63 /* HowTo.png */,
+				0C6FCE5717800E6100D9D343 /* Stage_01.tmx */,
 			);
 			name = Image;
 			sourceTree = "<group>";
