@@ -33,10 +33,19 @@
  AKEnemyのテストクラスを定義する
  */
 #import <SenTestingKit/SenTestingKit.h>
+#import "AKPlayData.h"
 #import "AKEnemy.h"
+#import "ccMacros.h"
 
 // AKEnemyのテストクラス
-@interface AKEnemyTests : SenTestCase
+@interface AKEnemyTests : SenTestCase<CCDirectorDelegate> {
+    /// Main window
+	UIWindow *window_;
+    /// Navigation controller
+	UINavigationController *navController_;
+    /// Director
+	CCDirectorIOS	*director_;							// weak ref
+}
 
 - (void)testGetBlockAtFeetAtX_1;
 

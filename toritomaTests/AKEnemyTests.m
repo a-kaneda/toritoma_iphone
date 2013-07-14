@@ -28,12 +28,48 @@
  */
 
 #import "AKEnemyTests.h"
+#import "ccMacros.h"
 
 @implementation AKEnemyTests
 
+
+- (void)setUp
+{
+    [super setUp];
+	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	director_ = (CCDirectorIOS*)[CCDirector sharedDirector];
+	[director_ setDisplayStats:NO];
+	[director_ setAnimationInterval:1.0/60];
+	CCGLView *__glView = [CCGLView viewWithFrame:[window_ bounds]
+                                     pixelFormat:kEAGLColorFormatRGB565
+                                     depthFormat:0 
+                              preserveBackbuffer:NO
+                                      sharegroup:nil
+                                   multiSampling:NO
+                                 numberOfSamples:0
+                          ];
+	[director_ setView:__glView];
+	[director_ setDelegate:self];
+	director_.wantsFullScreenLayout = YES;
+	if( ! [director_ enableRetinaDisplay:NO] )
+		CCLOG(@"Retina Display Not supported");
+	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
+	navController_.navigationBarHidden = YES;
+	[window_ addSubview:navController_.view];
+	[window_ makeKeyAndVisible];
+}
+
+- (void)tearDown
+{
+    CC_DIRECTOR_END();
+    [super tearDown];
+}
+
 - (void)testGetBlockAtFeetAtX_1
 {
+    AKPlayData *data = [[[AKPlayData alloc] initWithScene:nil] autorelease];
     
+    AKEnemy *enemy = [[[AKEnemy alloc] init] autorelease];
 }
 
 @end
