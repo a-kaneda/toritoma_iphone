@@ -27,7 +27,6 @@
 		0C6FCE5B17800EA000D9D343 /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C6FCE5917800EA000D9D343 /* Back.png */; };
 		0C7B9E8D16FF23ED00DABA55 /* libAdapterIAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C7B9E8C16FF23ED00DABA55 /* libAdapterIAd.a */; };
 		0C7B9E9016FF243500DABA55 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C7B9E8E16FF241A00DABA55 /* iAd.framework */; };
-		0C7E06CB16C9970C0044BF42 /* AKBack.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7E06CA16C9970C0044BF42 /* AKBack.m */; };
 		0C7E06D216CD81930044BF42 /* stage_2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06CE16CD81930044BF42 /* stage_2.txt */; };
 		0C7E06D316CD81930044BF42 /* stage_3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06CF16CD81930044BF42 /* stage_3.txt */; };
 		0C7E06D416CD81930044BF42 /* stage_4.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C7E06D016CD81930044BF42 /* stage_4.txt */; };
@@ -54,6 +53,7 @@
 		0CA5CADB1792358E0043FD72 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD2CAF9169922AE00088557 /* Foundation.framework */; };
 		0CA5CAE11792358E0043FD72 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0CA5CADF1792358E0043FD72 /* InfoPlist.strings */; };
 		0CA5CAEB17923C100043FD72 /* AKEnemyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA5CAEA17923C100043FD72 /* AKEnemyTests.m */; };
+		0CA5CAEF17926CDF0043FD72 /* AKTileMapEventParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA5CAEE17926CDF0043FD72 /* AKTileMapEventParameter.m */; };
 		0CABC16716BE41CC00AFFE1B /* AKPlayerShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */; };
 		0CB2ACE216BF14600094AFFA /* AKChickenGauge.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE116BF14600094AFFA /* AKChickenGauge.m */; };
 		0CB2ACE516C068190094AFFA /* ChickenGauge_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE316C068190094AFFA /* ChickenGauge_01.png */; };
@@ -251,8 +251,6 @@
 		0C6FCE5917800EA000D9D343 /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Back.png; path = Resources/Image/Back.png; sourceTree = "<group>"; };
 		0C7B9E8C16FF23ED00DABA55 /* libAdapterIAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdapterIAd.a; sourceTree = "<group>"; };
 		0C7B9E8E16FF241A00DABA55 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		0C7E06C916C9970C0044BF42 /* AKBack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKBack.h; sourceTree = "<group>"; };
-		0C7E06CA16C9970C0044BF42 /* AKBack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKBack.m; sourceTree = "<group>"; };
 		0C7E06CE16CD81930044BF42 /* stage_2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_2.txt; path = Resources/Script/stage_2.txt; sourceTree = "<group>"; };
 		0C7E06CF16CD81930044BF42 /* stage_3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_3.txt; path = Resources/Script/stage_3.txt; sourceTree = "<group>"; };
 		0C7E06D016CD81930044BF42 /* stage_4.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_4.txt; path = Resources/Script/stage_4.txt; sourceTree = "<group>"; };
@@ -301,6 +299,9 @@
 		0CA5CAE51792358E0043FD72 /* toritomaTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "toritomaTests-Prefix.pch"; sourceTree = "<group>"; };
 		0CA5CAE917923C100043FD72 /* AKEnemyTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemyTests.h; sourceTree = "<group>"; };
 		0CA5CAEA17923C100043FD72 /* AKEnemyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemyTests.m; sourceTree = "<group>"; };
+		0CA5CAEC179263D90043FD72 /* AKPlayDataInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKPlayDataInterface.h; sourceTree = "<group>"; };
+		0CA5CAED17926CDE0043FD72 /* AKTileMapEventParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTileMapEventParameter.h; sourceTree = "<group>"; };
+		0CA5CAEE17926CDF0043FD72 /* AKTileMapEventParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTileMapEventParameter.m; sourceTree = "<group>"; };
 		0CABC16516BE41CC00AFFE1B /* AKPlayerShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayerShot.h; sourceTree = "<group>"; };
 		0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayerShot.m; sourceTree = "<group>"; };
 		0CB2ACE016BF14600094AFFA /* AKChickenGauge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKChickenGauge.h; sourceTree = "<group>"; };
@@ -723,9 +724,9 @@
 		0CA5CADC1792358E0043FD72 /* toritomaTests */ = {
 			isa = PBXGroup;
 			children = (
-				0CA5CADD1792358E0043FD72 /* Supporting Files */,
 				0CA5CAE917923C100043FD72 /* AKEnemyTests.h */,
 				0CA5CAEA17923C100043FD72 /* AKEnemyTests.m */,
+				0CA5CADD1792358E0043FD72 /* Supporting Files */,
 			);
 			path = toritomaTests;
 			sourceTree = "<group>";
@@ -756,8 +757,6 @@
 		0CCA883F1699603700EB243F /* PlayingScene */ = {
 			isa = PBXGroup;
 			children = (
-				0C7E06C916C9970C0044BF42 /* AKBack.h */,
-				0C7E06CA16C9970C0044BF42 /* AKBack.m */,
 				0CB2ACF216C73AAF0094AFFA /* AKBlock.h */,
 				0CB2ACF316C73AAF0094AFFA /* AKBlock.m */,
 				0CCC523516A29BFE00E9A397 /* AKCharacter.h */,
@@ -780,6 +779,7 @@
 				0CB2ACE816C221FC0094AFFA /* AKOption.m */,
 				0CCA88441699665D00EB243F /* AKPlayData.h */,
 				0CCA88451699665D00EB243F /* AKPlayData.m */,
+				0CA5CAEC179263D90043FD72 /* AKPlayDataInterface.h */,
 				0CCC524216A348AB00E9A397 /* AKPlayer.h */,
 				0CCC524316A348AB00E9A397 /* AKPlayer.m */,
 				0CABC16516BE41CC00AFFE1B /* AKPlayerShot.h */,
@@ -790,6 +790,8 @@
 				0C61A3B316D9FA54008ADA0E /* AKPlayingSceneIF.m */,
 				0CCC525A16A4A2B200E9A397 /* AKTileMap.h */,
 				0CCC525B16A4A2B200E9A397 /* AKTileMap.m */,
+				0CA5CAED17926CDE0043FD72 /* AKTileMapEventParameter.h */,
+				0CA5CAEE17926CDF0043FD72 /* AKTileMapEventParameter.m */,
 			);
 			path = PlayingScene;
 			sourceTree = "<group>";
@@ -1613,7 +1615,6 @@
 				0CB2ACE216BF14600094AFFA /* AKChickenGauge.m in Sources */,
 				0CB2ACE916C221FC0094AFFA /* AKOption.m in Sources */,
 				0CB2ACF416C73AB00094AFFA /* AKBlock.m in Sources */,
-				0C7E06CB16C9970C0044BF42 /* AKBack.m in Sources */,
 				0CE6278F16D41E72008CDCC2 /* AKLogNoDef.m in Sources */,
 				0C90F1D716D88CA9008D2C2E /* AKLife.m in Sources */,
 				0C61A3B416D9FA54008ADA0E /* AKPlayingSceneIF.m in Sources */,
@@ -1626,6 +1627,7 @@
 				0CB7A09816F56FDC00C019C2 /* AKToritoma.m in Sources */,
 				0CE092C916F672D800EE4CD6 /* AKTwitterHelper.m in Sources */,
 				0CA41FC316F9BD2D00087979 /* AKAppBankNetworkBanner.m in Sources */,
+				0CA5CAEF17926CDF0043FD72 /* AKTileMapEventParameter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

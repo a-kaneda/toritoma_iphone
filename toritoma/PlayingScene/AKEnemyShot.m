@@ -64,8 +64,9 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
  
  生成時に指定されたセレクタを呼び出す。
  @param dt フレーム更新間隔
+ @param data ゲームデータ
  */
-- (void)action:(ccTime)dt
+- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
 {
     NSNumber *objdt = NULL;     // フレーム更新間隔(オブジェクト版)
     
@@ -79,7 +80,7 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
     objdt = [NSNumber numberWithFloat:dt];
     
     // 敵弾種別ごとの処理を実行
-    [self performSelector:action_ withObject:objdt];
+    [self performSelector:action_ withObject:objdt withObject:data];
 }
 
 /*!
@@ -218,11 +219,11 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
 {
     switch (type) {
         case 1:
-            return @selector(action_01:);
+            return @selector(action_01:data:);
             
         default:
             NSAssert(NO, @"不正な種別");
-            return @selector(action_01:);
+            return @selector(action_01:data:);
     }
 }
 
@@ -231,8 +232,9 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
  
  スピード一定のまま進めるため、無処理。
  @param dt フレーム更新間隔
+ @param data ゲームデータ
  */
-- (void)action_01:(ccTime)dt
+- (void)action_01:(ccTime)dt data:(id<AKPlayDataInterface>)data
 {
 }
 

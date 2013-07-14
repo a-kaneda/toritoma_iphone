@@ -34,7 +34,6 @@
  */
 
 #import "AKCharacter.h"
-#import "AKPlayData.h"
 
 /// デフォルトアニメーション間隔
 static const float kAKDefaultAnimationInterval = 0.2f;
@@ -187,8 +186,9 @@ static NSMutableString *imageFileName_ = nil;
  速度によって位置を移動する。
  アニメーションを行う。
  @param dt フレーム更新間隔
+ @param data ゲームデータ
  */
-- (void)move:(ccTime)dt
+- (void)move:(ccTime)dt data:(id<AKPlayDataInterface>)data
 {
     // 画面に配置されていない場合は無処理
     if (!self.isStaged) {
@@ -197,12 +197,12 @@ static NSMutableString *imageFileName_ = nil;
     
     // HPが0になった場合は破壊処理を行う
     if (self.hitPoint <= 0) {
-        [self destroy];
+        [self destroy:data];
         return;
     }
     
     // 画面外に出た場合は削除する
-    if ([self isOutOfStage]) {
+    if ([self isOutOfStage:data]) {
 
         // ステージ配置フラグを落とす
         self.isStaged = NO;
@@ -217,12 +217,12 @@ static NSMutableString *imageFileName_ = nil;
     self.prevPositionX = self.positionX;
     self.prevPositionY = self.positionY;
     
-    AKLog(kAKLogCharacter_2, @"scroll=(%f, %f)", [AKPlayData sharedInstance].scrollSpeedX, [AKPlayData sharedInstance].scrollSpeedY);
+    AKLog(kAKLogCharacter_2, @"scroll=(%f, %f)", data.scrollSpeedX, data.scrollSpeedY);
             
     // 座標の移動
     // 画面スクロールの影響を受ける場合は画面スクロール分も移動する
-    self.positionX += (self.speedX * dt) - ([AKPlayData sharedInstance].scrollSpeedX * dt * self.scrollSpeed);
-    self.positionY += (self.speedY * dt) - ([AKPlayData sharedInstance].scrollSpeedY * dt * self.scrollSpeed);
+    self.positionX += (self.speedX * dt) - (data.scrollSpeedX * dt * self.scrollSpeed);
+    self.positionY += (self.speedY * dt) - (data.scrollSpeedY * dt * self.scrollSpeed);
         
     // 障害物との衝突判定を行う
     switch (self.blockHitAction) {
@@ -231,13 +231,15 @@ static NSMutableString *imageFileName_ = nil;
             break;
             
         case kAKBlockHitMove:       // 移動
-            [self checkHit:[[AKPlayData sharedInstance].blockPool.pool objectEnumerator]
-                      func:@selector(moveOfBlockHit:)];
+            [self checkHit:[data.blocks objectEnumerator]
+                      data:data
+                      func:@selector(moveOfBlockHit:data:)];
             break;
             
         case kAKBlockHitDisappear:  // 消滅
-            [self checkHit:[[AKPlayData sharedInstance].blockPool.pool objectEnumerator]
-                      func:@selector(disappearOfBlockHit:)];
+            [self checkHit:[data.blocks objectEnumerator]
+                      data:data
+                      func:@selector(disappearOfBlockHit:data:)];
             break;
             
         default:
@@ -301,7 +303,7 @@ static NSMutableString *imageFileName_ = nil;
     }
     
     // キャラクター固有の動作を行う
-    [self action:dt];
+    [self action:dt data:data];
 }
 
 /*!
@@ -309,8 +311,9 @@ static NSMutableString *imageFileName_ = nil;
 
  キャラクター種別ごとの動作を行う。
  @param dt フレーム更新間隔
+ @param data ゲームデータ
  */
-- (void)action:(ccTime)dt
+- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
 {
     // 派生クラスで動作を定義する
 }
@@ -319,8 +322,9 @@ static NSMutableString *imageFileName_ = nil;
  @brief 破壊処理
 
  HPが0になったときの処理
+ @param data ゲームデータ
  */
-- (void)destroy
+- (void)destroy:(id<AKPlayDataInterface>)data
 {
     // ステージ配置フラグを落とす
     self.isStaged = NO;
@@ -335,10 +339,11 @@ static NSMutableString *imageFileName_ = nil;
  
  衝突判定を行う。衝突時にどのような処理を行うかをパラメータで指定する。
  @param characters 判定対象のキャラクター群
+ @param data ゲームデータ
  @param func 衝突時処理
  @return 衝突したかどうか
  */
-- (BOOL)checkHit:(const NSEnumerator *)characters func:(SEL)func
+- (BOOL)checkHit:(const NSEnumerator *)characters data:(id<AKPlayDataInterface>)data func:(SEL)func
 {
     // 画面に配置されていない場合は処理しない
     if (!self.isStaged) {
@@ -384,7 +389,7 @@ static NSMutableString *imageFileName_ = nil;
             
             // 衝突処理を行う
             if (func != NULL) {
-                [self performSelector:func withObject:target];
+                [self performSelector:func withObject:target withObject:data];
             }
             
             AKLog(kAKLogCharacter_3, @"self.hitPoint=%d, target.hitPoint=%d", self.hitPoint, target.hitPoint);
@@ -403,10 +408,11 @@ static NSMutableString *imageFileName_ = nil;
 
  キャラクターが衝突しているか調べ、衝突しているときはHPを減らす。
  @param characters 判定対象のキャラクター群
+ @param data ゲームデータ
  */
-- (void)checkHit:(const NSEnumerator *)characters
+- (void)checkHit:(const NSEnumerator *)characters data:(id<AKPlayDataInterface>)data
 {
-    [self checkHit:characters func:@selector(hit:)];
+    [self checkHit:characters data:data func:@selector(hit:data:)];
 }
 
 /*!
@@ -414,8 +420,9 @@ static NSMutableString *imageFileName_ = nil;
  
  衝突した時の処理、自分と相手のHPを減らす。
  @param character 衝突した相手
+ @param data ゲームデータ
  */
-- (void)hit:(AKCharacter *)character
+- (void)hit:(AKCharacter *)character data:(id<AKPlayDataInterface>)data
 {
     // 自分と相手のHPを衝突した相手の攻撃力分減らす
     self.hitPoint -= character.power;
@@ -428,8 +435,9 @@ static NSMutableString *imageFileName_ = nil;
  障害物との衝突時に行う移動処理。
  進行方向と反対方向へ移動して障害物の境界まで戻る。
  @param character 衝突した相手
+ @param data ゲームデータ
  */
-- (void)moveOfBlockHit:(AKCharacter *)character
+- (void)moveOfBlockHit:(AKCharacter *)character data:(id<AKPlayDataInterface>)data;
 {
     // x方向右に進んでいる時に衝突した場合
     if (self.positionX > self.prevPositionX &&
@@ -503,8 +511,9 @@ static NSMutableString *imageFileName_ = nil;
  
  障害物との衝突時に行う消滅処理。自分のHPを0にする。
  @param character 衝突した相手
+ @param data ゲームデータ
  */
-- (void)disappearOfBlockHit:(AKCharacter *)character
+- (void)disappearOfBlockHit:(AKCharacter *)character data:(id<AKPlayDataInterface>)data;
 {
     self.hitPoint = 0.0;
 }
@@ -515,28 +524,29 @@ static NSMutableString *imageFileName_ = nil;
  キャラクターが画面範囲外に配置されているか調べる。
  座標が範囲外で、外側に向かって移動している場合は範囲外とみなす。
  範囲内に向かって移動している場合は範囲内とみなす。
- @return 範囲外に出ている場合はTRUE、範囲内にある場合はFALSE
+ @param data ゲームデータ
+ @return 範囲外に出ている場合はYES、範囲内にある場合はNO
  */
-- (BOOL)isOutOfStage
+- (BOOL)isOutOfStage:(id<AKPlayDataInterface>)data
 {
     // 表示範囲外でキャラクターを残す範囲
     const float kAKBorder = 50.0f;
     
     if ((self.positionX < -kAKBorder &&
-         (self.speedX - [AKPlayData sharedInstance].scrollSpeedX * self.scrollSpeed) < 0.0f) ||
+         (self.speedX - data.scrollSpeedX * self.scrollSpeed) < 0.0f) ||
         (self.positionX > [AKScreenSize stageSize].width + kAKBorder &&
-         (self.speedX - [AKPlayData sharedInstance].scrollSpeedX * self.scrollSpeed) > 0.0f) ||
+         (self.speedX - data.scrollSpeedX * self.scrollSpeed) > 0.0f) ||
         (self.positionY < -kAKBorder &&
-         (self.speedY - [AKPlayData sharedInstance].scrollSpeedY * self.scrollSpeed) < 0.0f) ||
+         (self.speedY - data.scrollSpeedY * self.scrollSpeed) < 0.0f) ||
         (self.positionY > [AKScreenSize stageSize].height + kAKBorder &&
-         (self.speedY - [AKPlayData sharedInstance].scrollSpeedY * self.scrollSpeed) > 0.0f)) {
+         (self.speedY - data.scrollSpeedY * self.scrollSpeed) > 0.0f)) {
         
         AKLog(kAKLogCharacter_1, @"画面外に出たため削除");
         
-        return TRUE;
+        return YES;
     }
     else {
-        return FALSE;
+        return NO;
     }
 }
 @end

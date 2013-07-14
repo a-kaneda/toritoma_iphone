@@ -38,7 +38,6 @@
 #import "AKEnemy.h"
 #import "AKEffect.h"
 #import "AKBlock.h"
-#import "AKBack.h"
 #import "AKHiScoreFile.h"
 
 /// 自機初期位置x座標
@@ -113,31 +112,6 @@ enum AKCharacterPositionZ {
 @synthesize shield = shield_;
 @synthesize scrollSpeedX = scrollSpeedX_;
 @synthesize scrollSpeedY = scrollSpeedY_;
-
-/*!
- @brief インスタンス取得
- 
- インスタンスを取得する。
- 現在のシーンがプレイシーン以外の場合はnilを返す。
- @return ゲームデータクラスのインスタンス
- */
-+ (AKPlayData *)sharedInstance
-{
-    // 実行中のシーンを取得する
-    CCScene *scene = [[CCDirector sharedDirector] runningScene];
-    
-    // ゲームプレイシーンでゲームプレイ中の場合は一時停止状態にする
-    if ([scene isKindOfClass:[AKPlayingScene class]]) {
-        
-        // プレイデータクラスをシーンから取得して返す
-        return ((AKPlayingScene *)scene).data;
-    }
-    
-    // 現在実行中のシーンがゲームプレイシーンでない場合はエラー
-    AKLog(kAKLogPlayData_0, @"ゲームプレイ中以外にゲームシーンクラスの取得が行われた");
-    NSAssert(NO, @"ゲームプレイ中以外にゲームシーンクラスの取得が行われた");
-    return nil;
-}
 
 #pragma mark オブジェクト初期化
 
@@ -285,6 +259,28 @@ enum AKCharacterPositionZ {
 #pragma mark アクセサ
 
 /*!
+ @brief 自機の位置情報取得
+ 
+ 自機の位置情報を取得する。
+ @return 自機の位置情報
+ */
+- (CGPoint)playerPosition
+{
+    return ccp(self.player.positionX, self.player.positionY);
+}
+
+/*!
+ @brief 障害物キャラクター取得
+ 
+ 障害物キャラクターを取得する。
+ @return 障害物キャラクター
+ */
+- (NSArray *)blocks
+{
+    return self.blockPool.pool;
+}
+
+/*!
  @brief 残機設定
  
  残機を設定する。
@@ -334,10 +330,10 @@ enum AKCharacterPositionZ {
     stage_ = stage;
     
     // スクリプトファイルを読み込む
-    self.tileMap = [AKTileMap scriptWithStageNo:stage];
+    self.tileMap = [AKTileMap scriptWithStageNo:stage layer:self.scene.backgroundLayer];
     
     // 初期表示の1画面分の処理を行う
-    [self.tileMap update:0.0f];
+    [self.tileMap update:0.0f data:self];
 }
 
 /*!
@@ -480,29 +476,29 @@ enum AKCharacterPositionZ {
     }
     
     // マップを更新する
-    [self.tileMap update:dt];
+    [self.tileMap update:dt data:self];
     
     // 障害物を更新する
     for (AKBlock *block in [self.blockPool.pool objectEnumerator]) {
         if (block.isStaged) {
-            [block move:dt];
+            [block move:dt data:self];
         }
     }
     
     // 自機を更新する
-    [self.player move:dt];
+    [self.player move:dt data:self];
     
     // 自機弾を更新する
     for (AKPlayerShot *playerShot in [self.playerShotPool.pool objectEnumerator]) {
         if (playerShot.isStaged) {
-            [playerShot move:dt];
+            [playerShot move:dt data:self];
         }
     }
     
     // 反射弾を更新する
     for (AKEnemyShot *refrectedShot in [self.refrectedShotPool.pool objectEnumerator]) {
         if (refrectedShot.isStaged) {
-            [refrectedShot move:dt];
+            [refrectedShot move:dt data:self];
         }
     }
     
@@ -510,21 +506,21 @@ enum AKCharacterPositionZ {
     for (AKEnemy *enemy in [self.enemyPool.pool objectEnumerator]) {
         if (enemy.isStaged) {
             AKLog(kAKLogPlayData_2, @"enemy move start.");
-            [enemy move:dt];
+            [enemy move:dt data:self];
         }
     }
     
     // 敵弾を更新する
     for (AKEnemyShot *enemyShot in [self.enemyShotPool.pool objectEnumerator]) {
         if (enemyShot.isStaged) {
-            [enemyShot move:dt];
+            [enemyShot move:dt data:self];
         }
     }
     
     // 画面効果を更新する
     for (AKEffect *effect in [self.effectPool.pool objectEnumerator]) {
         if (effect.isStaged) {
-            [effect move:dt];
+            [effect move:dt data:self];
         }
     }
     
@@ -533,16 +529,16 @@ enum AKCharacterPositionZ {
         if (block.isStaged) {
             
             // 自機との当たり判定を行う
-            [block checkHit:[NSArray arrayWithObject:self.player]];
+            [block checkHit:[NSArray arrayWithObject:self.player] data:self];
             
             // 自機弾との当たり判定を行う
-            [block checkHit:[self.playerShotPool.pool objectEnumerator]];
+            [block checkHit:[self.playerShotPool.pool objectEnumerator] data:self];
             
             // 敵との当たり判定を行う
-            [block checkHit:[self.enemyPool.pool objectEnumerator]];
+            [block checkHit:[self.enemyPool.pool objectEnumerator] data:self];
             
             // 敵弾との当たり判定を行う
-            [block checkHit:[self.enemyShotPool.pool objectEnumerator]];
+            [block checkHit:[self.enemyShotPool.pool objectEnumerator] data:self];
         }
     }
     
@@ -550,10 +546,10 @@ enum AKCharacterPositionZ {
     for (AKEnemy *enemy in [self.enemyPool.pool objectEnumerator]) {
         
         // 自機弾との当たり判定を行う
-        [enemy checkHit:[self.playerShotPool.pool objectEnumerator]];
+        [enemy checkHit:[self.playerShotPool.pool objectEnumerator] data:self];
         
         // 反射弾との当たり判定を行う
-        [enemy checkHit:[self.refrectedShotPool.pool objectEnumerator]];
+        [enemy checkHit:[self.refrectedShotPool.pool objectEnumerator] data:self];
     }
     
     // シールド有効時、反射の判定を行う
@@ -568,7 +564,7 @@ enum AKCharacterPositionZ {
             AKLog(kAKLogPlayData_1, @"反射判定");
             
             // 敵弾との当たり判定を行う
-            [option checkHit:[self.enemyShotPool.pool objectEnumerator]];
+            [option checkHit:[self.enemyShotPool.pool objectEnumerator] data:self];
             
             // 次のオプションを取得する
             option = option.next;
@@ -582,10 +578,10 @@ enum AKCharacterPositionZ {
         [self.player graze:[self.enemyShotPool.pool objectEnumerator]];
         
         // 自機と敵の当たり判定処理を行う
-        [self.player checkHit:[self.enemyPool.pool objectEnumerator]];
+        [self.player checkHit:[self.enemyPool.pool objectEnumerator] data:self];
         
         // 自機と敵弾の当たり判定処理を行う
-        [self.player checkHit:[self.enemyShotPool.pool objectEnumerator]];
+        [self.player checkHit:[self.enemyShotPool.pool objectEnumerator] data:self];
     }
     
     // シールドが有効な場合はチキンゲージを減少させる
@@ -625,7 +621,8 @@ enum AKCharacterPositionZ {
                                             kAKStageSize.width)
                             y:AKRangeCheckF(self.player.positionY + dy,
                                             0.0f,
-                                            kAKStageSize.height)];
+                                            kAKStageSize.height)
+                         data:self];
 }
 
 /*!
@@ -722,6 +719,22 @@ enum AKCharacterPositionZ {
 }
 
 #pragma mark キャラクタークラスからのデータ操作用
+
+/*!
+ @brief デバイス座標からタイル座標の取得
+ 
+ デバイススクリーン座標からマップ座標へ、マップ座標からタイルの座標へ変換する。
+ @param devicePosition デバイススクリーン座標
+ @return タイルの座標
+ */
+- (CGPoint)tilePositionFromDevicePosition:(CGPoint)devicePosition
+{
+    // デバイススクリーン座標からマップ座標を取得する
+    CGPoint mapPosition = [self.tileMap mapPositionFromDevicePosition:devicePosition];
+    
+    // マップ座標からタイルの座標を取得する
+    return [self.tileMap tilePositionFromMapPosition:mapPosition];
+}
 
 /*!
  @brief 自機弾生成
@@ -949,5 +962,16 @@ enum AKCharacterPositionZ {
         // ハイスコアにスコアの値を設定する
         hiScore_ = score_;
     }
+}
+
+/*!
+ @brief 進行度を進める
+ 
+ 進行度を進める。
+ @param progress 進行度
+ */
+- (void)addProgress:(NSInteger)progress
+{
+    self.tileMap.progress += progress;
 }
 @end

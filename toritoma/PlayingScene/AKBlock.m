@@ -34,7 +34,6 @@
  */
 
 #import "AKBlock.h"
-#import "AKPlayData.h"
 
 /// 画像名のフォーマット
 static NSString *kAKImageNameFormat = @"Block_%02d";
@@ -108,8 +107,9 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
  
  衝突した時の処理、
  @param character 衝突した相手
+ @param data ゲームデータ
  */
-- (void)hit:(AKCharacter *)character
+- (void)hit:(AKCharacter *)character data:(id<AKPlayDataInterface>)data
 {
     // 相手の障害物衝突時の処理によって処理内容を分岐する
     switch (character.blockHitAction) {
@@ -118,7 +118,7 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
             
         case kAKBlockHitMove:       // 移動
         case kAKBlockHitPlayer:     // 自機
-            [self pushCharacter:character];
+            [self pushCharacter:character data:data];
             break;
             
         case kAKBlockHitDisappear:  // 消滅
@@ -136,8 +136,9 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
  ぶつかったキャラクターを押し動かす。
  移動先の座標は以下の優先度で設定し、衝突判定で問題なかった時点で採用する。
  @param character 衝突した相手
+ @param data ゲームデータ
  */
-- (void)pushCharacter:(AKCharacter *)character
+- (void)pushCharacter:(AKCharacter *)character data:(id<AKPlayDataInterface>)data
 {
     AKLog(kAKLogBlock_1, @"障害物とキャラクターの衝突");
     
@@ -154,8 +155,8 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
     float movePosY[4];
     
     // スクロール速度を取得する
-    float scrollX = [AKPlayData sharedInstance].scrollSpeedX;
-    float scrollY = [AKPlayData sharedInstance].scrollSpeedY;
+    float scrollX = data.scrollSpeedX;
+    float scrollY = data.scrollSpeedY;
     
     // 移動の優先度は
     //   1.スクロール方向
@@ -256,7 +257,7 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
         }
         
         // 衝突判定を行う
-        if (![character checkHit:[[AKPlayData sharedInstance].blockPool.pool objectEnumerator] func:NULL]) {
+        if (![character checkHit:[data.blocks objectEnumerator] data:data func:NULL]) {
             
             // 衝突しなかった場合はこの値を採用して処理を終了する
             return;
@@ -286,13 +287,11 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
  実数計算誤差によるタイル間の隙間の発生を防止するため、
  タイルマップの位置を基準として画像表示位置を設定し直す。
  @param dt フレーム更新間隔
+ @param data ゲームデータ
  */
-- (void)action:(ccTime)dt
+- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
 {
-    // タイルマップを取得する
-    AKTileMap *tileMap = [AKPlayData sharedInstance].tileMap;
-    
     // デバイススクリーン座標からマップ座標へ、マップ座標からタイルの座標へ変換する
-    self.image.position = [tileMap tilePositionFromMapPosition:[tileMap mapPositionFromDevicePosition:self.image.position]];
+    self.image.position = [data tilePositionFromDevicePosition:self.image.position];
 }
 @end

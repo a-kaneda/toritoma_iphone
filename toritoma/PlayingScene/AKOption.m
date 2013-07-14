@@ -34,7 +34,6 @@
  */
 
 #import "AKOption.h"
-#import "AKPlayData.h"
 
 /// オプションの画像ファイル名
 static NSString *kAKOptionImageFile = @"Option_%02d";
@@ -170,8 +169,9 @@ static const NSInteger kAKOptionSize = 16;
  速度によって位置を移動する。オプションの表示位置は固定とする。
  次のオプションの移動を行う。
  @param dt フレーム更新間隔
+ @param data ゲームデータ
  */
-- (void)action:(ccTime)dt
+- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
 {
     // 弾発射までの時間をカウントする
     shootTime_ -= dt;
@@ -180,7 +180,7 @@ static const NSInteger kAKOptionSize = 16;
     if (shootTime_ < 0.0f) {
         
         // 自機弾を生成する
-        [[AKPlayData sharedInstance] createPlayerShotAtX:self.positionX y:self.positionY];
+        [data createPlayerShotAtX:self.positionX y:self.positionY];
         
         // 弾発射までの残り時間をリセットする
         shootTime_ = kAKOptionShotInterval;
@@ -188,7 +188,7 @@ static const NSInteger kAKOptionSize = 16;
     
     // 次のオプションの移動を行う
     if (self.next != nil) {
-        [self.next move:dt];
+        [self.next move:dt data:data];
     }
 }
 
@@ -198,8 +198,9 @@ static const NSInteger kAKOptionSize = 16;
  衝突した時の処理。
  反射弾を作成後、相手のHPを0にする。
  @param character 衝突した相手
+ @param data ゲームデータ
  */
-- (void)hit:(AKCharacter *)character
+- (void)hit:(AKCharacter *)character data:(id<AKPlayDataInterface>)data
 {
     AKLog(kAKLogOption_1, @"反射処理開始");
     
@@ -207,7 +208,7 @@ static const NSInteger kAKOptionSize = 16;
     NSAssert([character isKindOfClass:[AKEnemyShot class]], @"不正なオブジェクトと衝突");
     
     // 反射弾を作成する
-    [[AKPlayData sharedInstance] createReflectiedShot:(AKEnemyShot *)character];
+    [data createReflectiedShot:(AKEnemyShot *)character];
     
     // 相手のHPを0にする
     character.hitPoint = 0;

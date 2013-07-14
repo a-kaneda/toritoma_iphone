@@ -27,59 +27,57 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
- @file AKEnemyShot.h
- @brief 敵弾クラス定義
+ @file AKPlayDataInterface.h
+ @brief ゲームデータインターフェースプロトコル
  
- 敵の発射する弾のクラスを定義する。
+ キャラクターやタイルマップのイベント処理がゲームデータにアクセスする
+ インターフェースのプロトコルを定義する。
  */
 
-#import "AKCharacter.h"
+#import "AKToritoma.h"
 
-/// 敵弾画像定義
-struct AKEnemyShotImageDef {
-    NSInteger fileNo;           ///< ファイル名の番号
-    NSInteger animationFrame;   ///< アニメーションフレーム数
-    float animationInterval;    ///< アニメーション更新間隔
-};
+@class AKEnemyShot;
 
-/// 敵弾種別定義
-struct AKEnemyShotDef {
-    NSInteger action;       ///< 動作処理の種別
-    NSInteger image;        ///< 画像ID
-    NSInteger hitWidth;     ///< 当たり判定の幅
-    NSInteger hitHeight;    ///< 当たり判定の高さ
-    NSInteger grazePoint;   ///< かすりポイント
-};
+/*!
+ @brief ゲームデータインターフェースプロトコル
+ 
+ キャラクターやタイルマップのイベント処理がゲームデータにアクセスする
+ インターフェースのプロトコル。
+ */
+@protocol AKPlayDataInterface <NSObject>
 
-// 敵の発射する弾のクラス
-@interface AKEnemyShot : AKCharacter {
-    /// 動作開始からの経過時間(各敵種別で使用)
-    ccTime time_;
-    /// 動作状態(各敵種別で使用)
-    NSInteger state_;
-    /// 動作処理のセレクタ
-    SEL action_;
-    /// かすりポイント
-    float grazePoint_;
-}
+/// x軸方向のスクロールスピード
+@property (nonatomic)float scrollSpeedX;
+/// y軸方向のスクロールスピード
+@property (nonatomic)float scrollSpeedY;
+/// 障害物キャラクター
+@property (nonatomic, readonly)NSArray *blocks;
+/// 自機の位置情報
+@property (nonatomic, readonly)CGPoint playerPosition;
 
-/// 動作処理のセレクタ
-@property (nonatomic)SEL action;
-/// かすりポイント
-@property (nonatomic)float grazePoint;
-
-// 敵弾生成
+/// デバイス座標からタイル座標の取得
+- (CGPoint)tilePositionFromDevicePosition:(CGPoint)devicePosition;
+/// 自機弾生成
+- (void)createPlayerShotAtX:(NSInteger)x y:(NSInteger)y;
+/// 反射弾生成
+- (void)createReflectiedShot:(AKEnemyShot *)enemyShot;
+/// 敵生成
+- (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y progress:(NSInteger)progress;
+/// 敵弾生成
 - (void)createEnemyShotType:(NSInteger)type
                           x:(NSInteger)x
                           y:(NSInteger)y
                       angle:(float)angle
-                      speed:(float)speed
-                     parent:(CCNode *)parent;
-// 反射弾生成
-- (void)createReflectedShot:(AKEnemyShot *)base parent:(CCNode *)parent;
-// 動作処理取得
-- (SEL)actionSelector:(NSInteger)type;
-// 標準弾動作
-- (void)action_01:(ccTime)dt data:(id<AKPlayDataInterface>)data;
+                      speed:(float)speed;
+/// 画面効果生成
+- (void)createEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
+/// 障害物生成
+- (void)createBlock:(NSInteger)type x:(float)x y:(float)y;
+/// 失敗時処理
+- (void)miss;
+/// 進行度を進める
+- (void)addProgress:(NSInteger)progress;
+/// スコア加算
+- (void)addScore:(NSInteger)score;
 
 @end

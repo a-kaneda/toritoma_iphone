@@ -34,7 +34,6 @@
  */
 
 #import "AKPlayer.h"
-#import "AKPlayData.h"
 #import "AKEnemyShot.h"
 
 /// 自機のサイズ
@@ -120,8 +119,9 @@ static const NSInteger kAKMaxOptionCount = 3;
  速度によって位置を移動する。自機の表示位置は固定とする。
  オプションの移動も行う。
  @param dt フレーム更新間隔
+ @param data ゲームデータ
  */
-- (void)action:(ccTime)dt
+- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
 {
     // 無敵状態の時は無敵時間をカウントする
     if (isInvincible_) {
@@ -140,7 +140,7 @@ static const NSInteger kAKMaxOptionCount = 3;
     if (shootTime_ < 0.0f) {
         
         // 自機弾を生成する
-        [[AKPlayData sharedInstance] createPlayerShotAtX:self.positionX y:self.positionY];
+        [data createPlayerShotAtX:self.positionX y:self.positionY];
         
         // 弾発射までの残り時間をリセットする
         shootTime_ = kAKPlayerShotInterval;
@@ -148,7 +148,7 @@ static const NSInteger kAKMaxOptionCount = 3;
     
     // オプションの移動を行う
     if (self.option) {
-        [self.option move:dt];
+        [self.option move:dt data:data];
     }
 }
 
@@ -156,13 +156,14 @@ static const NSInteger kAKMaxOptionCount = 3;
  @brief 破壊処理
  
  HPが0になったときに爆発エフェクトを生成する。
+ @param ゲームデータ
  */
-- (void)destroy
+- (void)destroy:(id<AKPlayDataInterface>)data
 {
     // TODO:破壊時の効果音を鳴らす
 
     // 画面効果を生成する
-    [[AKPlayData sharedInstance] createEffect:2 x:self.positionX y:self.positionY];
+    [data createEffect:2 x:self.positionX y:self.positionY];
     
     // 配置フラグを落とす
     self.isStaged = NO;
@@ -171,7 +172,7 @@ static const NSInteger kAKMaxOptionCount = 3;
     self.image.visible = NO;
     
     // 自機破壊時の処理を行う
-    [[AKPlayData sharedInstance] miss];
+    [data miss];
 }
 
 /*!
@@ -298,8 +299,9 @@ static const NSInteger kAKMaxOptionCount = 3;
  移動座標を設定する。オプションが付属している場合はオプションの移動も行う。
  @param x 移動先x座標
  @param y 移動先y座標
+ @param data ゲームデータ
  */
-- (void)setPositionX:(float)x y:(float)y
+- (void)setPositionX:(float)x y:(float)y data:(id<AKPlayDataInterface>)data
 {
     // オプションに自分の移動前の座標を通知する
     if (self.option != nil && self.option.isStaged) {
@@ -315,8 +317,9 @@ static const NSInteger kAKMaxOptionCount = 3;
     self.positionY = y;
     
     // 障害物との衝突判定を行う
-    [self checkHit:[[AKPlayData sharedInstance].blockPool.pool objectEnumerator]
-              func:@selector(moveOfBlockHit:)];
+    [self checkHit:[data.blocks objectEnumerator]
+              data:data
+              func:@selector(moveOfBlockHit:data:)];
 }
 
 /*!

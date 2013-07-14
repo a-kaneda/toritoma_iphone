@@ -34,7 +34,6 @@
  */
 
 #import "AKEnemy.h"
-#import "AKPlayData.h"
 
 /// 画像名のフォーマット
 static NSString *kAKImageNameFormat = @"Enemy_%02d";
@@ -101,8 +100,9 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
 
  生成時に指定されたセレクタを呼び出す。
  @param dt フレーム更新間隔
+ @param data ゲームデータ
  */
-- (void)action:(ccTime)dt
+- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
 {
     NSNumber *objdt = NULL;     // フレーム更新間隔(オブジェクト版)
     
@@ -113,37 +113,35 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     objdt = [NSNumber numberWithFloat:dt];
     
     // 敵種別ごとの処理を実行
-    [self performSelector:action_ withObject:objdt];
+    [self performSelector:action_ withObject:objdt withObject:data];
 }
 
 /*!
  @brief 破壊処理
 
  HPが0になったときに敵種別固有の破壊処理を呼び出す。
+ @param data ゲームデータ
  */
-- (void)destroy
+- (void)destroy:(id<AKPlayDataInterface>)data
 {
     // 破壊時の効果音を鳴らす
 //    [[SimpleAudioEngine sharedEngine] playEffect:kAKHitSE];
     
     // スコアを加算する
-    [[AKPlayData sharedInstance] addScore:score_];
-    
-    // タイルマップを取得する
-    AKTileMap *tileMap = [AKPlayData sharedInstance].tileMap;
+    [data addScore:score_];
     
     // 進行度を進める
-    tileMap.progress += progress_;
+    [data addProgress:progress_];
     
     // 敵種別ごとの処理を実行
-    [self performSelector:destroy_];
+    [self performSelector:destroy_ withObject:data];
     
     // 画像の解放
     [self.image removeFromParentAndCleanup:YES];
     self.image = nil;
     
     // スーパークラスの処理を行う
-    [super destroy];
+    [super destroy:data];
 }
 
 /*!
@@ -214,14 +212,14 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
 {
     switch (type) {
         case 1:
-            return @selector(action_01:);
+            return @selector(action_01:data:);
             
         case 2:
-            return @selector(action_02:);
+            return @selector(action_02:data:);
             
         default:
             NSAssert(NO, @"不正な種別");
-            return @selector(action_01:);
+            return @selector(action_01:data:);
     }
 }
 
@@ -236,11 +234,11 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
 {
     switch (type) {
         case 1:
-            return @selector(destroy_01);
+            return @selector(destroy_01:);
             
         default:
             NSAssert(NO, @"不正な種別");
-            return @selector(destroy_01);
+            return @selector(destroy_01:);
     }
 }
 
@@ -249,8 +247,9 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  
  まっすぐ進む。一定間隔で自機を狙う1-way弾発射。
  @param dt フレーム更新間隔
+ @param data ゲームデータ
  */
-- (void)action_01:(ccTime)dt
+- (void)action_01:(ccTime)dt data:(id<AKPlayDataInterface>)data
 {
     // 左へ直進する
     self.speedX = -120.0f;
@@ -260,7 +259,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     if (time_ > 1.0f) {
         
         // 弾を発射する
-        [self fireNWay:1 interval:0.0f speed:150.0f];
+        [self fireNWay:1 interval:0.0f speed:150.0f data:data];
         
         // 動作時間の初期化を行う
         time_ = 0.0f;
@@ -304,8 +303,9 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  一定時間経過後に左移動(天井)に遷移する。
  
  @param dt フレーム更新間隔
+ @param data ゲームデータ
  */
-- (void)action_02:(ccTime)dt
+- (void)action_02:(ccTime)dt data:(id<AKPlayDataInterface>)data
 {
     // 弾のスピード
     const float kAKShotSpeed = 150.0f;
@@ -345,7 +345,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
         case kAKStateInit:     // 初期状態
             
             // 逆さま判定を行う
-            [self checkReverse];
+            [self checkReverse:data.blocks];
             
              // 動作時間の初期化を行う
             time_ = 0.0f;
@@ -390,7 +390,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
         case kAKStateFireReverse:   // 弾発射(天井)
             
             // 自分より右側に自機がいれば左右反転する
-            if (self.positionX < [AKPlayData sharedInstance].player.positionX) {
+            if (self.positionX < data.playerPosition.x) {
                 self.image.flipX = YES;
             }
             else {
@@ -413,7 +413,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
                 else {
                     
                     // 弾を発射する
-                    [self fireNWay:1 interval:0.0f speed:kAKShotSpeed];
+                    [self fireNWay:1 interval:0.0f speed:kAKShotSpeed data:data];
                     
                     // 発射した弾をカウントする
                     work_++;
@@ -430,11 +430,11 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     }
     
     // スクロールに合わせて移動する
-    self.speedX -= [AKPlayData sharedInstance].scrollSpeedX;
-    self.speedY -= [AKPlayData sharedInstance].scrollSpeedY;
+    self.speedX -= data.scrollSpeedX;
+    self.speedY -= data.scrollSpeedY;
     
     // 障害物との衝突判定を行う
-    [self checkBlockPosition];
+    [self checkBlockPosition:data];
     
     AKLog(kAKLogEnemy_1, @"pos=(%f, %f)", self.positionX, self.positionY);
     AKLog(kAKLogEnemy_1, @"img=(%f, %f)", self.image.position.x, self.image.position.y);
@@ -444,13 +444,14 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  @brief 破壊処理1
  
  破壊エフェクトを発生させる。
+ @param data ゲームデータ
  */
-- (void)destroy_01
+- (void)destroy_01:(id<AKPlayDataInterface>)data
 {
     AKLog(kAKLogEnemy_1, @"start");
     
     // 画面効果を生成する
-    [[AKPlayData sharedInstance] createEffect:1 x:self.positionX y:self.positionY];
+    [data createEffect:1 x:self.positionX y:self.positionY];
 }
 
 /*!
@@ -460,17 +461,15 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  @param way 発射方向の数
  @param interval 弾の間隔
  @param speed 弾の速度
+ @param data ゲームデータ
  */
-- (void)fireNWay:(NSInteger)way interval:(float)interval speed:(float)speed
+- (void)fireNWay:(NSInteger)way interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data
 {
-    // 自機インスタンスを取得する
-    AKCharacter *player = [AKPlayData sharedInstance].player;
-    
     // 敵と自機の位置から角度を計算する
     float baseAnble = AKCalcDestAngle(self.positionX,
                                       self.positionY,
-                                      player.positionX,
-                                      player.positionY);
+                                      data.playerPosition.x,
+                                      data.playerPosition.y);
     
     // 発射角度を計算する
     NSArray *angleArray = AKCalcNWayAngle(way, baseAnble, interval);
@@ -478,11 +477,11 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     // 各弾を発射する
     for (NSNumber *angle in angleArray) {
         // 通常弾を生成する
-        [[AKPlayData sharedInstance] createEnemyShotType:kAKEnemyShotTypeNormal
-                                                    x:self.positionX
-                                                    y:self.positionY
-                                                angle:[angle floatValue]
-                                                speed:speed];
+        [data createEnemyShotType:kAKEnemyShotTypeNormal
+                                x:self.positionX
+                                y:self.positionY
+                            angle:[angle floatValue]
+                            speed:speed];
     }
 }
 
@@ -492,8 +491,9 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  上方向にある障害物と下方向にある障害物の近い方へ位置を移動する。
  上方向の方が近い場合は天井張り付き、下方向の方が近い場合は床に張り付きとする。
  存在しない場合は無限遠にあるものとして判定し、上下同じ場合は下側を優先する。
+ @param blocks 障害物
  */
-- (void)checkReverse
+- (void)checkReverse:(NSArray *)blocks
 {
     // 上方向距離と下方向距離の初期値を設定する
     float upDistance = FLT_MAX;
@@ -503,11 +503,8 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     float upPosition = self.image.contentSize.height / 2;
     float downPosition = self.image.contentSize.height / 2;
 
-    // 障害物を取得する
-    AKCharacterPool *blockPool = [AKPlayData sharedInstance].blockPool;
-    
     // 各障害物との距離を調べる
-    for (AKCharacter *block in [blockPool.pool objectEnumerator]) {
+    for (AKCharacter *block in [blocks objectEnumerator]) {
         
         // x軸方向に重なりがない場合は処理を飛ばす
         if (abs(self.positionX - block.positionX) > (self.image.contentSize.width + block.image.contentSize.width) / 2) {
@@ -553,8 +550,9 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  障害物との衝突判定を行う。
  移動先と移動元の段差が1/2ブロック以上ある場合は移動しない。
  左端の足元と右端の足元で障害物の高さが異なる場合は高い方（逆さまの場合は低い方）に合わせる。
+ @param data ゲームデータ
  */
-- (void)checkBlockPosition
+- (void)checkBlockPosition:(id<AKPlayDataInterface>)data
 {
     // 乗り越えることのできる高さ
     const NSInteger kAKHalfBlockSize = 17;
@@ -574,7 +572,8 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     // 左側の足元の障害物を取得する
     AKCharacter *leftBlock = [AKEnemy getBlockAtFeetAtX:left
                                                    from:top
-                                              isReverse:self.image.flipY];
+                                              isReverse:self.image.flipY
+                                                 blocks:data.blocks];
     
     // 右端の座標を計算する
     float right = self.positionX + self.image.contentSize.width / 2.0f;
@@ -582,7 +581,8 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     // 左側の足元の障害物を取得する
     AKCharacter *rightBlock = [AKEnemy getBlockAtFeetAtX:right
                                                     from:top
-                                               isReverse:self.image.flipY];
+                                               isReverse:self.image.flipY
+                                                  blocks:data.blocks];
     
     // 足元に障害物がない場合は移動はしない
     if (leftBlock == nil && rightBlock == nil) {
@@ -607,7 +607,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     else if (abs((leftBlock.positionY + leftBlock.height / 2.0f) - (rightBlock.positionY + rightBlock.height / 2.0f)) > kAKHalfBlockSize) {
         
         // 左向きに移動している場合は自分の左端を右側の障害物の左端に合わせる
-        if (self.speedX + [AKPlayData sharedInstance].scrollSpeedX > 0.0f) {
+        if (self.speedX + data.scrollSpeedX > 0.0f) {
             newX = rightBlock.positionX - rightBlock.width / 2.0f + self.image.contentSize.width / 2.0f;
             blockAtFeet = rightBlock;
         }
@@ -671,16 +671,14 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  @param x x座標
  @param top 頭の位置
  @param isReverse 逆さまになっているかどうか
+ @param blocks 障害物
  @return 足元の障害物
  */
-+ (AKCharacter *)getBlockAtFeetAtX:(float)x from:(float)top isReverse:(BOOL)isReverse
++ (AKCharacter *)getBlockAtFeetAtX:(float)x from:(float)top isReverse:(BOOL)isReverse blocks:(NSArray *)blocks
 {    
-    // 障害物を取得する
-    AKCharacterPool *blockPool = [AKPlayData sharedInstance].blockPool;
-    
     // 足元の障害物を探す
     AKCharacter *blockAtFeet = nil;
-    for (AKCharacter *block in [blockPool.pool objectEnumerator]) {
+    for (AKCharacter *block in [blocks objectEnumerator]) {
         
         // 配置されていない障害物は除外する
         if (!block.isStaged) {

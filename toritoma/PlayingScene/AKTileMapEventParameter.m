@@ -27,27 +27,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
- @file AKBack.h
- @brief 背景クラス
+ @file AKTileMapEventParameter.m
+ @brief タイルマップイベントパラメータクラス
  
- 背景を管理するクラスを定義する。
+ タイルマップイベント処理で使用するパラメータ。
  */
 
-#import "AKCharacter.h"
+#import "AKTileMapEventParameter.h"
 
-/// 背景定義
-struct AKBackDef {
-    NSInteger image;            ///< 画像ファイル名の番号
-    NSInteger animationFrame;   ///< アニメーションフレーム数
-    float animationInterval;    ///< アニメーション更新間隔
-};
+/*!
+ @brief タイルマップイベントパラメータクラス
+ 
+ タイルマップイベント処理で使用するパラメータ。
+ */
+@implementation AKTileMapEventParameter
 
-// 背景クラス
-@interface AKBack : AKCharacter {
-    
-}
-
-// 背景生成処理
-- (void)createBackType:(NSInteger)type x:(float)x y:(float)y parent:(CCNode *)parent;
+@synthesize x = x_;
+@synthesize y = y_;
+@synthesize properties = properties_;
+@synthesize data = data_;
 
 @end

@@ -73,17 +73,17 @@ struct AKEnemyDef {
 // 破壊処理取得
 - (SEL)destroySeletor:(NSInteger)type;
 // 動作処理1
-- (void)action_01:(ccTime)dt;
+- (void)action_01:(ccTime)dt data:(id<AKPlayDataInterface>)data;
 // 動作処理2
-- (void)action_02:(ccTime)dt;
+- (void)action_02:(ccTime)dt data:(id<AKPlayDataInterface>)data;
 // 破壊処理1
-- (void)destroy_01;
+- (void)destroy_01:(id<AKPlayDataInterface>)data;
 // n-Way弾発射
-- (void)fireNWay:(NSInteger)way interval:(float)interval speed:(float)speed;
+- (void)fireNWay:(NSInteger)way interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data;
 // 逆さま判定
-- (void)checkReverse;
+- (void)checkReverse:(NSArray *)blocks;
 // 障害物との衝突判定
-- (void)checkBlockPosition;
+- (void)checkBlockPosition:(id<AKPlayDataInterface>)data;
 // 足元の障害物を取得する
-+ (AKCharacter *)getBlockAtFeetAtX:(float)x from:(float)top isReverse:(BOOL)isReverse;
++ (AKCharacter *)getBlockAtFeetAtX:(float)x from:(float)top isReverse:(BOOL)isReverse blocks:(NSArray *)blocks;
 @end

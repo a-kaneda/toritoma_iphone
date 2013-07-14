@@ -102,8 +102,9 @@ static const struct AKEffectDef kAKEffectDef[kAKEffectDefCount] = {
  生存時間が経過している場合は消去する。
  生存時間がマイナスの場合は未設定として無視する。
  @param dt フレーム更新間隔
+ @param data ゲームデータ
  */
-- (void)action:(ccTime)dt
+- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
 {
     // 生存時間が設定されている場合は処理を行う
     if (lifeTime_ > 0.0f) {

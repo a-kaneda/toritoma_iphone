@@ -34,11 +34,10 @@
  */
 
 #import "AKToritoma.h"
+#import "AKPlayDataInterface.h"
+#import "AKTileMapEventParameter.h"
 
 @class AKTileMap;
-
-/// マップタイルイベント実行関数
-typedef void (*ExecFunc)(float, float, NSDictionary *, AKTileMap *);
 
 // タイルマップ管理クラス
 @interface AKTileMap : NSObject {
@@ -80,18 +79,24 @@ typedef void (*ExecFunc)(float, float, NSDictionary *, AKTileMap *);
 @property (nonatomic, retain)NSMutableArray *waitEvents;
 
 // 初期化処理
-- (id)initWithStageNo:(NSInteger)stage;
+- (id)initWithStageNo:(NSInteger)stage layer:(CCNode *)layer;
 // コンビニエンスコンストラクタ
-+ (id)scriptWithStageNo:(NSInteger)stage;
++ (id)scriptWithStageNo:(NSInteger)stage layer:(CCNode *)layer;
 // 更新処理
-- (void)update:(float)dt;
+- (void)update:(float)dt data:(id<AKPlayDataInterface>)data;
 // 列単位のイベント実行
-- (void)execEventByCol:(NSInteger)col;
+- (void)execEventByCol:(NSInteger)col data:(id<AKPlayDataInterface>)data;
 // レイヤーごとのイベント実行
-- (void)execEventLayer:(CCTMXLayer *)layer col:(NSInteger)col x:(float)x execFunc:(ExecFunc)execFunc;
+- (void)execEventLayer:(CCTMXLayer *)layer col:(NSInteger)col x:(float)x data:(id<AKPlayDataInterface>)data execFunc:(SEL)execFunc;
 // デバイス座標からマップ座標の取得
 - (CGPoint)mapPositionFromDevicePosition:(CGPoint)devicePosition;
 // タイルの座標取得
 - (CGPoint)tilePositionFromMapPosition:(CGPoint)mapPosition;
+// 障害物作成
+- (void)createBlock:(AKTileMapEventParameter*)param;
+// 敵作成
+- (void)createEnemy:(AKTileMapEventParameter*)param;
+// イベント実行
+- (void)execEvent:(AKTileMapEventParameter*)param;
 
 @end

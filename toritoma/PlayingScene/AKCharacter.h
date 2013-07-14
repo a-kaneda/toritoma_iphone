@@ -34,6 +34,7 @@
  */
 
 #import "AKToritoma.h"
+#import "AKPlayDataInterface.h"
 
 /// 障害物と衝突した時の動作
 enum AKBlockHitAction {
@@ -127,21 +128,21 @@ enum AKBlockHitAction {
 // 画像名の設定
 - (void)setImageName:(NSString *)imageName;
 // 移動処理
-- (void)move:(ccTime)dt;
+- (void)move:(ccTime)dt data:(id<AKPlayDataInterface>)data;
 // キャラクター固有の動作
-- (void)action:(ccTime)dt;
+- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data;
 // 破壊処理
-- (void)destroy;
+- (void)destroy:(id<AKPlayDataInterface>)data;
 // 衝突判定(汎用)
-- (BOOL)checkHit:(const NSEnumerator *)characters func:(SEL)func;
+- (BOOL)checkHit:(const NSEnumerator *)characters data:(id<AKPlayDataInterface>)data func:(SEL)func;
 // キャラクター衝突判定
-- (void)checkHit:(const NSEnumerator *)characters;
+- (void)checkHit:(const NSEnumerator *)characters data:(id<AKPlayDataInterface>)data;
 // 衝突処理
-- (void)hit:(AKCharacter *)character;
+- (void)hit:(AKCharacter *)character data:(id<AKPlayDataInterface>)data;
 // 障害物との衝突による移動
-- (void)moveOfBlockHit:(AKCharacter *)character;
+- (void)moveOfBlockHit:(AKCharacter *)character data:(id<AKPlayDataInterface>)data;;
 // 障害物との衝突による消滅
-- (void)disappearOfBlockHit:(AKCharacter *)character;
+- (void)disappearOfBlockHit:(AKCharacter *)character data:(id<AKPlayDataInterface>)data;;
 // 画面外配置判定
-- (BOOL)isOutOfStage;
+- (BOOL)isOutOfStage:(id<AKPlayDataInterface>)data;
 @end

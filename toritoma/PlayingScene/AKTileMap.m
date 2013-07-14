@@ -34,20 +34,12 @@
  */
 
 #import "AKTileMap.h"
-#import "AKPlayData.h"
 
 /// 進行待ち待機イベント初期配列数
 static const NSUInteger kAKWaitEventsInitCapacity = 5;
 
 /// タイルマップのファイル名
 static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
-
-// 障害物作成
-static void createBlock(float x, float y, NSDictionary *properties, AKTileMap *selfptr);
-// 敵作成
-static void createEnemy(float x, float y, NSDictionary *propertyies, AKTileMap *selfptr);
-// イベント実行
-static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *selfptr);
 
 /*!
  @brief タイルマップ管理クラス
@@ -69,9 +61,10 @@ static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *sel
  
  初期化処理を行う。
  @param stage ステージ番号
+ @param layer マップを配置するレイヤー
  @return 初期化したオブジェクト。失敗時はnilを返す。
  */
-- (id)initWithStageNo:(NSInteger)stage
+- (id)initWithStageNo:(NSInteger)stage layer:(CCNode *)layer
 {
     // スーパークラスの初期化処理を行う
     self = [super init];
@@ -109,9 +102,8 @@ static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *sel
     self.enemy.visible = NO;
     self.event.visible = NO;
     
-    // シーンの背景レイヤーに配置する
-    CCLayer *sceneLayer = [AKPlayData sharedInstance].scene.backgroundLayer;
-    [sceneLayer addChild:self.tileMap z:1];
+    // レイヤーに配置する
+    [layer addChild:self.tileMap z:1];
     
     // 左端に初期位置を移動する
     self.tileMap.position = ccp([AKScreenSize xOfStage:0], [AKScreenSize yOfStage:0]);
@@ -124,11 +116,12 @@ static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *sel
  
  インスタンスの生成、初期化、autoreleaseを行う。
  @param stage ステージ番号
+ @param layer マップを配置するレイヤー
  @return 初期化したオブジェクト。失敗時はnilを返す。
  */
-+ (id)scriptWithStageNo:(NSInteger)stage
++ (id)scriptWithStageNo:(NSInteger)stage layer:(CCNode *)layer
 {
-    return [[[AKTileMap alloc] initWithStageNo:stage] autorelease];
+    return [[[AKTileMap alloc] initWithStageNo:stage layer:layer] autorelease];
 }
 
 /*!
@@ -158,12 +151,13 @@ static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *sel
  現在のスクロール位置までイベントを実行する。
  現在処理済みの列から表示中の一番右側の列+2列分までのタイルのイベントを処理する。
  @param dt フレーム更新間隔
+ @param data ゲームデータ
  */
-- (void)update:(float)dt
+- (void)update:(float)dt data:(id<AKPlayDataInterface>)data
 {
     // 背景をスクロールする
-    self.tileMap.position = ccp(self.tileMap.position.x - [AKPlayData sharedInstance].scrollSpeedX * dt,
-                                self.tileMap.position.y - [AKPlayData sharedInstance].scrollSpeedY * dt);
+    self.tileMap.position = ccp(self.tileMap.position.x - data.scrollSpeedX * dt,
+                                self.tileMap.position.y - data.scrollSpeedY * dt);
     
     // 表示中の一番右側の列+2列目までを処理対象とする
     NSInteger maxCol = ([AKScreenSize stageSize].width - [AKScreenSize xOfDevice:self.tileMap.position.x]) / self.tileMap.tileSize.width + 2;
@@ -173,7 +167,7 @@ static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *sel
     // 現在処理済みの列から最終列まで処理する
     for (; currentCol_ <= maxCol; currentCol_++) {
         
-        [self execEventByCol:currentCol_];
+        [self execEventByCol:currentCol_ data:data];
     }
 }
 
@@ -182,8 +176,9 @@ static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *sel
  
  指定した列番号のタイルのイベントを実行する。
  @param col 列番号
+ @param data ゲームデータ
  */
-- (void)execEventByCol:(NSInteger)col
+- (void)execEventByCol:(NSInteger)col data:(id<AKPlayDataInterface>)data
 {
     // x座標はマップの左端 + タイルサイズ * 列番号 (列番号は左から0,1,2,…)
     // タイルの真ん中を指定するために列番号には+0.5する
@@ -192,13 +187,13 @@ static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *sel
     AKLog(kAKLogScript_4, @"position=%f x=%f", self.tileMap.position.x, x);
     
     // イベントレイヤーの処理を行う
-    [self execEventLayer:self.event col:col x:x execFunc:execEvent];
+    [self execEventLayer:self.event col:col x:x data:data execFunc:@selector(execEvent:)];
     
     // 障害物レイヤーの処理を行う
-    [self execEventLayer:self.block col:col x:x execFunc:createBlock];
+    [self execEventLayer:self.block col:col x:x data:data execFunc:@selector(createBlock:)];
     
     // 敵レイヤーの処理を行う
-    [self execEventLayer:self.enemy col:col x:x execFunc:createEnemy];
+    [self execEventLayer:self.enemy col:col x:x data:data execFunc:@selector(createEnemy:)];
 }
 
 /*!
@@ -209,9 +204,10 @@ static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *sel
  @param layer レイヤー
  @param col 列番号
  @param x x座標
+ @param data ゲームデータ
  @param execFunc イベント処理関数
  */
-- (void)execEventLayer:(CCTMXLayer *)layer col:(NSInteger)col x:(float)x execFunc:(ExecFunc)execFunc
+- (void)execEventLayer:(CCTMXLayer *)layer col:(NSInteger)col x:(float)x data:(id<AKPlayDataInterface>)data execFunc:(SEL)execFunc
 {
     // レイヤーの一番上の行から一番下の行まで処理を行う
     for (int i = 0; i < self.tileMap.mapSize.height; i++) {
@@ -239,8 +235,15 @@ static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *sel
                 // タイルの真ん中を指定するために行番号には+0.5する
                 float y = [AKScreenSize yOfDevice:self.tileMap.position.y] + (self.tileMap.mapSize.height - (i + 0.5)) * self.tileMap.tileSize.height;
                 
+                // パラメータを作成する
+                AKTileMapEventParameter *param = [[[AKTileMapEventParameter alloc] init] autorelease];
+                param.x = x;
+                param.y = y;
+                param.properties = properties;
+                param.data = data;
+                
                 // イベントを実行する
-                execFunc(x, y, properties, self);
+                [self performSelector:execFunc withObject:param];
             }
         }
     }
@@ -285,7 +288,7 @@ static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *sel
     
     return ccp(x, y);
 }
-@end
+
 
 /*!
  @brief 障害物作成
@@ -293,19 +296,16 @@ static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *sel
  障害物を作成する。
  障害物レイヤーのプロパティから以下の項目を取得し、障害物の作成を行う。
  Type:障害物の種別
- @property x 生成位置x座標
- @property y 生成位置y座標
- @property properties タイルのプロパティ
- @property selfptr 自インスタンスへのポインタ
+ @param param イベント実行パラメータ
  */
-static void createBlock(float x, float y, NSDictionary *properties, AKTileMap *selfptr)
+- (void)createBlock:(AKTileMapEventParameter*)param
 {
     // 種別を取得する
-    NSString *typeString = [properties objectForKey:@"Type"];
+    NSString *typeString = [param.properties objectForKey:@"Type"];
     NSInteger type = [typeString integerValue];
     
     // 障害物を作成する
-    [[AKPlayData sharedInstance] createBlock:type x:x y:y];
+    [param.data createBlock:type x:param.x y:param.y];
 }
 
 /*!
@@ -315,23 +315,20 @@ static void createBlock(float x, float y, NSDictionary *properties, AKTileMap *s
  障害物レイヤーのプロパティから以下の項目を取得し、敵の作成を行う。
  Type:敵の種別
  Progress:倒した時に進む進行度
- @property x 生成位置x座標
- @property y 生成位置y座標
- @property properties タイルのプロパティ
- @property selfptr 自インスタンスへのポインタ
+ @param param イベント実行パラメータ
  */
-static void createEnemy(float x, float y, NSDictionary *properties, AKTileMap *selfptr)
+- (void)createEnemy:(AKTileMapEventParameter*)param
 {
     // 種別を取得する
-    NSString *typeString = [properties objectForKey:@"Type"];
+    NSString *typeString = [param.properties objectForKey:@"Type"];
     NSInteger type = [typeString integerValue];
     
     // 倒した時に進む進行度を取得する
-    NSString *progressString = [properties objectForKey:@"Progress"];
+    NSString *progressString = [param.properties objectForKey:@"Progress"];
     NSInteger progress = [progressString integerValue];
     
     // 敵を作成する
-    [[AKPlayData sharedInstance] createEnemy:type x:x y:y progress:progress];
+    [param.data createEnemy:type x:param.x y:param.y progress:progress];
 }
 
 /*!
@@ -347,40 +344,37 @@ static void createEnemy(float x, float y, NSDictionary *properties, AKTileMap *s
  bgm:BGMを変更する
  hspeed:水平方向のスクロールスピードを変更する
  clear:ステージクリアのフラグを立てる
- @property x 生成位置x座標(0以上の場合はマップからの実行、マイナスの場合は進行待ちイベントの実行)
- @property y 生成位置y座標(0以上の場合はマップからの実行、マイナスの場合は進行待ちイベントの実行)
- @property properties タイルのプロパティ
- @property selfptr 自インスタンスへのポインタ
+ @param param イベント実行パラメータ
  */
-static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *selfptr)
+- (void)execEvent:(AKTileMapEventParameter*)param
 {
     // 実行する進行状況の値を取得する
-    NSString *progressString = [properties objectForKey:@"progress"];
+    NSString *progressString = [param.properties objectForKey:@"progress"];
     NSInteger progress = [progressString integerValue];
     
     // 実行する進行度に到達していない場合は待機イベントの配列に入れて処理を終了する
-    if (progress < selfptr.progress) {
+    if (progress < self.progress) {
         
         // 座標が0以上の場合はマップからの呼び出しと判断する。
         // マップ読み込みからの実行時は待機イベント配列へ入れる。
-        if (!(x < 0.0f && y < 0.0f)) {
+        if (!(param.x < 0.0f && param.y < 0.0f)) {
             
-            [selfptr.waitEvents addObject:properties];
+            [self.waitEvents addObject:param.properties];
         }
         
         return;
     }
     
     // 種別を取得する
-    NSString *type = [properties objectForKey:@"Type"];
+    NSString *type = [param.properties objectForKey:@"Type"];
     
     // 値を取得する
-    NSString *valueString = [properties objectForKey:@"Value"];
+    NSString *valueString = [param.properties objectForKey:@"Value"];
     NSInteger value = [valueString integerValue];
     
     // 水平方向のスクロールスピード変更の場合
     if ([type isEqualToString:@"hspeed"]) {
-        [AKPlayData sharedInstance].scrollSpeedX = value;
+        param.data.scrollSpeedX = value;
     }
     else if ([type isEqualToString:@"bgm"]) {
         // TODO:BGM変更処理を作成する
@@ -392,6 +386,7 @@ static void execEvent(float x, float y, NSDictionary *properties, AKTileMap *sel
     // 不明な種別の場合
     else {
         AKLog(kAKLogScript_0, @"不明な種別:%@", type);
-        assert(0);
+        NSAssert(NO, @"不明な種別");
     }
 }
+@end

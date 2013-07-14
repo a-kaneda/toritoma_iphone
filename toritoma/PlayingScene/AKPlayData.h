@@ -39,11 +39,12 @@
 #import "AKTileMap.h"
 #import "AKCharacterPool.h"
 #import "AKEnemyShot.h"
+#import "AKPlayDataInterface.h"
 
 @class AKPlayingScene;
 
 // ゲームデータ
-@interface AKPlayData : NSObject {
+@interface AKPlayData : NSObject<AKPlayDataInterface> {
     /// シーンクラス(弱い参照)
     AKPlayingScene *scene_;
     /// ステージ番号
@@ -113,8 +114,6 @@
 /// y軸方向のスクロールスピード
 @property (nonatomic)float scrollSpeedY;
 
-// インスタンス取得
-+ (AKPlayData *)sharedInstance;
 // オブジェクト初期化処理
 - (id)initWithScene:(AKPlayingScene *)scene;
 // メンバオブジェクト生成処理
@@ -137,25 +136,5 @@
 - (void)pause;
 // ゲーム再開
 - (void)resume;
-// 自機弾生成
-- (void)createPlayerShotAtX:(NSInteger)x y:(NSInteger)y;
-// 反射弾生成
-- (void)createReflectiedShot:(AKEnemyShot *)enemyShot;
-// 敵生成
-- (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y progress:(NSInteger)progress;
-// 敵弾生成
-- (void)createEnemyShotType:(NSInteger)type
-                          x:(NSInteger)x
-                          y:(NSInteger)y
-                      angle:(float)angle
-                      speed:(float)speed;
-// 画面効果生成
-- (void)createEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
-// 障害物生成
-- (void)createBlock:(NSInteger)type x:(float)x y:(float)y;
-// 失敗時処理
-- (void)miss;
-// スコア加算
-- (void)addScore:(NSInteger)score;
 
 @end

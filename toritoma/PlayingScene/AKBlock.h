@@ -52,7 +52,7 @@ struct AKBlcokDef {
 // 障害物生成処理
 - (void)createBlockType:(NSInteger)type x:(float)x y:(float)y parent:(CCNode *)parent;
 // ぶつかったキャラクターを押し動かす
-- (void)pushCharacter:(AKCharacter *)character;
+- (void)pushCharacter:(AKCharacter *)character data:(id<AKPlayDataInterface>)data;
 // ぶつかったキャラクターを消す
 - (void)destroyCharacter:(AKCharacter *)character;
 

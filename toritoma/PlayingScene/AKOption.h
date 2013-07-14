@@ -34,6 +34,7 @@
  */
 
 #import "AKCharacter.h"
+#import "AKEnemyShot.h"
 
 // オプションクラス
 @interface AKOption : AKCharacter {
