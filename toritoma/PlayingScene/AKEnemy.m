@@ -278,29 +278,12 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  地面に張り付く場合は左移動(地面)に、天井に張り付く場合は左移動(天井)に遷移する。
  天井に張り付く場合は画像を上下反転する。
  
- 左移動(地面):地面左方向への移動。移動後に地面の上まで移動する。
- 一定時間経過後に弾発射2(地面)に遷移する。
+ 左移動:左方向への移動。一定時間経過後に弾発射に遷移する。
  
- 左移動(天井):天井左方向への移動。移動後に天井の下まで移動する。
- 一定時間経過後に弾発射2(天井)に遷移する。
+ 弾発射:停止して弾の発射。自機に向かって1-wayを一定数発射する。
+ 一定時間経過後に右移動に遷移する。
  
- 弾発射2(地面):停止して弾の発射。自機に向かって1-wayを一定数発射する。
- 一定時間経過後に右移動(地面)に遷移する。
- 
- 弾発射2(天井):停止して弾の発射。自機に向かって1-wayを一定数発射する。
- 一定時間経過後に右移動(天井)に遷移する。
-
- 右移動(地面):地面右方向への移動。移動後に地面の上まで移動する。
- 一定時間経過後に弾発射1(地面)に遷移する。
- 
- 右移動(天井):天井右方向への移動。移動後に天井の下まで移動する。
- 一定時間経過後に弾発射1(天井)に遷移する。
-
- 弾発射1(地面):停止して弾の発射。自機に向かって1-wayを一定数発射する。
- 一定時間経過後に左移動(地面)に遷移する。
- 
- 弾発射1(天井):停止して弾の発射。自機に向かって1-wayを一定数発射する。
- 一定時間経過後に左移動(天井)に遷移する。
+ 右移動:地面右方向への移動。一定時間経過後に弾発射に遷移する。
  
  @param dt フレーム更新間隔
  @param data ゲームデータ
@@ -321,23 +304,9 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     // 状態
     enum STATE {
         kAKStateInit = 0,           // 初期状態
-        kAKStateLeftMove,           // 左移動(地面)
-        kAKStateRightMove,          // 右移動(地面)
-        kAKStateFire,               // 弾発射(地面)
-        kAKStateLeftMoveReverse,    // 左移動(天井)
-        kAKStateRightMoveReverse,   // 右移動(天井)
-        kAKStateFireReverse,        // 弾発射(天井)
-    };
-    
-    // 状態遷移
-    const NSInteger kAKNextState[] = {
-        kAKStateInit,
-        kAKStateFire,
-        kAKStateFire,
-        kAKStateRightMove,
-        kAKStateFireReverse,
-        kAKStateFireReverse,
-        kAKStateRightMoveReverse,
+        kAKStateLeftMove,           // 左移動
+        kAKStateRightMove,          // 右移動
+        kAKStateFire                // 弾発射
     };
     
     // 状態によって処理を分岐する
@@ -350,44 +319,40 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
              // 動作時間の初期化を行う
             time_ = 0.0f;
             
-            // 逆さになっている場合は天井張り付きなので左移動(地面)に遷移する
-            if (self.image.flipY) {
-                state_ = kAKStateLeftMove;
-            }
-            // そうでない場合は地面張り付きなので左移動(天井)に遷移する
-            else {
-                time_ = 0.0f;
-                state_ = kAKStateLeftMoveReverse;
-            }
+            // 左移動に遷移する
+            state_ = kAKStateLeftMove;
             
             break;
             
-        case kAKStateLeftMove:          // 左移動(地面)
-        case kAKStateLeftMoveReverse:   // 左移動(天井)
-        case kAKStateRightMove:         // 右移動(地面)
-        case kAKStateRightMoveReverse:  // 右移動(天井)
+        case kAKStateLeftMove:  // 左移動
             
-            // 左移動の場合はスピードをマイナスにして、左右反転はなしにする
-            if (state_ == kAKStateLeftMove || state_ == kAKStateLeftMoveReverse) {
-                self.speedX = -kAKMoveSpeed;
-                self.image.flipX = NO;
-            }
-            // 右移動の場合はスピードをプラスにして、左右反転はありにする
-            else {
-                self.speedX = kAKMoveSpeed;
-                self.image.flipX = YES;
-            }
+            // スピードをマイナスにして、左右反転はなしにする
+            self.speedX = -kAKMoveSpeed;
+            self.image.flipX = NO;
             
             // 移動時間が経過したら弾発射に遷移する
             if (time_ > kAKMoveTime) {
                 time_ = 0.0f;
-                state_ = kAKNextState[state_];
+                state_ = kAKStateFire;
+            }
+
+            break;
+
+        case kAKStateRightMove: // 右移動
+            
+            // スピードをプラスにして、左右反転はありにする
+            self.speedX = kAKMoveSpeed;
+            self.image.flipX = YES;
+            
+            // 移動時間が経過したら弾発射に遷移する
+            if (time_ > kAKMoveTime) {
+                time_ = 0.0f;
+                state_ =kAKStateFire;
             }
             
             break;
                         
-        case kAKStateFire:          // 弾発射(地面)
-        case kAKStateFireReverse:   // 弾発射(天井)
+        case kAKStateFire:  // 弾発射
             
             // 自分より右側に自機がいれば左右反転する
             if (self.positionX < data.playerPosition.x) {
@@ -403,12 +368,12 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
             // 一定時間経過したら弾を発射する
             if (time_ > kAKFireInterval) {
                 
-                // 一度に発射する弾をすでに発射済みの場合は移動へ遷移する
+                // 一度に発射する弾をすでに発射済みの場合は右移動へ遷移する
                 if (work_ >= kAKFireCount) {
                     
                     work_ = 0;
                     time_ = 0.0f;
-                    state_ = kAKNextState[state_];
+                    state_ = kAKStateRightMove;
                 }
                 else {
                     
