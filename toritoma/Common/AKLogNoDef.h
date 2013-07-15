@@ -52,6 +52,7 @@ extern BOOL kAKLogEffect_0;
 extern BOOL kAKLogEffect_1;
 extern BOOL kAKLogEnemy_0;
 extern BOOL kAKLogEnemy_1;
+extern BOOL kAKLogEnemy_2;
 extern BOOL kAKLogEnemyShot_0;
 extern BOOL kAKLogEnemyShot_1;
 extern BOOL kAKLogGameCenterHelper_0;

@@ -281,9 +281,8 @@ static const NSInteger kAKOptionSize = 16;
             self.image.visible = YES;
             self.positionX = x;
             self.positionY = y;
-            // 初期表示時に前回の位置に表示されることを防ぐため、画像位置も変更する
-            self.image.position = ccp([AKScreenSize xOfStage:self.positionX],
-                                      [AKScreenSize yOfStage:self.positionY]);
+            // 初期表示時に前回の位置に表示されることを防ぐため、画像表示位置の更新も行う
+            [self updateImagePosition];
         }
     }
     // オプション個数が0以下の場合はオプションを無効とする

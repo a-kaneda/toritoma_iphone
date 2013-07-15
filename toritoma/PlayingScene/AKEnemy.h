@@ -83,7 +83,13 @@ struct AKEnemyDef {
 // 逆さま判定
 - (void)checkReverse:(NSArray *)blocks;
 // 障害物との衝突判定
-- (void)checkBlockPosition:(id<AKPlayDataInterface>)data;
++ (CGPoint)checkBlockPosition:(CGPoint)current
+                         size:(CGSize)size
+                    isReverse:(BOOL)isReverse
+                         data:(id<AKPlayDataInterface>)data;
 // 足元の障害物を取得する
-+ (AKCharacter *)getBlockAtFeetAtX:(float)x from:(float)top isReverse:(BOOL)isReverse blocks:(NSArray *)blocks;
++ (AKCharacter *)getBlockAtFeetAtX:(float)x
+                              from:(float)top
+                         isReverse:(BOOL)isReverse
+                            blocks:(NSArray *)blocks;
 @end

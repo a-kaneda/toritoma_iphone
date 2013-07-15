@@ -47,6 +47,31 @@
 	CCDirectorIOS	*director_;							// weak ref
 }
 
+- (void)testCheckBlockPosition_1;
+- (void)testCheckBlockPosition_2;
+- (void)testCheckBlockPosition_3;
+- (void)testCheckBlockPosition_4;
+- (void)testCheckBlockPosition_5;
+- (void)testCheckBlockPosition_6;
+- (void)testCheckBlockPosition_7;
+- (void)testCheckBlockPosition_8;
+- (void)testCheckBlockPosition_9;
+- (void)testCheckBlockPosition_10;
+- (void)testCheckBlockPosition_11;
+- (void)testCheckBlockPosition_12;
+- (void)testCheckBlockPosition_13;
+- (void)testCheckBlockPosition_14;
+- (void)testCheckBlockPosition_15;
+- (void)testCheckBlockPosition_16;
+- (void)testCheckBlockPosition_17;
 - (void)testGetBlockAtFeetAtX_1;
-
+- (void)testGetBlockAtFeetAtX_2;
+- (void)testGetBlockAtFeetAtX_3;
+- (void)testGetBlockAtFeetAtX_4;
+- (void)testGetBlockAtFeetAtX_5;
+- (void)testGetBlockAtFeetAtX_6;
+- (void)testGetBlockAtFeetAtX_7;
+- (void)testGetBlockAtFeetAtX_8;
+- (void)testGetBlockAtFeetAtX_9;
+- (void)testGetBlockAtFeetAtX_10;
 @end

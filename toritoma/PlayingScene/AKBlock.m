@@ -42,12 +42,12 @@ static const NSInteger kAKBlockDefCount = 6;
 
 /// 障害物定義
 static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
-    {1, 1, 0.0f, 32, 32},   // 地面内側
-    {2, 1, 0.0f, 32, 32},   // 地面
-    {3, 1, 0.0f, 32, 16},   // 地面半分
-    {4, 1, 0.0f, 32, 32},   // 天井
-    {5, 1, 0.0f, 32, 16},   // 天井半分
-    {6, 1, 0.0f, 32, 32}    // ブロック
+    {1, 1, 0.0f, 32, 32, 0,  0},   // 地面内側
+    {2, 1, 0.0f, 32, 32, 0,  0},   // 地面
+    {3, 1, 0.0f, 32, 16, 0,  8},   // 地面半分
+    {4, 1, 0.0f, 32, 32, 0,  0},   // 天井
+    {5, 1, 0.0f, 32, 16, 0, -8},   // 天井半分
+    {6, 1, 0.0f, 32, 32, 0,  0}    // ブロック
 };
 
 /*!
@@ -94,6 +94,13 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
     // 当たり判定のサイズを設定する
     self.width = kAKBlockDef[type - 1].hitWidth;
     self.height = kAKBlockDef[type - 1].hitHeight;
+    
+    // 画像表示位置オフセットを設定する
+    offset_ = ccp(kAKBlockDef[type - 1].offsetX, kAKBlockDef[type - 1].offsetY);
+    
+    // 画像のオフセットと逆方向にキャラクター位置を移動する
+    self.positionX -= offset_.x;
+    self.positionY -= offset_.y;
     
     // 障害物は基本的に画面スクロールに応じて移動する
     self.scrollSpeed = 1.0f;

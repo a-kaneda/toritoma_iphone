@@ -99,6 +99,7 @@ static NSMutableString *imageFileName_ = nil;
     self.isStaged = NO;
     self.animationTime = 0.0f;
     self.scrollSpeed = 0.0f;
+    offset_ = ccp(0.0f, 0.0f);
     
     // 攻撃力の初期値は1とする
     self.power = 1;
@@ -250,9 +251,8 @@ static NSMutableString *imageFileName_ = nil;
           self.positionX, self.positionY,
           [AKScreenSize xOfStage:self.positionX], [AKScreenSize yOfStage:self.positionY]);
         
-    // 表示座標の設定
-    self.image.position = ccp([AKScreenSize xOfStage:self.positionX],
-                              [AKScreenSize yOfStage:self.positionY]);
+    // 画像表示位置の更新を行う
+    [self updateImagePosition];
     
     // アニメーション時間をカウントする
     self.animationTime += dt;
@@ -548,5 +548,16 @@ static NSMutableString *imageFileName_ = nil;
     else {
         return NO;
     }
+}
+
+/*!
+ @brief 画像表示位置更新
+ 
+ 画像の表示位置を現在のキャラクター位置とオフセットをもとに更新を行う。
+ */
+- (void)updateImagePosition
+{
+    self.image.position = ccp([AKScreenSize xOfStage:self.positionX + offset_.x],
+                              [AKScreenSize yOfStage:self.positionY + offset_.y]);
 }
 @end

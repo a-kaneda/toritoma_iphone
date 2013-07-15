@@ -442,10 +442,6 @@
 		0C6FCE5917800EA000D9D343 /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Back.png; path = Resources/Image/Back.png; sourceTree = "<group>"; };
 		0C7B9E8C16FF23ED00DABA55 /* libAdapterIAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdapterIAd.a; sourceTree = "<group>"; };
 		0C7B9E8E16FF241A00DABA55 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		0C7E06CE16CD81930044BF42 /* stage_2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_2.txt; path = Resources/Script/stage_2.txt; sourceTree = "<group>"; };
-		0C7E06CF16CD81930044BF42 /* stage_3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_3.txt; path = Resources/Script/stage_3.txt; sourceTree = "<group>"; };
-		0C7E06D016CD81930044BF42 /* stage_4.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_4.txt; path = Resources/Script/stage_4.txt; sourceTree = "<group>"; };
-		0C7E06D116CD81930044BF42 /* stage_5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_5.txt; path = Resources/Script/stage_5.txt; sourceTree = "<group>"; };
 		0C83E82D16E1FD5700592207 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0C83E82E16E1FD5700592207 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0C83E83016E1FE1800592207 /* AKTitleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTitleScene.h; sourceTree = "<group>"; };
@@ -546,7 +542,6 @@
 		0CCC525816A38E8F00E9A397 /* AKCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCommon.m; sourceTree = "<group>"; };
 		0CCC525A16A4A2B200E9A397 /* AKTileMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTileMap.h; sourceTree = "<group>"; };
 		0CCC525B16A4A2B200E9A397 /* AKTileMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTileMap.m; sourceTree = "<group>"; };
-		0CCC526816AA9D7100E9A397 /* stage_1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stage_1.txt; path = Resources/Script/stage_1.txt; sourceTree = "<group>"; };
 		0CCC526A16AA9E7400E9A397 /* AKEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEnemy.h; sourceTree = "<group>"; };
 		0CCC526B16AA9E7400E9A397 /* AKEnemy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKEnemy.m; sourceTree = "<group>"; };
 		0CCC526D16ABDF9A00E9A397 /* AKEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKEffect.h; sourceTree = "<group>"; };
@@ -1020,18 +1015,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		0CCC526016A5F99F00E9A397 /* Script */ = {
-			isa = PBXGroup;
-			children = (
-				0CCC526816AA9D7100E9A397 /* stage_1.txt */,
-				0C7E06CE16CD81930044BF42 /* stage_2.txt */,
-				0C7E06CF16CD81930044BF42 /* stage_3.txt */,
-				0C7E06D016CD81930044BF42 /* stage_4.txt */,
-				0C7E06D116CD81930044BF42 /* stage_5.txt */,
-			);
-			name = Script;
-			sourceTree = "<group>";
-		};
 		0CCC526316AA9C8C00E9A397 /* Image */ = {
 			isa = PBXGroup;
 			children = (
@@ -1148,7 +1131,6 @@
 				0CCC526316AA9C8C00E9A397 /* Image */,
 				0CD2CB1B169922AE00088557 /* Info.plist */,
 				0CD2CB1C169922AE00088557 /* iTunesArtwork */,
-				0CCC526016A5F99F00E9A397 /* Script */,
 				0C5AD20416EE73D100F69D63 /* Localizable.strings */,
 			);
 			name = Resources;

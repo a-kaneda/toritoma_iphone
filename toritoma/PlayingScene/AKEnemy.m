@@ -398,8 +398,20 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     self.speedX -= data.scrollSpeedX;
     self.speedY -= data.scrollSpeedY;
     
+    AKLog(kAKLogEnemy_2, @"speedX=%f state_=%d", speedX_, state_);
+    
     // 障害物との衝突判定を行う
-    [self checkBlockPosition:data];
+    CGPoint newPoint = [AKEnemy checkBlockPosition:ccp(self.positionX, self.positionY)
+                                              size:self.image.contentSize
+                                         isReverse:self.image.flipY
+                                              data:data];
+    
+    // 移動先の座標を反映する
+    self.positionX = newPoint.x;
+    self.positionY = newPoint.y;
+
+    // 画像表示位置の更新を行う
+    [self updateImagePosition];
     
     AKLog(kAKLogEnemy_1, @"pos=(%f, %f)", self.positionX, self.positionY);
     AKLog(kAKLogEnemy_1, @"img=(%f, %f)", self.image.position.x, self.image.position.y);
@@ -515,43 +527,54 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  障害物との衝突判定を行う。
  移動先と移動元の段差が1/2ブロック以上ある場合は移動しない。
  左端の足元と右端の足元で障害物の高さが異なる場合は高い方（逆さまの場合は低い方）に合わせる。
+ @param current 現在位置
+ @param size キャラクターのサイズ
+ @param isReverse 逆さまになっているかどうか
  @param data ゲームデータ
+ @return 移動先の座標
  */
-- (void)checkBlockPosition:(id<AKPlayDataInterface>)data
++ (CGPoint)checkBlockPosition:(CGPoint)current
+                         size:(CGSize)size
+                    isReverse:(BOOL)isReverse
+                         data:(id<AKPlayDataInterface>)data;
 {
     // 乗り越えることのできる高さ
     const NSInteger kAKHalfBlockSize = 17;
     
     // 頭の座標を計算する
     float top = 0.0f;
-    if (!self.image.flipY) {
-        top = self.positionY + self.image.contentSize.height / 2.0f;
+    if (!isReverse) {
+        top = current.y + size.height / 2.0f;
     }
     else {
-        top = self.positionY - self.image.contentSize.height / 2.0f;
+        top = current.y - size.height / 2.0f;
     }
-    
+        
     // 左端の座標を計算する
-    float left = self.positionX - self.image.contentSize.width / 2.0f;
+    float left = current.x - size.width / 2.0f;
     
     // 左側の足元の障害物を取得する
     AKCharacter *leftBlock = [AKEnemy getBlockAtFeetAtX:left
                                                    from:top
-                                              isReverse:self.image.flipY
+                                              isReverse:isReverse
                                                  blocks:data.blocks];
     
     // 右端の座標を計算する
-    float right = self.positionX + self.image.contentSize.width / 2.0f;
+    float right = current.x+ size.width / 2.0f;
 
     // 左側の足元の障害物を取得する
     AKCharacter *rightBlock = [AKEnemy getBlockAtFeetAtX:right
                                                     from:top
-                                               isReverse:self.image.flipY
+                                               isReverse:isReverse
                                                   blocks:data.blocks];
+    
+    AKLog(kAKLogEnemy_2, @"left=(%.0f, %.0f, %d, %d) right=(%.0f, %.0f, %d, %d)",
+          leftBlock.positionX, leftBlock.positionY, leftBlock.width, leftBlock.height,
+          rightBlock.positionX, rightBlock.positionY, rightBlock.width, rightBlock.height);
     
     // 足元に障害物がない場合は移動はしない
     if (leftBlock == nil && rightBlock == nil) {
-        return;
+        return current;
     }
     
     // 高さを合わせる障害物と移動先のx座標を決定する
@@ -560,25 +583,25 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
 
     // 左側の障害物がない場合は自分の左端を右側の障害物の左端に合わせる
     if (leftBlock == nil) {
-        newX = rightBlock.positionX - rightBlock.width / 2.0f + self.image.contentSize.width / 2.0f;
+        newX = rightBlock.positionX - rightBlock.width / 2.0f + size.width / 2.0f;
         blockAtFeet = rightBlock;
     }
     // 右側の障害物がない場合は自分の右端を左側の障害物の右端に合わせる
     else if (rightBlock == nil) {
-        newX = leftBlock.positionX + leftBlock.width / 2.0f - self.image.contentSize.width / 2.0f;
+        newX = leftBlock.positionX + leftBlock.width / 2.0f - size.width / 2.0f;
         blockAtFeet = leftBlock;
     }
     // 左右の障害物の高さの差が1/2ブロック以上ある場合は進行方向と逆側の障害物に合わせる
-    else if (abs((leftBlock.positionY + leftBlock.height / 2.0f) - (rightBlock.positionY + rightBlock.height / 2.0f)) > kAKHalfBlockSize) {
+    else if ((!isReverse && (abs((leftBlock.positionY + leftBlock.height / 2.0f) - (rightBlock.positionY + rightBlock.height / 2.0f)) > kAKHalfBlockSize)) ||
+             (isReverse && (abs((leftBlock.positionY - leftBlock.height / 2.0f) - (rightBlock.positionY - rightBlock.height / 2.0f)) > kAKHalfBlockSize))) {
         
-        // 左向きに移動している場合は自分の左端を右側の障害物の左端に合わせる
-        if (self.speedX + data.scrollSpeedX > 0.0f) {
-            newX = rightBlock.positionX - rightBlock.width / 2.0f + self.image.contentSize.width / 2.0f;
+        // 近い方のブロックに移動する
+        if  (rightBlock.positionX - current.x < current.x - leftBlock.positionX) {
+            newX = rightBlock.positionX - rightBlock.width / 2.0f + size.width / 2.0f;
             blockAtFeet = rightBlock;
         }
-        // 右向きに移動している場合は自分の右端を左側の障害物の右端に合わせる
         else {
-            newX = leftBlock.positionX + leftBlock.width / 2.0f - self.image.contentSize.width / 2.0f;
+            newX = leftBlock.positionX + leftBlock.width / 2.0f - size.width / 2.0f;
             blockAtFeet = leftBlock;
         }
     }
@@ -586,7 +609,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     else {
         
         // 逆向きでない場合は上の方にあるものを採用する
-        if (!self.image.flipY) {
+        if (!isReverse) {
             if (leftBlock.positionY + leftBlock.height / 2.0f > rightBlock.positionY + rightBlock.height / 2.0f) {
                 blockAtFeet = leftBlock;
             }
@@ -596,7 +619,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
         }
         // 逆向きの場合は下の方にあるものを採用する
         else {
-            if (leftBlock.positionY + leftBlock.height / 2.0f < rightBlock.positionY + rightBlock.height / 2.0f) {
+            if (leftBlock.positionY - leftBlock.height / 2.0f < rightBlock.positionY - rightBlock.height / 2.0f) {
                 blockAtFeet = leftBlock;
             }
             else {
@@ -605,26 +628,25 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
         }
         
         // x軸方向は移動しない
-        newX = self.positionX;
+        newX = current.x;
     }
     
     // 移動先のy座標を決定する
     float newY = 0.0f;
     
     // 逆向きでない場合は自分の下端の位置を障害物の上端に合わせる
-    if (!self.image.flipY) {
-        newY = blockAtFeet.positionY + blockAtFeet.height / 2.0f + self.image.contentSize.height / 2.0f;
+    if (!isReverse) {
+        newY = blockAtFeet.positionY + blockAtFeet.height / 2.0f + size.height / 2.0f;
     }
     // 逆向きの場合は自分の上端の位置を障害物の下端に合わせる
     else {
-        newY = blockAtFeet.positionY - blockAtFeet.height / 2.0f - self.image.contentSize.height / 2.0f;
+        newY = blockAtFeet.positionY - blockAtFeet.height / 2.0f - size.height / 2.0f;
     }
     
-    // 位置を移動する
-    self.positionX = newX;
-    self.positionY = newY;
-    self.image.position = ccp([AKScreenSize xOfStage:self.positionX],
-                              [AKScreenSize yOfStage:self.positionY]);
+    AKLog(kAKLogEnemy_2, @"(%.0f, %.0f)->(%.0f, %.0f)", current.x, current.y, newX, newY);
+    
+    // 移動先の座標を返す
+    return ccp(newX, newY);
 }
 
 /*!
@@ -651,15 +673,15 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
         }
         
         // 障害物の幅の範囲内に指定座標が入っている場合
-        if (block.positionX - block.width / 2 < x &&
-            block.positionX + block.width / 2 > x) {
+        if (roundf(block.positionX - block.width / 2) <= roundf(x) &&
+            roundf(block.positionX + block.width / 2) >= roundf(x)) {
             
             // 逆さまでない場合
             if (!isReverse) {
                 
                 // 障害物の下端が自分の上端よりも下にあるものの内、
                 // 一番上にあるものを採用する
-                if (block.positionY - block.height / 2 < top &&
+                if (roundf(block.positionY - block.height / 2) <= roundf(top) &&
                     (blockAtFeet == nil || block.positionY + block.height / 2 > blockAtFeet.positionY + blockAtFeet.height / 2)) {
                     
                     blockAtFeet = block;
@@ -670,7 +692,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
                 
                 // 障害物の上端が自分の下端より上にあるものの内、
                 // 一番下にあるものを採用する
-                if (block.positionY + block.height / 2 > top &&
+                if (roundf(block.positionY + block.height / 2) > roundf(top) &&
                     (blockAtFeet == nil || block.positionY - block.height / 2 < blockAtFeet.positionY - blockAtFeet.height / 2)) {
                     
                     blockAtFeet = block;

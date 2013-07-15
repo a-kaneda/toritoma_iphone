@@ -84,6 +84,8 @@ enum AKBlockHitAction {
     float scrollSpeed_;
     /// 障害物と衝突した時の動作
     enum AKBlockHitAction blockHitAction_;
+    /// 画像表示のオフセット
+    CGPoint offset_;
 }
 
 /// 画像
@@ -145,4 +147,6 @@ enum AKBlockHitAction {
 - (void)disappearOfBlockHit:(AKCharacter *)character data:(id<AKPlayDataInterface>)data;;
 // 画面外配置判定
 - (BOOL)isOutOfStage:(id<AKPlayDataInterface>)data;
+// 画像表示位置更新
+- (void)updateImagePosition;
 @end

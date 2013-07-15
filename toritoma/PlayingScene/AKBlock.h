@@ -42,6 +42,8 @@ struct AKBlcokDef {
     float animationInterval;    ///< アニメーション更新間隔
     NSInteger hitWidth;         ///< 当たり判定の幅
     NSInteger hitHeight;        ///< 当たり判定の高さ
+    NSInteger offsetX;          ///< 画像オフセットx軸
+    NSInteger offsetY;          ///< 画像オフセットy軸
 };
 
 // 障害物クラス
