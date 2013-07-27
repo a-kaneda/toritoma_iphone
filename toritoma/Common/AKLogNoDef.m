@@ -53,6 +53,7 @@ BOOL kAKLogEffect_1 = NO;
 BOOL kAKLogEnemy_0 = YES;
 BOOL kAKLogEnemy_1 = NO;
 BOOL kAKLogEnemy_2 = NO;
+BOOL kAKLogEnemy_3 = NO;
 BOOL kAKLogEnemyShot_0 = YES;
 BOOL kAKLogEnemyShot_1 = NO;
 BOOL kAKLogGameCenterHelper_0 = YES;

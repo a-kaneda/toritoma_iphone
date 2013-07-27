@@ -247,6 +247,8 @@
 		0CA5CBB61792AC940043FD72 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CC71B7B16EC7A6800F8AF07 /* Icon-72@2x.png */; };
 		0CA5CBB71792AC940043FD72 /* Icon-Small-50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CC71B7C16EC7A6800F8AF07 /* Icon-Small-50@2x.png */; };
 		0CA5CBB81792ACC50043FD72 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0C5AD20416EE73D100F69D63 /* Localizable.strings */; };
+		0CA5CBBB17949E410043FD72 /* AKNWayAngle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA5CBBA17949E3F0043FD72 /* AKNWayAngle.m */; };
+		0CA5CBBC17949E4B0043FD72 /* AKNWayAngle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA5CBBA17949E3F0043FD72 /* AKNWayAngle.m */; };
 		0CABC16716BE41CC00AFFE1B /* AKPlayerShot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */; };
 		0CB2ACE216BF14600094AFFA /* AKChickenGauge.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE116BF14600094AFFA /* AKChickenGauge.m */; };
 		0CB2ACE516C068190094AFFA /* ChickenGauge_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2ACE316C068190094AFFA /* ChickenGauge_01.png */; };
@@ -489,6 +491,8 @@
 		0CA5CAED17926CDE0043FD72 /* AKTileMapEventParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTileMapEventParameter.h; sourceTree = "<group>"; };
 		0CA5CAEE17926CDF0043FD72 /* AKTileMapEventParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTileMapEventParameter.m; sourceTree = "<group>"; };
 		0CA5CB79179297920043FD72 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		0CA5CBB917949E3D0043FD72 /* AKNWayAngle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKNWayAngle.h; sourceTree = "<group>"; };
+		0CA5CBBA17949E3F0043FD72 /* AKNWayAngle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKNWayAngle.m; sourceTree = "<group>"; };
 		0CABC16516BE41CC00AFFE1B /* AKPlayerShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKPlayerShot.h; sourceTree = "<group>"; };
 		0CABC16616BE41CC00AFFE1B /* AKPlayerShot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKPlayerShot.m; sourceTree = "<group>"; };
 		0CB2ACE016BF14600094AFFA /* AKChickenGauge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKChickenGauge.h; sourceTree = "<group>"; };
@@ -996,6 +1000,8 @@
 				0CCC525B16A4A2B200E9A397 /* AKTileMap.m */,
 				0CA5CAED17926CDE0043FD72 /* AKTileMapEventParameter.h */,
 				0CA5CAEE17926CDF0043FD72 /* AKTileMapEventParameter.m */,
+				0CA5CBB917949E3D0043FD72 /* AKNWayAngle.h */,
+				0CA5CBBA17949E3F0043FD72 /* AKNWayAngle.m */,
 			);
 			path = PlayingScene;
 			sourceTree = "<group>";
@@ -1848,6 +1854,7 @@
 				0CA5CB85179299730043FD72 /* vec4.c in Sources */,
 				0CA5CB86179299AA0043FD72 /* mat4stack.c in Sources */,
 				0CA5CB87179299AA0043FD72 /* matrix.c in Sources */,
+				0CA5CBBC17949E4B0043FD72 /* AKNWayAngle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1992,6 +1999,7 @@
 				0CE092C916F672D800EE4CD6 /* AKTwitterHelper.m in Sources */,
 				0CA41FC316F9BD2D00087979 /* AKAppBankNetworkBanner.m in Sources */,
 				0CA5CAEF17926CDF0043FD72 /* AKTileMapEventParameter.m in Sources */,
+				0CA5CBBB17949E410043FD72 /* AKNWayAngle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

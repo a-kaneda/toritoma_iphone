@@ -136,15 +136,6 @@ float AKRangeCheckF(float val, float min, float max);
 float AKCnvAngleRad2Deg(float radAngle);
 float AKCnvAngleRad2Scr(float radAngle);
 
-// 2点間の角度計算
-float AKCalcDestAngle(float srcx, float srcy, float dstx, float dsty);
-
-// 回転方向の計算
-int AKCalcRotDirect(float angle, float srcx, float srcy, float dstx, float dsty);
-
-// n-way弾発射時の方向計算
-NSArray* AKCalcNWayAngle(int count, float centerAngle, float space);
-
 // 矩形内判定
 BOOL AKIsInside(CGPoint point, CGRect rect);
 

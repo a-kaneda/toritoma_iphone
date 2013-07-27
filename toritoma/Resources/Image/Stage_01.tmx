@@ -319,7 +319,7 @@
  </layer>
  <layer name="Enemy" width="100" height="9">
   <data encoding="base64" compression="zlib">
-   eJztzgEJAAAIA7D3T2FUU4hwtgRLaDHfAQCAMvMdgGMLh5cBQQ==
+   eJztzjEBAAAMAiD7t1jTxfAQEpAAQMe1AwAw7gHNWACi
   </data>
  </layer>
 </map>

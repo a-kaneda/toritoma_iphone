@@ -45,7 +45,7 @@ static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
     //動作,破壊,画像,フレーム数,フレーム間隔幅,高さ,HP,スコア
     {1, 1, 1, 2, 0.5f, 32, 32, 3, 100},     // トンボ
     {2, 1, 2, 2, 0.5f, 32, 16, 3, 100},     // アリ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // チョウ
+    {3, 1, 3, 2, 0.5f, 32, 32, 3, 100},     // チョウ
     {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // テントウムシ
     {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備5
     {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備6
@@ -217,6 +217,9 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
         case 2:
             return @selector(action_02:data:);
             
+        case 3:
+            return @selector(action_03:data:);
+            
         default:
             NSAssert(NO, @"不正な種別");
             return @selector(action_01:data:);
@@ -249,17 +252,17 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action_01:(ccTime)dt data:(id<AKPlayDataInterface>)data
+- (void)action_01:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
 {
     // 左へ直進する
-    self.speedX = -120.0f;
+    self.speedX = -90.0f;
     self.speedY = 0.0f;
     
     // 一定時間経過しているときは自機を狙う1-way弾を発射する
-    if (time_ > 1.0f) {
+    if (time_ > 1.5f) {
         
-        // 弾を発射する
-        [self fireNWay:1 interval:0.0f speed:150.0f data:data];
+        // 左へ弾を発射する
+        [AKEnemy fireNWayWithAngle:M_PI from:ccp(self.positionX, self.positionY) count:1 interval:0.0f speed:150.0f data:data];
         
         // 動作時間の初期化を行う
         time_ = 0.0f;
@@ -288,7 +291,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
  @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action_02:(ccTime)dt data:(id<AKPlayDataInterface>)data
+- (void)action_02:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
 {
     // 弾のスピード
     const float kAKShotSpeed = 150.0f;
@@ -377,8 +380,11 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
                 }
                 else {
                     
-                    // 弾を発射する
-                    [self fireNWay:1 interval:0.0f speed:kAKShotSpeed data:data];
+                    // 自機へ向けて弾を発射する
+                    [AKEnemy fireNWayWithPosition:ccp(self.positionX, self.positionY)
+                                            count:1
+                                         interval:0.0f
+                                            speed:kAKShotSpeed data:data];
                     
                     // 発射した弾をカウントする
                     work_++;
@@ -417,6 +423,55 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     AKLog(kAKLogEnemy_1, @"img=(%f, %f)", self.image.position.x, self.image.position.y);
 }
 
+
+/*!
+ @brief 動作処理3
+ 
+ 上下に斜めに移動しながら左へ進む。
+ 定周期で左方向へ3-way弾を発射する。
+ @param dt フレーム更新間隔
+ @param data ゲームデータ
+ */
+- (void)action_03:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
+{
+    // 左方向への速度を決める
+    self.speedX = -70.0f;
+    
+    // 一定時間経過している場合は上下の移動方向の状態を逆にする
+    if (time_ > 0.8f) {
+        state_ = 1 - state_;
+        time_ = 0.0f;
+    }
+    
+    // 状態に応じて上下の移動方向を決める
+    if (state_ == 0) {
+        self.speedY = 120.0f;
+    }
+    else {
+        self.speedY = -120.0f;
+    }
+    
+    // 弾発射間隔カウント用にwork領域を使用する
+    work_ += [dt floatValue];
+    
+    AKLog(kAKLogEnemy_3, "work=%f", work_);
+    
+    // 一定時間経過しているときは自機を狙う1-way弾を発射する
+    if (work_ > 1.0f) {
+        
+        // 左へ弾を発射する
+        [AKEnemy fireNWayWithAngle:M_PI
+                              from:ccp(self.positionX, self.positionY)
+                             count:3
+                          interval:M_PI / 8.0f
+                             speed:150.0f
+                              data:data];
+        
+        // 動作時間の初期化を行う
+        work_ = 0.0f;
+    }
+}
+
 /*!
  @brief 破壊処理1
  
@@ -432,31 +487,64 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
 }
 
 /*!
- @brief n-Way弾発射
+ @brief 自機を狙うn-way弾発射
  
- n-Way弾の発射を行う。
- @param way 発射方向の数
+ 自機を狙うn-way弾の発射を行う。
+ @param position 発射する位置
+ @param count 発射方向の数
  @param interval 弾の間隔
  @param speed 弾の速度
  @param data ゲームデータ
  */
-- (void)fireNWay:(NSInteger)way interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data
++ (void)fireNWayWithPosition:(CGPoint)position count:(NSInteger)count interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data
 {
-    // 敵と自機の位置から角度を計算する
-    float baseAnble = AKCalcDestAngle(self.positionX,
-                                      self.positionY,
-                                      data.playerPosition.x,
-                                      data.playerPosition.y);
+    // n-way弾の角度計算用のクラスを生成する
+    AKNWayAngle *nWayAngle = [AKNWayAngle angle];
     
-    // 発射角度を計算する
-    NSArray *angleArray = AKCalcNWayAngle(way, baseAnble, interval);
+    // 各弾の角度を計算する
+    NSArray *angles = [nWayAngle calcNWayAngleFromSrc:position
+                                                 dest:data.playerPosition
+                                                count:count
+                                             interval:interval];
     
     // 各弾を発射する
-    for (NSNumber *angle in angleArray) {
+    for (NSNumber *angle in angles) {
         // 通常弾を生成する
         [data createEnemyShotType:kAKEnemyShotTypeNormal
-                                x:self.positionX
-                                y:self.positionY
+                                x:position.x
+                                y:position.y
+                            angle:[angle floatValue]
+                            speed:speed];
+    }
+}
+
+/*!
+ @brief 角度指定によるn-way弾発射
+ 
+ 角度指定によるn-way弾の発射を行う。
+ @param angle 発射する角度
+ @param position 発射する位置
+ @param count 発射方向の数
+ @param interval 弾の間隔
+ @param speed 弾の速度
+ @param data ゲームデータ
+ */
++ (void)fireNWayWithAngle:(float)angle from:(CGPoint)position count:(NSInteger)count interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data
+{
+    // n-way弾の角度計算用のクラスを生成する
+    AKNWayAngle *nWayAngle = [AKNWayAngle angle];
+    
+    // 各弾の角度を計算する
+    NSArray *angles = [nWayAngle calcNWayAngleFromCenterAngle:angle
+                                                        count:count
+                                                     interval:interval];
+    
+    // 各弾を発射する
+    for (NSNumber *angle in angles) {
+        // 通常弾を生成する
+        [data createEnemyShotType:kAKEnemyShotTypeNormal
+                                x:position.x
+                                y:position.y
                             angle:[angle floatValue]
                             speed:speed];
     }

@@ -34,6 +34,7 @@
  */
 
 #import "AKCharacter.h"
+#import "AKNWayAngle.h"
 
 /// 敵種別定義
 struct AKEnemyDef {
@@ -55,7 +56,7 @@ struct AKEnemyDef {
     /// 動作状態(各敵種別で使用)
     NSInteger state_;
     /// 作業領域(各敵種別で使用)
-    NSInteger work_;
+    float work_;
     /// 動作処理のセレクタ
     SEL action_;
     /// 破壊処理のセレクタ
@@ -73,13 +74,17 @@ struct AKEnemyDef {
 // 破壊処理取得
 - (SEL)destroySeletor:(NSInteger)type;
 // 動作処理1
-- (void)action_01:(ccTime)dt data:(id<AKPlayDataInterface>)data;
+- (void)action_01:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
 // 動作処理2
-- (void)action_02:(ccTime)dt data:(id<AKPlayDataInterface>)data;
+- (void)action_02:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+// 動作処理3
+- (void)action_03:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
 // 破壊処理1
 - (void)destroy_01:(id<AKPlayDataInterface>)data;
-// n-Way弾発射
-- (void)fireNWay:(NSInteger)way interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data;
+// 自機を狙うn-way弾発射
++ (void)fireNWayWithPosition:(CGPoint)position count:(NSInteger)count interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data;
+// 角度指定によるn-way弾発射
++ (void)fireNWayWithAngle:(float)angle from:(CGPoint)position count:(NSInteger)count interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data;
 // 逆さま判定
 - (void)checkReverse:(NSArray *)blocks;
 // 障害物との衝突判定
