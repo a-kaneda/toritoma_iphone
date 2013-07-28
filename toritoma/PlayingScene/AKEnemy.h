@@ -81,12 +81,20 @@ struct AKEnemyDef {
 - (void)action_03:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
 // 動作処理4
 - (void)action_04:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+// 動作処理5
+- (void)action_05:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
 // 破壊処理1
 - (void)destroy_01:(id<AKPlayDataInterface>)data;
 // 自機を狙うn-way弾発射
 + (void)fireNWayWithPosition:(CGPoint)position count:(NSInteger)count interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data;
 // 角度指定によるn-way弾発射
-+ (void)fireNWayWithAngle:(float)angle from:(CGPoint)position count:(NSInteger)count interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data;
++ (void)fireNWayWithAngle:(float)angle
+                     from:(CGPoint)position
+                    count:(NSInteger)count
+                 interval:(float)interval
+                    speed:(float)speed
+                     type:(NSInteger)type
+                     data:(id<AKPlayDataInterface>)data;
 // 逆さま判定
 - (void)checkReverse:(NSArray *)blocks;
 // 障害物との衝突判定

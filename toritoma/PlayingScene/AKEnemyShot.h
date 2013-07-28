@@ -81,5 +81,7 @@ struct AKEnemyShotDef {
 - (SEL)actionSelector:(NSInteger)type;
 // 標準弾動作
 - (void)action_01:(ccTime)dt data:(id<AKPlayDataInterface>)data;
+// スクロール影響弾動作
+- (void)action_02:(ccTime)dt data:(id<AKPlayDataInterface>)data;
 
 @end

@@ -40,18 +40,19 @@ static NSString *kAKImageNameFormat = @"EnemyShot_%02d";
 /// 画像の種類の数
 static const NSInteger kAKEnemyShotImageDefCount = 1;
 /// 敵弾の種類の数
-static const NSInteger kAKEnemyShotDefCount = 1;
+static const NSInteger kAKEnemyShotDefCount = 2;
 /// 反射弾の威力
 static const NSInteger kAKReflectionPower = 5;
 
-/// 敵画像の定義
+/// 敵弾画像の定義
 static const struct AKEnemyShotImageDef kAKEnemyShotImageDef[kAKEnemyShotImageDefCount] = {
     {1, 1, 0.0f}   // 標準弾
 };
 
-/// 敵の定義
+/// 敵弾の定義
 static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
-    {1, 1, 6, 6, 5}   // 標準弾
+    {1, 1, 6, 6, 5},    // 標準弾
+    {2, 1, 6, 6, 5}     // スクロール影響弾
 };
 
 @implementation AKEnemyShot
@@ -108,6 +109,8 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
     // スピードをxとyに分割して設定する
     self.speedX = cos(angle) * speed;
     self.speedY = sin(angle) * speed;
+    
+    AKLog(kAKLogEnemyShot_1, @"angle=%f speed=(%f, %f)", angle * 180 / M_PI, self.speedX, self.speedY);
     
     // 配置フラグを立てる
     isStaged_ = YES;
@@ -221,6 +224,9 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
         case 1:
             return @selector(action_01:data:);
             
+        case 2:
+            return @selector(action_02:data:);
+            
         default:
             NSAssert(NO, @"不正な種別");
             return @selector(action_01:data:);
@@ -238,4 +244,17 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
 {
 }
 
+// スクロール影響弾動作
+/*!
+ @brief スクロール影響弾動作
+ 
+ スクロールスピードの影響を受ける。
+ @param dt フレーム更新間隔
+ @param data ゲームデータ
+ */
+- (void)action_02:(ccTime)dt data:(id<AKPlayDataInterface>)data
+{
+    // スクロールスピードの影響を設定する
+    self.scrollSpeed = 1.0f;
+}
 @end
