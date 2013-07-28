@@ -46,7 +46,7 @@ static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
     {1, 1, 1, 2, 0.5f, 32, 32, 3, 100},     // トンボ
     {2, 1, 2, 2, 0.5f, 32, 16, 3, 100},     // アリ
     {3, 1, 3, 2, 0.5f, 32, 32, 3, 100},     // チョウ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // テントウムシ
+    {4, 1, 4, 2, 0.1f, 32, 32, 5, 100},     // テントウムシ
     {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備5
     {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備6
     {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備7
@@ -219,6 +219,9 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
             
         case 3:
             return @selector(action_03:data:);
+        
+        case 4:
+            return @selector(action_04:data:);
             
         default:
             NSAssert(NO, @"不正な種別");
@@ -248,7 +251,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
 /*!
  @brief 動作処理1
  
- まっすぐ進む。一定間隔で自機を狙う1-way弾発射。
+ まっすぐ進む。一定間隔で左方向へ1-way弾発射。
  @param dt フレーム更新間隔
  @param data ゲームデータ
  */
@@ -258,7 +261,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     self.speedX = -90.0f;
     self.speedY = 0.0f;
     
-    // 一定時間経過しているときは自機を狙う1-way弾を発射する
+    // 一定時間経過しているときは左方向へ1-way弾を発射する
     if (time_ > 1.5f) {
         
         // 左へ弾を発射する
@@ -456,7 +459,7 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
     
     AKLog(kAKLogEnemy_3, "work=%f", work_);
     
-    // 一定時間経過しているときは自機を狙う1-way弾を発射する
+    // 一定時間経過しているときは左方向へ3-way弾を発射する
     if (work_ > 1.0f) {
         
         // 左へ弾を発射する
@@ -469,6 +472,35 @@ static const NSInteger kAKEnemyShotTypeNormal = 1;
         
         // 動作時間の初期化を行う
         work_ = 0.0f;
+    }
+}
+
+/*!
+ @brief 動作処理4
+ 
+ まっすぐ進む。一定間隔で自機を狙う1-way弾発射。
+ @param dt フレーム更新間隔
+ @param data ゲームデータ
+ */
+- (void)action_04:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
+{
+    // 左へ直進する
+    self.speedX = -65.0f;
+    self.speedY = 0.0f;
+    
+    // 一定時間経過しているときは自機を狙う1-way弾を発射する
+    if (time_ > 1.2f) {
+        
+        // 左へ弾を発射する
+        // 自機へ向けて弾を発射する
+        [AKEnemy fireNWayWithPosition:ccp(self.positionX, self.positionY)
+                                count:1
+                             interval:0.0f
+                                speed:120.0f
+                                 data:data];
+        
+        // 動作時間の初期化を行う
+        time_ = 0.0f;
     }
 }
 

@@ -79,6 +79,8 @@ struct AKEnemyDef {
 - (void)action_02:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
 // 動作処理3
 - (void)action_03:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+// 動作処理4
+- (void)action_04:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
 // 破壊処理1
 - (void)destroy_01:(id<AKPlayDataInterface>)data;
 // 自機を狙うn-way弾発射
