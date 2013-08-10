@@ -37,52 +37,75 @@
 
 /// 画像名のフォーマット
 static NSString *kAKImageNameFormat = @"Enemy_%02d";
+/// 敵の種類
+enum AKEnemyType {
+    kAKEnemyDragonfly = 1,              ///< トンボ
+    kAKEnemyAnt = 2,                    ///< アリ
+    kAKEnemyButterfly = 3,              ///< チョウ
+    kAKEnemyLadybug = 4,                ///< テントウムシ
+    kAKEnemyBagworm = 11,               ///< ミノムシ
+    kAKEnemyCicada= 12,                 ///< セミ
+    kAKEnemyGrasshopper = 13,           ///< バッタ
+    kAKEnemyHornet = 14,                ///< ハチ
+    kAKEnemyCockroach = 21,             ///< ゴキブリ
+    kAKEnemySnail = 22,                 ///< カタツムリ
+    kAKEnemyStagBeetle = 23,            ///< クワガタ
+    kAKEnemyRhinocerosBeetle = 31,      ///< カブトムシ
+    kAKEnemyMantis = 32,                ///< カマキリ
+    kAKEnemyHoneycomb = 33,             ///< ハチの巣
+    kAKEnemySpider = 34,                ///< クモ
+    kAKEnemyCentipedeHead = 35,         ///< ムカデ（頭）
+    kAKEnemyCentipedeBody = 36,         ///< ムカデ（胴体）
+    kAKEnemyCentipedeTail = 37,         ///< ムカデ（尾）
+    kAKEnemyMaggot = 38,                ///< ウジ
+    kAKEnemyFly = 39                    ///< ハエ
+    };
 /// 敵の種類の数
 static const NSInteger kAKEnemyDefCount = 40;
 
 /// 敵の定義
 static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
-    //動作,破壊,画像,フレーム数,フレーム間隔幅,高さ,HP,スコア
-    {1, 1, 1, 2, 0.5f, 32, 32, 3, 100},     // トンボ
-    {2, 1, 2, 2, 0.5f, 32, 16, 3, 100},     // アリ
-    {3, 1, 3, 2, 0.5f, 32, 32, 3, 100},     // チョウ
-    {4, 1, 4, 2, 0.1f, 32, 32, 5, 100},     // テントウムシ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備5
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備6
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備7
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備8
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備9
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備10
-    {5, 1, 11, 1, 0.0f, 32, 32, 10, 100},   // ミノムシ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // セミ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // バッタ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // ハチ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備15
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備16
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備17
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備18
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備19
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備20
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // ゴキブリ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // カタツムリ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // クワガタ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備24
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備25
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備26
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備27
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備28
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備29
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備30
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // カブトムシ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // カマキリ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // ハチの巣
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // クモ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // ムカデ（頭）
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // ムカデ（胴体）
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // ムカデ（尾）
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // ウジ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0},         // ハエ
-    {0, 0, 0, 0, 0.0f, 0, 0, 0, 0}          // 予備40
+    //破壊,画像,フレーム数,フレーム間隔幅,高さ,HP,スコア
+    {1, 1, 2, 0.5f, 32, 32, 3, 100},     // トンボ
+    {1, 2, 2, 0.5f, 32, 16, 3, 100},     // アリ
+    {1, 3, 2, 0.5f, 32, 32, 3, 100},     // チョウ
+    {1, 4, 2, 0.1f, 32, 32, 5, 100},     // テントウムシ
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備5
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備6
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備7
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備8
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備9
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備10
+    {1, 11, 1, 0.0f, 32, 32, 10, 100},   // ミノムシ
+    {1, 12, 1, 0.0f, 32, 32, 5, 100},    // セミ
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // バッタ
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // ハチ
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備15
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備16
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備17
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備18
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備19
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備20
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // ゴキブリ
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // カタツムリ
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // クワガタ
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備24
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備25
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備26
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備27
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備28
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備29
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備30
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // カブトムシ
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // カマキリ
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // ハチの巣
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // クモ
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // ムカデ（頭）
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // ムカデ（胴体）
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // ムカデ（尾）
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // ウジ
+    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // ハエ
+    {0, 0, 0, 0.0f, 0, 0, 0, 0}          // 予備40
 };
 
 /// 標準弾の種別
@@ -175,13 +198,14 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
     NSAssert(type > 0 && type <= kAKEnemyDefCount, @"敵の種類の値が範囲外");
     
     // 動作処理を設定する
-    action_ = [self actionSelector:kAKEnemyDef[type - 1].action];
+    action_ = [self actionSelector:type];
     
     // 破壊処理を設定する
     destroy_ = [self destroySeletor:kAKEnemyDef[type - 1].destroy];
         
     // 画像名を作成する
     self.imageName = [NSString stringWithFormat:kAKImageNameFormat, kAKEnemyDef[type - 1].image];
+    AKLog(1, @"self.imageName = %@", self.imageName);
                 
     // アニメーションフレームの個数を設定する
     self.animationPattern = kAKEnemyDef[type - 1].animationFrame;
@@ -213,24 +237,27 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
 - (SEL)actionSelector:(NSInteger)type
 {
     switch (type) {
-        case 1:
-            return @selector(action_01:data:);
+        case kAKEnemyDragonfly: // トンボの動作処理
+            return @selector(actionOfDragonfly:data:);
             
-        case 2:
-            return @selector(action_02:data:);
+        case kAKEnemyAnt:       // アリの動作処理
+            return @selector(actionOfAnt:data:);
             
-        case 3:
-            return @selector(action_03:data:);
+        case kAKEnemyButterfly: // チョウの動作処理
+            return @selector(actionOfButterfly:data:);
         
-        case 4:
-            return @selector(action_04:data:);
+        case kAKEnemyLadybug:   // テントウムシの動作処理
+            return @selector(actionOfLadybug:data:);
             
-        case 5:
-            return @selector(action_05:data:);
+        case kAKEnemyBagworm:   // ミノムシの動作処理
+            return @selector(actionOfBagworm:data:);
+            
+        case kAKEnemyCicada:    // セミの動作処理
+            return @selector(actionOfCicada:data:);
             
         default:
             NSAssert(NO, @"不正な種別");
-            return @selector(action_01:data:);
+            return @selector(actionOfDragonfly:data:);
     }
 }
 
@@ -244,23 +271,23 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
 - (SEL)destroySeletor:(NSInteger)type
 {
     switch (type) {
-        case 1:
-            return @selector(destroy_01:);
+        case 1: // 雑魚敵の破壊処理
+            return @selector(destroyNormal:);
             
         default:
             NSAssert(NO, @"不正な種別");
-            return @selector(destroy_01:);
+            return @selector(destroyNormal:);
     }
 }
 
 /*!
- @brief 動作処理1
+ @brief トンボの動作処理
  
  まっすぐ進む。一定間隔で左方向へ1-way弾発射。
  @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action_01:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
+- (void)actionOfDragonfly:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
 {
     // 左へ直進する
     self.speedX = -90.0f;
@@ -287,7 +314,7 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
 }
 
 /*!
- @brief 動作処理2
+ @brief アリの動作処理
  
  天井または地面に張り付いて歩く。
  
@@ -305,7 +332,7 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
  @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action_02:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
+- (void)actionOfAnt:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
 {
     // 弾のスピード
     const float kAKShotSpeed = 150.0f;
@@ -439,14 +466,14 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
 
 
 /*!
- @brief 動作処理3
+ @brief チョウの動作処理
  
  上下に斜めに移動しながら左へ進む。
  定周期で左方向へ3-way弾を発射する。
  @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action_03:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
+- (void)actionOfButterfly:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
 {
     // 左方向への速度を決める
     self.speedX = -70.0f;
@@ -488,13 +515,13 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
 }
 
 /*!
- @brief 動作処理4
+ @brief テントウムシの動作処理
  
  まっすぐ進む。一定間隔で自機を狙う1-way弾発射。
  @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action_04:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
+- (void)actionOfLadybug:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
 {
     // 左へ直進する
     self.speedX = -65.0f;
@@ -516,13 +543,13 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
 }
 
 /*!
- @brief 動作処理5
+ @brief ミノムシの動作処理
  
  スクロールスピードに合わせて移動する。一定時間で全方位に12-way弾を発射する。
  @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action_05:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
+- (void)actionOfBagworm:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
 {
     // スクロールスピードに合わせて移動する
     self.speedX = -data.scrollSpeedX;
@@ -546,12 +573,97 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
 }
 
 /*!
- @brief 破壊処理1
+ @brief セミの動作処理
+ 
+ 自機に向かって一定時間飛ぶ。その後待機して自機に向かって3-way弾を発射する。
+ @param dt フレーム更新間隔
+ @param data ゲームデータ
+ */
+- (void)actionOfCicada:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
+{
+    // 移動スピード
+    const float kAKSpeed = 120.0f;
+    
+    // 初期状態では自機への角度を求める
+    if (state_ == 0) {
+        
+        // 自機との角度を求める
+        float angle = [AKNWayAngle calcDestAngleFrom:ccp(self.positionX, self.positionY)
+                                                  to:data.playerPosition];
+        
+        // 縦横の速度を決定する
+        self.speedX = kAKSpeed * cosf(angle);
+        self.speedY = kAKSpeed * sinf(angle);
+        
+        // 移動中はアニメーションを設定する
+        self.animationPattern = 2;
+        self.animationInterval = 0.1f;
+        self.animationInitPattern = 11;
+        
+        // 状態を進める
+        state_++;
+
+        // 経過時間、作業領域は初期化する
+        time_ = 0.0f;
+        work_ = 0.0f;
+    }
+    // 一定時間自機に向かって飛ぶ
+    else if (state_ == 1) {
+        
+        // 一定時間経過したら次の状態へ進める
+        if (time_ > 1.0f) {
+            
+            state_++;
+
+            // 停止する（スクロールスピードに合わせる）
+            self.speedX = -data.scrollSpeedX;
+            self.speedY = -data.scrollSpeedY;
+            
+            // 待機中はアニメーションを無効化
+            self.animationPattern = 1;
+            self.animationInterval = 0.0f;
+            self.animationInitPattern = 1;
+
+            // 経過時間、作業領域は初期化する
+            time_ = 0.0f;
+            work_ = 0.0f;
+        }
+    }
+    // 一定時間経過した後は待機して自機に向かって3-way弾を発射する
+    else {
+        
+        // 弾発射間隔経過で自機に向かって3-way弾を発射する
+        if (time_ - work_ > 0.3f) {
+            
+            [AKEnemy fireNWayWithPosition:ccp(self.positionX, self.positionY)
+                                    count:3
+                                 interval:M_PI / 8.0f
+                                    speed:120.0f
+                                     data:data];
+            
+            // 作業領域を経過時間で初期化する
+            work_ = time_;
+        }
+        
+        // 待機間隔経過で初期状態に戻る
+        if (time_ > 1.0f) {
+            
+            state_ = 0;
+            
+            // 経過時間、作業領域は初期化する
+            time_ = 0.0f;
+            work_ = 0.0f;
+        }
+    }
+}
+
+/*!
+ @brief 雑魚敵の破壊処理
  
  破壊エフェクトを発生させる。
  @param data ゲームデータ
  */
-- (void)destroy_01:(id<AKPlayDataInterface>)data
+- (void)destroyNormal:(id<AKPlayDataInterface>)data
 {
     AKLog(kAKLogEnemy_1, @"start");
     

@@ -38,7 +38,6 @@
 
 /// 敵種別定義
 struct AKEnemyDef {
-    NSInteger action;           ///< 動作処理の種別
     NSInteger destroy;          ///< 破壊処理の種別
     NSInteger image;            ///< 画像ID
     NSInteger animationFrame;   ///< アニメーションフレーム数
@@ -73,18 +72,20 @@ struct AKEnemyDef {
 - (SEL)actionSelector:(NSInteger)type;
 // 破壊処理取得
 - (SEL)destroySeletor:(NSInteger)type;
-// 動作処理1
-- (void)action_01:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
-// 動作処理2
-- (void)action_02:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
-// 動作処理3
-- (void)action_03:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
-// 動作処理4
-- (void)action_04:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
-// 動作処理5
-- (void)action_05:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
-// 破壊処理1
-- (void)destroy_01:(id<AKPlayDataInterface>)data;
+// トンボの動作処理
+- (void)actionOfDragonfly:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+// アリの動作処理
+- (void)actionOfAnt:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+// チョウの動作処理
+- (void)actionOfButterfly:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+// テントウムシの動作処理
+- (void)actionOfLadybug:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+// ミノムシの動作処理
+- (void)actionOfBagworm:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+// セミの動作処理
+- (void)actionOfCicada:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+// 雑魚敵の破壊処理
+- (void)destroyNormal:(id<AKPlayDataInterface>)data;
 // 自機を狙うn-way弾発射
 + (void)fireNWayWithPosition:(CGPoint)position count:(NSInteger)count interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data;
 // 角度指定によるn-way弾発射

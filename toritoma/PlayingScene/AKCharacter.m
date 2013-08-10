@@ -68,6 +68,7 @@ static NSMutableString *imageFileName_ = nil;
 @synthesize animationInterval = animationInterval_;
 @synthesize animationTime = animationTime_;
 @synthesize animationRepeat = animationRepeat_;
+@synthesize animationInitPattern = animationInitPattern_;
 @synthesize scrollSpeed = scrollSpeed_;
 @synthesize blockHitAction = blockHitAction_;
 
@@ -112,6 +113,9 @@ static NSMutableString *imageFileName_ = nil;
     
     // アニメーション繰り返し回数は0(無限)とする
     self.animationRepeat = 0;
+    
+    // アニメーション初期パターンは1とする
+    self.animationInitPattern = 1;
     
     // アニメーションパターンに応じた画像名を格納するためのグローバル変数を作成する。
     // 処理の都度NSStringのアロケートを行うと処理が重くなる。
@@ -178,6 +182,33 @@ static NSMutableString *imageFileName_ = nil;
         else {
             [self.image setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:imageFileName]];
         }
+    }
+}
+
+/*!
+ @brief アニメーション初期パターンの設定
+ 
+ アニメーション初期パターンを設定する。
+ @param animationInitPattern アニメーション初期パターン
+ */
+- (void)setAnimationInitPattern:(NSInteger)animationInitPattern
+{
+    // メンバに設定する
+    animationInitPattern_ = animationInitPattern;
+    
+    // すでにスプライトを作成している場合は画像の切り替えを行う
+    if (self.image != nil) {
+        
+        // アニメーション時間を初期化する
+        self.animationTime = 0.0f;
+        
+        // アニメーションパターンに応じて画像ファイル名を作成する
+        NSRange range = {0, imageFileName_.length};
+        [imageFileName_ deleteCharactersInRange:range];
+        [imageFileName_ appendFormat:kAKImageFileFormat, self.imageName, animationInitPattern];
+        
+        // 表示スプライトを変更する
+        [self.image setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:imageFileName_]];
     }
 }
 
@@ -258,18 +289,20 @@ static NSMutableString *imageFileName_ = nil;
     self.animationTime += dt;
     
     // 表示するパターンを決定する
-    NSInteger pattern = 1;
+    NSInteger pattern = self.animationInitPattern;
+    
+    AKLog([self.imageName isEqualToString:@"Enemy_12"] && NO, @"self.animationPattern = %d", self.animationPattern);
     
     // アニメーションパターンが複数存在する場合はパターン切り替えを行う
     if (self.animationPattern >= 2) {
         
         // 経過時間からパターンを決定する
-        pattern = (NSInteger)(self.animationTime / self.animationInterval) + 1;
+        pattern = (NSInteger)(self.animationTime / self.animationInterval) + self.animationInitPattern;
     
         // パターンがパターン数を超えた場合はアニメーション時間をリセットし、パターンを最初のものに戻す。
-        if (pattern > self.animationPattern) {
+        if (pattern - (self.animationInitPattern - 1) > self.animationPattern) {
             self.animationTime = 0.0f;
-            pattern = 1;
+            pattern = self.animationInitPattern;
             
             // 繰り返し回数が設定されている場合
             if (self.animationRepeat > 0) {
@@ -291,7 +324,7 @@ static NSMutableString *imageFileName_ = nil;
             }
         }
         
-        AKLog(kAKLogCharacter_2, @"pattern=%d time=%f interval=%f", pattern, self.animationTime, self.animationInterval);
+        AKLog([self.imageName isEqualToString:@"Enemy_12"] && NO, @"pattern=%d time=%f interval=%f", pattern, self.animationTime, self.animationInterval);
         
         // アニメーションパターンに応じて画像ファイル名を作成する
         NSRange range = {0, imageFileName_.length};
