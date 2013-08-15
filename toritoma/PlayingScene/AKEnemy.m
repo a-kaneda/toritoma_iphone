@@ -78,7 +78,7 @@ static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備10
     {1, 11, 1, 0.0f, 32, 32, 10, 100},   // ミノムシ
     {1, 12, 1, 0.0f, 32, 32, 5, 100},    // セミ
-    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // バッタ
+    {1, 13, 1, 0.0f, 32, 32, 3, 100},    // バッタ
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // ハチ
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備15
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備16
@@ -255,7 +255,11 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
         case kAKEnemyCicada:    // セミの動作処理
             return @selector(actionOfCicada:data:);
             
+        case kAKEnemyGrasshopper:   // バッタの動作処理
+            return @selector(actionOfGrasshopper:data:);
+            
         default:
+            AKLog(kAKLogEnemy_0, @"不正な種別:%d", type);
             NSAssert(NO, @"不正な種別");
             return @selector(actionOfDragonfly:data:);
     }
@@ -275,6 +279,7 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
             return @selector(destroyNormal:);
             
         default:
+            AKLog(kAKLogEnemy_0, @"不正な種別:%d", type);
             NSAssert(NO, @"不正な種別");
             return @selector(destroyNormal:);
     }
@@ -318,8 +323,7 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
  
  天井または地面に張り付いて歩く。
  
- 初期状態:初期状態。上下どちらに張り付くか判定する。距離の近い方に張り付く。
- 地面に張り付く場合は左移動(地面)に、天井に張り付く場合は左移動(天井)に遷移する。
+ 初期状態:上下どちらに張り付くか判定する。距離の近い方に張り付く。
  天井に張り付く場合は画像を上下反転する。
  
  左移動:左方向への移動。一定時間経過後に弾発射に遷移する。
@@ -352,6 +356,12 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
         kAKStateRightMove,          // 右移動
         kAKStateFire                // 弾発射
     };
+    
+    // 縦方向の速度は状態にかかわらず0とする
+    self.speedY = 0.0f;
+    
+    // スクロールに合わせて移動する
+    self.scrollSpeed = 1.0f;
     
     // 状態によって処理を分岐する
     switch (state_) {
@@ -438,13 +448,11 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
             break;
             
         default:
+            AKLog(kAKLogEnemy_0, @"状態が異常:%d", state_);
+            NSAssert(NO, @"状態が異常");
             break;
     }
-    
-    // スクロールに合わせて移動する
-    self.speedX -= data.scrollSpeedX;
-    self.speedY -= data.scrollSpeedY;
-    
+        
     AKLog(kAKLogEnemy_2, @"speedX=%f state_=%d", speedX_, state_);
     
     // 障害物との衝突判定を行う
@@ -583,78 +591,205 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
 {
     // 移動スピード
     const float kAKSpeed = 120.0f;
-    
-    // 初期状態では自機への角度を求める
-    if (state_ == 0) {
-        
-        // 自機との角度を求める
-        float angle = [AKNWayAngle calcDestAngleFrom:ccp(self.positionX, self.positionY)
-                                                  to:data.playerPosition];
-        
-        // 縦横の速度を決定する
-        self.speedX = kAKSpeed * cosf(angle);
-        self.speedY = kAKSpeed * sinf(angle);
-        
-        // 移動中はアニメーションを設定する
-        self.animationPattern = 2;
-        self.animationInterval = 0.1f;
-        self.animationInitPattern = 11;
-        
-        // 状態を進める
-        state_++;
 
-        // 経過時間、作業領域は初期化する
-        time_ = 0.0f;
-        work_ = 0.0f;
+    // 状態
+    enum STATE {
+        kAKStateInit = 0,           // 初期状態
+        kAKStateLeftMove,           // 左移動
+        kAKStateFire                // 弾発射
+    };
+
+    // 状態によって処理を分岐する
+    switch (state_) {
+        case kAKStateInit:     // 初期状態
+        {
+            // 自機との角度を求める
+            float angle = [AKNWayAngle calcDestAngleFrom:ccp(self.positionX, self.positionY)
+                                                      to:data.playerPosition];
+            
+            // 縦横の速度を決定する
+            self.speedX = kAKSpeed * cosf(angle);
+            self.speedY = kAKSpeed * sinf(angle);
+            
+            // 移動中はアニメーションを設定する
+            self.animationPattern = 2;
+            self.animationInterval = 0.1f;
+            self.animationInitPattern = 11;
+            
+            // 左移動の状態へ遷移する
+            state_ = kAKStateLeftMove;
+            
+            // 経過時間、作業領域は初期化する
+            time_ = 0.0f;
+            work_ = 0.0f;
+        }
+            break;
+            
+        case kAKStateLeftMove:     // 左へ移動
+            
+            // 一定時間経過したら次の状態へ進める
+            if (time_ > 1.0f) {
+                
+                // 弾発射の状態へ遷移する
+                state_= kAKStateFire;
+                
+                // 停止する（スクロールスピードに合わせる）
+                self.speedX = -data.scrollSpeedX;
+                self.speedY = -data.scrollSpeedY;
+                
+                // 待機中はアニメーションを無効化
+                self.animationPattern = 1;
+                self.animationInterval = 0.0f;
+                self.animationInitPattern = 1;
+                
+                // 経過時間、作業領域は初期化する
+                time_ = 0.0f;
+                work_ = 0.0f;
+            }
+            break;
+            
+        case kAKStateFire:  // 弾発射
+            
+            // 弾発射間隔経過で自機に向かって3-way弾を発射する
+            if (time_ - work_ > 0.3f) {
+                
+                [AKEnemy fireNWayWithPosition:ccp(self.positionX, self.positionY)
+                                        count:3
+                                     interval:M_PI / 8.0f
+                                        speed:120.0f
+                                         data:data];
+                
+                // 作業領域を経過時間で初期化する
+                work_ = time_;
+            }
+            
+            // 待機間隔経過で初期状態に戻る
+            if (time_ > 1.0f) {
+                
+                // 初期状態へ遷移する
+                state_ = kAKStateInit;
+                
+                // 経過時間、作業領域は初期化する
+                time_ = 0.0f;
+                work_ = 0.0f;
+            }
+            
+            break;
+            
+        default:
+            AKLog(kAKLogEnemy_0, @"状態が異常:%d", state_);
+            NSAssert(NO, @"状態が異常");
+            break;
     }
-    // 一定時間自機に向かって飛ぶ
-    else if (state_ == 1) {
-        
+}
+
+/*!
+ @brief バッタの動作処理
+ 
+ 地面または天井を移動する。左方向へジャンプ、着地して弾発射を繰り返す。
+ @param dt フレーム更新間隔
+ @param data ゲームデータ
+ */
+- (void)actionOfGrasshopper:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
+{
+    // 移動スピード
+    const float kAKMoveSpeed = -60.0f;
+    // ジャンプのスピード
+    const float kAKJumpSpeed = 240.0f;
+    // 重力加速度
+    const float kAKGravitationAlacceleration = 480.0f;
+    
+    // 状態
+    enum STATE {
+        kAKStateInit = 0,           // 初期状態
+        kAKStateLeftMove,           // 左移動
+        kAKStateWait                // 待機
+    };
+    
+    // スクロールに合わせて移動する
+    self.scrollSpeed = 1.0f;
+    
+    // 障害物との当たり判定を有効にする
+    self.blockHitAction = kAKBlockHitMove;
+
+    // 初期状態の時は逆さま判定を行う
+    if (state_ == kAKStateInit) {
+        [self checkReverse:data.blocks];
+    }
+    
+    // 左移動中の場合
+    if (state_ == kAKStateLeftMove) {
+
+        // 重力加速度をかけて減速する
+        if (!self.image.flipY) {
+            self.speedY -= kAKGravitationAlacceleration * [dt floatValue];
+        }
+        else {
+            self.speedY += kAKGravitationAlacceleration * [dt floatValue];
+        }
+
         // 一定時間経過したら次の状態へ進める
         if (time_ > 1.0f) {
             
-            state_++;
-
-            // 停止する（スクロールスピードに合わせる）
-            self.speedX = -data.scrollSpeedX;
-            self.speedY = -data.scrollSpeedY;
+            // 弾発射の状態へ遷移する
+            state_= kAKStateWait;
             
-            // 待機中はアニメーションを無効化
-            self.animationPattern = 1;
-            self.animationInterval = 0.0f;
-            self.animationInitPattern = 1;
-
-            // 経過時間、作業領域は初期化する
-            time_ = 0.0f;
-            work_ = 0.0f;
-        }
-    }
-    // 一定時間経過した後は待機して自機に向かって3-way弾を発射する
-    else {
-        
-        // 弾発射間隔経過で自機に向かって3-way弾を発射する
-        if (time_ - work_ > 0.3f) {
-            
-            [AKEnemy fireNWayWithPosition:ccp(self.positionX, self.positionY)
-                                    count:3
-                                 interval:M_PI / 8.0f
-                                    speed:120.0f
-                                     data:data];
-            
-            // 作業領域を経過時間で初期化する
-            work_ = time_;
-        }
-        
-        // 待機間隔経過で初期状態に戻る
-        if (time_ > 1.0f) {
-            
-            state_ = 0;
+            // 停止する
+            self.speedX = 0.0f;
             
             // 経過時間、作業領域は初期化する
+            work_ -= time_;
             time_ = 0.0f;
-            work_ = 0.0f;
         }
     }
+    
+    // 落ちていく方向の障害物に接触している場合、着地したとしてスピードを0にする。
+    if ((!self.image.flipY && (self.blockHitSide & kAKHitSideBottom)) ||
+        (self.image.flipY && (self.blockHitSide & kAKHitSideTop))) {
+        
+        self.speedX = 0.0f;
+        self.speedY = 0.0f;
+    }
+    
+    // 初期状態または待機中で待機時間が経過している場合
+    if ((state_ == kAKStateInit) || (state_ == kAKStateWait && (time_ > 1.0f))) {
+        
+        // 左方向へのスピードを設定する
+        self.speedX = kAKMoveSpeed;
+        
+        // ジャンプする方向へ加速する
+        if (!self.image.flipY) {
+            self.speedY = kAKJumpSpeed;
+        }
+        else {
+            self.speedY = -kAKJumpSpeed;
+        }
+        
+        // 左移動の状態へ遷移する
+        state_ = kAKStateLeftMove;
+        
+        // 経過時間、作業領域は初期化する
+        work_ -= time_;
+        time_ = 0.0f;
+    }
+
+    // 弾発射間隔経過で自機に向かって1-way弾を発射する
+    if (time_ - work_ > 0.5f) {
+        
+        [AKEnemy fireNWayWithPosition:ccp(self.positionX, self.positionY)
+                                count:1
+                             interval:0.0f
+                                speed:120.0f
+                                 data:data];
+        
+        // 作業領域を経過時間で初期化する
+        work_ = time_;
+    }
+    
+    AKLog(kAKLogEnemy_3, @"speed=(%f, %f)", self.speedX, self.speedY);
+    
+    // 画像表示位置の更新を行う
+    [self updateImagePosition];
 }
 
 /*!
@@ -854,6 +989,7 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
     
     // 足元に障害物がない場合は移動はしない
     if (leftBlock == nil && rightBlock == nil) {
+        AKLog(kAKLogEnemy_2, @"足元に障害物なし");
         return current;
     }
     
@@ -863,11 +999,13 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
 
     // 左側の障害物がない場合は自分の左端を右側の障害物の左端に合わせる
     if (leftBlock == nil) {
+        AKLog(kAKLogEnemy_2, @"左側に障害物なし");
         newX = rightBlock.positionX - rightBlock.width / 2.0f + size.width / 2.0f;
         blockAtFeet = rightBlock;
     }
     // 右側の障害物がない場合は自分の右端を左側の障害物の右端に合わせる
     else if (rightBlock == nil) {
+        AKLog(kAKLogEnemy_2, @"右側に障害物なし");
         newX = leftBlock.positionX + leftBlock.width / 2.0f - size.width / 2.0f;
         blockAtFeet = leftBlock;
     }

@@ -84,6 +84,8 @@ struct AKEnemyDef {
 - (void)actionOfBagworm:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
 // セミの動作処理
 - (void)actionOfCicada:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+// バッタの動作処理
+- (void)actionOfGrasshopper:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
 // 雑魚敵の破壊処理
 - (void)destroyNormal:(id<AKPlayDataInterface>)data;
 // 自機を狙うn-way弾発射

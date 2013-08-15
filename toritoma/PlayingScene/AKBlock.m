@@ -147,7 +147,7 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
  */
 - (void)pushCharacter:(AKCharacter *)character data:(id<AKPlayDataInterface>)data
 {
-    AKLog(kAKLogBlock_1, @"障害物とキャラクターの衝突");
+    AKLog(kAKLogBlock_1, @"移動前=(%f, %f)", character.positionX, character.positionY);
     
     // 障害物左端への移動
     float leftX = self.positionX - (self.width + character.width) / 2;
@@ -251,6 +251,8 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
         character.positionX = movePosX[i];
         character.positionY = movePosY[i];
         
+        AKLog(kAKLogBlock_1, @"[%d]=(%f, %f)", i, character.positionX, character.positionY);
+        
         // 自機の場合は画面外への押し出しは禁止する
         if (character.blockHitAction == kAKBlockHitPlayer) {
             
@@ -267,6 +269,7 @@ static const struct AKBlcokDef kAKBlockDef[kAKBlockDefCount] = {
         if (![character checkHit:[data.blocks objectEnumerator] data:data func:NULL]) {
             
             // 衝突しなかった場合はこの値を採用して処理を終了する
+            AKLog(kAKLogBlock_1, @"移動後=(%f, %f)", character.positionX, character.positionY);
             return;
         }
     }

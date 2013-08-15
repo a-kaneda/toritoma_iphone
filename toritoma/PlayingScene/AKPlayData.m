@@ -534,8 +534,9 @@ enum AKCharacterPositionZ {
             // 自機弾との当たり判定を行う
             [block checkHit:[self.playerShotPool.pool objectEnumerator] data:self];
             
-            // 敵との当たり判定を行う
-            [block checkHit:[self.enemyPool.pool objectEnumerator] data:self];
+            // 敵は移動処理の中で障害物との当たり判定を処理しているので
+            // ここでは処理しない。
+//            [block checkHit:[self.enemyPool.pool objectEnumerator] data:self];
             
             // 敵弾との当たり判定を行う
             [block checkHit:[self.enemyShotPool.pool objectEnumerator] data:self];

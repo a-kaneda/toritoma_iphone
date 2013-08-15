@@ -44,6 +44,7 @@ BOOL kAKLogCharacter_0 = YES;
 BOOL kAKLogCharacter_1 = NO;
 BOOL kAKLogCharacter_2 = NO;
 BOOL kAKLogCharacter_3 = NO;
+BOOL kAKLogCharacter_4 = NO;
 BOOL kAKLogCharacterPool_0 = YES;
 BOOL kAKLogCharacterPool_1 = NO;
 BOOL kAKLogChickenGauge_0 = YES;

@@ -71,6 +71,7 @@ static NSMutableString *imageFileName_ = nil;
 @synthesize animationInitPattern = animationInitPattern_;
 @synthesize scrollSpeed = scrollSpeed_;
 @synthesize blockHitAction = blockHitAction_;
+@synthesize blockHitSide = blockHitSide_;
 
 /*!
  @brief オブジェクト生成処理
@@ -389,10 +390,12 @@ static NSMutableString *imageFileName_ = nil;
     float mytop = self.positionY + self.height / 2.0f;
     float mybottom = self.positionY - self.height / 2.0f;
     
-    AKLog(kAKLogCharacter_3, @"my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
     
     // 衝突したかどうかを記憶する
     BOOL isHit = NO;
+    
+    // 衝突している方向を初期化する
+    self.blockHitSide = 0;
     
     // 判定対象のキャラクターごとに判定を行う
     for (AKCharacter *target in characters) {
@@ -408,8 +411,6 @@ static NSMutableString *imageFileName_ = nil;
         float targettop = target.positionY + target.height / 2.0f;
         float targetbottom = target.positionY - target.height / 2.0f;
         
-        AKLog(kAKLogCharacter_3, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
-        
         // 以下のすべての条件を満たしている時、衝突していると判断する。
         //   ・相手の右端が自キャラの左端よりも右側にある
         //   ・相手の左端が自キャラの右端よりも左側にある
@@ -419,6 +420,9 @@ static NSMutableString *imageFileName_ = nil;
             (targetleft < myright) &&
             (targettop > mybottom) &&
             (targetbottom < mytop)) {
+            
+            AKLog(kAKLogCharacter_3, @"my=(%f, %f, %f, %f)", myleft, myright, mytop, mybottom);
+            AKLog(kAKLogCharacter_3, @"target=(%f, %f, %f, %f)", targetleft, targetright, targettop, targetbottom);
             
             // 衝突処理を行う
             if (func != NULL) {
@@ -472,71 +476,156 @@ static NSMutableString *imageFileName_ = nil;
  */
 - (void)moveOfBlockHit:(AKCharacter *)character data:(id<AKPlayDataInterface>)data;
 {
+    AKLog(kAKLogCharacter_4, @"current:self=(%f, %f, %d, %d) target=(%f, %f, %d, %d)",
+          self.positionX, self.positionY, self.width, self.height,
+          character.positionX, character.positionY, character.width, character.height);
+    AKLog(kAKLogCharacter_4, @"prev:self=(%f, %f, %d, %d) target=(%f, %f, %d, %d)",
+          self.prevPositionX, self.prevPositionY, self.width, self.height,
+          character.prevPositionX, character.prevPositionY, character.width, character.height);
+    
+    // 衝突による移動先の座標を現在の座標で初期化する
+    CGPoint newPoint = ccp(self.positionX, self.positionY);
+    
+    // 判定後の接触フラグを現在の値で初期化する
+    NSUInteger newHitSide = self.blockHitSide;
+    
+    // 障害物の横方向の端に合わせて移動した場合は
+    // 縦方向の移動は不要になるため、フラグを立てて後で使用する。
+    BOOL isXMoved = NO;
+    
     // x方向右に進んでいる時に衝突した場合
     if (self.positionX > self.prevPositionX &&
         self.positionX > character.positionX - (self.width + character.width) / 2) {
+        
+        // 前回の右端が障害物の前回の左端よりも右側ならば
+        // 障害物内部に入り込んでいるものとみなし、前回値に戻す
+        if (self.prevPositionX > character.prevPositionX - (self.width + character.width) / 2) {
 
-        // 前回の右端が障害物の左端よりも左側ならば
-        // 右端を障害物の左端に合わせる
-        if (self.prevPositionX < character.positionX - (self.width + character.width) / 2) {
-            self.positionX = character.positionX - (self.width + character.width) / 2;
+            AKLog(kAKLogCharacter_4, @"右側が障害物内部に入り込み");
+            newPoint.x = self.prevPositionX;
         }
-        // そうでない場合は前回値に戻す
+        // そうでない場合は右端を障害物の左端に合わせる
         else {
-            self.positionX = self.prevPositionX;
+            
+            AKLog(kAKLogCharacter_4, @"右側が接触");
+            newPoint.x = character.positionX - (self.width + character.width) / 2;
+            
+            // 横方向移動のフラグを立てる
+            isXMoved = YES;
         }
+        
+        // 右側との接触フラグを立てる
+        newHitSide |= kAKHitSideRight;
     }
     // x方向左に進んでいる時に衝突した場合
     else if (self.positionX < self.prevPositionX &&
              self.positionX < character.positionX + (self.width + character.width) / 2) {
         
-        // 前回の左端が障害物の右端よりも右側ならば
-        // 左端を障害物の右端に合わせる
-        if (self.prevPositionX > character.positionX + (self.width + character.width) / 2) {
-            self.positionX = character.positionX + (self.width + character.width) / 2;
+        // 前回の左端が障害物の前回の右端よりも左側ならば
+        // 障害物内部に入り込んでいるものとみなし、前回値に戻す
+        if (self.prevPositionX < character.prevPositionX + (self.width + character.width) / 2) {
+            
+            AKLog(kAKLogCharacter_4, @"左側が障害物内部に入り込み");
+            newPoint.x = self.prevPositionX;
         }
-        // そうでない場合は前回値に戻す
+        // そうでない場合は左端を障害物の右端に合わせる
         else {
-            self.positionX = self.prevPositionX;
+            
+            AKLog(kAKLogCharacter_4, @"左側が接触");
+            newPoint.x = character.positionX + (self.width + character.width) / 2;
+            
+            // 横方向移動のフラグを立てる
+            isXMoved = YES;
         }
+        
+        // 左側との接触フラグを立てる
+        newHitSide |= kAKHitSideLeft;
     }
     // x方向に進んでいない、または衝突していない場合は無処理
     else {
+        AKLog(kAKLogCharacter_4, @"横方向の接触なし");
         // 無処理
     }
+    
+    // 障害物の縦方向の端に合わせて移動した場合は
+    // 横方向の移動は不要になるため、フラグを立てて後で使用する。
+    BOOL isYMoved = NO;
     
     // y方向上に進んでいる時に衝突した場合
     if (self.positionY > self.prevPositionY &&
         self.positionY > character.positionY - (self.height + character.height) / 2) {
         
-        // 前回の上端が障害物の下端よりも下側ならば
-        // 上端を障害物の下端に合わせる
-        if (self.prevPositionY < character.positionY - (self.height + character.height) / 2) {
-            self.positionY = character.positionY - (self.height + character.height) / 2;
+        // 前回の上端が障害物の前回の下端よりも上側ならば
+        // 障害物内部に入り込んでいるものとみなし、前回値に戻す
+        if (self.prevPositionY > character.prevPositionY - (self.height + character.height) / 2) {
+
+            AKLog(kAKLogCharacter_4, @"上側が障害物内部に入り込み");
+            newPoint.y = self.prevPositionY;
         }
-        // そうでない場合は前回値に戻す
+        // そうでない場合は上端を障害物の下端に合わせる
         else {
-            self.positionY = self.prevPositionY;
+            
+            AKLog(kAKLogCharacter_4, @"上側が接触");
+            newPoint.y = character.positionY - (self.height + character.height) / 2;
+            
+            // 縦方向移動のフラグを立てる
+            isYMoved = YES;
         }
+        
+        // 上側との接触フラグを立てる
+        newHitSide |= kAKHitSideTop;
     }
     // y方向下に進んでいる時に衝突した場合
     else if (self.positionY < self.prevPositionY &&
              self.positionY < character.positionY + (self.height + character.height) / 2) {
         
-        // 前回の下端が障害物の上端よりも上側ならば
-        // 下端を障害物の上端に合わせる
-        if (self.prevPositionY > character.positionY + (self.height + character.height) / 2) {
-            self.positionY = character.positionY + (self.height + character.height) / 2;
+        // 前回の下端が障害物の前回の上端よりも下側ならば
+        // 障害物内部に入り込んでいるものとみなし、前回値に戻す
+        if (self.prevPositionY < character.prevPositionY + (self.height + character.height) / 2) {
+
+            AKLog(kAKLogCharacter_4, @"下側が障害物内部に入り込み");
+            newPoint.y = self.prevPositionY;
         }
-        // そうでない場合は前回値に戻す
+        // そうでない場合は下端を障害物の上端に合わせる
         else {
-            self.positionY = self.prevPositionY;
+            
+            AKLog(kAKLogCharacter_4, @"下側が接触");
+            newPoint.y = character.positionY + (self.height + character.height) / 2;
+            
+            // 縦方向移動のフラグを立てる
+            isYMoved = YES;
         }
+        
+        // 下側との接触フラグを立てる
+        newHitSide |= kAKHitSideBottom;
     }
     // y方向に進んでいない、または衝突していない場合は無処理
     else {
+        AKLog(kAKLogCharacter_4, @"縦方向の接触なし");
         // 無処理
     }
+    
+    // 横方向へ移動した場合
+    if (isXMoved) {
+        // 横方向の座標と接触フラグを採用する
+        self.positionX = newPoint.x;
+        self.blockHitSide |= (newHitSide & (kAKHitSideLeft | kAKHitSideRight));
+    }
+    // 縦方向へ移動した場合
+    else if (isYMoved) {
+        // 縦方向の座標と接触フラグを採用する
+        self.positionY = newPoint.y;
+        self.blockHitSide |= (newHitSide & (kAKHitSideTop | kAKHitSideBottom));
+    }
+    // 障害物内部に入り込んでいる場合
+    else {
+        // 縦横両方の座標と接触フラグを採用する
+        self.positionX = newPoint.x;
+        self.positionY = newPoint.y;
+        self.blockHitSide = newHitSide;
+    }
+    
+    AKLog(kAKLogCharacter_4, @"newposition=(%f, %f)", self.positionX, self.positionY);
 }
 
 /*!

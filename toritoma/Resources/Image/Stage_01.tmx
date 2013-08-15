@@ -316,7 +316,7 @@
  </layer>
  <layer name="Block" width="100" height="9">
   <data encoding="base64" compression="zlib">
-   eJwzZWBgMCUBG0ExOt+IRHNGMXZMKgDpMUPimzEg4mUUDB5gRljJKBgFo2AUjIJRgAFMBtoBIxQYM6CGvQlUbLR9RR1gTCKG9TXQ+UZkmDWKMTEAz6Qq/w==
+   eJzt0bEJADAMA0HtFEz23ywzuAiouIPv1GmSjGrauMs9//iihy8AoNtRVQ/qnylG
   </data>
  </layer>
  <layer name="Event" width="100" height="9" opacity="0.37">
@@ -326,7 +326,7 @@
  </layer>
  <layer name="Enemy" width="100" height="9">
   <data encoding="base64" compression="zlib">
-   eJztzgENAAAIA6D3j2JKY9xNSEAC8Mu0AwAARywYWgCr
+   eJztzgEJAAAMA6D1r/KSjzEGmsCEddcOAAAAkx5FTACs
   </data>
  </layer>
 </map>

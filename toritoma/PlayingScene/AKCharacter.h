@@ -44,6 +44,14 @@ enum AKBlockHitAction {
     kAKBlockHitPlayer,      ///< 自機
 };
 
+/// 障害物と接している面
+enum AKBlockHitSide {
+    kAKHitSideLeft = 1,     ///< 左側
+    kAKHitSideRight = 2,    ///< 右側
+    kAKHitSideTop = 4,      ///< 上側
+    kAKHitSideBottom = 8    ///< 下側
+};
+
 // キャラクタークラス
 @interface AKCharacter : NSObject {
     /// 画像
@@ -86,6 +94,8 @@ enum AKBlockHitAction {
     float scrollSpeed_;
     /// 障害物と衝突した時の動作
     enum AKBlockHitAction blockHitAction_;
+    /// 障害物と接している面
+    NSUInteger blockHitSide_;
     /// 画像表示のオフセット
     CGPoint offset_;
 }
@@ -128,6 +138,8 @@ enum AKBlockHitAction {
 @property (nonatomic)float scrollSpeed;
 /// 障害物と衝突した時の動作
 @property (nonatomic)enum AKBlockHitAction blockHitAction;
+/// 障害物と接している面
+@property (nonatomic)NSUInteger blockHitSide;
 
 // 画像名の取得
 - (NSString *)imageName;

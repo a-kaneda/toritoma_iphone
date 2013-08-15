@@ -44,6 +44,7 @@ extern BOOL kAKLogCharacter_0;
 extern BOOL kAKLogCharacter_1;
 extern BOOL kAKLogCharacter_2;
 extern BOOL kAKLogCharacter_3;
+extern BOOL kAKLogCharacter_4;
 extern BOOL kAKLogCharacterPool_0;
 extern BOOL kAKLogCharacterPool_1;
 extern BOOL kAKLogChickenGauge_0;
