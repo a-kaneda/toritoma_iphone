@@ -79,7 +79,7 @@ static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
     {1, 11, 1, 0.0f, 32, 32, 10, 100},   // ミノムシ
     {1, 12, 1, 0.0f, 32, 32, 5, 100},    // セミ
     {1, 13, 1, 0.0f, 32, 32, 3, 100},    // バッタ
-    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // ハチ
+    {1, 14, 2, 0.1f, 32, 32, 5, 100},    // ハチ
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備15
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備16
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備17
@@ -257,6 +257,9 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
             
         case kAKEnemyGrasshopper:   // バッタの動作処理
             return @selector(actionOfGrasshopper:data:);
+            
+        case kAKEnemyHornet:    // ハチの動作処理
+            return @selector(actionOfHornet:data:);
             
         default:
             AKLog(kAKLogEnemy_0, @"不正な種別:%d", type);
@@ -790,6 +793,119 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
     
     // 画像表示位置の更新を行う
     [self updateImagePosition];
+}
+
+/*!
+ @brief ハチの動作処理
+ 
+ 画面上半分から登場するときは左下に向かって一定時間進み、一時停止して弾を発射、その後左上に向かって飛んで行く。
+ 画面下半分から登城するときは左上に向かって一定時間進み、あとの処理は同じ。
+ 弾は5種類のスピードの弾を左方向に発射する。
+ @param dt フレーム更新間隔
+ @param data ゲームデータ
+ */
+- (void)actionOfHornet:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
+{
+    // 弾の数
+    const NSInteger kAKShotCount = 5;
+    // 弾のスピード
+    const float kAKShotSpeed[kAKShotCount] = {80.0f, 100.0f, 120.0f, 140.0f, 160.0f};
+    
+    // 状態
+    enum STATE {
+        kAKStateInit = 0,   // 初期状態
+        kAKStateMoveIn,     // 登場
+        kAKStateFire,       // 弾発射
+        kAKStateMoveOut     // 退場
+    };
+    
+    // 状態によって処理を分岐する
+    switch (state_) {
+        case kAKStateInit:      // 初期状態
+            
+            // 左方向へ移動する
+            self.speedX = -140.0f;
+            
+            // 画面下半分に配置されている場合
+            if (self.positionY < [AKScreenSize stageSize].height / 2) {
+                // 上方向へ移動する
+                self.speedY = 100.0f;
+            }
+            // 画面上半分に配置されている場合
+            else {
+                // 下方向へ移動する
+                self.speedY = -100.0f;
+            }
+            
+            // 登場の状態へ遷移する
+            state_ = kAKStateMoveIn;
+            
+            // 経過時間、作業領域は初期化する
+            work_ = 0.0f;
+            time_ = 0.0f;
+            
+            break;
+            
+        case kAKStateMoveIn:    // 登場
+            
+            // 登場移動時間が経過している場合
+            if (time_ > 0.5f) {
+                
+                // 停止する
+                self.speedX = 0.0f;
+                self.speedY = 0.0f;
+                
+                // 弾発射の状態へ遷移する
+                state_ = kAKStateFire;
+                
+                // 経過時間、作業領域は初期化する
+                work_ = 0.0f;
+                time_ = 0.0f;
+            }
+            
+            break;
+            
+        case kAKStateFire:      // 弾発射
+            
+            // 待機時間が経過している場合
+            if (time_ > 0.1f) {
+                
+                // 左へ5種類の弾を発射する
+                for (int i = 0; i < kAKShotCount; i++) {
+                    [AKEnemy fireNWayWithAngle:M_PI
+                                          from:ccp(self.positionX, self.positionY)
+                                         count:3
+                                      interval:M_PI / 32.0f
+                                         speed:kAKShotSpeed[i]
+                                          type:kAKEnemyShotTypeNormal
+                                          data:data];
+                }
+
+                // 退場の状態へ遷移する
+                state_ = kAKStateMoveOut;
+                
+                // 経過時間、作業領域は初期化する
+                work_ = 0.0f;
+                time_ = 0.0f;
+            }
+            break;
+            
+        case kAKStateMoveOut:   // 退場
+            
+            // 待機時間が経過している場合
+            if (time_ > 0.2f) {
+                // 左上へ移動する
+                self.speedX = -160.0f;
+                self.speedY = 40.0f;
+            }
+            
+            break;
+            
+        default:
+            AKLog(kAKLogEnemy_0, @"状態が異常:%d", state_);
+            NSAssert(NO, @"状態が異常");
+            break;
+    }
 }
 
 /*!
