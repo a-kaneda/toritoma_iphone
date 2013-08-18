@@ -90,6 +90,8 @@ struct AKEnemyDef {
 - (void)actionOfHornet:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
 // ゴキブリの動作処理
 - (void)actionOfCockroach:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+// カタツムリの動作処理
+- (void)actionOfSnail:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
 // 雑魚敵の破壊処理
 - (void)destroyNormal:(id<AKPlayDataInterface>)data;
 // 自機を狙うn-way弾発射
