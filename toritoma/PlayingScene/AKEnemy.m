@@ -86,7 +86,7 @@ static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備18
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備19
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備20
-    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // ゴキブリ
+    {1, 21, 2, 0.1f, 32, 32, 5, 100},    // ゴキブリ
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // カタツムリ
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // クワガタ
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備24
@@ -223,6 +223,9 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
     // スコアを設定する
     score_ = kAKEnemyDef[type - 1].score;
     
+    // 画像の回転をリセットする
+    self.image.rotation = 0.0f;
+    
     // レイヤーに配置する
     [parent addChild:self.image];
 }
@@ -260,6 +263,9 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
             
         case kAKEnemyHornet:    // ハチの動作処理
             return @selector(actionOfHornet:data:);
+            
+        case kAKEnemyCockroach: // ゴキブリの動作処理
+            return @selector(actionOfCockroach:data:);
             
         default:
             AKLog(kAKLogEnemy_0, @"不正な種別:%d", type);
@@ -906,6 +912,43 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
             NSAssert(NO, @"状態が異常");
             break;
     }
+}
+
+/*!
+ @brief ゴキブリの動作処理
+ 
+ 自機に向かって体当たりをしてくる。定周期で自機に向かって1-way弾を発射する。
+ @param dt フレーム更新間隔
+ @param data ゲームデータ
+ */
+- (void)actionOfCockroach:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
+{
+    float kAKSpeed = 120.0f;
+
+    // 自機との角度を求める
+    float angle = [AKNWayAngle calcDestAngleFrom:ccp(self.positionX, self.positionY)
+                                              to:data.playerPosition];
+    
+    // 縦横の速度を決定する
+    self.speedX = kAKSpeed * cosf(angle);
+    self.speedY = kAKSpeed * sinf(angle);
+    
+    // 画像を回転させる
+    self.image.rotation = AKCnvAngleRad2Scr(angle);
+    
+    // 一定時間経過しているときは自機を狙う1-way弾を発射する
+    if (time_ > 1.5f) {
+        
+        // 自機へ向けて弾を発射する
+        [AKEnemy fireNWayWithPosition:ccp(self.positionX, self.positionY)
+                                count:1
+                             interval:0.0f
+                                speed:160.0f
+                                 data:data];
+        
+        // 動作時間の初期化を行う
+        time_ = 0.0f;
+    }    
 }
 
 /*!
