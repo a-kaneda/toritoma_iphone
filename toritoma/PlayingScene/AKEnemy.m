@@ -88,7 +88,7 @@ static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備20
     {1, 21, 2, 0.1f, 32, 32, 5, 100},    // ゴキブリ
     {1, 22, 2, 0.5f, 32, 32, 5, 100},    // カタツムリ
-    {0, 0, 0, 0.0f, 0, 0, 0, 0},         // クワガタ
+    {1, 23, 2, 0.1f, 32, 32, 5, 100},    // クワガタ
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備24
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備25
     {0, 0, 0, 0.0f, 0, 0, 0, 0},         // 予備26
@@ -269,6 +269,9 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
             
         case kAKEnemySnail:     // カタツムリの動作処理
             return @selector(actionOfSnail:data:);
+            
+        case kAKEnemyStagBeetle:    // クワガタの動作処理
+            return @selector(actionOfStagBeetle:data:);
             
         default:
             AKLog(kAKLogEnemy_0, @"不正な種別:%d", type);
@@ -1039,6 +1042,90 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
     
     // 画像表示位置の更新を行う
     [self updateImagePosition];
+}
+
+/*!
+ @brief クワガタの動作処理
+ 
+ 登場時に自機の方向へ進行方向を決めて真っ直ぐ飛ぶ。定周期で3-way弾を発射する。
+ 途中で方向転換を行い、自機の方向へ向き直す。ただし、後ろの方向には戻らないようにx方向は常に左にする。
+ @param dt フレーム更新間隔
+ @param data ゲームデータ
+ */
+- (void)actionOfStagBeetle:(NSNumber *)dt data:(id<AKPlayDataInterface>)data
+{
+    // 弾のスピード
+    const float kAKShotSpeed = 150.0f;
+    // 移動スピード
+    const float kAKMoveSpeed = 120.0f;
+    // 弾を発射する間隔
+    const float kAKFireInterval = 1.0f;
+    // 方向転換を行うまでの間隔
+    const float kAKChangeDirectionInterval = 2.0f;
+
+    // 状態
+    enum STATE {
+        kAKStateInit = 0,           // 初期状態
+        kAKStateChangeDirection,    // 方向転換
+        kAKStateLeftMove            // 左移動
+    };
+    
+    // 初期状態の場合は経過時間、作業領域を初期化する
+    if (state_ == kAKStateInit) {
+        time_ = 0.0f;
+        work_ = 0.0f;
+    }
+    
+    switch (state_) {
+        case kAKStateInit:              // 初期状態
+        case kAKStateChangeDirection:   // 方向転換
+        {
+            // 自機との角度を求める
+            float angle = [AKNWayAngle calcDestAngleFrom:ccp(self.positionX, self.positionY)
+                                                      to:data.playerPosition];
+            
+            // 縦横の速度を決定する
+            // ただし、後ろには戻らないようにx方向は絶対値とする
+            self.speedX = -1.0 * abs(kAKMoveSpeed * cosf(angle));
+            self.speedY = kAKMoveSpeed * sinf(angle);
+            
+            // 左移動の状態へ遷移する
+            state_ = kAKStateLeftMove;
+        }
+            break;
+            
+        case kAKStateLeftMove:     // 左へ移動
+            
+            // 弾発射間隔時間経過したら弾を発射する
+            if (time_ - work_ > kAKFireInterval) {
+                
+                // 自機へ向けて弾を発射する
+                [AKEnemy fireNWayWithPosition:ccp(self.positionX, self.positionY)
+                                        count:3
+                                     interval:M_PI / 8.0f
+                                        speed:kAKShotSpeed
+                                         data:data];
+                
+                // 作業領域を経過時間に合わせる
+                work_ = time_;
+            }
+            
+            // 方向転換間隔経過したら方向転換の状態に遷移する
+            if (time_ > kAKChangeDirectionInterval) {
+                state_ = kAKStateChangeDirection;
+                
+                // 経過時間と作業領域を初期化する
+                work_ -= time_;
+                time_ = 0.0f;
+            }
+            break;
+            
+        default:
+            AKLog(kAKLogEnemy_0, @"状態が異常:%d", state_);
+            NSAssert(NO, @"状態が異常");
+            break;
+    }
+    
 }
 
 /*!
