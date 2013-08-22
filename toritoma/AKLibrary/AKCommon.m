@@ -178,6 +178,25 @@ BOOL AKIsInside(CGPoint point, CGRect rect)
 }
 
 /*!
+ @brief float同値判定
+ 
+ floatの値が同じ値かどうかを調べる。比較する値の+-0.0001までは誤差範囲とする。
+ @param a 比較する値
+ @param b 比較する値
+ @retval YES 同じ値
+ @retval NO 異なる値
+ */
+BOOL AKIsEqualFloat(float a, float b)
+{
+    if (fabsf(a - b) < 0.0001f) {
+        return YES;
+    }
+    else {
+        return NO;
+    }
+}
+
+/*!
  @brief 中心座標とサイズから矩形を作成する
  
  中心座標とサイズから矩形を作成する。

@@ -44,9 +44,14 @@ struct AKEnemyDef {
     float animationInterval;    ///< アニメーション更新間隔
     NSInteger hitWidth;         ///< 当たり判定の幅
     NSInteger hitHeight;        ///< 当たり判定の高さ
+    NSInteger offsetX;          ///< 当たり判定オフセットx軸
+    NSInteger offsetY;          ///< 当たり判定オフセットy軸
     NSInteger hitPoint;         ///< ヒットポイント
     NSInteger score;            ///< スコア
 };
+
+// 作業領域の要素数
+const NSInteger kAKEnemyWorkCount = 5;
 
 // 敵クラス
 @interface AKEnemy : AKCharacter {
@@ -55,7 +60,7 @@ struct AKEnemyDef {
     /// 動作状態(各敵種別で使用)
     NSInteger state_;
     /// 作業領域(各敵種別で使用)
-    float work_;
+    float work_[kAKEnemyWorkCount];
     /// 動作処理のセレクタ
     SEL action_;
     /// 破壊処理のセレクタ
@@ -92,8 +97,10 @@ struct AKEnemyDef {
 - (void)actionOfCockroach:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
 // カタツムリの動作処理
 - (void)actionOfSnail:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
-// カブトムシの動作処理
+// クワガタの動作処理
 - (void)actionOfStagBeetle:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+// カブトムシの動作処理
+- (void)actionOfRhinocerosBeetle:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
 // 雑魚敵の破壊処理
 - (void)destroyNormal:(id<AKPlayDataInterface>)data;
 // 自機を狙うn-way弾発射

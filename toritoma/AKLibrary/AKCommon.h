@@ -139,6 +139,9 @@ float AKCnvAngleRad2Scr(float radAngle);
 // 矩形内判定
 BOOL AKIsInside(CGPoint point, CGRect rect);
 
+// float同値判定
+BOOL AKIsEqualFloat(float a, float b);
+
 // 中心座標とサイズから矩形を作成する
 CGRect AKMakeRectFromCenter(CGPoint center, NSInteger size);
 
