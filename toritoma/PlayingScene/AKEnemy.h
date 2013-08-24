@@ -36,6 +36,9 @@
 #import "AKCharacter.h"
 #import "AKNWayAngle.h"
 
+/// 作業領域の要素数
+#define kAKEnemyWorkCount 5
+
 /// 敵種別定義
 struct AKEnemyDef {
     NSInteger destroy;              ///< 破壊処理の種別
@@ -49,9 +52,6 @@ struct AKEnemyDef {
     NSInteger hitPoint;             ///< ヒットポイント
     NSInteger score;                ///< スコア
 };
-
-// 作業領域の要素数
-const NSInteger kAKEnemyWorkCount = 5;
 
 // 敵クラス
 @interface AKEnemy : AKCharacter {
