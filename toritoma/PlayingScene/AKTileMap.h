@@ -83,7 +83,7 @@
 // コンビニエンスコンストラクタ
 + (id)scriptWithStageNo:(NSInteger)stage layer:(CCNode *)layer;
 // 更新処理
-- (void)update:(float)dt data:(id<AKPlayDataInterface>)data;
+- (void)update:(id<AKPlayDataInterface>)data;
 // 列単位のイベント実行
 - (void)execEventByCol:(NSInteger)col data:(id<AKPlayDataInterface>)data;
 // レイヤーごとのイベント実行

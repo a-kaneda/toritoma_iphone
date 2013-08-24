@@ -150,14 +150,13 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
  マップをスクロールスピードに応じてスクロールする。
  現在のスクロール位置までイベントを実行する。
  現在処理済みの列から表示中の一番右側の列+2列分までのタイルのイベントを処理する。
- @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)update:(float)dt data:(id<AKPlayDataInterface>)data
+- (void)update:(id<AKPlayDataInterface>)data
 {
     // 背景をスクロールする
-    self.tileMap.position = ccp(self.tileMap.position.x - data.scrollSpeedX * dt,
-                                self.tileMap.position.y - data.scrollSpeedY * dt);
+    self.tileMap.position = ccp(self.tileMap.position.x - data.scrollSpeedX,
+                                self.tileMap.position.y - data.scrollSpeedY);
     
     // 表示中の一番右側の列+2列目までを処理対象とする
     NSInteger maxCol = ([AKScreenSize stageSize].width - [AKScreenSize xOfDevice:self.tileMap.position.x]) / self.tileMap.tileSize.width + 2;
@@ -374,7 +373,8 @@ static NSString *kAKTileMapFileName = @"Stage_%02d.tmx";
     
     // 水平方向のスクロールスピード変更の場合
     if ([type isEqualToString:@"hspeed"]) {
-        param.data.scrollSpeedX = value;
+        // スピードは0.1単位で指定するものとする
+        param.data.scrollSpeedX = value / 10.0f;
     }
     else if ([type isEqualToString:@"bgm"]) {
         // TODO:BGM変更処理を作成する

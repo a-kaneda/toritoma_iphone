@@ -40,8 +40,8 @@
 @interface AKOption : AKCharacter {
     /// 移動座標
     NSMutableArray *movePositions_;
-    /// 弾発射までの残り時間
-    float shootTime_;
+    /// 弾発射までの残りフレーム数
+    NSInteger shootFrame_;
     /// 次のオプション
     AKOption *next_;
     /// シールド有無

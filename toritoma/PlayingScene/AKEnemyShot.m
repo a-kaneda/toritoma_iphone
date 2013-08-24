@@ -70,10 +70,7 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
 - (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
 {
     NSNumber *objdt = NULL;     // フレーム更新間隔(オブジェクト版)
-    
-    // かすりポイントを減少させる
-    self.grazePoint -= dt;
-    
+        
     // 動作開始からの経過時間をカウントする
     time_ += dt;
     

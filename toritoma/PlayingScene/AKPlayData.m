@@ -54,8 +54,6 @@ static const NSInteger kAKMaxEnemyShotCount = 256;
 static const NSInteger kAKMaxEffectCount = 64;
 /// 障害物の同時出現最大数
 static const NSInteger kAKMaxBlockCount = 128;
-/// シールドによるゲージ消費率
-static const float kAKChickenGaugeUseSpeed = 50.0f;
 /// キャラクターテクスチャアトラス定義ファイル名
 NSString *kAKTextureAtlasDefFile = @"Character.plist";
 /// キャラクターテクスチャアトラスファイル名
@@ -68,8 +66,8 @@ static NSString *kAKDataFileKey = @"hiScoreData";
 static const float kAKStageClearWaitTime = 5.0f;
 /// 初期残機
 static const NSInteger kAKInitialLife = 2;
-/// 自機復活待機時間
-static const float kAKRebirthInterval = 1.0f;
+/// 自機復活待機フレーム数
+static const NSInteger kAKRebirthInterval = 60;
 /// エクステンドするスコア
 static const NSInteger kAKExtendScore = 50000;
 /// ステージの数
@@ -222,8 +220,8 @@ enum AKCharacterPositionZ {
     // その他のメンバを初期化する
     stage_ = 0;
     score_ = 0;
-    clearWait_ = 0.0f;
-    rebirthWait_ = 0.0f;
+    clearWait_ = 0;
+    rebirthWait_ = 0;
 }
 
 #pragma mark オブジェクト解放
@@ -333,7 +331,7 @@ enum AKCharacterPositionZ {
     self.tileMap = [AKTileMap scriptWithStageNo:stage layer:self.scene.backgroundLayer];
     
     // 初期表示の1画面分の処理を行う
-    [self.tileMap update:0.0f data:self];
+    [self.tileMap update:self];
 }
 
 /*!
@@ -426,22 +424,21 @@ enum AKCharacterPositionZ {
  
  各オブジェクトの状態を更新する。
  キャラクターの移動、衝突判定を行う。
- @param dt フレーム更新間隔
  */
-- (void)update:(ccTime)dt
+- (void)update
 {
     // クリア後の待機中の場合はスクリプトを実行しない
-    if (clearWait_ > 0.0f) {
+    if (clearWait_ > 0) {
         
         // 自機が破壊されている場合は復活するまで処理しない
         // 自機が存在する場合のみ待機時間のカウントとステージクリア処理を行う
         if (!self.player.isStaged) {
             
-            // 待機時間をカウントする
-            clearWait_ -= dt;
+            // 待機時フレーム数をカウントする
+            clearWait_--;
             
-            // 待機時間が経過した場合は次のステージへと進める
-            if (clearWait_ < 0.0f) {
+            // 待機フレーム数が経過した場合は次のステージへと進める
+            if (clearWait_ <= 0) {
                 
                 AKLog(kAKLogPlayData_1, @"ステージクリア後の待機時間経過");
                 
@@ -454,21 +451,21 @@ enum AKCharacterPositionZ {
                 // 次のステージのスクリプトを読み込む
                 [self readScript:stage_];
                 
-                // 待機時間をリセットする
-                clearWait_ = 0.0f;
+                // 待機フレーム数をリセットする
+                clearWait_ = 0;
             }
         }
     }
     
     // TODO:クリア時の処理を作成する
     
-    // 復活待機時間が設定されている場合は時間をカウントする
-    if (rebirthWait_ > 0.0f) {
+    // 復活待機フレーム数が設定されている場合はフレーム数をカウントする
+    if (rebirthWait_ > 0) {
         
-        rebirthWait_ -= dt;
+        rebirthWait_--;
         
-        // 復活までの時間が経過している場合は自機を復活する
-        if (rebirthWait_ < 0) {
+        // 復活までのフレーム数が経過している場合は自機を復活する
+        if (rebirthWait_ <= 0) {
             
             // 自機を復活させる
             [self.player rebirth];
@@ -476,29 +473,29 @@ enum AKCharacterPositionZ {
     }
     
     // マップを更新する
-    [self.tileMap update:dt data:self];
+    [self.tileMap update:self];
     
     // 障害物を更新する
     for (AKBlock *block in [self.blockPool.pool objectEnumerator]) {
         if (block.isStaged) {
-            [block move:dt data:self];
+            [block move:self];
         }
     }
     
     // 自機を更新する
-    [self.player move:dt data:self];
+    [self.player move:self];
     
     // 自機弾を更新する
     for (AKPlayerShot *playerShot in [self.playerShotPool.pool objectEnumerator]) {
         if (playerShot.isStaged) {
-            [playerShot move:dt data:self];
+            [playerShot move:self];
         }
     }
     
     // 反射弾を更新する
     for (AKEnemyShot *refrectedShot in [self.refrectedShotPool.pool objectEnumerator]) {
         if (refrectedShot.isStaged) {
-            [refrectedShot move:dt data:self];
+            [refrectedShot move:self];
         }
     }
     
@@ -506,21 +503,21 @@ enum AKCharacterPositionZ {
     for (AKEnemy *enemy in [self.enemyPool.pool objectEnumerator]) {
         if (enemy.isStaged) {
             AKLog(kAKLogPlayData_2, @"enemy move start.");
-            [enemy move:dt data:self];
+            [enemy move:self];
         }
     }
     
     // 敵弾を更新する
     for (AKEnemyShot *enemyShot in [self.enemyShotPool.pool objectEnumerator]) {
         if (enemyShot.isStaged) {
-            [enemyShot move:dt data:self];
+            [enemyShot move:self];
         }
     }
     
     // 画面効果を更新する
     for (AKEffect *effect in [self.effectPool.pool objectEnumerator]) {
         if (effect.isStaged) {
-            [effect move:dt data:self];
+            [effect move:self];
         }
     }
     
@@ -587,7 +584,7 @@ enum AKCharacterPositionZ {
     
     // シールドが有効な場合はチキンゲージを減少させる
     if (self.shield) {
-        self.player.chickenGauge -= kAKChickenGaugeUseSpeed * dt;
+        self.player.chickenGauge--;
         
         // チキンゲージがなくなった場合は強制的にシールドを無効にする
         if (self.player.chickenGauge < 0.0f) {

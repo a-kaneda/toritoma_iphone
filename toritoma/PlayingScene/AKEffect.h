@@ -37,21 +37,21 @@
 
 /// 画面効果定義
 struct AKEffectDef {
-    NSInteger fileNo;           ///< ファイル名の番号
-    NSInteger width;            ///< 幅
-    NSInteger height;           ///< 高さ
-    float speedX;               ///< x方向の速度
-    float speedY;               ///< y方向の速度
-    float lifeTime;             ///< 生存時間
-    NSInteger animationFrame;   ///< アニメーションフレーム数
-    float animationInterval;    ///< アニメーション更新間隔
-    NSInteger animationRepeat;  ///< アニメーション繰り返し回数
+    NSInteger fileNo;               ///< ファイル名の番号
+    NSInteger width;                ///< 幅
+    NSInteger height;               ///< 高さ
+    NSInteger speedX;               ///< x方向の速度
+    NSInteger speedY;               ///< y方向の速度
+    NSInteger lifeFrame;            ///< 生存フレーム数
+    NSInteger animationFrame;       ///< アニメーションフレーム数
+    NSInteger animationInterval;    ///< アニメーション更新間隔
+    NSInteger animationRepeat;      ///< アニメーション繰り返し回数
 };
 
 // 画面効果クラス
 @interface AKEffect : AKCharacter {
-    /// 生存時間
-    float lifeTime_;
+    /// 生存フレーム数
+    NSInteger lifeFrame_;
 }
 
 // 画面効果開始

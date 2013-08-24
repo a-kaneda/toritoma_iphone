@@ -38,16 +38,16 @@
 
 /// 敵種別定義
 struct AKEnemyDef {
-    NSInteger destroy;          ///< 破壊処理の種別
-    NSInteger image;            ///< 画像ID
-    NSInteger animationFrame;   ///< アニメーションフレーム数
-    float animationInterval;    ///< アニメーション更新間隔
-    NSInteger hitWidth;         ///< 当たり判定の幅
-    NSInteger hitHeight;        ///< 当たり判定の高さ
-    NSInteger offsetX;          ///< 当たり判定オフセットx軸
-    NSInteger offsetY;          ///< 当たり判定オフセットy軸
-    NSInteger hitPoint;         ///< ヒットポイント
-    NSInteger score;            ///< スコア
+    NSInteger destroy;              ///< 破壊処理の種別
+    NSInteger image;                ///< 画像ID
+    NSInteger animationFrame;       ///< アニメーションフレーム数
+    NSInteger animationInterval;    ///< アニメーション更新間隔
+    NSInteger hitWidth;             ///< 当たり判定の幅
+    NSInteger hitHeight;            ///< 当たり判定の高さ
+    NSInteger offsetX;              ///< 当たり判定オフセットx軸
+    NSInteger offsetY;              ///< 当たり判定オフセットy軸
+    NSInteger hitPoint;             ///< ヒットポイント
+    NSInteger score;                ///< スコア
 };
 
 // 作業領域の要素数
@@ -55,12 +55,12 @@ const NSInteger kAKEnemyWorkCount = 5;
 
 // 敵クラス
 @interface AKEnemy : AKCharacter {
-    /// 動作開始からの経過時間(各敵種別で使用)
-    ccTime time_;
+    /// 動作開始からの経過フレーム数(各敵種別で使用)
+    NSInteger frame_;
     /// 動作状態(各敵種別で使用)
     NSInteger state_;
     /// 作業領域(各敵種別で使用)
-    float work_[kAKEnemyWorkCount];
+    NSInteger work_[kAKEnemyWorkCount];
     /// 動作処理のセレクタ
     SEL action_;
     /// 破壊処理のセレクタ
@@ -78,29 +78,29 @@ const NSInteger kAKEnemyWorkCount = 5;
 // 破壊処理取得
 - (SEL)destroySeletor:(NSInteger)type;
 // トンボの動作処理
-- (void)actionOfDragonfly:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+- (void)actionOfDragonfly:(id<AKPlayDataInterface>)data;
 // アリの動作処理
-- (void)actionOfAnt:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+- (void)actionOfAnt:(id<AKPlayDataInterface>)data;
 // チョウの動作処理
-- (void)actionOfButterfly:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+- (void)actionOfButterfly:(id<AKPlayDataInterface>)data;
 // テントウムシの動作処理
-- (void)actionOfLadybug:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+- (void)actionOfLadybug:(id<AKPlayDataInterface>)data;
 // ミノムシの動作処理
-- (void)actionOfBagworm:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+- (void)actionOfBagworm:(id<AKPlayDataInterface>)data;
 // セミの動作処理
-- (void)actionOfCicada:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+- (void)actionOfCicada:(id<AKPlayDataInterface>)data;
 // バッタの動作処理
-- (void)actionOfGrasshopper:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+- (void)actionOfGrasshopper:(id<AKPlayDataInterface>)data;
 // ハチの動作処理
-- (void)actionOfHornet:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+- (void)actionOfHornet:(id<AKPlayDataInterface>)data;
 // ゴキブリの動作処理
-- (void)actionOfCockroach:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+- (void)actionOfCockroach:(id<AKPlayDataInterface>)data;
 // カタツムリの動作処理
-- (void)actionOfSnail:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+- (void)actionOfSnail:(id<AKPlayDataInterface>)data;
 // クワガタの動作処理
-- (void)actionOfStagBeetle:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+- (void)actionOfStagBeetle:(id<AKPlayDataInterface>)data;
 // カブトムシの動作処理
-- (void)actionOfRhinocerosBeetle:(NSNumber *)dt data:(id<AKPlayDataInterface>)data;
+- (void)actionOfRhinocerosBeetle:(id<AKPlayDataInterface>)data;
 // 雑魚敵の破壊処理
 - (void)destroyNormal:(id<AKPlayDataInterface>)data;
 // 自機を狙うn-way弾発射

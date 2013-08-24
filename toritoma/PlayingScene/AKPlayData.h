@@ -49,10 +49,10 @@
     AKPlayingScene *scene_;
     /// ステージ番号
     NSInteger stage_;
-    /// クリア後の待機時間
-    float clearWait_;
-    /// 復活待機時間
-    float rebirthWait_;
+    /// クリア後の待機フレーム数
+    NSInteger clearWait_;
+    /// 復活待機フレーム数
+    NSInteger rebirthWait_;
     /// 残機
     NSInteger life_;
     /// スコア
@@ -127,7 +127,7 @@
 // ハイスコアファイル書込
 - (void)writeHiScore;
 // 状態更新
-- (void)update:(ccTime)dt;
+- (void)update;
 // 自機の移動
 - (void)movePlayerByDx:(float)dx dy:(float)dy;
 // ツイートメッセージの作成

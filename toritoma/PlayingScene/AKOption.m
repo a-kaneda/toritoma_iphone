@@ -42,7 +42,7 @@ static const NSInteger kAKOptionAnimationCountOfShieldOff = 2;
 /// シールドあり時のアニメーションフレーム数
 static const NSInteger kAKOptionAnimationCountOfShieldOn = 1;
 /// 弾発射の間隔
-static const float kAKOptionShotInterval = 0.2f;
+static const NSInteger kAKOptionShotInterval = 12;
 /// オプション間の距離
 static const NSInteger kAKOptionSpace = 20;
 /// オプションの当たり判定
@@ -76,8 +76,8 @@ static const NSInteger kAKOptionSize = 16;
     // 画像名を設定する
     self.imageName = [NSString stringWithFormat:kAKOptionImageFile, 1];
     
-    // 弾発射までの残り時間を設定する
-    shootTime_ = kAKOptionShotInterval;
+    // 弾発射までの残りフレーム数を設定する
+    shootFrame_ = kAKOptionShotInterval;
     
     // 移動座標を保存する配列を作成する
     self.movePositions = [NSMutableArray arrayWithCapacity:kAKOptionSpace];
@@ -168,27 +168,26 @@ static const NSInteger kAKOptionSize = 16;
  
  速度によって位置を移動する。オプションの表示位置は固定とする。
  次のオプションの移動を行う。
- @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
+- (void)action:(id<AKPlayDataInterface>)data
 {
-    // 弾発射までの時間をカウントする
-    shootTime_ -= dt;
+    // 弾発射までのフレーム数をカウントする
+    shootFrame_--;
     
-    // 弾発射までの残り時間が0になっている場合は弾を発射する
-    if (shootTime_ < 0.0f) {
+    // 弾発射までの残りフレーム数が0になっている場合は弾を発射する
+    if (shootFrame_ <= 0) {
         
         // 自機弾を生成する
         [data createPlayerShotAtX:self.positionX y:self.positionY];
         
         // 弾発射までの残り時間をリセットする
-        shootTime_ = kAKOptionShotInterval;
+        shootFrame_ = kAKOptionShotInterval;
     }
     
     // 次のオプションの移動を行う
     if (self.next != nil) {
-        [self.next move:dt data:data];
+        [self.next move:data];
     }
 }
 

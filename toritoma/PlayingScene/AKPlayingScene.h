@@ -65,8 +65,8 @@ enum AKGameState {
     enum AKGameState state_;
     /// スリープ後に遷移する状態
     enum AKGameState nextState_;
-    /// スリープ時間
-    float sleepTime_;
+    /// スリープフレーム数
+    NSInteger sleepFrame_;
     /// 残機表示
     AKLife *life_;
 }

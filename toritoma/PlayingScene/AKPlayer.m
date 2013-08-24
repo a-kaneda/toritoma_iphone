@@ -40,8 +40,8 @@
 static const NSInteger kAKPlayerSize = 8;
 /// 自機のかすり判定サイズ
 static const NSInteger kAKPlayerGrazeSize = 32;
-/// 復活後の無敵状態の時間
-static const float kAKInvincibleTime = 2.0f;
+/// 復活後の無敵状態のフレーム数
+static const NSInteger kAKInvincibleTime = 120;
 /// 自機の画像ファイル名
 static NSString *kAKPlayerImageFile = @"Player_%02d";
 /// 画像サイズ
@@ -49,7 +49,7 @@ static const float kAKPlayerImageSize = 32;
 /// アニメーションフレーム数
 static const NSInteger kAKPlayerAnimationCount = 2;
 /// 弾発射の間隔
-static const float kAKPlayerShotInterval = 0.2f;
+static const float kAKPlayerShotInterval = 12;
 /// 最大のオプション数
 static const NSInteger kAKMaxOptionCount = 3;
 
@@ -94,10 +94,10 @@ static const NSInteger kAKMaxOptionCount = 3;
     self.imageName = [NSString stringWithFormat:kAKPlayerImageFile, 1];
     
     // 弾発射までの残り時間を設定する
-    shootTime_ = kAKPlayerShotInterval;
+    shootFrame_ = kAKPlayerShotInterval;
     
     // チキンゲージをリセットする
-    self.chickenGauge = 0.0f;
+    self.chickenGauge = 0;
     
     // 障害物と衝突した時の処理に自機を設定する。
     // 自機の場合は移動時は無処理(画面入力時にチェックするため)。
@@ -118,37 +118,39 @@ static const NSInteger kAKMaxOptionCount = 3;
 
  速度によって位置を移動する。自機の表示位置は固定とする。
  オプションの移動も行う。
- @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
+- (void)action:(id<AKPlayDataInterface>)data
 {
-    // 無敵状態の時は無敵時間をカウントする
+    // 無敵状態の時は無敵フレーム数をカウントする
     if (isInvincible_) {
-        invincivleTime_ -= dt;
+        invincivleFrame_--;
         
-        // 無敵時間が切れている場合は通常状態に戻す
-        if (invincivleTime_ < 0.0f) {
+        // 無敵フレーム数が切れている場合は通常状態に戻す
+        if (invincivleFrame_ <= 0) {
+            AKLog(kAKLogPlayer_1, @"無敵時間終了");
             isInvincible_ = NO;
         }
     }
     
-    // 弾発射までの時間をカウントする
-    shootTime_ -= dt;
+    // 弾発射までのフレーム数をカウントする
+    shootFrame_--;
     
-    // 弾発射までの残り時間が0になっている場合は弾を発射する
-    if (shootTime_ < 0.0f) {
+    // 弾発射までの残りフレーム数が0になっている場合は弾を発射する
+    if (shootFrame_ <= 0) {
+        
+        AKLog(kAKLogPlayer_1, @"弾発射");
         
         // 自機弾を生成する
         [data createPlayerShotAtX:self.positionX y:self.positionY];
         
-        // 弾発射までの残り時間をリセットする
-        shootTime_ = kAKPlayerShotInterval;
+        // 弾発射までの残りフレーム数をリセットする
+        shootFrame_ = kAKPlayerShotInterval;
     }
     
     // オプションの移動を行う
     if (self.option) {
-        [self.option move:dt data:data];
+        [self.option move:data];
     }
 }
 
@@ -193,13 +195,14 @@ static const NSInteger kAKMaxOptionCount = 3;
     
     // 無敵状態にする
     isInvincible_ = YES;
-    invincivleTime_ = kAKInvincibleTime;
+    invincivleFrame_ = kAKInvincibleTime;
     
     // チキンゲージを初期化する
-    self.chickenGauge = 0.0f;
+    self.chickenGauge = 0;
     
     // 無敵中はブリンクする
-    CCBlink *blink = [CCBlink actionWithDuration:kAKInvincibleTime blinks:kAKInvincibleTime * 8];
+    CCBlink *blink = [CCBlink actionWithDuration:(kAKInvincibleTime / 60)
+                                          blinks:(kAKInvincibleTime / 60) * 8];
     [self.image runAction:blink];
 }
 
@@ -224,7 +227,7 @@ static const NSInteger kAKMaxOptionCount = 3;
     
     // 無敵状態はOFFにする
     isInvincible_ = NO;
-    invincivleTime_ = 0.0f;
+    invincivleFrame_ = 0;
     
     // アクションはすべて停止する
     [self.image stopAllActions];
@@ -280,15 +283,15 @@ static const NSInteger kAKMaxOptionCount = 3;
                 self.chickenGauge += target.grazePoint;
                 
                 // 最大で100%とする
-                if (self.chickenGauge > 100.0f) {
-                    self.chickenGauge = 100.0f;
+                if (self.chickenGauge > 100) {
+                    self.chickenGauge = 100;
                 }
             }
             
             // 相手のかすりポイントをリセットする
             target.grazePoint = 0.0f;
             
-            AKLog(kAKLogPlayer_1, @"chickenGauge=%f", self.chickenGauge);
+            AKLog(kAKLogPlayer_1, @"chickenGauge=%d", self.chickenGauge);
         }
     }
 }
@@ -330,14 +333,14 @@ static const NSInteger kAKMaxOptionCount = 3;
 - (void)updateOptionCount
 {
     // チキンゲージからオプション個数を計算する
-    NSInteger count = self.chickenGauge / (100.0f / (kAKMaxOptionCount + 1));
+    NSInteger count = self.chickenGauge / (100 / (kAKMaxOptionCount + 1));
     
     // 最大個数で制限をかける
     if (count > kAKMaxOptionCount) {
         count = kAKMaxOptionCount;
     }
     
-    AKLog(kAKLogPlayer_1, @"ゲージ=%f オプション個数=%d", self.chickenGauge, count);
+    AKLog(kAKLogPlayer_1, @"ゲージ=%d オプション個数=%d", self.chickenGauge, count);
     
     // 自分の座標を初期座標として次のオプションを設定する
     if (self.option != nil) {

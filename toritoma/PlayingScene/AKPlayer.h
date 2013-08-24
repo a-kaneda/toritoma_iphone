@@ -40,12 +40,12 @@
 @interface AKPlayer : AKCharacter {
     /// 無敵状態かどうか
     BOOL isInvincible_;
-    /// 無敵状態の残り時間
-    float invincivleTime_;
-    /// 弾発射までの残り時間
-    float shootTime_;
+    /// 無敵状態の残りフレーム数
+    NSInteger invincivleFrame_;
+    /// 弾発射までの残りフレーム数
+    NSInteger shootFrame_;
     /// チキンゲージ
-    float chickenGauge_;
+    NSInteger chickenGauge_;
     /// オプション
     AKOption *option_;
 }
@@ -53,7 +53,7 @@
 /// 無敵状態かどうか
 @property (nonatomic)BOOL isInvincible;
 /// チキンゲージ
-@property (nonatomic)float chickenGauge;
+@property (nonatomic)NSInteger chickenGauge;
 /// オプション
 @property (nonatomic, retain)AKOption *option;
 

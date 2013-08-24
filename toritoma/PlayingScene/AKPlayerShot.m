@@ -36,7 +36,7 @@
 #import "AKPlayerShot.h"
 
 /// 自機弾のスピード
-static const float kAKPlayerShotSpeed = 320.0f;
+static const float kAKPlayerShotSpeed = 5.0f;
 /// 自機弾の画像名
 static NSString *kAKPlayerShotImage = @"PlayerShot_01";
 /// 自機弾の幅

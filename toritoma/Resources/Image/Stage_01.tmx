@@ -45,7 +45,7 @@
    <properties>
     <property name="Progress" value="0"/>
     <property name="Type" value="hspeed"/>
-    <property name="Value" value="32"/>
+    <property name="Value" value="5"/>
    </properties>
   </tile>
   <tile id="1">
@@ -326,7 +326,7 @@
  </layer>
  <layer name="Enemy" width="100" height="9">
   <data encoding="base64" compression="zlib">
-   eJztzgENAAAIA6D372Q3Y9w5SEAC8Nu0AwAARy3Q8gC+
+   eJzt1kERAAAIw7D514NAZHBAoqDPJmxW0wEAAMf4Kz5px6YBaQ==
   </data>
  </layer>
 </map>

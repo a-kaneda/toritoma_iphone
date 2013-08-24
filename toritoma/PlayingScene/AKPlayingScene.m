@@ -62,8 +62,8 @@ enum {
 static const float kAKPlayerMoveVal = 1.8f;
 /// 開始ステージ番号
 static const NSInteger kAKStartStage = 1;
-/// ゲームオーバー時の待機時間
-static const float kAKGameOverWaitTime = 1.0f;
+/// ゲームオーバー時の待機フレーム数
+static const NSInteger kAKGameOverWaitFrame = 60;
 
 //======================================================================
 // コントロールの表示に関する定数
@@ -126,11 +126,11 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
 // ツイートボタン選択処理
 - (void)touchTweetButton:(id)object;
 // ゲーム開始時の更新処理
-- (void)updateStart:(ccTime)dt;
+- (void)updateStart;
 // プレイ中の更新処理
-- (void)updatePlaying:(ccTime)dt;
+- (void)updatePlaying;
 // スリープ処理中の更新処理
-- (void)updateSleep:(ccTime)dt;
+- (void)updateSleep;
 // ゲーム再開
 - (void)resume;
 // 終了メニュー表示
@@ -189,8 +189,8 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
     // 状態をシーン読み込み前に設定する
     self.state = kAKGameStatePreLoad;
     
-    // スリープ時間を初期化する
-    sleepTime_ = 0.0f;
+    // スリープフレーム数を初期化する
+    sleepFrame_ = 0;
     
     // ゲームデータを生成する
     self.data = [[[AKPlayData alloc] initWithScene:self] autorelease];
@@ -643,15 +643,15 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
     // ゲームの状態によって処理を分岐する
     switch (self.state) {
         case kAKGameStateStart:     // ゲーム開始時
-            [self updateStart:dt];
+            [self updateStart];
             break;
             
         case kAKGameStatePlaying:   // プレイ中
-            [self updatePlaying:dt];
+            [self updatePlaying];
             break;
             
         case kAKGameStateSleep:     // スリープ中
-            [self updateSleep:dt];
+            [self updateSleep];
             break;
             
         default:
@@ -706,8 +706,8 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
     // 待機後の状態をゲームオーバーに設定する
     nextState_ = kAKGameStateGameOver;
     
-    // 待機時間を設定する
-    sleepTime_ = kAKGameOverWaitTime;
+    // 待機フレーム数を設定する
+    sleepFrame_ = kAKGameOverWaitFrame;
 
     AKLog(kAKLogPlayingScene_1, @"end");
 }
@@ -1035,9 +1035,8 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
  @brief ゲーム開始時の更新処理
  
  ステージ定義ファイルを読み込み、敵を配置する。
- @param dt フレーム更新間隔
  */
-- (void)updateStart:(ccTime)dt
+- (void)updateStart
 {
     AKLog(kAKLogPlayingScene_1, @"start");
     
@@ -1052,12 +1051,11 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
  @brief プレイ中の更新処理
  
  各キャラクターの移動処理、衝突判定を行う。
- @param dt フレーム更新間隔
  */
-- (void)updatePlaying:(ccTime)dt
+- (void)updatePlaying
 {
     // ゲームデータの更新を行う
-    [self.data update:dt];
+    [self.data update];
 }
 
 /*!
@@ -1065,15 +1063,14 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
  
  スリープ時間が経過したあと、次の状態へ遷移する。
  ゲームオーバーへの遷移の場合は遷移するまでプレイ中の状態更新を行う。
- @param dt フレーム更新間隔
  */
-- (void)updateSleep:(ccTime)dt
+- (void)updateSleep
 {
-    // スリープ時間をカウントする
-    sleepTime_ -= dt;
+    // スリープフレーム数をカウントする
+    sleepFrame_--;
     
-    // スリープ時間が経過した時に次の状態へ遷移する
-    if (sleepTime_ < 0.0f) {
+    // スリープフレーム数が経過した時に次の状態へ遷移する
+    if (sleepFrame_ <= 0) {
         
         self.state = nextState_;
     }
@@ -1082,7 +1079,7 @@ static NSString *kAKFrameBarRightBottom = @"FrameRightBottom.png";
         
         // ゲームオーバーへの遷移の場合はプレイ中の状態を更新する
         if (nextState_ == kAKGameStateGameOver) {
-            [self updatePlaying:dt];
+            [self updatePlaying];
         }
     }
 }

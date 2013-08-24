@@ -41,8 +41,8 @@ static NSString *kAKImageNameFormat = @"Effect_%02d";
 static const NSInteger kAKEffectDefCount = 2;
 /// 画面効果の定義
 static const struct AKEffectDef kAKEffectDef[kAKEffectDefCount] = {
-    {1, 32, 32, 0.0f, 0.0f, -1.0f, 8, 0.1f, 1},    // 爆発
-    {2, 32, 32, 0.0f, -80.0f, 1.0f, 1, 0.0f, 0}   // 自機破壊
+    {1, 32, 32, 0, 0, -1, 8, 6, 1},     // 爆発
+    {2, 32, 32, 0, -1, 60, 1, 0, 0}     // 自機破壊
 };
 
 /*!
@@ -77,8 +77,8 @@ static const struct AKEffectDef kAKEffectDef[kAKEffectDefCount] = {
     self.speedX = kAKEffectDef[type - 1].speedX;
     self.speedY = kAKEffectDef[type - 1].speedY;
     
-    // 生存時間を設定する
-    lifeTime_ = kAKEffectDef[type - 1].lifeTime;
+    // 生存フレーム数を設定する
+    lifeFrame_ = kAKEffectDef[type - 1].lifeFrame;
     
     // 画像名を作成する
     self.imageName = [NSString stringWithFormat:kAKImageNameFormat, kAKEffectDef[type - 1].fileNo];
@@ -101,19 +101,18 @@ static const struct AKEffectDef kAKEffectDef[kAKEffectDefCount] = {
  
  生存時間が経過している場合は消去する。
  生存時間がマイナスの場合は未設定として無視する。
- @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
+- (void)action:(id<AKPlayDataInterface>)data
 {
-    // 生存時間が設定されている場合は処理を行う
-    if (lifeTime_ > 0.0f) {
+    // 生存フレーム数が設定されている場合は処理を行う
+    if (lifeFrame_ > 0.0f) {
         
-        // 生存時間を減らす
-        lifeTime_ -= dt;
+        // 生存フレーム数を減らす
+        lifeFrame_--;
         
-        // 生存時間を経過している場合は削除する
-        if (lifeTime_ < 0.0f) {
+        // 生存フレーム数を経過している場合は削除する
+        if (lifeFrame_ <= 0) {
             
             // ステージ配置フラグを落とす
             self.isStaged = NO;

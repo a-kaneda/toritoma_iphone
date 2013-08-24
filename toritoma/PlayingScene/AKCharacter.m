@@ -36,7 +36,7 @@
 #import "AKCharacter.h"
 
 /// デフォルトアニメーション間隔
-static const float kAKDefaultAnimationInterval = 0.2f;
+static const NSInteger kAKDefaultAnimationInterval = 12;
 /// 画像ファイル名のフォーマット
 static NSString *kAKImageFileFormat = @"%@_%02d.png";
 /// 画像ファイル名の最大文字数
@@ -66,7 +66,7 @@ static NSMutableString *imageFileName_ = nil;
 @synthesize isStaged = isStaged_;
 @synthesize animationPattern = animationPattern_;
 @synthesize animationInterval = animationInterval_;
-@synthesize animationTime = animationTime_;
+@synthesize animationFrame = animationFrame_;
 @synthesize animationRepeat = animationRepeat_;
 @synthesize animationInitPattern = animationInitPattern_;
 @synthesize scrollSpeed = scrollSpeed_;
@@ -99,7 +99,7 @@ static NSMutableString *imageFileName_ = nil;
     self.speedY = 0.0f;
     self.hitPoint = 0;
     self.isStaged = NO;
-    self.animationTime = 0.0f;
+    self.animationFrame = 0;
     self.scrollSpeed = 0.0f;
     offset_ = ccp(0.0f, 0.0f);
     
@@ -200,8 +200,8 @@ static NSMutableString *imageFileName_ = nil;
     // すでにスプライトを作成している場合は画像の切り替えを行う
     if (self.image != nil) {
         
-        // アニメーション時間を初期化する
-        self.animationTime = 0.0f;
+        // アニメーションフレーム数を初期化する
+        self.animationFrame = 0;
         
         // アニメーションパターンに応じて画像ファイル名を作成する
         NSRange range = {0, imageFileName_.length};
@@ -218,10 +218,9 @@ static NSMutableString *imageFileName_ = nil;
 
  速度によって位置を移動する。
  アニメーションを行う。
- @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)move:(ccTime)dt data:(id<AKPlayDataInterface>)data
+- (void)move:(id<AKPlayDataInterface>)data
 {
     // 画面に配置されていない場合は無処理
     if (!self.isStaged) {
@@ -254,8 +253,8 @@ static NSMutableString *imageFileName_ = nil;
             
     // 座標の移動
     // 画面スクロールの影響を受ける場合は画面スクロール分も移動する
-    self.positionX += (self.speedX * dt) - (data.scrollSpeedX * dt * self.scrollSpeed);
-    self.positionY += (self.speedY * dt) - (data.scrollSpeedY * dt * self.scrollSpeed);
+    self.positionX += self.speedX - (data.scrollSpeedX * self.scrollSpeed);
+    self.positionY += self.speedY - (data.scrollSpeedY * self.scrollSpeed);
         
     // 障害物との衝突判定を行う
     switch (self.blockHitAction) {
@@ -286,8 +285,8 @@ static NSMutableString *imageFileName_ = nil;
     // 画像表示位置の更新を行う
     [self updateImagePosition];
     
-    // アニメーション時間をカウントする
-    self.animationTime += dt;
+    // アニメーションフレーム数をカウントする
+    self.animationFrame++;
     
     // 表示するパターンを決定する
     NSInteger pattern = self.animationInitPattern;
@@ -298,11 +297,11 @@ static NSMutableString *imageFileName_ = nil;
     if (self.animationPattern >= 2) {
         
         // 経過時間からパターンを決定する
-        pattern = (NSInteger)(self.animationTime / self.animationInterval) + self.animationInitPattern;
+        pattern = self.animationFrame / self.animationInterval + self.animationInitPattern;
     
         // パターンがパターン数を超えた場合はアニメーション時間をリセットし、パターンを最初のものに戻す。
         if (pattern - (self.animationInitPattern - 1) > self.animationPattern) {
-            self.animationTime = 0.0f;
+            self.animationFrame = 0;
             pattern = self.animationInitPattern;
             
             // 繰り返し回数が設定されている場合
@@ -325,7 +324,7 @@ static NSMutableString *imageFileName_ = nil;
             }
         }
         
-        AKLog([self.imageName isEqualToString:@"Enemy_12"] && NO, @"pattern=%d time=%f interval=%f", pattern, self.animationTime, self.animationInterval);
+        AKLog([self.imageName isEqualToString:@"Enemy_12"] && NO, @"pattern=%d frame=%d interval=%d", pattern, self.animationFrame, self.animationInterval);
         
         // アニメーションパターンに応じて画像ファイル名を作成する
         NSRange range = {0, imageFileName_.length};
@@ -337,17 +336,16 @@ static NSMutableString *imageFileName_ = nil;
     }
     
     // キャラクター固有の動作を行う
-    [self action:dt data:data];
+    [self action:data];
 }
 
 /*!
  @brief キャラクター固有の動作
 
  キャラクター種別ごとの動作を行う。
- @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
+- (void)action:(id<AKPlayDataInterface>)data
 {
     // 派生クラスで動作を定義する
 }

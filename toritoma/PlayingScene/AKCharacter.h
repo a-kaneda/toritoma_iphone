@@ -81,9 +81,9 @@ enum AKBlockHitSide {
     /// アニメーションパターン数
     NSInteger animationPattern_;
     /// アニメーション間隔
-    float animationInterval_;
-    /// アニメーション時間
-    float animationTime_;
+    NSInteger animationInterval_;
+    /// アニメーションフレーム数
+    NSInteger animationFrame_;
     /// アニメーション繰り返し回数
     NSInteger animationRepeat_;
     /// アニメーション初期パターン
@@ -127,9 +127,9 @@ enum AKBlockHitSide {
 /// アニメーションパターン数
 @property (nonatomic)NSInteger animationPattern;
 /// アニメーション間隔
-@property (nonatomic)float animationInterval;
-/// アニメーション時間
-@property (nonatomic)float animationTime;
+@property (nonatomic)NSInteger animationInterval;
+/// アニメーションフレーム数
+@property (nonatomic)NSInteger animationFrame;
 /// アニメーション繰り返し回数
 @property (nonatomic)NSInteger animationRepeat;
 /// アニメーション初期パターン
@@ -146,9 +146,9 @@ enum AKBlockHitSide {
 // 画像名の設定
 - (void)setImageName:(NSString *)imageName;
 // 移動処理
-- (void)move:(ccTime)dt data:(id<AKPlayDataInterface>)data;
+- (void)move:(id<AKPlayDataInterface>)data;
 // キャラクター固有の動作
-- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data;
+- (void)action:(id<AKPlayDataInterface>)data;
 // 破壊処理
 - (void)destroy:(id<AKPlayDataInterface>)data;
 // 衝突判定(汎用)
