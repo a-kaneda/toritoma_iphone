@@ -35,12 +35,17 @@
 
 #import "AKEnemyShot.h"
 
+// 敵弾の種類
+enum AKEnemyShotType {
+    kAKEnemyShotTypeNormal = 0,     ///< 標準弾
+    kAKEnemyShotTypeChangeSpeed,    ///< 速度変更弾
+    kAKEnemyShotTypeDefCount        ///< 敵弾の種類の数
+};
+
 /// 画像名のフォーマット
 static NSString *kAKImageNameFormat = @"EnemyShot_%02d";
 /// 画像の種類の数
 static const NSInteger kAKEnemyShotImageDefCount = 1;
-/// 敵弾の種類の数
-static const NSInteger kAKEnemyShotDefCount = 2;
 /// 反射弾の威力
 static const NSInteger kAKReflectionPower = 5;
 
@@ -50,9 +55,9 @@ static const struct AKEnemyShotImageDef kAKEnemyShotImageDef[kAKEnemyShotImageDe
 };
 
 /// 敵弾の定義
-static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
+static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotTypeDefCount] = {
     {1, 1, 6, 6, 5},    // 標準弾
-    {2, 1, 6, 6, 5}     // スクロール影響弾
+    {2, 1, 6, 6, 5}     // 速度変更弾
 };
 
 @implementation AKEnemyShot
@@ -67,18 +72,101 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
  @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action:(ccTime)dt data:(id<AKPlayDataInterface>)data
+- (void)action:(id<AKPlayDataInterface>)data
 {
-    NSNumber *objdt = NULL;     // フレーム更新間隔(オブジェクト版)
-        
-    // 動作開始からの経過時間をカウントする
-    time_ += dt;
-    
-    // id型として渡すためにNSNumberを作成する
-    objdt = [NSNumber numberWithFloat:dt];
-    
+    // 動作開始からのフレーム数をカウントする
+    frame_++;
+
     // 敵弾種別ごとの処理を実行
-    [self performSelector:action_ withObject:objdt withObject:data];
+    [self performSelector:action_ withObject:data];
+}
+
+/*!
+ @brief 通常弾生成
+ 
+ 通常弾を生成する。
+ @param x 生成位置x座標
+ @param y 生成位置y座標
+ @param angle 進行方向
+ @param speed スピード
+ @param parent 配置する親ノード
+ */
+- (void)createNormalShotAtX:(NSInteger)x
+                          y:(NSInteger)y
+                      angle:(float)angle
+                      speed:(float)speed
+                     parent:(CCNode *)parent
+{
+    // 種別に通常弾を指定して生成を行う
+    [self createEnemyShotType:kAKEnemyShotTypeNormal
+                            x:x
+                            y:y
+                        angle:angle
+                        speed:speed
+                       parent:parent];
+}
+
+/*!
+ @brief スクロール影響弾生成
+ 
+ スクリールスピードの影響を受ける弾を生成する。
+ @param x 生成位置x座標
+ @param y 生成位置y座標
+ @param angle 進行方向
+ @param speed スピード
+ @param parent 配置する親ノード
+ */
+- (void)createScrollShotAtX:(NSInteger)x
+                          y:(NSInteger)y
+                      angle:(float)angle
+                      speed:(float)speed
+                     parent:(CCNode *)parent
+{
+    // 種別に通常弾を指定して生成を行う
+    [self createEnemyShotType:kAKEnemyShotTypeNormal
+                            x:x
+                            y:y
+                        angle:angle
+                        speed:speed
+                       parent:parent];
+    
+    // スクロールスピードの影響を設定する
+    self.scrollSpeed = 1.0f;
+}
+
+/*!
+ @brief 速度変更弾生成
+
+ 途中で速度を変更する弾を生成する。
+ @param x 生成位置x座標
+ @param y 生成位置y座標
+ @param angle 進行方向
+ @param speed スピード
+ @param parent 配置する親ノード
+ */
+- (void)createChangeSpeedShotAtX:(NSInteger)x
+                               y:(NSInteger)y
+                           angle:(float)angle
+                           speed:(float)speed
+                  changeInterval:(NSInteger)changeInterval
+                     changeAngle:(float)changeAngle
+                     changeSpeed:(float)changeSpeed
+                          parent:(CCNode *)parent
+{
+    // 種別に速度変更弾を指定して生成を行う
+    [self createEnemyShotType:kAKEnemyShotTypeChangeSpeed
+                            x:x
+                            y:y
+                        angle:angle
+                        speed:speed
+                       parent:parent];
+    
+    // 速度変更までの間隔を設定する
+    changeInterval_ = changeInterval;
+    
+    // 変更後のスピードを設定する
+    changeSpeedX_ = cosf(changeAngle) * changeSpeed;
+    changeSpeedY_ = sinf(changeAngle) * changeSpeed;
 }
 
 /*!
@@ -112,17 +200,17 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
     // 配置フラグを立てる
     isStaged_ = YES;
 
-    // 動作時間をクリアする
-    time_ = 0;
+    // 動作フレーム数をクリアする
+    frame_ = 0;
     
     // 状態をクリアする
     state_ = 0;
     
     // 動作処理を設定する
-    self.action = [self actionSelector:kAKEnemyShotDef[type - 1].action];
+    self.action = [self actionSelector:kAKEnemyShotDef[type].action];
     
     // 画像定義を取得する
-    const struct AKEnemyShotImageDef *imageDef = &kAKEnemyShotImageDef[kAKEnemyShotDef[type - 1].image - 1];
+    const struct AKEnemyShotImageDef *imageDef = &kAKEnemyShotImageDef[kAKEnemyShotDef[type].image - 1];
     
     // 画像名を作成する
     self.imageName = [NSString stringWithFormat:kAKImageNameFormat, imageDef->fileNo];
@@ -134,17 +222,20 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
     self.animationInterval = imageDef->animationInterval;
     
     // 当たり判定のサイズを設定する
-    self.width = kAKEnemyShotDef[type - 1].hitWidth;
-    self.height = kAKEnemyShotDef[type - 1].hitHeight;
+    self.width = kAKEnemyShotDef[type].hitWidth;
+    self.height = kAKEnemyShotDef[type].hitHeight;
     
     // ヒットポイントを設定する
     self.hitPoint = 1;
     
     // かすりポイントを設定する
-    self.grazePoint = kAKEnemyShotDef[type - 1].grazePoint;
+    self.grazePoint = kAKEnemyShotDef[type].grazePoint;
     
     // 障害物衝突時は消滅する
     self.blockHitAction = kAKBlockHitDisappear;
+    
+    // スクロールをなしにする
+    self.scrollSpeed = 0.0f;
 
     // レイヤーに配置する
     [parent addChild:self.image];
@@ -173,14 +264,14 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
     // 配置フラグを立てる
     isStaged_ = YES;
     
-    // 動作時間をクリアする
-    time_ = 0;
+    // 動作フレーム数をクリアする
+    frame_ = 0;
     
     // 状態をクリアする
     state_ = 0;
     
-    // 動作処理を設定する
-    self.action = base.action;
+    // 動作処理をなしにする
+    self.action = @selector(actionNone:);
     
     // 画像名を作成する
     self.imageName = base.imageName;
@@ -219,39 +310,47 @@ static const struct AKEnemyShotDef kAKEnemyShotDef[kAKEnemyShotDefCount] = {
 {
     switch (type) {
         case 1:
-            return @selector(action_01:data:);
+            return @selector(actionNone:);
             
         case 2:
-            return @selector(action_02:data:);
+            return @selector(actionChangeSpeed:);
             
         default:
             NSAssert(NO, @"不正な種別");
-            return @selector(action_01:data:);
+            return @selector(actionNone:);
     }
 }
 
 /*!
- @brief 動作処理1
+ @brief 動作処理なし
  
  スピード一定のまま進めるため、無処理。
- @param dt フレーム更新間隔
  @param data ゲームデータ
  */
-- (void)action_01:(ccTime)dt data:(id<AKPlayDataInterface>)data
+- (void)actionNone:(id<AKPlayDataInterface>)data
 {
+    
 }
 
-// スクロール影響弾動作
 /*!
- @brief スクロール影響弾動作
+ @brief 速度変更
  
- スクロールスピードの影響を受ける。
- @param dt フレーム更新間隔
+ 途中で速度を変更する。
  @param data ゲームデータ
  */
-- (void)action_02:(ccTime)dt data:(id<AKPlayDataInterface>)data
+- (void)actionChangeSpeed:(id<AKPlayDataInterface>)data
 {
-    // スクロールスピードの影響を設定する
-    self.scrollSpeed = 1.0f;
+    AKLog(kAKLogEnemyShot_2, @"frame=%d changeInterval=%d", frame_, changeInterval_);
+    
+    // 速度変更までの間隔が経過している場合は速度を変更する
+    if (frame_ >= changeInterval_) {
+        
+        AKLog(kAKLogEnemyShot_1, @"speed=(%f, %f)", self.speedX, self.speedY);
+        
+        self.speedX = changeSpeedX_;
+        self.speedY = changeSpeedY_;
+
+        AKLog(kAKLogEnemyShot_1, @"speed=(%f, %f)", self.speedX, self.speedY);
+    }
 }
 @end

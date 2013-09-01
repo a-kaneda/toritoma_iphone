@@ -53,14 +53,20 @@ struct AKEnemyShotDef {
 
 // 敵の発射する弾のクラス
 @interface AKEnemyShot : AKCharacter {
-    /// 動作開始からの経過時間(各敵種別で使用)
-    ccTime time_;
+    /// 動作開始からの経過フレーム数(各敵種別で使用)
+    NSInteger frame_;
     /// 動作状態(各敵種別で使用)
     NSInteger state_;
     /// 動作処理のセレクタ
     SEL action_;
     /// かすりポイント
     float grazePoint_;
+    /// 速度変更までの間隔
+    NSInteger changeInterval_;
+    /// 変更後のx軸方向の速度
+    float changeSpeedX_;
+    /// 変更後のy軸方向の速度
+    float changeSpeedY_;
 }
 
 /// 動作処理のセレクタ
@@ -68,6 +74,27 @@ struct AKEnemyShotDef {
 /// かすりポイント
 @property (nonatomic)float grazePoint;
 
+// 通常弾生成
+- (void)createNormalShotAtX:(NSInteger)x
+                          y:(NSInteger)y
+                      angle:(float)angle
+                      speed:(float)speed
+                     parent:(CCNode *)parent;
+// スクロール影響弾生成
+- (void)createScrollShotAtX:(NSInteger)x
+                          y:(NSInteger)y
+                      angle:(float)angle
+                      speed:(float)speed
+                     parent:(CCNode *)parent;
+// 速度変更弾生成
+- (void)createChangeSpeedShotAtX:(NSInteger)x
+                               y:(NSInteger)y
+                           angle:(float)angle
+                           speed:(float)speed
+                  changeInterval:(NSInteger)changeInterval
+                     changeAngle:(float)changeAngle
+                     changeSpeed:(float)changeSpeed
+                          parent:(CCNode *)parent;
 // 敵弾生成
 - (void)createEnemyShotType:(NSInteger)type
                           x:(NSInteger)x
@@ -79,9 +106,9 @@ struct AKEnemyShotDef {
 - (void)createReflectedShot:(AKEnemyShot *)base parent:(CCNode *)parent;
 // 動作処理取得
 - (SEL)actionSelector:(NSInteger)type;
-// 標準弾動作
-- (void)action_01:(ccTime)dt data:(id<AKPlayDataInterface>)data;
-// スクロール影響弾動作
-- (void)action_02:(ccTime)dt data:(id<AKPlayDataInterface>)data;
+// 動作処理なし
+- (void)actionNone:(id<AKPlayDataInterface>)data;
+// 速度変更
+- (void)actionChangeSpeed:(id<AKPlayDataInterface>)data;
 
 @end

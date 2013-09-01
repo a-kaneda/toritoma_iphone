@@ -57,6 +57,7 @@ BOOL kAKLogEnemy_2 = NO;
 BOOL kAKLogEnemy_3 = NO;
 BOOL kAKLogEnemyShot_0 = YES;
 BOOL kAKLogEnemyShot_1 = NO;
+BOOL kAKLogEnemyShot_2 = NO;
 BOOL kAKLogGameCenterHelper_0 = YES;
 BOOL kAKLogGameCenterHelper_1 = YES;
 BOOL kAKLogHowToPlayScene_0 = YES;

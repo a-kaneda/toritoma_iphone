@@ -101,18 +101,38 @@ struct AKEnemyDef {
 - (void)actionOfStagBeetle:(id<AKPlayDataInterface>)data;
 // カブトムシの動作処理
 - (void)actionOfRhinocerosBeetle:(id<AKPlayDataInterface>)data;
+// カマキリの動作処理
+- (void)actionOfMantis:(id<AKPlayDataInterface>)data;
 // 雑魚敵の破壊処理
 - (void)destroyNormal:(id<AKPlayDataInterface>)data;
 // 自機を狙うn-way弾発射
-+ (void)fireNWayWithPosition:(CGPoint)position count:(NSInteger)count interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data;
++ (void)fireNWayWithPosition:(CGPoint)position
+                       count:(NSInteger)count
+                    interval:(float)interval
+                       speed:(float)speed
+                        data:(id<AKPlayDataInterface>)data;
 // 角度指定によるn-way弾発射
 + (void)fireNWayWithAngle:(float)angle
                      from:(CGPoint)position
                     count:(NSInteger)count
                  interval:(float)interval
                     speed:(float)speed
-                     type:(NSInteger)type
+                 isScroll:(BOOL)isScroll
                      data:(id<AKPlayDataInterface>)data;
+// 自機を狙うグループ弾発射
++ (void)fireGroupShotWithPosition:(CGPoint)position
+                         distance:(const CGPoint *)distance
+                            count:(NSInteger)count
+                            speed:(float)speed
+                             data:(id<AKPlayDataInterface>)data;
+// 破裂弾発射
++ (void)fireBurstShotWithPosition:(CGPoint)position
+                            count:(NSInteger)count
+                         interval:(float)interval
+                            speed:(float)speed
+                    burstInterval:(float)burstInterval
+                       burstSpeed:(float)burstSpeed
+                             data:(id<AKPlayDataInterface>)data;
 // 逆さま判定
 - (void)checkReverse:(NSArray *)blocks;
 // 障害物との衝突判定

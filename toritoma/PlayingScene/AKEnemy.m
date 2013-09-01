@@ -34,6 +34,7 @@
  */
 
 #import "AKEnemy.h"
+#import "AKEnemyShot.h"
 
 /// 画像名のフォーマット
 static NSString *kAKImageNameFormat = @"Enemy_%02d";
@@ -96,8 +97,8 @@ static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},         // 予備28
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},         // 予備29
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},         // 予備30
-    {1, 31, 2, 3, 64, 40, 0, 0, 1000, 100}, // カブトムシ
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},         // カマキリ
+    {1, 31, 2, 3, 64, 40, 0, 0, 1000, 10000},   // カブトムシ
+    {1, 32, 0, 0, 64, 64, 0, 0, 1000, 10000},   // カマキリ
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},         // ハチの巣
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},         // クモ
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},         // ムカデ（頭）
@@ -107,11 +108,6 @@ static const struct AKEnemyDef kAKEnemyDef[kAKEnemyDefCount] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},         // ハエ
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}          // 予備40
 };
-
-/// 標準弾の種別
-static const NSInteger kAKEnemyShotTypeNormal = 1;
-/// スクロール影響弾の種別
-static const NSInteger kAKEnemyShotTypeScroll = 2;
 
 /*!
  @brief 敵クラス
@@ -274,6 +270,9 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
         case kAKEnemyRhinocerosBeetle:  // カブトムシの動作処理
             return @selector(actionOfRhinocerosBeetle:);
             
+        case kAKEnemyMantis:    // カマキリの動作処理
+            return @selector(actionOfMantis:);
+            
         default:
             AKLog(kAKLogEnemy_0, @"不正な種別:%d", type);
             NSAssert(NO, @"不正な種別");
@@ -329,8 +328,8 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
                              count:1
                           interval:0.0f
                              speed:kAKShotSpeed
-                              type:kAKEnemyShotTypeNormal
-                              data:data];        
+                          isScroll:NO
+                              data:data];
     }
     
     AKLog(kAKLogEnemy_1, @"pos=(%f, %f)", self.positionX, self.positionY);
@@ -554,7 +553,7 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
                              count:3
                           interval:M_PI / 8.0f
                              speed:kAKShotSpeed
-                              type:kAKEnemyShotTypeNormal
+                          isScroll:NO
                               data:data];
     }
 }
@@ -615,7 +614,7 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
                              count:12
                           interval:M_PI / 6.0f
                              speed:kAKShotSpeed
-                              type:kAKEnemyShotTypeScroll
+                          isScroll:YES
                               data:data];
     }
 }
@@ -924,7 +923,7 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
                                          count:3
                                       interval:M_PI / 32.0f
                                          speed:kAKShotSpeed[i]
-                                          type:kAKEnemyShotTypeNormal
+                                      isScroll:NO
                                           data:data];
                 }
 
@@ -1144,6 +1143,11 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
  
  左に真っすぐ進み、画像がすべて表示できた部分で上下に移動する。
  
+ 攻撃パターン1:左方向にまっすぐ3-wayと自機を狙う1-way弾を発射する
+ 
+ 攻撃パターン2:定周期に一塊の5-way弾を発射する
+ 
+ 攻撃パターン3:全方位弾を発射する
  @param data ゲームデータ
  */
 - (void)actionOfRhinocerosBeetle:(id<AKPlayDataInterface>)data
@@ -1243,7 +1247,7 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
                                      count:1
                                   interval:0.0f
                                      speed:kAKLeftShotSpeed
-                                      type:kAKEnemyShotTypeNormal
+                                  isScroll:NO
                                       data:data];
 
                 [AKEnemy fireNWayWithAngle:M_PI
@@ -1251,7 +1255,7 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
                                      count:1
                                   interval:0.0f
                                      speed:kAKLeftShotSpeed
-                                      type:kAKEnemyShotTypeNormal
+                                  isScroll:NO
                                       data:data];
 
                 [AKEnemy fireNWayWithAngle:M_PI
@@ -1259,8 +1263,8 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
                                      count:1
                                   interval:0.0f
                                      speed:kAKLeftShotSpeed
-                                      type:kAKEnemyShotTypeNormal
-                                      data:data];                
+                                  isScroll:NO
+                                      data:data];
             }
             
             // 1-way弾の弾発射間隔が経過している場合は弾を発射する
@@ -1308,8 +1312,8 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
                                      count:kAKAllDirectionCount
                                   interval:kAKAllDirectionAngle
                                      speed:kAKAllDirectionSpeed
-                                      type:kAKEnemyShotTypeScroll
-                                      data:data];                
+                                  isScroll:YES
+                                      data:data];
             }
             break;
             
@@ -1332,6 +1336,229 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
         
         // 経過フレーム数と作業領域を初期化する
         work_[0] = 0.0f;
+        frame_ = 0.0f;
+        
+        AKLog(kAKLogEnemy_3, @"state_=%d", state_);
+    }
+}
+
+/*!
+ @brief カマキリの動作処理
+ 
+ スクロールに応じて移動する。攻撃パターンの状態にかかわらず、常に3-way弾を発射する。
+ 攻撃の前に鎌を振り上げ、攻撃と同時に鎌を片方ずつ下ろすアニメーションを行う。
+ 
+ 攻撃パターン1:弧の形に並んだ弾を自機に向けて発射する。
+ 
+ 攻撃パターン2:塊弾を自機に向けて発射する。自機の位置に到達すると塊弾は12-way弾として弾ける。
+ 
+ 攻撃パターン3:9-way弾と10-way弾を短い間隔で連続で発射する。
+ @param data ゲームデータ
+ */
+- (void)actionOfMantis:(id<AKPlayDataInterface>)data
+{
+    // 状態
+    enum STATE {
+        kAKStateInit = 0,           // 初期状態
+        kAKStateArcShot,            // 弧形弾発射
+        kAKStateBurstShot,          // 破裂弾発射
+        kAKStateNWayShot,           // n-way弾発射
+        kAKStateCount               // 状態の種類の数
+    };
+    // 地面の高さ
+    const NSInteger kAKGround = 24;
+    // 状態遷移間隔
+    const NSInteger kAKStateInterval[kAKStateCount] = {340, 900, 900, 900};
+    // 手の位置
+    const CGPoint kAKHandPosition = {-48.0f, 48.0f};
+    // 定周期弾の発射間隔
+    const NSInteger kAKCycleShotInterval = 60;
+    // 定周期弾の弾数
+    const NSInteger kAKCycleShotCount = 3;
+    // 定周期弾の角度の間隔
+    const float kAKCycleShotAngle = M_PI / 8;
+    // 定周期弾のスピード
+    const float kAKCycleShotSpeed = 3.0f;
+    // 弧形段の弾数
+    const NSInteger kAKArcShotCount = 9;
+    // 弧形弾の配置位置
+    const CGPoint kAKArcShotPosition[kAKArcShotCount] = {
+        {0, 0}, {6, 12}, {14, 24}, {24, 34}, {36, 42}, {-2, -14}, {0, -28}, {4, -42}, {12, -54}
+    };
+    // 弧形弾の発射待機時間
+    const NSInteger kAKArcShotWaitTime = 90;
+    // 弧形弾の発射間隔
+    const NSInteger kAKArcShotInterval = 60;
+    // 弧形弾のスピード
+    const float kAKArcShotSpeed = 2.5f;
+    // 破裂弾の発射待機時間
+    const NSInteger kAKBurstShotWaitTime = 90;
+    // 破裂弾の発射間隔
+    const NSInteger kAKBurstShotInterval = 60;
+    // 破裂弾の破裂前のスピード
+    const float kAKBurstShotBeforSpeed = 2.0f;
+    // 破裂弾の破裂後のスピード
+    const float kAKBurstShotAfterSpeed = 3.5f;
+    // 破裂弾の破裂までの間隔
+    const NSInteger kAKBurstShotBurstInterval = 80;
+    // 破裂弾の弾数
+    const NSInteger kAKBurstShotCount = 12;
+    // 破裂弾の各弾の間隔
+    const float kAKBurstShotAngleInterval = M_PI / 6.0f;
+    // n-way弾の待機間隔
+    const NSInteger kAKNWayShotWaitTime = 90;
+    // n-way弾の発射間隔
+    const NSInteger kAKNWayShotInterval = 20;
+    // n-way弾のスピード
+    const float kAKNWayShotSpeed = 2.5f;
+    // n-way弾の弾数
+    const NSInteger kAKNWayCount[2] = {9, 10};
+    // n-way弾の角度の間隔
+    const float kAKNWayAngleInterval = M_PI / 20;
+    
+    // 状態によって処理を分岐する
+    switch (state_) {
+        case kAKStateInit:      // 初期状態
+
+            // スクロールに合わせて移動する
+            self.scrollSpeed = 1.0f;
+            
+            // 地面の上の位置に高さを補正する
+            self.positionY = self.image.contentSize.height / 2 + kAKGround;
+            
+            break;
+            
+        case kAKStateArcShot:   // 弧形弾発射
+            
+            // 弧形弾の待機時間が経過したら鎌を振り上げる
+            if (work_[0] == 0 && frame_ - work_[1] >= kAKArcShotWaitTime) {
+                
+                // 作業領域0(振り上げている鎌の数)を2とする
+                work_[0] = 2;
+                
+                // 作業領域1(鎌を動かしてからの経過フレーム数)を現在のフレーム数に設定する
+                work_[1] = frame_;
+            }
+            
+            // 弧形弾の発射間隔が経過したら弾を発射する
+            if (work_[0] > 0 && frame_ - work_[1] >= kAKArcShotInterval) {
+                
+                // 作業領域0(振り上げている鎌の数)を減らす
+                work_[0]--;
+
+                // 作業領域1(鎌を動かしてからの経過フレーム数)を現在のフレーム数に設定する
+                work_[1] = frame_;
+                
+                // 弧形弾を発射する
+                [AKEnemy fireGroupShotWithPosition:ccp(self.positionX + kAKHandPosition.x,
+                                                       self.positionY + kAKHandPosition.y)
+                                          distance:kAKArcShotPosition
+                                             count:kAKArcShotCount
+                                             speed:kAKArcShotSpeed
+                                              data:data];
+            }
+            
+            break;
+            
+        case kAKStateBurstShot: // 破裂弾発射
+
+            // 破裂弾の待機時間が経過したら鎌を振り上げる
+            if (work_[0] == 0 && frame_ - work_[1] >= kAKBurstShotWaitTime) {
+                
+                // 作業領域0(振り上げている鎌の数)を2とする
+                work_[0] = 2;
+                
+                // 作業領域1(鎌を動かしてからの経過フレーム数)を現在のフレーム数に設定する
+                work_[1] = frame_;
+            }
+            
+            // 破裂弾の発射間隔が経過したら弾を発射する
+            if (work_[0] > 0 && frame_ - work_[1] >= kAKBurstShotInterval) {
+                
+                // 作業領域0(振り上げている鎌の数)を減らす
+                work_[0]--;
+                
+                // 作業領域1(鎌を動かしてからの経過フレーム数)を現在のフレーム数に設定する
+                work_[1] = frame_;
+                
+                // 破裂弾を発射する
+                [AKEnemy fireBurstShotWithPosition:ccp(self.positionX + kAKHandPosition.x,
+                                                       self.positionY + kAKHandPosition.y)
+                                             count:kAKBurstShotCount
+                                          interval:kAKBurstShotAngleInterval
+                                             speed:kAKBurstShotBeforSpeed
+                                     burstInterval:kAKBurstShotBurstInterval
+                                        burstSpeed:kAKBurstShotAfterSpeed
+                                              data:data];
+            }
+
+            break;
+            
+        case kAKStateNWayShot:  // n-way弾発射
+            
+            // n-way弾の待機時間が経過したら鎌を振り上げる
+            if (work_[0] == 0 && frame_ - work_[1] >= kAKNWayShotWaitTime) {
+                
+                // 作業領域0(振り上げている鎌の数)を2とする
+                work_[0] = 2;
+                
+                // 作業領域1(鎌を動かしてからの経過フレーム数)を現在のフレーム数に設定する
+                work_[1] = frame_;
+            }
+            
+            // n-way弾の発射間隔が経過したら弾を発射する
+            if (work_[0] > 0 && frame_ - work_[1] >= kAKNWayShotInterval) {
+                
+                // 作業領域0(振り上げている鎌の数)を減らす
+                work_[0]--;
+                
+                // 作業領域1(鎌を動かしてからの経過フレーム数)を現在のフレーム数に設定する
+                work_[1] = frame_;
+                
+                // n-way弾を発射する
+                [AKEnemy fireNWayWithPosition:ccp(self.positionX + kAKHandPosition.x,
+                                                  self.positionY + kAKHandPosition.y)
+                                        count:kAKNWayCount[1 - work_[0]]
+                                     interval:kAKNWayAngleInterval
+                                        speed:kAKNWayShotSpeed
+                                         data:data];
+            }
+
+            break;
+            
+        default:
+            AKLog(kAKLogEnemy_0, @"状態が異常:%d", state_);
+            NSAssert(NO, @"状態が異常");
+            break;
+    }
+    
+    // 初期状態以外の場合は定周期に3-way弾を発射する
+    if (state_ != kAKStateInit && (frame_ + 1) % kAKCycleShotInterval == 0) {
+
+        [AKEnemy fireNWayWithPosition:ccp(self.positionX, self.positionY)
+                                count:kAKCycleShotCount
+                             interval:kAKCycleShotAngle
+                                speed:kAKCycleShotSpeed
+                                 data:data];
+    }
+    
+    // 振り上げている鎌の数に応じてグラフィックを変更する
+    self.animationInitPattern = work_[0] + 1;
+    
+    // 状態遷移間隔が経過している場合は次の状態へ進める
+    if (frame_ > kAKStateInterval[state_]) {
+        
+        // 次の状態へ進める
+        state_++;
+        
+        // 状態が最大を超える場合は最初の状態へループする
+        if (state_ >= kAKStateCount) {
+            state_ = kAKStateInit + 1;
+        }
+        
+        // 経過フレーム数と作業領域を初期化する
+        work_[0] = 0.0f;
+        work_[1] = 0.0f;
         frame_ = 0.0f;
         
         AKLog(kAKLogEnemy_3, @"state_=%d", state_);
@@ -1364,23 +1591,24 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
  */
 + (void)fireNWayWithPosition:(CGPoint)position count:(NSInteger)count interval:(float)interval speed:(float)speed data:(id<AKPlayDataInterface>)data
 {
-    // n-way弾の角度計算用のクラスを生成する
-    AKNWayAngle *nWayAngle = [AKNWayAngle angle];
-    
-    // 各弾の角度を計算する
-    NSArray *angles = [nWayAngle calcNWayAngleFromSrc:position
-                                                 dest:data.playerPosition
-                                                count:count
-                                             interval:interval];
+    // n-way弾の各弾の角度を計算する
+    AKNWayAngle *nWayAngle = [AKNWayAngle angleFromSrc:position
+                                                  dest:data.playerPosition
+                                                 count:count
+                                              interval:interval];
     
     // 各弾を発射する
-    for (NSNumber *angle in angles) {
+    for (NSNumber *angle in nWayAngle.angles) {
+        
+        // 敵弾インスタンスを取得する
+        AKEnemyShot *enemyShot = [data getEnemyShot];
+        
         // 通常弾を生成する
-        [data createEnemyShotType:kAKEnemyShotTypeNormal
-                                x:position.x
-                                y:position.y
-                            angle:[angle floatValue]
-                            speed:speed];
+        [enemyShot createNormalShotAtX:position.x
+                                     y:position.y
+                                 angle:[angle floatValue]
+                                 speed:speed
+                                parent:[data getEnemyShotParent]];
     }
 }
 
@@ -1393,7 +1621,7 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
  @param count 発射方向の数
  @param interval 弾の間隔
  @param speed 弾の速度
- @param type 弾の種別
+ @param isScroll スクロールの影響を受けるか
  @param data ゲームデータ
  */
 + (void)fireNWayWithAngle:(float)angle
@@ -1401,25 +1629,128 @@ static const NSInteger kAKEnemyShotTypeScroll = 2;
                     count:(NSInteger)count
                  interval:(float)interval
                     speed:(float)speed
-                     type:(NSInteger)type
+                 isScroll:(BOOL)isScroll
                      data:(id<AKPlayDataInterface>)data
 {
-    // n-way弾の角度計算用のクラスを生成する
-    AKNWayAngle *nWayAngle = [AKNWayAngle angle];
-    
-    // 各弾の角度を計算する
-    NSArray *angles = [nWayAngle calcNWayAngleFromCenterAngle:angle
-                                                        count:count
-                                                     interval:interval];
+    // n-way弾の各弾の角度を計算する
+    AKNWayAngle *nWayAngle = [AKNWayAngle angleFromCenterAngle:angle
+                                                         count:count
+                                                      interval:interval];
     
     // 各弾を発射する
-    for (NSNumber *angle in angles) {
+    for (NSNumber *angle in nWayAngle.angles) {
+
+        // 敵弾インスタンスを取得する
+        AKEnemyShot *enemyShot = [data getEnemyShot];
+        
+        // スクロールの影響を受けるかどうかで弾の種別を変える
+        if (isScroll) {
+            // スクロール影響弾を生成する
+            [enemyShot createScrollShotAtX:position.x
+                                         y:position.y
+                                     angle:[angle floatValue]
+                                     speed:speed
+                                    parent:[data getEnemyShotParent]];
+        }
+        else {
+            // 通常弾を生成する
+            [enemyShot createNormalShotAtX:position.x
+                                         y:position.y
+                                     angle:[angle floatValue]
+                                     speed:speed
+                                    parent:[data getEnemyShotParent]];
+        }
+    }
+}
+
+/*!
+ @brief 自機を狙うグループ弾発射
+ 
+ 自機を狙う一塊のグループ弾を発射する。
+ 中心点から自機の角度を計算し、すべての弾をその角度で発射する。
+ @param position グループ弾の中心点の座標
+ @param distance 中心点からの距離
+ @param count 弾の数
+ @param speed 弾の速度
+ @param data ゲームデータ
+ */
++ (void)fireGroupShotWithPosition:(CGPoint)position
+                         distance:(const CGPoint *)distance
+                            count:(NSInteger)count
+                            speed:(float)speed
+                             data:(id<AKPlayDataInterface>)data
+{
+    // 弾の角度を計算する
+    AKNWayAngle *nWayAngle = [AKNWayAngle angleFromSrc:position
+                                                  dest:data.playerPosition
+                                                 count:1
+                                              interval:0.0f];
+    
+    // 各弾の位置に通常弾を生成する
+    for (int i = 0; i < count; i++) {
+
+        // 敵弾インスタンスを取得する
+        AKEnemyShot *enemyShot = [data getEnemyShot];
+        
         // 通常弾を生成する
-        [data createEnemyShotType:type
-                                x:position.x
-                                y:position.y
-                            angle:[angle floatValue]
-                            speed:speed];
+        [enemyShot createNormalShotAtX:position.x + distance[i].x
+                                     y:position.y + distance[i].y
+                                 angle:nWayAngle.topAngle
+                                 speed:speed
+                                parent:[data getEnemyShotParent]];
+    }
+}
+
+/*!
+ @brief 破裂弾発射
+ 
+ 一定時間で破裂する弾を発射する。
+ @param position 発射する位置
+ @param count 破裂後の数
+ @param interval 破裂後の弾の間隔
+ @param speed 弾の速度
+ @param burstInterval 破裂までの間隔
+ @param burstSpeed 破裂後の速度
+ @param data ゲームデータ
+ */
++ (void)fireBurstShotWithPosition:(CGPoint)position
+                            count:(NSInteger)count
+                         interval:(float)interval
+                            speed:(float)speed
+                    burstInterval:(float)burstInterval
+                       burstSpeed:(float)burstSpeed
+                             data:(id<AKPlayDataInterface>)data
+{
+    // 中心点からの弾の距離
+    const float kAKDistance = 4.0f;
+    
+    // 破裂弾弾全体の角度を計算する
+    AKNWayAngle *centerAngle = [AKNWayAngle angleFromSrc:position
+                                                    dest:data.playerPosition
+                                                   count:1
+                                                interval:0.0f];
+    
+    // 個別の弾の角度を計算する
+    AKNWayAngle *burstAngle = [AKNWayAngle angleFromCenterAngle:M_PI
+                                                          count:count
+                                                       interval:interval];
+    
+    // 各弾を発射する
+    for (NSNumber *angle in burstAngle.angles) {
+        
+        // 敵弾インスタンスを取得する
+        AKEnemyShot *enemyShot = [data getEnemyShot];
+        
+        // 破裂弾を生成する
+        [enemyShot createChangeSpeedShotAtX:position.x + cosf([angle floatValue]) * kAKDistance
+                                          y:position.y + sinf([angle floatValue]) * kAKDistance
+                                      angle:centerAngle.topAngle
+                                      speed:speed
+                             changeInterval:burstInterval
+                                changeAngle:[angle floatValue]
+                                changeSpeed:burstSpeed
+                                     parent:[data getEnemyShotParent]];
+
     }
 }
 

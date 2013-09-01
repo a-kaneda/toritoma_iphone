@@ -63,12 +63,10 @@
 - (void)createReflectiedShot:(AKEnemyShot *)enemyShot;
 /// 敵生成
 - (void)createEnemy:(NSInteger)type x:(NSInteger)x y:(NSInteger)y progress:(NSInteger)progress;
-/// 敵弾生成
-- (void)createEnemyShotType:(NSInteger)type
-                          x:(NSInteger)x
-                          y:(NSInteger)y
-                      angle:(float)angle
-                      speed:(float)speed;
+/// 敵弾インスタンスの取得
+- (AKEnemyShot *)getEnemyShot;
+/// 敵弾配置ノードの取得
+- (CCNode *)getEnemyShotParent;
 /// 画面効果生成
 - (void)createEffect:(NSInteger)type x:(NSInteger)x y:(NSInteger)y;
 /// 障害物生成

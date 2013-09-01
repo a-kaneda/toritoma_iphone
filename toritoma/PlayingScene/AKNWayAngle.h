@@ -44,13 +44,17 @@
 
 /// 弾の角度
 @property (nonatomic, retain)NSMutableArray *angles;
+/// 1個目の弾の角度
+@property (nonatomic, readonly)float topAngle;
 
-// コンビニエンスコンストラクタ
-+ (id)angle;
 // 2点間指定によるn-way角度計算
-- (NSArray *)calcNWayAngleFromSrc:(CGPoint)src dest:(CGPoint)dest count:(NSInteger)count interval:(float)interval;
+- (id)initFromSrc:(CGPoint)src dest:(CGPoint)dest count:(NSInteger)count interval:(float)interval;
 // 中心角度指定によるn-way角度計算
-- (NSArray *)calcNWayAngleFromCenterAngle:(float)center count:(NSInteger)count interval:(float)interval;
+- (id)initFromCenterAngle:(float)center count:(NSInteger)count interval:(float)interval;
+// 2点間指定によるn-way角度計算(コンビニエンスコンストラクタ)
++ (id)angleFromSrc:(CGPoint)src dest:(CGPoint)dest count:(NSInteger)count interval:(float)interval;
+// 中心角度指定によるn-way角度計算(コンビニエンスコンストラクタ)
++ (id)angleFromCenterAngle:(float)center count:(NSInteger)count interval:(float)interval;
 // 2点間の角度計算
 + (float)calcDestAngleFrom:(CGPoint)src to:(CGPoint)dest;
 

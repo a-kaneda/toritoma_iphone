@@ -45,6 +45,17 @@
 @synthesize angles = angles_;
 
 /*!
+ @brief 1個目の弾の角度
+ 
+ 1個目の弾の角度を取得する。
+ @return 1個目の弾の角度
+ */
+- (float)topAngle
+{
+    return [[angles_ objectAtIndex:0] floatValue];
+}
+
+/*!
  @brief コンビニエンスコンストラクタ
  
  コンビニエンスコンストラクタ。
@@ -77,15 +88,15 @@
  @param dest 終点
  @param count 弾数
  @param interval 弾の間の角度
- @return 各弾の角度
+ @return 初期化したインスタンス
  */
-- (NSArray *)calcNWayAngleFromSrc:(CGPoint)src dest:(CGPoint)dest count:(NSInteger)count interval:(float)interval
+- (id)initFromSrc:(CGPoint)src dest:(CGPoint)dest count:(NSInteger)count interval:(float)interval
 {
     // 中心の弾の角度を計算する
     float centerAngle = [AKNWayAngle calcDestAngleFrom:src to:dest];
     
     // 中心角からn-way角度を計算する
-    return [self calcNWayAngleFromCenterAngle:centerAngle count:count interval:interval];    
+    return [self initFromCenterAngle:centerAngle count:count interval:interval];
 }
 
 /*!
@@ -95,30 +106,66 @@
  @param center 中心角度
  @param count 弾数
  @param interval 弾の間の角度
- @return 各弾の角度
+ @return 初期化したインスタンス
  */
-- (NSArray *)calcNWayAngleFromCenterAngle:(float)center count:(NSInteger)count interval:(float)interval
+- (id)initFromCenterAngle:(float)center count:(NSInteger)count interval:(float)interval
 {
+    // スーパークラスの初期化処理を行う
+    self = [super init];
+    if (!self) {
+        NSAssert(NO, @"インスタンスの初期化に失敗。");
+        return nil;
+    }
+    
     // 角度格納用配列を生成する
     self.angles = [NSMutableArray arrayWithCapacity:count];
 
     // 最小値の角度を計算する
     float minAngle = center - (interval * (count - 1)) / 2.0f;
-    
+
     // 各弾の発射角度を計算する
     for (int i = 0; i < count; i++) {
-        
+    
         // 弾の角度を計算する
         float angle = minAngle + i * interval;
-        
+    
         // NSArrayに格納するためにオブジェクトを作成する
         NSNumber *angleObj = [NSNumber numberWithFloat:angle];
-        
+    
         // 配列に追加する
         [angles_ addObject:angleObj];
     }
-    
-    return angles_;
+
+    return self;
+}
+
+/*!
+ @brief 2点間指定によるn-way角度計算(コンビニエンスコンストラクタ)
+ 
+ 2点の座標からn-way弾の各弾の角度を計算する。
+ @param src 始点
+ @param dest 終点
+ @param count 弾数
+ @param interval 弾の間の角度
+ @return 生成したインスタンス
+ */
++ (id)angleFromSrc:(CGPoint)src dest:(CGPoint)dest count:(NSInteger)count interval:(float)interval
+{
+    return [[[AKNWayAngle alloc] initFromSrc:src dest:dest count:count interval:interval] autorelease];
+}
+
+/*!
+ @brief 中心角度指定によるn-way角度計算
+ 
+ 中心の弾の角度からn-way弾の各弾の角度を計算する。
+ @param center 中心角度
+ @param count 弾数
+ @param interval 弾の間の角度
+ @return 生成したインスタンス
+ */
++ (id)angleFromCenterAngle:(float)center count:(NSInteger)count interval:(float)interval
+{
+    return [[[AKNWayAngle alloc] initFromCenterAngle:center count:count interval:interval] autorelease];
 }
 
 /*!

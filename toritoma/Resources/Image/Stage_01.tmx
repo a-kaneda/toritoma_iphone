@@ -321,12 +321,12 @@
  </layer>
  <layer name="Event" width="100" height="9" opacity="0.37">
   <data encoding="base64" compression="zlib">
-   eJztwQEBAAAAASC//P9liKoBAADg0QBL7QA8
+   eJztzEERAAAIAyB7af9cK7HzBQHY6bjSAwAAwI8AhvoAeA==
   </data>
  </layer>
  <layer name="Enemy" width="100" height="9">
   <data encoding="base64" compression="zlib">
-   eJzt1kERAAAIw7D514NAZHBAoqDPJmxW0wEAAMf4Kz5px6YBaQ==
+   eJztzjEBAAAMAiD7h1q2xfAQEpAAAIuuHQCg7gGLNAC/
   </data>
  </layer>
 </map>

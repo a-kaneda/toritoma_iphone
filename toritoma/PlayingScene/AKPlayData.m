@@ -808,39 +808,31 @@ enum AKCharacterPositionZ {
 }
 
 /*!
- @brief 敵弾生成
+ @brief 敵弾インスタンスの取得
  
- 敵の弾を生成する。
- @param type 種別
- @param x 生成位置x座標
- @param y 生成位置y座標
- @param angle 進行方向
- @param speed スピード
+ 敵弾プールから次のインスタンスを取得する。
+ @return 敵弾インスタンス
  */
-- (void)createEnemyShotType:(NSInteger)type
-                          x:(NSInteger)x
-                          y:(NSInteger)y
-                      angle:(float)angle
-                      speed:(float)speed
+- (AKEnemyShot *)getEnemyShot
 {
-    AKLog(kAKLogPlayData_1, @"敵弾生成");
-
     // プールから未使用のメモリを取得する
     AKEnemyShot *enemyShot = [self.enemyShotPool getNext];
-    if (enemyShot == nil) {
-        // 空きがない場合は処理終了する
-        AKLog(kAKLogPlayData_0, @"敵弾プールに空きなし");
-        NSAssert(NO, @"敵弾プールに空きなし");
-        return;
-    }
     
-    // 敵弾を生成する
-    [enemyShot createEnemyShotType:type
-                                 x:x
-                                 y:y
-                             angle:angle
-                             speed:speed
-                            parent:[self.batches objectAtIndex:kAKCharaPosZEnemyShot]];
+    AKLog(kAKLogPlayData_0 && enemyShot == nil, @"敵弾プールに空きなし");
+    NSAssert(enemyShot, @"敵弾プールに空きなし");
+    
+    return enemyShot;
+}
+
+/*!
+ @brief 敵弾配置ノードの取得
+ 
+ 敵弾を配置するノードを取得する。
+ @return 敵弾配置ノード
+ */
+- (CCNode *)getEnemyShotParent
+{
+    return [self.batches objectAtIndex:kAKCharaPosZEnemyShot];
 }
 
 /*!
